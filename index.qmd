@@ -1,0 +1,18 @@
+---
+title: "Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación"
+author:
+  - name: Carlos Eduardo Chacón Rodríguez
+    email: carlos.chacon78@unach.mx
+    corresponding: true
+  - name: Dr. Yofre Hernán García Gómez
+    email: yofre.garcia@unach.mx
+    roles: Asesor
+    degrees: Asesor
+format:
+  html:
+    toc: true
+    number-sections: true
+---
+# Modelización de la Dinámica Fenológica de la Vegetación mediante Ecuaciones Diferenciales Estocásticas con Retraso: Aplicación al Índice de Verdor GCC en Umeå, Suecia
+
+# Introducción
