@@ -1,0 +1,71 @@
+lang: es
+bibliography: bibliografia.bib
+csl: apa.csl
+
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación"
+  favicon: figuras/unach.png
+  cover-image: figuras/unach.png
+  chapters:
+    - index.qmd
+    - capitulo_2.qmd
+    - capitulo_3.qmd
+    #- conclusiones.qmd
+    #- bibliografia.qmd
+
+  sidebar:
+    logo: figuras/unach.png
+    search: true
+    style: "floating"
+    collapse-level: 1
+    pinned: true
+
+  downloads: 
+    - pdf
+
+  page-navigation: true
+  page-footer:
+    left: "© 2025 Carlos Eduardo Chacón Rodríguez"
+    right: "Hecho con [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme: darkly
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    smooth-scroll: true
+    link-external-newwindow: true
+    css: styles.css
+  
+  pdf:  
+    documentclass: book
+    include-in-header: latex/preamble.tex
+    include-before-body: latex/portada.tex
+    include-after-body: latex/hoja_final.tex
+    titlepage: false
+    toc: true
+    number-sections: false
+    mainfont: Latin Modern Roman
+    fontsize: 12pt
+    geometry: a4paper
+    output-file: tesis_carlos_chacon
+    dpi: 300
+    fig-format: png
+    link-citations: true       # ← Activa enlaces en citas
+    urlcolor: blue 
+
+execute:
+  enabled: true
+  engine: julia
+  echo: true       # Muestra el código fuente
+  results: show    # Muestra los resultados formateados
+  output: true     # Muestra la salida estándar
+  warning: false   # Oculta advertencias (como DeprecationWarnings)
+  message: false   # Oculta mensajes de carga de paquetes, etc.
+  eval: true       # Asegura que el bloque se ejecute

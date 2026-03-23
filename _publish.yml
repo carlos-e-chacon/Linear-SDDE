@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: 94d77332-1c89-4b18-ad2d-f1c595031d33
+      url: https://carlos-e-chacon.quarto.pub/Linear-SDDE

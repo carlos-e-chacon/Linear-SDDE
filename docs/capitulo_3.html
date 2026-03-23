@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Formulación del Modelo Matemático – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./capitulo_2.html" rel="prev">
+<link href="./figuras/unach.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-8d92b28bcbf54a71859971a1d8466b32.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./capitulo_3.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Formulación del Modelo Matemático</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./figuras/unach.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</a> 
+        <div class="sidebar-tools-main">
+    <a href="./Modelo-Estocástico-con-Retraso-para-la-Dinámica-Fenológica-de-Vegetación.pdf" title="Descargar PDF" class="quarto-navigation-tool px-1" aria-label="Descargar PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelización Matemática de la Dinámica Fenológica de Vegetación mediante Ecuaciones Diferenciales Estocásticas con Retraso: Aplicación al Índice de Verdor GCC en Coliflor (Brassica oleracea) en Umeå, Suecia</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./capitulo_2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fundamentos Biológicos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./capitulo_3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Formulación del Modelo Matemático</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul class="collapse">
+  <li><a href="#modelo-sdde-en-tiempo-continuo" id="toc-modelo-sdde-en-tiempo-continuo" class="nav-link active" data-scroll-target="#modelo-sdde-en-tiempo-continuo"><span class="header-section-number">3.1</span> Modelo SDDE en tiempo continuo</a></li>
+  <li><a href="#discretización-numérica-y-propiedades-del-esquema" id="toc-discretización-numérica-y-propiedades-del-esquema" class="nav-link" data-scroll-target="#discretización-numérica-y-propiedades-del-esquema"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Formulación del Modelo Matemático</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="modelo-sdde-en-tiempo-continuo" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="modelo-sdde-en-tiempo-continuo"><span class="header-section-number">3.1</span> Modelo SDDE en tiempo continuo</h2>
+<section id="motivación-y-contexto-teórico" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="motivación-y-contexto-teórico"><span class="header-section-number">3.1.1</span> Motivación y contexto teórico</h3>
+<p>Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema <span class="citation" data-cites="mao2007stochastic">(<a href="#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal <span class="citation" data-cites="mohammed1984stochastic">(<a href="#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>.</p>
+<p>La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales <span class="citation" data-cites="volterra1931theorie">(<a href="#ref-volterra1931theorie" role="doc-biblioref">Volterra, 1931</a>)</span>. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs <span class="citation" data-cites="ito1951stochastic">(<a href="#ref-ito1951stochastic" role="doc-biblioref">Itô, 1951</a>)</span>.</p>
+</section>
+<section id="definición-formal-del-modelo" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="definición-formal-del-modelo"><span class="header-section-number">3.1.2</span> Definición formal del modelo</h3>
+<p>Consideremos un espacio de probabilidad filtrado <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)</span> que satisface las condiciones usuales de completitud y continuidad derecha <span class="citation" data-cites="revuz1999continuous">(<a href="#ref-revuz1999continuous" role="doc-biblioref">Revuz &amp; Yor, 1999</a>)</span>. Sea <span class="math inline">\(W(t)\)</span> un proceso de Wiener estándar (movimiento browniano) adaptado a la filtración <span class="math inline">\(\{\mathcal{F}_t\}\)</span>.</p>
+<p>El modelo propuesto para la dinámica del índice de verdor GCC se define mediante la siguiente ecuación diferencial estocástica con retraso:</p>
+<p><span class="math display">\[
+\boxed{
+dX(t) = \left[ \alpha + \beta X(t) + \gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
+}
+\tag{4.1}
+\]</span></p>
+<p>donde las variables y parámetros se definen en el contexto biológico de la siguiente manera:</p>
+<ul>
+<li><p><span class="math inline">\(X(t) \in \mathbb{R}^+\)</span>: Proceso estocástico del GCC, que representa la biomasa verde activa en el tiempo <span class="math inline">\(t\)</span>.</p></li>
+<li><p><span class="math inline">\(\alpha \in \mathbb{R}\)</span>: Tasa de crecimiento basal, asociada al crecimiento intrínseco del sistema en ausencia de forzantes externos.</p></li>
+<li><p><span class="math inline">\(\beta \in \mathbb{R}\)</span>: Coeficiente de retroalimentación actual, el cual modela el efecto de autorregulación del crecimiento.</p></li>
+<li><p><span class="math inline">\(\gamma \in \mathbb{R}\)</span>: Coeficiente de retroalimentación retardada, que representa la memoria fisiológica del sistema, vinculada a la translocación de fotoasimilados.</p></li>
+<li><p><span class="math inline">\(\tau \in \mathbb{R}^+\)</span>: Tiempo de retraso, correspondiente al periodo característico de los procesos fisiológicos involucrados.</p></li>
+<li><p><span class="math inline">\(\mathbf{C}(t) \in \mathbb{R}^3\)</span>: Vector de forzantes climáticas, definido como <span class="math inline">\(\mathbf{C}(t) = [\text{Rad}_t, \text{Temp}_t, \text{Prec}_t]^T\)</span>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\delta} \in \mathbb{R}^3\)</span>: Vector de sensibilidades climáticas, que cuantifica la respuesta del sistema ante variaciones en las variables climáticas.</p></li>
+<li><p><span class="math inline">\(\sigma \in \mathbb{R}^+\)</span>: Intensidad del ruido estocástico, que representa la variabilidad ambiental no explicada por el modelo determinista.</p></li>
+<li><p><span class="math inline">\(W(t) \in \mathbb{R}\)</span>: Proceso de Wiener estándar, utilizado para modelar el ruido blanco gaussiano que perturba el sistema.</p></li>
+</ul>
+</section>
+<section id="condiciones-iniciales-y-espacio-de-fases" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="condiciones-iniciales-y-espacio-de-fases"><span class="header-section-number">3.1.3</span> Condiciones iniciales y espacio de fases</h3>
+<p>A diferencia de las SDEs clásicas, las SDDEs requieren una <strong>función inicial</strong> definida en un intervalo pasado, debido a la dependencia del término <span class="math inline">\(X(t-\tau)\)</span> <span class="citation" data-cites="mohammed1984stochastic">(<a href="#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>. El problema de valor inicial se especifica como:</p>
+<p><span class="math display">\[
+X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
+\tag{4.2}
+\]</span></p>
+<p>donde <span class="math inline">\(\phi: [-\tau, 0] \to \mathbb{R}^+\)</span> es una función continua y determinista que representa el historial del sistema antes del tiempo inicial <span class="math inline">\(t=0\)</span>.</p>
+<p>El <strong>espacio de fases</strong> para una SDDE es infinito-dimensional, específicamente el espacio de Banach <span class="math inline">\(C([-\tau, 0], \mathbb{R})\)</span> de funciones continuas del intervalo <span class="math inline">\([-\tau, 0]\)</span> en <span class="math inline">\(\mathbb{R}\)</span>, equipado con la norma del supremo:</p>
+<p><span class="math display">\[
+\|\phi\| = \sup_{\theta \in [-\tau, 0]} |\phi(\theta)|
+\tag{4.3}
+\]</span></p>
+<p>Esta característica fundamental distingue a las SDDEs de las SDEs y tiene implicaciones profundas para el análisis de existencia, unicidad y estabilidad de soluciones <span class="citation" data-cites="mao2007stochastic">(<a href="#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
+</section>
+<section id="propiedades-matemáticas-fundamentales" class="level3" data-number="3.1.4">
+<h3 data-number="3.1.4" class="anchored" data-anchor-id="propiedades-matemáticas-fundamentales"><span class="header-section-number">3.1.4</span> Propiedades matemáticas fundamentales</h3>
+<section id="existencia-y-unicidad-de-soluciones" class="level4" data-number="3.1.4.1">
+<h4 data-number="3.1.4.1" class="anchored" data-anchor-id="existencia-y-unicidad-de-soluciones"><span class="header-section-number">3.1.4.1</span> Existencia y unicidad de soluciones</h4>
+<p>Para garantizar la existencia y unicidad de soluciones a la SDDE (4.1), imponemos las siguientes condiciones estándar sobre los coeficientes <span class="citation" data-cites="mao2007stochastic">(<a href="#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>:</p>
+<p><strong>Condición de Lipschitz global</strong>: Existe una constante <span class="math inline">\(K &gt; 0\)</span> tal que para todo <span class="math inline">\(x_1, x_2, y_1, y_2 \in \mathbb{R}\)</span> y <span class="math inline">\(t \geq 0\)</span>:</p>
+<p><span class="math display">\[
+|\mu(t, x_1, y_1) - \mu(t, x_2, y_2)| + |\sigma(t, x_1) - \sigma(t, x_2)| \leq K(|x_1 - x_2| + |y_1 - y_2|)
+\tag{4.4}
+\]</span></p>
+<p>donde <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> es la función de deriva y <span class="math inline">\(\sigma(t, x) = \sigma x\)</span> es la función de difusión.</p>
+<p><strong>Condición de crecimiento lineal</strong>: Existe una constante <span class="math inline">\(C &gt; 0\)</span> tal que para todo <span class="math inline">\(x, y \in \mathbb{R}\)</span> y <span class="math inline">\(t \geq 0\)</span>:</p>
+<p><span class="math display">\[
+|\mu(t, x, y)|^2 + |\sigma(t, x)|^2 \leq C(1 + |x|^2 + |y|^2)
+\tag{4.5}
+\]</span></p>
+<p><strong>Teorema 4.1</strong> (Existencia y unicidad). <em>Bajo las condiciones (4.4) y (4.5), y dado un historial inicial <span class="math inline">\(\phi \in C([-\tau, 0], \mathbb{R}^+)\)</span>, existe una única solución global <span class="math inline">\(X(t)\)</span> para todo <span class="math inline">\(t \geq 0\)</span> que satisface la SDDE (4.1) y la condición inicial (4.2).</em></p>
+<p><em>Demostración</em>: Ver <span class="citation" data-cites="mao2007stochastic">(<a href="#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>, Teorema 6.2, o Anexo D para una demostración detallada adaptada a nuestro modelo específico.</p>
+</section>
+<section id="verificación-para-el-modelo-propuesto" class="level4" data-number="3.1.4.2">
+<h4 data-number="3.1.4.2" class="anchored" data-anchor-id="verificación-para-el-modelo-propuesto"><span class="header-section-number">3.1.4.2</span> Verificación para el modelo propuesto</h4>
+<p>Para nuestro modelo específico, verificamos las condiciones anteriores:</p>
+<ol type="1">
+<li><p><strong>Lipschitz</strong>: La función <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> es lineal en <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, por lo tanto satisface la condición de Lipschitz con constante <span class="math inline">\(K = \max(|\beta|, |\gamma|)\)</span>.</p></li>
+<li><p><strong>Crecimiento lineal</strong>: Dado que <span class="math inline">\(\mu\)</span> es lineal y <span class="math inline">\(\sigma(t, x) = \sigma x\)</span> también es lineal, ambas satisfacen trivialmente la condición de crecimiento lineal.</p></li>
+</ol>
+<p>Por lo tanto, el modelo propuesto garantiza existencia y unicidad de soluciones para cualquier historial inicial continuo <span class="math inline">\(\phi\)</span>.</p>
+</section>
+</section>
+<section id="interpretación-biológica-de-los-términos" class="level3" data-number="3.1.5">
+<h3 data-number="3.1.5" class="anchored" data-anchor-id="interpretación-biológica-de-los-términos"><span class="header-section-number">3.1.5</span> Interpretación biológica de los términos</h3>
+<section id="término-de-deriva-determinista" class="level4" data-number="3.1.5.1">
+<h4 data-number="3.1.5.1" class="anchored" data-anchor-id="término-de-deriva-determinista"><span class="header-section-number">3.1.5.1</span> Término de deriva determinista</h4>
+<p>El término de deriva en la ecuación (4.1) puede descomponerse en cuatro componentes:</p>
+<p><span class="math display">\[
+\mu(t, X(t), X(t-\tau)) = \underbrace{\alpha}_{\text{Crecimiento basal}} + \underbrace{\beta X(t)}_{\text{Retroalimentación actual}} + \underbrace{\gamma X(t-\tau)}_{\text{Memoria fisiológica}} + \underbrace{\boldsymbol{\delta}^T \mathbf{C}(t)}_{\text{Forzantes climáticas}}
+\tag{4.6}
+\]</span></p>
+<ul>
+<li><p><strong>Crecimiento basal (<span class="math inline">\(\alpha\)</span>)</strong>: Representa la tasa de crecimiento intrínseca del sistema en ausencia de retroalimentación y forzantes externos. En el contexto vegetal, esto corresponde al crecimiento mínimo sostenido por procesos metabólicos básicos <span class="citation" data-cites="taiz2010plant">(<a href="#ref-taiz2010plant" role="doc-biblioref">Taiz &amp; Zeiger, 2010</a>)</span>.</p></li>
+<li><p><strong>Retroalimentación actual (<span class="math inline">\(\beta X(t)\)</span>)</strong>: Modela la autorregulación del crecimiento basada en el estado actual del sistema. Un valor <span class="math inline">\(\beta &gt; 0\)</span> indica crecimiento autocatalítico (aceleración), mientras que <span class="math inline">\(\beta &lt; 0\)</span> representa saturación o competencia intraespecífica <span class="citation" data-cites="diepenbrock2000yield">(<a href="#ref-diepenbrock2000yield" role="doc-biblioref">Diepenbrock, 2000</a>)</span>.</p></li>
+<li><p><strong>Memoria fisiológica (<span class="math inline">\(\gamma X(t-\tau)\)</span>)</strong>: Captura explícitamente la dependencia del pasado, representando procesos como la translocación de fotoasimilados, acumulación de reservas o respuesta hormonal retardada <span class="citation" data-cites="thomas2014stay">(<a href="#ref-thomas2014stay" role="doc-biblioref">Thomas &amp; Ougham, 2014</a>)</span>. El signo de <span class="math inline">\(\gamma\)</span> determina si el efecto es positivo (persistencia) o negativo (agotamiento de recursos).</p></li>
+<li><p><strong>Forzantes climáticas (<span class="math inline">\(\boldsymbol{\delta}^T \mathbf{C}(t)\)</span>)</strong>: Incorpora la influencia directa de variables ambientales sobre el crecimiento. Cada componente <span class="math inline">\(\delta_i\)</span> cuantifica la sensibilidad del sistema a la variable climática correspondiente <span class="citation" data-cites="monteith1977climate">(<a href="#ref-monteith1977climate" role="doc-biblioref">Monteith &amp; Moss, 1977</a>)</span>.</p></li>
+</ul>
+</section>
+<section id="término-de-difusión-estocástica" class="level4" data-number="3.1.5.2">
+<h4 data-number="3.1.5.2" class="anchored" data-anchor-id="término-de-difusión-estocástica"><span class="header-section-number">3.1.5.2</span> Término de difusión estocástica</h4>
+<p>El término de difusión <span class="math inline">\(\sigma X(t) \, dW(t)\)</span> modela la variabilidad ambiental no explicada por las variables climáticas incluidas explícitamente. La forma multiplicativa <span class="math inline">\(\sigma X(t)\)</span> implica que la intensidad del ruido es proporcional al tamaño del sistema, lo cual es biológicamente razonable: sistemas más grandes (mayor GCC) exhiben mayor variabilidad absoluta <span class="citation" data-cites="kloeden1992numerical">(<a href="#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
+</section>
+</section>
+<section id="solución-formal-y-representación-integral" class="level3" data-number="3.1.6">
+<h3 data-number="3.1.6" class="anchored" data-anchor-id="solución-formal-y-representación-integral"><span class="header-section-number">3.1.6</span> Solución formal y representación integral</h3>
+<p>La solución de la SDDE (4.1) puede expresarse en forma integral utilizando el cálculo de Itô <span class="citation" data-cites="oksendal2003stochastic">(<a href="#ref-oksendal2003stochastic" role="doc-biblioref">Øksendal, 2003</a>)</span>:</p>
+<p><span class="math display">\[
+X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymbol{\delta}^T \mathbf{C}(s) \right] ds + \sigma \int_0^t X(s) \, dW(s)
+\tag{4.7}
+\]</span></p>
+<p>Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica <span class="math inline">\(\int_0^t X(s) \, dW(s)\)</span> se interpreta en el sentido de Itô, lo cual implica que el integrando <span class="math inline">\(X(s)\)</span> es evaluado en el extremo izquierdo de cada subintervalo de partición <span class="citation" data-cites="ito1951stochastic">(<a href="#ref-ito1951stochastic" role="doc-biblioref">Itô, 1951</a>)</span>.</p>
+</section>
+<section id="momentos-y-propiedades-estadísticas" class="level3" data-number="3.1.7">
+<h3 data-number="3.1.7" class="anchored" data-anchor-id="momentos-y-propiedades-estadísticas"><span class="header-section-number">3.1.7</span> Momentos y propiedades estadísticas</h3>
+<p>Aunque la solución exacta de la SDDE (4.1) no puede expresarse en forma cerrada debido al término de retraso, podemos derivar ecuaciones para sus momentos estadísticos. Tomando esperanza en ambos lados de (4.7) y utilizando que la esperanza de la integral de Itô es cero:</p>
+<p><span class="math display">\[
+\mathbb{E}[X(t)] = X(0) + \int_0^t \left[ \alpha + \beta \mathbb{E}[X(s)] + \gamma \mathbb{E}[X(s-\tau)] + \boldsymbol{\delta}^T \mathbb{E}[\mathbf{C}(s)] \right] ds
+\tag{4.8}
+\]</span></p>
+<p>Diferenciando respecto a <span class="math inline">\(t\)</span> obtenemos una ecuación diferencial funcional determinista para la media:</p>
+<p><span class="math display">\[
+\frac{d}{dt} \mathbb{E}[X(t)] = \alpha + \beta \mathbb{E}[X(t)] + \gamma \mathbb{E}[X(t-\tau)] + \boldsymbol{\delta}^T \mathbb{E}[\mathbf{C}(t)]
+\tag{4.9}
+\]</span></p>
+<p>Esta ecuación revela que la dinámica de la media del proceso estocástico sigue una DDE determinista con la misma estructura de retraso que el modelo original <span class="citation" data-cites="mohammed1984stochastic">(<a href="#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>.</p>
+</section>
+<section id="consideraciones-sobre-la-positividad-del-modelo" class="level3" data-number="3.1.8">
+<h3 data-number="3.1.8" class="anchored" data-anchor-id="consideraciones-sobre-la-positividad-del-modelo"><span class="header-section-number">3.1.8</span> Consideraciones sobre la positividad del modelo</h3>
+<p>Dado que <span class="math inline">\(X(t)\)</span> representa el índice de verdor GCC, que físicamente debe ser no negativo (<span class="math inline">\(X(t) \geq 0\)</span>), es crucial verificar que el modelo preserve esta propiedad. Para SDEs con coeficientes lineales como la nuestra, se puede demostrar que si la condición inicial satisface <span class="math inline">\(\phi(t) \geq 0\)</span> para todo <span class="math inline">\(t \in [-\tau, 0]\)</span>, entonces <span class="math inline">\(X(t) \geq 0\)</span> casi seguramente para todo <span class="math inline">\(t \geq 0\)</span> <span class="citation" data-cites="mao2007stochastic">(<a href="#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
+<p>Esta propiedad de positividad es esencial para la interpretación biológica del modelo y garantiza que las simulaciones numéricas produzcan resultados físicamente realistas.</p>
+</section>
+</section>
+<section id="discretización-numérica-y-propiedades-del-esquema" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="discretización-numérica-y-propiedades-del-esquema"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</h2>
+<section id="motivación-y-contexto-metodológico" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="motivación-y-contexto-metodológico"><span class="header-section-number">3.2.1</span> Motivación y contexto metodológico</h3>
+<p>La resolución analítica de ecuaciones diferenciales estocásticas con retraso (SDDE) es generalmente imposible debido a la naturaleza no markoviana del proceso y la dependencia funcional del pasado <span class="citation" data-cites="kloeden1992numerical">(<a href="#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>. Por lo tanto, es necesario recurrir a métodos numéricos de discretización para obtener soluciones aproximadas que permitan tanto el análisis teórico como la implementación computacional <span class="citation" data-cites="mao2007stochastic">(<a href="#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
+<p>El esquema de Euler-Maruyama representa el método más fundamental y ampliamente utilizado para la discretización de SDEs y SDDEs, debido a su simplicidad conceptual, facilidad de implementación y propiedades de convergencia bien establecidas <span class="citation" data-cites="platen1999introduction">(<a href="#ref-platen1999introduction" role="doc-biblioref">Platen, 1999</a>)</span>.</p>
+</section>
+<section id="esquema-de-euler-maruyama-para-sdde" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="esquema-de-euler-maruyama-para-sdde"><span class="header-section-number">3.2.2</span> Esquema de Euler-Maruyama para SDDE</h3>
+<p>Consideremos la SDDE definida en la sección 3.1:</p>
+<p><span class="math display">\[
+dX(t) = \mu(t, X(t), X(t-\tau)) \, dt + \sigma(t, X(t)) \, dW(t), \quad t \geq 0
+\tag{3.7}
+\]</span></p>
+<p>donde <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> y <span class="math inline">\(\sigma(t, x) = \sigma x\)</span>.</p>
+<p>Para discretizar esta ecuación, particionamos el intervalo temporal <span class="math inline">\([0, T]\)</span> en <span class="math inline">\(N\)</span> subintervalos de igual longitud <span class="math inline">\(\Delta t = T/N\)</span>, definiendo los puntos de malla <span class="math inline">\(t_n = n \Delta t\)</span> para <span class="math inline">\(n = 0, 1, \dots, N\)</span>. Denotamos <span class="math inline">\(X_n \approx X(t_n)\)</span> como la aproximación numérica del proceso en el tiempo <span class="math inline">\(t_n\)</span>.</p>
+<p>El <strong>esquema de Euler-Maruyama</strong> para la SDDE (3.7) se define recursivamente como:</p>
+<p><span class="math display">\[
+\boxed{
+X_{n+1} = X_n + \mu(t_n, X_n, X_{n-k}) \Delta t + \sigma(t_n, X_n) \Delta W_n
+}
+\tag{3.8}
+\]</span></p>
+<p>donde: - <span class="math inline">\(k = \tau / \Delta t\)</span> es el número de pasos de retraso (asumiendo que <span class="math inline">\(\tau\)</span> es múltiplo entero de <span class="math inline">\(\Delta t\)</span>), - <span class="math inline">\(\Delta W_n = W(t_{n+1}) - W(t_n) \sim \mathcal{N}(0, \Delta t)\)</span> es el incremento del proceso de Wiener, - <span class="math inline">\(X_{n-k} \approx X(t_n - \tau)\)</span> es la aproximación del estado retardado.</p>
+<p>Para nuestro modelo específico con <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> y <span class="math inline">\(\sigma(t, x) = \sigma x\)</span>, el esquema se particulariza como:</p>
+<p><span class="math display">\[
+\boxed{
+X_{n+1} = X_n + \left[ \alpha + \beta X_n + \gamma X_{n-k} + \boldsymbol{\delta}^T \mathbf{C}_n \right] \Delta t + \sigma X_n \Delta W_n
+}
+\tag{3.9}
+\]</span></p>
+<p>donde <span class="math inline">\(\mathbf{C}_n = \mathbf{C}(t_n)\)</span> representa el vector de forzantes climáticas en el tiempo discreto <span class="math inline">\(t_n\)</span>.</p>
+</section>
+<section id="representación-alternativa-en-diferencias" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="representación-alternativa-en-diferencias"><span class="header-section-number">3.2.3</span> Representación alternativa en diferencias</h3>
+<p>En aplicaciones prácticas con datos observados, es conveniente reorganizar la ecuación (3.9) en términos del diferencial discreto <span class="math inline">\(\Delta X_n = X_{n+1} - X_n\)</span>:</p>
+<p><span class="math display">\[
+\boxed{
+\Delta X_n = \alpha \Delta t + \beta X_n \Delta t + \gamma X_{n-k} \Delta t + \boldsymbol{\delta}^T \mathbf{C}_n \Delta t + \sigma X_n \Delta W_n
+}
+\tag{3.10}
+\]</span></p>
+<p>Esta formulación es particularmente útil para la estimación de parámetros mediante métodos de regresión, ya que permite expresar el cambio en el estado como una función lineal de las variables explicativas <span class="citation" data-cites="shoji1998estimation">(<a href="#ref-shoji1998estimation" role="doc-biblioref">Shoji &amp; Ozaki, 1998</a>)</span>.</p>
+</section>
+<section id="análisis-de-convergencia" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="análisis-de-convergencia"><span class="header-section-number">3.2.4</span> Análisis de convergencia</h3>
+<p>El análisis de convergencia de esquemas numéricos para SDEs y SDDEs distingue entre dos tipos fundamentales de convergencia: <strong>convergencia fuerte</strong> y <strong>convergencia débil</strong> <span class="citation" data-cites="kloeden1992numerical">(<a href="#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
+<section id="convergencia-fuerte" class="level4" data-number="3.2.4.1">
+<h4 data-number="3.2.4.1" class="anchored" data-anchor-id="convergencia-fuerte"><span class="header-section-number">3.2.4.1</span> Convergencia fuerte</h4>
+<p>Un esquema numérico tiene <strong>convergencia fuerte de orden <span class="math inline">\(\gamma\)</span></strong> si existe una constante <span class="math inline">\(C &gt; 0\)</span> independiente de <span class="math inline">\(\Delta t\)</span> tal que:</p>
+<p><span class="math display">\[
+\mathbb{E}\left[ |X(T) - X_N| \right] \leq C (\Delta t)^\gamma
+\tag{3.11}
+\]</span></p>
+<p>donde <span class="math inline">\(X(T)\)</span> es la solución exacta en tiempo <span class="math inline">\(T\)</span> y <span class="math inline">\(X_N\)</span> es la aproximación numérica.</p>
+<p><strong>Teorema 3.1</strong> (Convergencia fuerte de Euler-Maruyama). <em>Bajo las condiciones de Lipschitz global y crecimiento lineal para <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma\)</span>, el esquema de Euler-Maruyama (3.8) tiene convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span></em> <span class="citation" data-cites="kloeden1992numerical">(<a href="#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
+<p><em>Demostración</em>: Ver <span class="citation" data-cites="kloeden1992numerical">(<a href="#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>, Teorema 10.2.2, o Anexo D para una demostración adaptada a SDDEs.</p>
+<p>Para nuestro modelo lineal específico, la condición de Lipschitz se satisface trivialmente, garantizando la convergencia fuerte de orden <span class="math inline">\(1/2\)</span>.</p>
+</section>
+<section id="convergencia-débil" class="level4" data-number="3.2.4.2">
+<h4 data-number="3.2.4.2" class="anchored" data-anchor-id="convergencia-débil"><span class="header-section-number">3.2.4.2</span> Convergencia débil</h4>
+<p>Un esquema numérico tiene <strong>convergencia débil de orden <span class="math inline">\(\beta\)</span></strong> si para toda función <span class="math inline">\(g \in C_P^{2(\beta+1)}(\mathbb{R}, \mathbb{R})\)</span> (funciones <span class="math inline">\(2(\beta+1)\)</span> veces continuamente diferenciables con derivadas polinomialmente acotadas), existe una constante <span class="math inline">\(C_g &gt; 0\)</span> tal que:</p>
+<p><span class="math display">\[
+\left| \mathbb{E}[g(X(T))] - \mathbb{E}[g(X_N)] \right| \leq C_g (\Delta t)^\beta
+\tag{3.12}
+\]</span></p>
+<p><strong>Teorema 3.2</strong> (Convergencia débil de Euler-Maruyama). <em>Bajo las mismas condiciones del Teorema 3.1, el esquema de Euler-Maruyama tiene convergencia débil de orden <span class="math inline">\(\beta = 1\)</span></em> <span class="citation" data-cites="milstein1995numerical">(<a href="#ref-milstein1995numerical" role="doc-biblioref">Milstein, 1995</a>)</span>.</p>
+<p>Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, etc.) <span class="citation" data-cites="glasserman2003monte">(<a href="#ref-glasserman2003monte" role="doc-biblioref">Glasserman, 2003</a>)</span>.</p>
+</section>
+</section>
+<section id="estabilidad-numérica" class="level3" data-number="3.2.5">
+<h3 data-number="3.2.5" class="anchored" data-anchor-id="estabilidad-numérica"><span class="header-section-number">3.2.5</span> Estabilidad numérica</h3>
+<p>La estabilidad numérica de un esquema de discretización se refiere a su capacidad para mantener acotadas las soluciones numéricas cuando las soluciones exactas son acotadas <span class="citation" data-cites="higham2001strong">(<a href="#ref-higham2001strong" role="doc-biblioref">Higham et&nbsp;al., 2002</a>)</span>. Para el esquema de Euler-Maruyama aplicado a SDEs lineales, se pueden derivar condiciones explícitas de estabilidad.</p>
+<p>Consideremos el caso simplificado sin retraso (<span class="math inline">\(\gamma = 0\)</span>) y sin forzantes climáticas (<span class="math inline">\(\boldsymbol{\delta} = \mathbf{0}\)</span>):</p>
+<p><span class="math display">\[
+X_{n+1} = X_n + (\alpha + \beta X_n) \Delta t + \sigma X_n \Delta W_n
+\tag{3.13}
+\]</span></p>
+<p>Reorganizando términos:</p>
+<p><span class="math display">\[
+X_{n+1} = \left[ 1 + \beta \Delta t + \sigma \Delta W_n \right] X_n + \alpha \Delta t
+\tag{3.14}
+\]</span></p>
+<p><strong>Definición 3.1</strong> (Estabilidad MS). <em>Un esquema numérico es estable en media cuadrática (MS) si existe una constante <span class="math inline">\(C &gt; 0\)</span> tal que</em>:</p>
+<p><span class="math display">\[
+\sup_{n \geq 0} \mathbb{E}[|X_n|^2] \leq C \mathbb{E}[|X_0|^2]
+\tag{3.15}
+\]</span></p>
+<p><strong>Teorema 3.3</strong> (Condición de estabilidad MS para Euler-Maruyama). <em>El esquema (3.14) es estable en media cuadrática si y solo si</em>:</p>
+<p><span class="math display">\[
+\boxed{
+2\beta + \sigma^2 &lt; 0
+}
+\tag{3.16}
+\]</span></p>
+<p><em>Demostración</em>: Ver <span class="citation" data-cites="higham2001strong">(<a href="#ref-higham2001strong" role="doc-biblioref">Higham et&nbsp;al., 2002</a>)</span>, Teorema 2.1.</p>
+<p>Esta condición establece que la estabilidad del esquema depende del balance entre el coeficiente de retroalimentación <span class="math inline">\(\beta\)</span> y la intensidad del ruido <span class="math inline">\(\sigma\)</span>. Intuitivamente, el ruido puede tener un efecto estabilizador o desestabilizador dependiendo de la magnitud relativa de estos parámetros <span class="citation" data-cites="mao2007stochastic">(<a href="#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
+</section>
+<section id="error-de-truncamiento-local" class="level3" data-number="3.2.6">
+<h3 data-number="3.2.6" class="anchored" data-anchor-id="error-de-truncamiento-local"><span class="header-section-number">3.2.6</span> Error de truncamiento local</h3>
+<p>El <strong>error de truncamiento local</strong> en el paso <span class="math inline">\(n\)</span> se define como la diferencia entre la solución exacta y la aproximación numérica, asumiendo que el estado anterior es exacto:</p>
+<p><span class="math display">\[
+R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n, X(t_n)) \Delta W_n
+\tag{3.17}
+\]</span></p>
+<p>Para el esquema de Euler-Maruyama aplicado a SDEs con coeficientes suficientemente suaves, se puede demostrar que:</p>
+<p><span class="math display">\[
+\mathbb{E}[|R_n|^2]^{1/2} = \mathcal{O}((\Delta t)^{3/2})
+\tag{3.18}
+\]</span></p>
+<p>Este resultado justifica el orden de convergencia fuerte <span class="math inline">\(\gamma = 1/2\)</span>, ya que el error acumulado sobre <span class="math inline">\(N = T/\Delta t\)</span> pasos es de orden <span class="math inline">\(\mathcal{O}((\Delta t)^{1/2})\)</span> <span class="citation" data-cites="kloeden1992numerical">(<a href="#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
+</section>
+<section id="implementación-computacional" class="level3" data-number="3.2.7">
+<h3 data-number="3.2.7" class="anchored" data-anchor-id="implementación-computacional"><span class="header-section-number">3.2.7</span> Implementación computacional</h3>
+<p>La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El Algoritmo 3.1 presenta una implementación eficiente:</p>
+<p><strong>Algoritmo 3.1</strong>: Esquema de Euler-Maruyama para SDDE</p>
+<p>Entrada: <span class="math inline">\(\tau, \Delta t, T, X_0, \{C_n\}_{n=0}^{N-1},\alpha, \beta, \gamma, \delta, \sigma\)</span>.</p>
+<p>Salida: <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span> aproximación numérica.</p>
+<ol type="1">
+<li><span class="math inline">\(N\longleftarrow \dfrac{T}{\Delta t}\)</span></li>
+<li><span class="math inline">\(k \longleftarrow \dfrac{\tau}{\Delta t}\)</span></li>
+<li>Inicializar vector <span class="math inline">\(X[0..N]\)</span></li>
+<li><span class="math inline">\(X[0..k]\longleftarrow \phi(t_0..t_k)\)</span> // Historial inicial</li>
+<li>Para <span class="math inline">\(n = k\)</span> hasta <span class="math inline">\(N-1\)</span> hacer:
+<ol type="a">
+<li><span class="math inline">\(\Delta W \longleftarrow \sqrt{\Delta t}\cdot \mathcal{N}(0, 1)\)</span></li>
+<li><span class="math inline">\(\mu \longleftarrow \alpha + \beta\cdot X[n] + \gamma\cdot X[n-k] + \mathbf{\delta}^T C[n]\)</span></li>
+<li><span class="math inline">\(X[n+1] \longleftarrow X[n] + \mu\cdot \Delta t + \sigma\cdot X[n] \Delta W\)</span></li>
+</ol></li>
+<li>Retornar <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span></li>
+</ol>
+<p>La complejidad computacional del algoritmo es <span class="math inline">\(\mathcal{O}(N)\)</span>, lo que lo hace eficiente incluso para simulaciones con horizontes temporales largos <span class="citation" data-cites="andersson2017strong">(<a href="#ref-andersson2017strong" role="doc-biblioref"><strong>andersson2017strong?</strong></a>)</span>.</p>
+</section>
+<section id="consideraciones-prácticas-para-delta-t-1-día" class="level3" data-number="3.2.8">
+<h3 data-number="3.2.8" class="anchored" data-anchor-id="consideraciones-prácticas-para-delta-t-1-día"><span class="header-section-number">3.2.8</span> Consideraciones prácticas para <span class="math inline">\(\Delta t = 1\)</span> día</h3>
+<p>En nuestra aplicación específica, el paso temporal de discretización es <span class="math inline">\(\Delta t = 1\)</span> día, correspondiente a la frecuencia de muestreo de los datos PhenoCam. Esta elección tiene implicaciones importantes:</p>
+<ol type="1">
+<li><p><strong>Magnitud del error numérico</strong>: Con <span class="math inline">\(\Delta t = 1\)</span>, el error de truncamiento local puede ser significativo comparado con aplicaciones donde <span class="math inline">\(\Delta t \ll 1\)</span>. Sin embargo, dado que los datos observados también tienen una resolución diaria, el error numérico se vuelve comparable al error de observación <span class="citation" data-cites="shoji1998estimation">(<a href="#ref-shoji1998estimation" role="doc-biblioref">Shoji &amp; Ozaki, 1998</a>)</span>.</p></li>
+<li><p><strong>Aproximación del incremento de Wiener</strong>: Para <span class="math inline">\(\Delta t = 1\)</span>, tenemos <span class="math inline">\(\Delta W_n \sim \mathcal{N}(0, 1)\)</span>, lo que simplifica la generación de números aleatorios en la simulación.</p></li>
+<li><p><strong>Interpretación de parámetros</strong>: Los parámetros estimados (<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\boldsymbol{\delta}\)</span>, <span class="math inline">\(\sigma\)</span>) están en escala diaria y deben interpretarse como tasas de cambio por día, no como tasas instantáneas <span class="citation" data-cites="campbell1997econometrics">(<a href="#ref-campbell1997econometrics" role="doc-biblioref">Campbell et&nbsp;al., 1997</a>)</span>.</p></li>
+<li><p><strong>Consistencia dimensional</strong>: Con <span class="math inline">\(\Delta t = 1\)</span>, las ecuaciones (3.9) y (3.10) se simplifican al omitir explícitamente el factor <span class="math inline">\(\Delta t\)</span>, lo que facilita la interpretación y la estimación de parámetros.</p></li>
+</ol>
+<hr>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-campbell1997econometrics" class="csl-entry" role="listitem">
+Campbell, J. Y., Lo, A. W., &amp; MacKinlay, A. C. (1997). <em>The Econometrics of Financial Markets</em>. Princeton University Press.
+</div>
+<div id="ref-diepenbrock2000yield" class="csl-entry" role="listitem">
+Diepenbrock, W. (2000). Yield formation in field-grown Brassica oleracea L. var. botrytis: A review. <em>Journal of Horticultural Science &amp; Biotechnology</em>, <em>75</em>(4), 395-408. <a href="https://doi.org/10.1080/14620316.2000.11511267">https://doi.org/10.1080/14620316.2000.11511267</a>
+</div>
+<div id="ref-glasserman2003monte" class="csl-entry" role="listitem">
+Glasserman, P. (2003). <em>Monte Carlo Methods in Financial Engineering</em> (Vol. 53). Springer. <a href="https://doi.org/10.1007/978-0-387-21617-1">https://doi.org/10.1007/978-0-387-21617-1</a>
+</div>
+<div id="ref-higham2001strong" class="csl-entry" role="listitem">
+Higham, D. J., Mao, X., &amp; Stuart, A. M. (2002). Strong convergence of Euler-type methods for nonlinear stochastic differential equations. <em>SIAM Journal on Numerical Analysis</em>, <em>40</em>(3), 1041-1063. <a href="https://doi.org/10.1137/S0036142901389530">https://doi.org/10.1137/S0036142901389530</a>
+</div>
+<div id="ref-ito1951stochastic" class="csl-entry" role="listitem">
+Itô, K. (1951). On stochastic differential equations. <em>Memoirs of the American Mathematical Society</em>, <em>4</em>, 1-51. <a href="https://doi.org/10.1090/memo/0004">https://doi.org/10.1090/memo/0004</a>
+</div>
+<div id="ref-kloeden1992numerical" class="csl-entry" role="listitem">
+Kloeden, P. E., &amp; Platen, E. (1992). <em>Numerical Solution of Stochastic Differential Equations</em> (Vol. 23). Springer-Verlag. <a href="https://doi.org/10.1007/978-3-662-12616-5">https://doi.org/10.1007/978-3-662-12616-5</a>
+</div>
+<div id="ref-mao2007stochastic" class="csl-entry" role="listitem">
+Mao, X. (2007). <em>Stochastic Differential Equations and Applications</em> (2.ª ed.). Horwood Publishing.
+</div>
+<div id="ref-milstein1995numerical" class="csl-entry" role="listitem">
+Milstein, G. N. (1995). <em>Numerical Integration of Stochastic Differential Equations</em> (Vol. 313). Kluwer Academic Publishers. <a href="https://doi.org/10.1007/978-94-015-8455-5">https://doi.org/10.1007/978-94-015-8455-5</a>
+</div>
+<div id="ref-mohammed1984stochastic" class="csl-entry" role="listitem">
+Mohammed, S.-E. A. (1984). <em>Stochastic Functional Differential Equations</em>. <em>99</em>.
+</div>
+<div id="ref-monteith1977climate" class="csl-entry" role="listitem">
+Monteith, J. L., &amp; Moss, C. J. (1977). Climate and the efficiency of crop production in Britain. <em>Philosophical Transactions of the Royal Society B: Biological Sciences</em>, <em>281</em>(980), 277-294. <a href="https://doi.org/10.1098/rstb.1977.0140">https://doi.org/10.1098/rstb.1977.0140</a>
+</div>
+<div id="ref-oksendal2003stochastic" class="csl-entry" role="listitem">
+Øksendal, B. (2003). <em>Stochastic Differential Equations: An Introduction with Applications</em> (6.ª ed.). Springer. <a href="https://doi.org/10.1007/978-3-642-14394-6">https://doi.org/10.1007/978-3-642-14394-6</a>
+</div>
+<div id="ref-platen1999introduction" class="csl-entry" role="listitem">
+Platen, E. (1999). An introduction to numerical methods for stochastic differential equations. <em>Acta Numerica</em>, <em>8</em>, 197-246. <a href="https://doi.org/10.1017/S0962492900002941">https://doi.org/10.1017/S0962492900002941</a>
+</div>
+<div id="ref-revuz1999continuous" class="csl-entry" role="listitem">
+Revuz, D., &amp; Yor, M. (1999). <em>Continuous Martingales and Brownian Motion</em> (3.ª ed., Vol. 293). Springer.
+</div>
+<div id="ref-shoji1998estimation" class="csl-entry" role="listitem">
+Shoji, I., &amp; Ozaki, T. (1998). Estimation for nonlinear stochastic differential equations by a local linearization method. <em>Stochastic Analysis and Applications</em>, <em>16</em>(4), 733-752. <a href="https://doi.org/10.1080/07362999808809559">https://doi.org/10.1080/07362999808809559</a>
+</div>
+<div id="ref-taiz2010plant" class="csl-entry" role="listitem">
+Taiz, L., &amp; Zeiger, E. (2010). <em>Plant Physiology</em> (5.ª ed.). Sinauer Associates.
+</div>
+<div id="ref-thomas2014stay" class="csl-entry" role="listitem">
+Thomas, H., &amp; Ougham, H. (2014). The stay-green trait. <em>Journal of Experimental Botany</em>, <em>65</em>(14), 3889-3900. <a href="https://doi.org/10.1093/jxb/eru033">https://doi.org/10.1093/jxb/eru033</a>
+</div>
+<div id="ref-volterra1931theorie" class="csl-entry" role="listitem">
+Volterra, V. (1931). <em>Théorie Mathématique de la Lutte pour la Vie</em>. Gauthier-Villars.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./capitulo_2.html" class="pagination-link" aria-label="Fundamentos Biológicos">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fundamentos Biológicos</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2025 Carlos Eduardo Chacón Rodríguez</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Hecho con <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
