@@ -1,5 +1,5 @@
 ---
-title: "Modelización Matemática de la Dinámica Fenológica de Vegetación mediante Ecuaciones Diferenciales Estocásticas con Retraso: Aplicación al Índice de Verdor GCC en Coliflor (Brassica oleracea) en Umeå, Suecia"
+title: "Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación"
 author:
   - name: Carlos Eduardo Chacón Rodríguez
     email: carlos.chacon78@unach.mx
@@ -13,4 +13,5 @@ format:
     toc: true
     number-sections: true
 ---
+# Modelización Matemática de la Dinámica Fenológica de Vegetación mediante Ecuaciones Diferenciales Estocásticas con Retraso: Aplicación al Índice de Verdor GCC en Coliflor (Brassica oleracea) en Umeå, Suecia
 # Fundamentos Matemáticos

@@ -44,6 +44,7 @@ div.csl-indent {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -60,7 +61,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8d92b28bcbf54a71859971a1d8466b32.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-c81995cae7f3ba427185dd706eab1bea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -89,6 +90,12 @@ div.csl-indent {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -121,6 +128,10 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="3&nbsp; Formulación del Modelo Matemático – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta property="og:site_name" content="Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta name="twitter:title" content="3&nbsp; Formulación del Modelo Matemático – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -152,6 +163,7 @@ window.Quarto = {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/carlos-e-chacon/Linear-SDDE" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
     <a href="./Modelo-Estocástico-con-Retraso-para-la-Dinámica-Fenológica-de-Vegetación.pdf" title="Descargar PDF" class="quarto-navigation-tool px-1" aria-label="Descargar PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
@@ -166,7 +178,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelización Matemática de la Dinámica Fenológica de Vegetación mediante Ecuaciones Diferenciales Estocásticas con Retraso: Aplicación al Índice de Verdor GCC en Coliflor (Brassica oleracea) en Umeå, Suecia</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -223,7 +235,7 @@ window.Quarto = {
 <section id="motivación-y-contexto-teórico" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="motivación-y-contexto-teórico"><span class="header-section-number">3.1.1</span> Motivación y contexto teórico</h3>
 <p>Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema <span class="citation" data-cites="mao2007stochastic">(<a href="#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal <span class="citation" data-cites="mohammed1984stochastic">(<a href="#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>.</p>
-<p>La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales <span class="citation" data-cites="volterra1931theorie">(<a href="#ref-volterra1931theorie" role="doc-biblioref">Volterra, 1931</a>)</span>. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs <span class="citation" data-cites="ito1951stochastic">(<a href="#ref-ito1951stochastic" role="doc-biblioref">Itô, 1951</a>)</span>.</p>
+<p>La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales <span class="citation" data-cites="volterra1931theorie">(<a href="#ref-volterra1931theorie" role="doc-biblioref">Volterra, 1931</a>)</span>. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs <span class="citation" data-cites="ito1951stochastic">(<a href="#ref-ito1951stochastic" role="doc-biblioref">Itô, 1951</a>)</span>.</p>
 </section>
 <section id="definición-formal-del-modelo" class="level3" data-number="3.1.2">
 <h3 data-number="3.1.2" class="anchored" data-anchor-id="definición-formal-del-modelo"><span class="header-section-number">3.1.2</span> Definición formal del modelo</h3>
@@ -961,7 +973,7 @@ Volterra, V. (1931). <em>Théorie Mathématique de la Lutte pour la Vie</em>. Ga
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2025 Carlos Eduardo Chacón Rodríguez</p>
+<p>© 2026 Carlos Eduardo Chacón Rodríguez</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -12,7 +12,7 @@ format:
 
 Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema [@mao2007stochastic]. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal [@mohammed1984stochastic].
 
-La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales [@volterra1931theorie]. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs [@ito1951stochastic].
+La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales [@volterra1931theorie]. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs [@ito1951stochastic].
 
 ### Definición formal del modelo
 
@@ -187,9 +187,7 @@ Para discretizar esta ecuación, particionamos el intervalo temporal $[0, T]$ en
 El **esquema de Euler-Maruyama** para la SDDE (3.7) se define recursivamente como:
 
 $$
-\boxed{
 X_{n+1} = X_n + \mu(t_n, X_n, X_{n-k}) \Delta t + \sigma(t_n, X_n) \Delta W_n
-}
 \tag{3.8}
 $$
 

@@ -6,8 +6,17 @@ project:
   type: book
   output-dir: docs
 
+website:
+  reader-mode: true
+  search:
+    location: sidebar
+    type: overlay
+  comments:
+    hypothesis: true
+
 book:
   title: "Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación"
+  reader-mode: true
   favicon: figuras/unach.png
   cover-image: figuras/unach.png
   chapters:
@@ -20,23 +29,35 @@ book:
   sidebar:
     logo: figuras/unach.png
     search: true
-    style: "floating"
-    collapse-level: 1
-    pinned: true
-
+    style: floating
+    collapse-level: 2
+    border: true
+  
+  open-graph: true
+  twitter-card: true
+  repo-url: https://github.com/carlos-e-chacon/Linear-SDDE
+  repo-actions: [edit, issue, source]
+  page-navigation: true
   downloads: 
     - pdf
-
-  page-navigation: true
   page-footer:
-    left: "© 2025 Carlos Eduardo Chacón Rodríguez"
-    right: "Hecho con [Quarto](https://quarto.org)"
+    left: "Carlos Eduardo Chacón Rodríguez"
+
+comments:
+  hypothesis: true
 
 format:
   html:
-    theme: darkly
+    theme:
+      dark: darkly
+      light: cerulean
     toc: true
     toc-depth: 3
+    grid:
+      sidebar-width: 300px
+      body-width: 900px
+      margin-width: 300px
+      gutter-width: 1.5rem
     code-copy: true
     code-overflow: wrap
     smooth-scroll: true
@@ -45,9 +66,9 @@ format:
   
   pdf:  
     documentclass: book
-    include-in-header: latex/preamble.tex
-    include-before-body: latex/portada.tex
-    include-after-body: latex/hoja_final.tex
+    #include-in-header: latex/preamble.tex
+    #include-before-body: latex/portada.tex
+    #include-after-body: latex/hoja_final.tex
     titlepage: false
     toc: true
     number-sections: false
@@ -57,12 +78,12 @@ format:
     output-file: tesis_carlos_chacon
     dpi: 300
     fig-format: png
-    link-citations: true       # ← Activa enlaces en citas
+    link-citations: true
     urlcolor: blue 
 
 execute:
   enabled: true
-  engine: julia
+  engine: python
   echo: true       # Muestra el código fuente
   results: show    # Muestra los resultados formateados
   output: true     # Muestra la salida estándar
