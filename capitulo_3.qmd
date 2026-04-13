@@ -10,9 +10,11 @@ format:
 
 ### Motivación y contexto teórico
 
+::: {style="text-align: justify"}
 Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema [@mao2007stochastic]. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal [@mohammed1984stochastic].
 
 La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales [@volterra1931theorie]. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs [@ito1951stochastic].
+:::
 
 ### Definición formal del modelo
 
@@ -112,7 +114,7 @@ Por lo tanto, el modelo propuesto garantiza existencia y unicidad de soluciones 
 El término de deriva en la ecuación (4.1) puede descomponerse en cuatro componentes:
 
 $$
-\mu(t, X(t), X(t-\tau)) = \underbrace{\alpha}_{\text{Crecimiento basal}} + \underbrace{\beta X(t)}_{\text{Retroalimentación actual}} + \underbrace{\gamma X(t-\tau)}_{\text{Memoria fisiológica}} + \underbrace{\boldsymbol{\delta}^T \mathbf{C}(t)}_{\text{Forzantes climáticas}}
+\mu(t, X(t), X(t-\tau)) = \underbrace{\alpha}_{\begin{matrix} \text{Crecimiento} \\ \text{basal} \end{matrix}} + \underbrace{\beta X(t)}_{\begin{matrix}\text{Retroalimentación}\\ \text{actual}\end{matrix}} + \underbrace{\gamma X(t-\tau)}_{\begin{matrix}\text{Memoria} \\ \text{fisiológica}\end{matrix}} + \underbrace{\boldsymbol{\delta}^T \mathbf{C}(t)}_{\begin{matrix}\text{Forzantes} \\ \text{climáticas}\end{matrix}}
 \tag{4.6}
 $$
 
@@ -130,18 +132,18 @@ El término de difusión $\sigma X(t) \, dW(t)$ modela la variabilidad ambiental
 
 ### Solución formal y representación integral
 
-La solución de la SDDE (4.1) puede expresarse en forma integral utilizando el cálculo de Itô [@oksendal2003stochastic]:
+La solución de la SDDE (4.1) puede expresarse en forma integral utilizando el Cálculo de Itô [@oksendal2003stochastic]:
 
 $$
 X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymbol{\delta}^T \mathbf{C}(s) \right] ds + \sigma \int_0^t X(s) \, dW(s)
-\tag{4.7}
-$$
+\tag{4.7}\label{eq-integral_solution}
+$$ 
 
 Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica $\int_0^t X(s) \, dW(s)$ se interpreta en el sentido de Itô, lo cual implica que el integrando $X(s)$ es evaluado en el extremo izquierdo de cada subintervalo de partición [@ito1951stochastic].
 
 ### Momentos y propiedades estadísticas
 
-Aunque la solución exacta de la SDDE (4.1) no puede expresarse en forma cerrada debido al término de retraso, podemos derivar ecuaciones para sus momentos estadísticos. Tomando esperanza en ambos lados de (4.7) y utilizando que la esperanza de la integral de Itô es cero:
+Aunque la solución exacta de la SDDE (4.1) no puede expresarse en forma cerrada debido al término de retraso, podemos derivar ecuaciones para sus momentos estadísticos. Tomando esperanza en ambos lados de \ref{eq-integral_solution} y utilizando que la esperanza de la integral de Itô es cero:
 
 $$
 \mathbb{E}[X(t)] = X(0) + \int_0^t \left[ \alpha + \beta \mathbb{E}[X(s)] + \gamma \mathbb{E}[X(s-\tau)] + \boldsymbol{\delta}^T \mathbb{E}[\mathbf{C}(s)] \right] ds
@@ -199,9 +201,7 @@ donde:
 Para nuestro modelo específico con $\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)$ y $\sigma(t, x) = \sigma x$, el esquema se particulariza como:
 
 $$
-\boxed{
 X_{n+1} = X_n + \left[ \alpha + \beta X_n + \gamma X_{n-k} + \boldsymbol{\delta}^T \mathbf{C}_n \right] \Delta t + \sigma X_n \Delta W_n
-}
 \tag{3.9}
 $$
 
@@ -212,9 +212,7 @@ donde $\mathbf{C}_n = \mathbf{C}(t_n)$ representa el vector de forzantes climát
 En aplicaciones prácticas con datos observados, es conveniente reorganizar la ecuación (3.9) en términos del diferencial discreto $\Delta X_n = X_{n+1} - X_n$:
 
 $$
-\boxed{
-\Delta X_n = \alpha \Delta t + \beta X_n \Delta t + \gamma X_{n-k} \Delta t + \boldsymbol{\delta}^T \mathbf{C}_n \Delta t + \sigma X_n \Delta W_n
-}
+\Delta X_n = \alpha \Delta t + \beta X_n \Delta t + \gamma X_{n-k} \Delta t + \boldsymbol{\delta}^T \mathbf{C}_n \Delta t + \sigma X_n \Delta W_n 
 \tag{3.10}
 $$
 
@@ -282,9 +280,7 @@ $$
 **Teorema 3.3** (Condición de estabilidad MS para Euler-Maruyama). *El esquema (3.14) es estable en media cuadrática si y solo si*:
 
 $$
-\boxed{
 2\beta + \sigma^2 < 0
-}
 \tag{3.16}
 $$
 
@@ -343,5 +339,3 @@ En nuestra aplicación específica, el paso temporal de discretización es $\Del
 3. **Interpretación de parámetros**: Los parámetros estimados ($\alpha$, $\beta$, $\gamma$, $\boldsymbol{\delta}$, $\sigma$) están en escala diaria y deben interpretarse como tasas de cambio por día, no como tasas instantáneas [@campbell1997econometrics].
 
 4. **Consistencia dimensional**: Con $\Delta t = 1$, las ecuaciones (3.9) y (3.10) se simplifican al omitir explícitamente el factor $\Delta t$, lo que facilita la interpretación y la estimación de parámetros.
-
----
