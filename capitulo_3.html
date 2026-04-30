@@ -380,6 +380,8 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#modelo-sdde-en-tiempo-continuo" id="toc-modelo-sdde-en-tiempo-continuo" class="nav-link active" data-scroll-target="#modelo-sdde-en-tiempo-continuo"><span class="header-section-number">3.1</span> Modelo SDDE en tiempo continuo</a></li>
   <li><a href="#discretización-numérica-y-propiedades-del-esquema" id="toc-discretización-numérica-y-propiedades-del-esquema" class="nav-link" data-scroll-target="#discretización-numérica-y-propiedades-del-esquema"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</a></li>
+  <li><a href="#formulación-estadística-como-modelo-de-regresión" id="toc-formulación-estadística-como-modelo-de-regresión" class="nav-link" data-scroll-target="#formulación-estadística-como-modelo-de-regresión"><span class="header-section-number">3.3</span> Formulación Estadística como Modelo de Regresión</a></li>
+  <li><a href="#identificabilidad-y-estimación-de-parámetros" id="toc-identificabilidad-y-estimación-de-parámetros" class="nav-link" data-scroll-target="#identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.4</span> Identificabilidad y Estimación de Parámetros</a></li>
   </ul>
 <div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/capitulo_3.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/capitulo_3.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -420,9 +422,7 @@ window.Quarto = {
 <p>Consideremos un espacio de probabilidad filtrado <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)</span> que satisface las condiciones usuales de completitud y continuidad derecha <span class="citation" data-cites="revuz1999continuous">(<a href="bibliografia.html#ref-revuz1999continuous" role="doc-biblioref">Revuz &amp; Yor, 1999</a>)</span>. Sea <span class="math inline">\(W(t)\)</span> un proceso de Wiener estándar (movimiento browniano) adaptado a la filtración <span class="math inline">\(\{\mathcal{F}_t\}\)</span>.</p>
 <p>El modelo propuesto para la dinámica del índice de verdor GCC se define mediante la siguiente ecuación diferencial estocástica con retraso:</p>
 <p><span class="math display">\[
-\boxed{
 dX(t) = \left[ \alpha + \beta X(t) + \gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
-}
 \tag{4.1}
 \]</span></p>
 <p>donde las variables y parámetros se definen en el contexto biológico de la siguiente manera:</p>
@@ -666,6 +666,292 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 <li><p><strong>Interpretación de parámetros</strong>: Los parámetros estimados (<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\boldsymbol{\delta}\)</span>, <span class="math inline">\(\sigma\)</span>) están en escala diaria y deben interpretarse como tasas de cambio por día, no como tasas instantáneas <span class="citation" data-cites="campbell1997econometrics">(<a href="bibliografia.html#ref-campbell1997econometrics" role="doc-biblioref">Campbell et&nbsp;al., 1997</a>)</span>.</p></li>
 <li><p><strong>Consistencia dimensional</strong>: Con <span class="math inline">\(\Delta t = 1\)</span>, las ecuaciones (3.9) y (3.10) se simplifican al omitir explícitamente el factor <span class="math inline">\(\Delta t\)</span>, lo que facilita la interpretación y la estimación de parámetros.</p></li>
 </ol>
+</section>
+</section>
+<section id="formulación-estadística-como-modelo-de-regresión" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="formulación-estadística-como-modelo-de-regresión"><span class="header-section-number">3.3</span> Formulación Estadística como Modelo de Regresión</h2>
+<section id="motivación-y-contexto-estadístico" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="motivación-y-contexto-estadístico"><span class="header-section-number">3.3.1</span> Motivación y contexto estadístico</h3>
+<p>La discretización del modelo SDDE mediante el esquema de Euler-Maruyama, presentada en la sección 3.2, proporciona una aproximación numérica que facilita la transición desde un marco teórico continuo a un problema de inferencia estadística discreta <span class="citation" data-cites="shoji1998estimation">(<a href="bibliografia.html#ref-shoji1998estimation" role="doc-biblioref">Shoji &amp; Ozaki, 1998</a>)</span>. Esta formulación permite estimar los parámetros del modelo utilizando técnicas estándar de regresión lineal, lo cual es computacionalmente eficiente y estadísticamente bien fundamentado <span class="citation" data-cites="campbell1997econometrics">(<a href="bibliografia.html#ref-campbell1997econometrics" role="doc-biblioref">Campbell et&nbsp;al., 1997</a>)</span>.</p>
+<p>El enfoque de regresión lineal para modelos estocásticos discretizados ha sido ampliamente utilizado en finanzas, ecología y ciencias ambientales, donde la combinación de dinámica determinista y ruido estocástico es inherente a los sistemas naturales <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
+</section>
+<section id="modelo-de-regresión-lineal-derivado-del-sdde" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="modelo-de-regresión-lineal-derivado-del-sdde"><span class="header-section-number">3.3.2</span> Modelo de regresión lineal derivado del SDDE</h3>
+<p>Partiendo del esquema de Euler-Maruyama para nuestro modelo SDDE específico (ecuación 3.9), y considerando un paso temporal <span class="math inline">\(\Delta t = 1\)</span> día, podemos reorganizar la ecuación para expresar el cambio en el estado como una función lineal de las variables explicativas:</p>
+<p><span class="math display">\[
+\Delta X_n = \alpha + \beta X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
+\tag{3.19}
+\]</span></p>
+<p>donde: - <span class="math inline">\(\Delta X_n = X_{n+1} - X_n\)</span> es el cambio observado en el índice GCC entre el día <span class="math inline">\(n\)</span> y <span class="math inline">\(n+1\)</span>, - <span class="math inline">\(X_n\)</span> es el valor del GCC en el día <span class="math inline">\(n\)</span>, - <span class="math inline">\(X_{n-k}\)</span> es el valor del GCC en el día <span class="math inline">\(n-k\)</span>, donde <span class="math inline">\(k = \tau\)</span> representa el número de días de retraso, - <span class="math inline">\(\text{Rad}_n\)</span>, <span class="math inline">\(\text{Temp}_n\)</span>, <span class="math inline">\(\text{Prec}_n\)</span> son las variables climáticas observadas en el día <span class="math inline">\(n\)</span>, - <span class="math inline">\(\epsilon_n = \sigma X_n \Delta W_n\)</span> es el término de error estocástico.</p>
+<p>Esta formulación constituye un <strong>modelo de regresión lineal múltiple</strong> donde la variable dependiente es <span class="math inline">\(\Delta X_n\)</span> y las variables independientes son <span class="math inline">\(X_n\)</span>, <span class="math inline">\(X_{n-k}\)</span>, y las tres variables climáticas.</p>
+</section>
+<section id="notación-matricial-y-vector-de-parámetros" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="notación-matricial-y-vector-de-parámetros"><span class="header-section-number">3.3.3</span> Notación matricial y vector de parámetros</h3>
+<p>En notación matricial compacta, el modelo (3.19) se expresa como:</p>
+<p><span class="math display">\[
+\mathbf{Y} = \mathbf{X} \boldsymbol{\theta} + \boldsymbol{\epsilon}
+\tag{3.20}
+\]</span></p>
+<p>donde: - <span class="math inline">\(\mathbf{Y} \in \mathbb{R}^N\)</span> es el vector de observaciones de la variable dependiente (<span class="math inline">\(\Delta X_n\)</span>), - <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{N \times p}\)</span> es la matriz de diseño con <span class="math inline">\(p = 6\)</span> columnas, - <span class="math inline">\(\boldsymbol{\theta} \in \mathbb{R}^p\)</span> es el vector de parámetros desconocidos, - <span class="math inline">\(\boldsymbol{\epsilon} \in \mathbb{R}^N\)</span> es el vector de errores aleatorios.</p>
+<p>La matriz de diseño <span class="math inline">\(\mathbf{X}\)</span> tiene la siguiente estructura:</p>
+<p><span class="math display">\[
+\mathbf{X} =
+\begin{bmatrix}
+1 &amp; X_1 &amp; X_{1-k} &amp; \text{Rad}_1 &amp; \text{Temp}_1 &amp; \text{Prec}_1 \\
+1 &amp; X_2 &amp; X_{2-k} &amp; \text{Rad}_2 &amp; \text{Temp}_2 &amp; \text{Prec}_2 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; X_N &amp; X_{N-k} &amp; \text{Rad}_N &amp; \text{Temp}_N &amp; \text{Prec}_N
+\end{bmatrix}
+\tag{3.21}
+\]</span></p>
+<p>y el vector de parámetros es:</p>
+<p><span class="math display">\[
+\boldsymbol{\theta} =
+\begin{bmatrix}
+\alpha &amp; \beta &amp; \gamma &amp; \delta_1 &amp; \delta_2 &amp; \delta_3
+\end{bmatrix}^T
+\tag{3.22}
+\]</span></p>
+</section>
+<section id="relación-estructural-con-modelos-arp" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="relación-estructural-con-modelos-arp"><span class="header-section-number">3.3.4</span> Relación estructural con modelos AR(p)</h3>
+<p>El modelo de regresión (3.19) puede reinterpretarse como un modelo autorregresivo con estructura esparsa. Reorganizando la ecuación (3.19):</p>
+<p><span class="math display">\[
+X_{n+1} = \alpha + (1 + \beta) X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
+\tag{3.23}
+\]</span></p>
+<p>Comparando con un modelo AR(p) general:</p>
+<p><span class="math display">\[
+X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
+\tag{3.24}
+\]</span></p>
+<p>podemos establecer la siguiente correspondencia estructural:</p>
+<p><span class="math display">\[
+\phi_i =
+\begin{cases}
+1 + \beta &amp; \text{si } i = 1 \\
+\gamma &amp; \text{si } i = k \\
+0 &amp; \text{en otro caso}
+\end{cases}
+\tag{3.25}
+\]</span></p>
+<p>Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un <strong>modelo AR(p) con restricciones estructurales</strong>, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato (<span class="math inline">\(i=1\)</span>) y el correspondiente al retraso biológico (<span class="math inline">\(i=k=\tau\)</span>). Esta estructura esparsa reduce drásticamente la dimensionalidad del problema de <span class="math inline">\(p+1\)</span> parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema <span class="citation" data-cites="vapnik1998statistical">(<a href="bibliografia.html#ref-vapnik1998statistical" role="doc-biblioref">Vapnik, 1998</a>)</span>.</p>
+</section>
+<section id="supuestos-estadísticos-del-modelo" class="level3" data-number="3.3.5">
+<h3 data-number="3.3.5" class="anchored" data-anchor-id="supuestos-estadísticos-del-modelo"><span class="header-section-number">3.3.5</span> Supuestos estadísticos del modelo</h3>
+<p>Para que los estimadores de mínimos cuadrados ordinarios (OLS) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref"><strong>greene2018econometric?</strong></a>)</span>:</p>
+<section id="supuesto-1-linealidad-en-parámetros" class="level4" data-number="3.3.5.1">
+<h4 data-number="3.3.5.1" class="anchored" data-anchor-id="supuesto-1-linealidad-en-parámetros"><span class="header-section-number">3.3.5.1</span> Supuesto 1: Linealidad en parámetros</h4>
+<p>El modelo es lineal en los parámetros <span class="math inline">\(\boldsymbol{\theta}\)</span>, lo cual se satisface por construcción.</p>
+</section>
+<section id="supuesto-2-rango-completo-de-la-matriz-de-diseño" class="level4" data-number="3.3.5.2">
+<h4 data-number="3.3.5.2" class="anchored" data-anchor-id="supuesto-2-rango-completo-de-la-matriz-de-diseño"><span class="header-section-number">3.3.5.2</span> Supuesto 2: Rango completo de la matriz de diseño</h4>
+<p>La matriz <span class="math inline">\(\mathbf{X}\)</span> tiene rango completo (<span class="math inline">\(\text{rank}(\mathbf{X}) = p\)</span>), lo que garantiza que <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> sea invertible. Este supuesto requiere que no exista multicolinealidad perfecta entre las variables explicativas.</p>
+</section>
+<section id="supuesto-3-esperanza-condicional-nula" class="level4" data-number="3.3.5.3">
+<h4 data-number="3.3.5.3" class="anchored" data-anchor-id="supuesto-3-esperanza-condicional-nula"><span class="header-section-number">3.3.5.3</span> Supuesto 3: Esperanza condicional nula</h4>
+<p><span class="math display">\[
+\mathbb{E}[\epsilon_n | \mathbf{X}] = 0
+\tag{3.26}
+\]</span> Este supuesto implica que los errores no están correlacionados con las variables explicativas, lo cual es crucial para la insesgadez de los estimadores.</p>
+</section>
+<section id="supuesto-4-homocedasticidad-y-no-autocorrelación" class="level4" data-number="3.3.5.4">
+<h4 data-number="3.3.5.4" class="anchored" data-anchor-id="supuesto-4-homocedasticidad-y-no-autocorrelación"><span class="header-section-number">3.3.5.4</span> Supuesto 4: Homocedasticidad y no autocorrelación</h4>
+<p><span class="math display">\[
+\text{Var}(\boldsymbol{\epsilon} | \mathbf{X}) = \sigma^2 \mathbf{I}_N
+\tag{3.27}
+\]</span> donde <span class="math inline">\(\mathbf{I}_N\)</span> es la matriz identidad de dimensión <span class="math inline">\(N\)</span>. Este supuesto implica que los errores tienen varianza constante y no están autocorrelacionados.</p>
+</section>
+<section id="supuesto-5-normalidad-de-los-errores-para-inferencia-exacta" class="level4" data-number="3.3.5.5">
+<h4 data-number="3.3.5.5" class="anchored" data-anchor-id="supuesto-5-normalidad-de-los-errores-para-inferencia-exacta"><span class="header-section-number">3.3.5.5</span> Supuesto 5: Normalidad de los errores (para inferencia exacta)</h4>
+<p><span class="math display">\[
+\boldsymbol{\epsilon} | \mathbf{X} \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_N)
+\tag{3.28}
+\]</span> Este supuesto es necesario para realizar pruebas de hipótesis y construir intervalos de confianza exactos, aunque no es requerido para la consistencia de los estimadores.</p>
+</section>
+</section>
+<section id="estimación-de-parámetros-por-mínimos-cuadrados-ordinarios" class="level3" data-number="3.3.6">
+<h3 data-number="3.3.6" class="anchored" data-anchor-id="estimación-de-parámetros-por-mínimos-cuadrados-ordinarios"><span class="header-section-number">3.3.6</span> Estimación de parámetros por mínimos cuadrados ordinarios</h3>
+<p>Bajo los supuestos anteriores, el estimador de mínimos cuadrados ordinarios (OLS) de <span class="math inline">\(\boldsymbol{\theta}\)</span> se define como:</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y}
+\tag{3.29}
+\]</span></p>
+<p>Este estimador tiene las siguientes propiedades fundamentales <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref"><strong>greene2018econometric?</strong></a>)</span>:</p>
+<ul>
+<li><strong>Insesgadez</strong>: <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></li>
+<li><strong>Consistencia</strong>: <span class="math inline">\(\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}\)</span> cuando <span class="math inline">\(N \to \infty\)</span></li>
+<li><strong>Eficiencia</strong>: Entre todos los estimadores lineales insesgados, <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> tiene la menor varianza (teorema de Gauss-Markov)</li>
+</ul>
+<p>La matriz de varianza-covarianza del estimador es:</p>
+<p><span class="math display">\[
+\text{Var}(\hat{\boldsymbol{\theta}}) = \sigma^2 (\mathbf{X}^T \mathbf{X})^{-1}
+\tag{3.30}
+\]</span></p>
+<p>donde <span class="math inline">\(\sigma^2\)</span> se estima mediante:</p>
+<p><span class="math display">\[
+\hat{\sigma}^2 = \frac{1}{N - p} \sum_{n=1}^N \hat{\epsilon}_n^2 = \frac{\|\mathbf{Y} - \mathbf{X} \hat{\boldsymbol{\theta}}\|^2}{N - p}
+\tag{3.31}
+\]</span></p>
+</section>
+<section id="identificabilidad-del-modelo" class="level3" data-number="3.3.7">
+<h3 data-number="3.3.7" class="anchored" data-anchor-id="identificabilidad-del-modelo"><span class="header-section-number">3.3.7</span> Identificabilidad del modelo</h3>
+<p>La <strong>identificabilidad</strong> de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados <span class="citation" data-cites="rothenberg1971identification">(<a href="bibliografia.html#ref-rothenberg1971identification" role="doc-biblioref"><strong>rothenberg1971identification?</strong></a>)</span>. Para nuestro modelo, la identificabilidad depende de dos factores principales:</p>
+<section id="identificabilidad-estructural" class="level4" data-number="3.3.7.1">
+<h4 data-number="3.3.7.1" class="anchored" data-anchor-id="identificabilidad-estructural"><span class="header-section-number">3.3.7.1</span> Identificabilidad estructural</h4>
+<p>El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de <span class="math inline">\(\boldsymbol{\theta}\)</span> producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.</p>
+</section>
+<section id="identificabilidad-práctica" class="level4" data-number="3.3.7.2">
+<h4 data-number="3.3.7.2" class="anchored" data-anchor-id="identificabilidad-práctica"><span class="header-section-number">3.3.7.2</span> Identificabilidad práctica</h4>
+<p>La identificabilidad práctica depende de la calidad y cantidad de los datos observados. Específicamente, se requiere que:</p>
+<ol type="1">
+<li>La matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> sea no singular (rango completo)</li>
+<li>Las variables climáticas no estén perfectamente colineales con los términos de retraso</li>
+<li>Exista suficiente variabilidad en los datos para distinguir los efectos individuales de cada parámetro</li>
+</ol>
+<p>En la práctica, la identificabilidad se evalúa mediante el <strong>factor de inflación de varianza (VIF)</strong> y el <strong>número de condición</strong> de la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span>. Un número de condición elevado (&gt; 1000) indica problemas de identificabilidad práctica debido a multicolinealidad <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref"><strong>belsley1980regression?</strong></a>)</span>.</p>
+</section>
+</section>
+<section id="incorporación-de-variables-exógenas-climáticas" class="level3" data-number="3.3.8">
+<h3 data-number="3.3.8" class="anchored" data-anchor-id="incorporación-de-variables-exógenas-climáticas"><span class="header-section-number">3.3.8</span> Incorporación de variables exógenas climáticas</h3>
+<p>La inclusión de variables climáticas exógenas en el modelo responde a dos objetivos fundamentales:</p>
+<ol type="1">
+<li><p><strong>Control de factores de confusión</strong>: Las variables climáticas pueden estar correlacionadas tanto con el estado actual del sistema como con su estado pasado, por lo que su inclusión evita sesgos en la estimación de los coeficientes de retroalimentación <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\gamma\)</span>.</p></li>
+<li><p><strong>Mejora de la capacidad predictiva</strong>: Las variables climáticas contienen información adicional sobre los forzantes ambientales que afectan directamente el crecimiento vegetal, lo que mejora la precisión de las predicciones del modelo.</p></li>
+</ol>
+<p>La especificación funcional lineal adoptada para las variables climáticas asume que sus efectos son aditivos y constantes en el tiempo. Esta suposición puede ser relajada en extensiones futuras del modelo mediante la inclusión de términos no lineales o interacciones <span class="citation" data-cites="hastie2009elements">(<a href="bibliografia.html#ref-hastie2009elements" role="doc-biblioref"><strong>hastie2009elements?</strong></a>)</span>.</p>
+</section>
+<section id="diagnóstico-de-supuestos-y-validación-del-modelo" class="level3" data-number="3.3.9">
+<h3 data-number="3.3.9" class="anchored" data-anchor-id="diagnóstico-de-supuestos-y-validación-del-modelo"><span class="header-section-number">3.3.9</span> Diagnóstico de supuestos y validación del modelo</h3>
+<p>La validez de las inferencias estadísticas basadas en el modelo de regresión depende de la verificación de los supuestos establecidos en la sección 3.3.5. Los principales métodos de diagnóstico incluyen:</p>
+<ul>
+<li><strong>Gráfico de residuos vs valores ajustados</strong>: Para detectar heterocedasticidad y no linealidad</li>
+<li><strong>Test de Durbin-Watson</strong>: Para detectar autocorrelación serial en los residuos</li>
+<li><strong>Test de Breusch-Pagan</strong>: Para detectar heterocedasticidad</li>
+<li><strong>QQ-plot de residuos</strong>: Para evaluar la normalidad de los errores</li>
+<li><strong>Análisis de influencia</strong>: Para identificar observaciones atípicas que puedan afectar desproporcionadamente los resultados</li>
+</ul>
+<p>Estos diagnósticos son esenciales para garantizar la robustez de las conclusiones derivadas del modelo y para identificar posibles violaciones de los supuestos que requieran modificaciones en la especificación del modelo <span class="citation" data-cites="fox2015applied">(<a href="bibliografia.html#ref-fox2015applied" role="doc-biblioref"><strong>fox2015applied?</strong></a>)</span>.</p>
+</section>
+</section>
+<section id="identificabilidad-y-estimación-de-parámetros" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.4</span> Identificabilidad y Estimación de Parámetros</h2>
+<section id="marco-teórico-de-identificabilidad" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="marco-teórico-de-identificabilidad"><span class="header-section-number">3.4.1</span> Marco teórico de identificabilidad</h3>
+<p>La <strong>identificabilidad</strong> constituye una propiedad fundamental en la inferencia estadística, ya que garantiza que los parámetros de un modelo puedan ser estimados de manera única a partir de los datos observados <span class="citation" data-cites="rothenberg1971identification">(<a href="bibliografia.html#ref-rothenberg1971identification" role="doc-biblioref"><strong>rothenberg1971identification?</strong></a>)</span>. En el contexto de modelos estocásticos discretizados como el nuestro, la identificabilidad se descompone en dos componentes complementarios: <strong>identificabilidad estructural</strong> e <strong>identificabilidad práctica</strong>.</p>
+<p>La identificabilidad estructural se refiere a la unicidad de la parametrización del modelo desde una perspectiva puramente matemática, independientemente de los datos disponibles. Por otro lado, la identificabilidad práctica depende de la calidad, cantidad y estructura de los datos observados, y determina si es posible estimar los parámetros con precisión finita <span class="citation" data-cites="bellman1970structural">(<a href="bibliografia.html#ref-bellman1970structural" role="doc-biblioref"><strong>bellman1970structural?</strong></a>)</span>.</p>
+</section>
+<section id="identificabilidad-estructural-del-modelo-sdde" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="identificabilidad-estructural-del-modelo-sdde"><span class="header-section-number">3.4.2</span> Identificabilidad estructural del modelo SDDE</h3>
+<p>Consideremos el modelo de regresión lineal derivado del SDDE (ecuación 3.19):</p>
+<p><span class="math display">\[
+\Delta X_n = \alpha + \beta X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
+\tag{3.32}
+\]</span></p>
+<p>El modelo es <strong>estructuralmente identificable</strong> si la aplicación <span class="math inline">\(\boldsymbol{\theta} \mapsto \mathbb{P}_{\boldsymbol{\theta}}\)</span> es inyectiva, donde <span class="math inline">\(\mathbb{P}_{\boldsymbol{\theta}}\)</span> denota la distribución de probabilidad de los datos bajo el parámetro <span class="math inline">\(\boldsymbol{\theta}\)</span> <span class="citation" data-cites="walter1982global">(<a href="bibliografia.html#ref-walter1982global" role="doc-biblioref"><strong>walter1982global?</strong></a>)</span>.</p>
+<p><strong>Teorema 3.4</strong> (Identificabilidad estructural). <em>El modelo (3.32) es estructuralmente identificable si y solo si las funciones <span class="math inline">\(X_n\)</span>, <span class="math inline">\(X_{n-k}\)</span>, <span class="math inline">\(\text{Rad}_n\)</span>, <span class="math inline">\(\text{Temp}_n\)</span>, y <span class="math inline">\(\text{Prec}_n\)</span> son linealmente independientes en el espacio de funciones generadas por el proceso estocástico</em>.</p>
+<p><em>Demostración</em>. La linealidad del modelo implica que si existen dos vectores de parámetros <span class="math inline">\(\boldsymbol{\theta}_1 \neq \boldsymbol{\theta}_2\)</span> tales que <span class="math inline">\(\mathbb{P}_{\boldsymbol{\theta}_1} = \mathbb{P}_{\boldsymbol{\theta}_2}\)</span>, entonces:</p>
+<p><span class="math display">\[
+(\boldsymbol{\theta}_1 - \boldsymbol{\theta}_2)^T \mathbf{x}_n = 0 \quad \text{casi seguramente para todo } n
+\tag{3.33}
+\]</span></p>
+<p>donde <span class="math inline">\(\mathbf{x}_n = [1, X_n, X_{n-k}, \text{Rad}_n, \text{Temp}_n, \text{Prec}_n]^T\)</span>. Esto ocurre si y solo si las componentes de <span class="math inline">\(\mathbf{x}_n\)</span> son linealmente dependientes, lo cual contradice la hipótesis del teorema. ∎</p>
+<p>En la práctica, la independencia lineal se satisface siempre que: 1. Las variables climáticas no son funciones deterministas del estado del sistema (<span class="math inline">\(X_n\)</span> o <span class="math inline">\(X_{n-k}\)</span>) 2. El retraso <span class="math inline">\(\tau\)</span> es tal que <span class="math inline">\(X_n\)</span> y <span class="math inline">\(X_{n-\tau}\)</span> no son perfectamente correlacionados 3. Existe suficiente variabilidad en los datos para distinguir los efectos individuales</p>
+</section>
+<section id="identificabilidad-práctica-y-condiciones-de-rango" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="identificabilidad-práctica-y-condiciones-de-rango"><span class="header-section-number">3.4.3</span> Identificabilidad práctica y condiciones de rango</h3>
+<p>La identificabilidad práctica se evalúa mediante el <strong>rango de la matriz de información de Fisher</strong> o, equivalentemente, el <strong>rango de la matriz de diseño</strong> <span class="math inline">\(\mathbf{X}\)</span> <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref"><strong>greene2018econometric?</strong></a>)</span>.</p>
+<p><strong>Definición 3.2</strong> (Condición de rango completo). <em>El modelo es prácticamente identificable si la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> es no singular, es decir, si <span class="math inline">\(\text{rank}(\mathbf{X}) = p = 6\)</span></em>.</p>
+<p>Esta condición es equivalente a requerir que el <strong>determinante de Gram</strong> sea no nulo:</p>
+<p><span class="math display">\[
+\det(\mathbf{X}^T \mathbf{X}) &gt; 0
+\tag{3.34}
+\]</span></p>
+<p>En términos geométricos, esto significa que los vectores columna de <span class="math inline">\(\mathbf{X}\)</span> son linealmente independientes en <span class="math inline">\(\mathbb{R}^N\)</span>.</p>
+<p><strong>Proposición 3.1</strong> (Condiciones suficientes para identificabilidad práctica). <em>El modelo (3.32) es prácticamente identificable si:</em></p>
+<ol type="1">
+<li><em><span class="math inline">\(N &gt; p\)</span> (más observaciones que parámetros)</em></li>
+<li><em>No existe multicolinealidad perfecta entre las variables explicativas</em></li>
+<li><em>Las variables climáticas presentan variabilidad suficiente y no están perfectamente correlacionadas con los términos de estado</em></li>
+</ol>
+<p>La violación de estas condiciones conduce a problemas de <strong>multicolinealidad</strong>, que se manifiestan en varianzas infladas de los estimadores y dificultades numéricas en la inversión de <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref"><strong>belsley1980regression?</strong></a>)</span>.</p>
+</section>
+<section id="estimación-por-mínimos-cuadrados-ordinarios-ols" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="estimación-por-mínimos-cuadrados-ordinarios-ols"><span class="header-section-number">3.4.4</span> Estimación por mínimos cuadrados ordinarios (OLS)</h3>
+<p>Bajo las condiciones de identificabilidad establecidas, el estimador de mínimos cuadrados ordinarios (OLS) se define como la solución al problema de optimización:</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\theta}} = \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^p} \|\mathbf{Y} - \mathbf{X} \boldsymbol{\theta}\|^2
+\tag{3.35}
+\]</span></p>
+<p>La solución analítica a este problema viene dada por la ecuación normal:</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y}
+\tag{3.36}
+\]</span></p>
+<p>Este estimador posee propiedades óptimas bajo los supuestos del modelo lineal clásico:</p>
+<ul>
+<li><strong>Insesgadez</strong>: <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></li>
+<li><strong>Consistencia</strong>: <span class="math inline">\(\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}\)</span> cuando <span class="math inline">\(N \to \infty\)</span></li>
+<li><strong>Eficiencia</strong>: <span class="math inline">\(\text{Var}(\hat{\boldsymbol{\theta}}) \leq \text{Var}(\tilde{\boldsymbol{\theta}})\)</span> para cualquier otro estimador lineal insesgado <span class="math inline">\(\tilde{\boldsymbol{\theta}}\)</span> (teorema de Gauss-Markov)</li>
+</ul>
+<p>La matriz de varianza-covarianza del estimador es:</p>
+<p><span class="math display">\[
+\text{Var}(\hat{\boldsymbol{\theta}}) = \sigma^2 (\mathbf{X}^T \mathbf{X})^{-1}
+\tag{3.37}
+\]</span></p>
+<p>donde <span class="math inline">\(\sigma^2 = \text{Var}(\epsilon_n)\)</span> es la varianza del error.</p>
+</section>
+<section id="estimación-de-la-varianza-del-error" class="level3" data-number="3.4.5">
+<h3 data-number="3.4.5" class="anchored" data-anchor-id="estimación-de-la-varianza-del-error"><span class="header-section-number">3.4.5</span> Estimación de la varianza del error</h3>
+<p>La varianza del error <span class="math inline">\(\sigma^2\)</span> se estima mediante el estimador insesgado:</p>
+<p><span class="math display">\[
+\hat{\sigma}^2 = \frac{1}{N - p} \sum_{n=1}^N \hat{\epsilon}_n^2 = \frac{\|\mathbf{Y} - \mathbf{X} \hat{\boldsymbol{\theta}}\|^2}{N - p}
+\tag{3.38}
+\]</span></p>
+<p>donde <span class="math inline">\(\hat{\epsilon}_n = Y_n - \mathbf{x}_n^T \hat{\boldsymbol{\theta}}\)</span> son los residuos estimados.</p>
+<p>Este estimador es insesgado bajo el supuesto de homocedasticidad y tiene la propiedad de que <span class="math inline">\((N - p) \hat{\sigma}^2 / \sigma^2 \sim \chi^2_{N - p}\)</span> bajo normalidad de los errores <span class="citation" data-cites="casella2002statistical">(<a href="bibliografia.html#ref-casella2002statistical" role="doc-biblioref"><strong>casella2002statistical?</strong></a>)</span>.</p>
+</section>
+<section id="relación-con-la-intensidad-del-ruido-estocástico" class="level3" data-number="3.4.6">
+<h3 data-number="3.4.6" class="anchored" data-anchor-id="relación-con-la-intensidad-del-ruido-estocástico"><span class="header-section-number">3.4.6</span> Relación con la intensidad del ruido estocástico</h3>
+<p>En el contexto del modelo SDDE original, la varianza del error <span class="math inline">\(\sigma^2\)</span> está relacionada con la intensidad del ruido estocástico <span class="math inline">\(\sigma_{\text{SDDE}}\)</span> del proceso continuo. Recordando que el término de error en la discretización es <span class="math inline">\(\epsilon_n = \sigma_{\text{SDDE}} X_n \Delta W_n\)</span>, y que <span class="math inline">\(\Delta W_n \sim \mathcal{N}(0, \Delta t)\)</span>, tenemos:</p>
+<p><span class="math display">\[
+\text{Var}(\epsilon_n | X_n) = \sigma_{\text{SDDE}}^2 X_n^2 \Delta t
+\tag{3.39}
+\]</span></p>
+<p>Sin embargo, en nuestra formulación de regresión asumimos homocedasticidad (<span class="math inline">\(\text{Var}(\epsilon_n) = \sigma^2\)</span>), lo cual constituye una aproximación válida cuando la variabilidad relativa de <span class="math inline">\(X_n\)</span> es pequeña o cuando se trabaja con tasas de crecimiento relativas en lugar de absolutas <span class="citation" data-cites="shoji1998estimation">(<a href="bibliografia.html#ref-shoji1998estimation" role="doc-biblioref">Shoji &amp; Ozaki, 1998</a>)</span>.</p>
+<p>Para recuperar una estimación de la intensidad del ruido del proceso continuo, podemos utilizar:</p>
+<p><span class="math display">\[
+\hat{\sigma}_{\text{SDDE}} = \sqrt{\frac{\hat{\sigma}^2}{\frac{1}{N} \sum_{n=1}^N X_n^2 \Delta t}}
+\tag{3.40}
+\]</span></p>
+<p>Esta estimación es consistente bajo condiciones regulares y permite interpretar el parámetro <span class="math inline">\(\sigma_{\text{SDDE}}\)</span> en términos del modelo continuo original.</p>
+</section>
+<section id="diagnóstico-de-identificabilidad-práctica" class="level3" data-number="3.4.7">
+<h3 data-number="3.4.7" class="anchored" data-anchor-id="diagnóstico-de-identificabilidad-práctica"><span class="header-section-number">3.4.7</span> Diagnóstico de identificabilidad práctica</h3>
+<p>La identificabilidad práctica se diagnostica mediante métricas numéricas que cuantifican el grado de multicolinealidad en la matriz de diseño:</p>
+<section id="factor-de-inflación-de-varianza-vif" class="level4" data-number="3.4.7.1">
+<h4 data-number="3.4.7.1" class="anchored" data-anchor-id="factor-de-inflación-de-varianza-vif"><span class="header-section-number">3.4.7.1</span> Factor de inflación de varianza (VIF)</h4>
+<p>Para cada variable explicativa <span class="math inline">\(j\)</span>, el VIF se define como:</p>
+<p><span class="math display">\[
+\text{VIF}_j = \frac{1}{1 - R_j^2}
+\tag{3.41}
+\]</span></p>
+<p>donde <span class="math inline">\(R_j^2\)</span> es el coeficiente de determinación obtenido al regresar la variable <span class="math inline">\(j\)</span> contra todas las demás variables explicativas. Valores de <span class="math inline">\(\text{VIF}_j &gt; 10\)</span> indican problemas severos de multicolinealidad <span class="citation" data-cites="marquardt1970generalized">(<a href="bibliografia.html#ref-marquardt1970generalized" role="doc-biblioref"><strong>marquardt1970generalized?</strong></a>)</span>.</p>
+</section>
+<section id="número-de-condición" class="level4" data-number="3.4.7.2">
+<h4 data-number="3.4.7.2" class="anchored" data-anchor-id="número-de-condición"><span class="header-section-number">3.4.7.2</span> Número de condición</h4>
+<p>El número de condición de la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> se define como:</p>
+<p><span class="math display">\[
+\kappa(\mathbf{X}^T \mathbf{X}) = \sqrt{\frac{\lambda_{\max}}{\lambda_{\min}}}
+\tag{3.42}
+\]</span></p>
+<p>donde <span class="math inline">\(\lambda_{\max}\)</span> y <span class="math inline">\(\lambda_{\min}\)</span> son los autovalores máximo y mínimo, respectivamente. Según <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref"><strong>belsley1980regression?</strong></a>)</span>:</p>
+<ul>
+<li><span class="math inline">\(\kappa &lt; 10\)</span>: Poca multicolinealidad</li>
+<li><span class="math inline">\(10 \leq \kappa &lt; 30\)</span>: Multicolinealidad moderada</li>
+<li><span class="math inline">\(\kappa \geq 30\)</span>: Multicolinealidad severa</li>
+</ul>
+<p>Estos diagnósticos son esenciales para evaluar la fiabilidad de las estimaciones de parámetros y para identificar posibles reformulaciones del modelo que mejoren su identificabilidad práctica.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
@@ -717,10 +1003,14 @@ Taiz, L., &amp; Zeiger, E. (2010). <em>Plant Physiology</em> (5.ª ed.). Sinauer
 <div id="ref-thomas2014stay" class="csl-entry" role="listitem">
 Thomas, H., &amp; Ougham, H. (2014). The stay-green trait. <em>Journal of Experimental Botany</em>, <em>65</em>(14), 3889-3900. <a href="https://doi.org/10.1093/jxb/eru033">https://doi.org/10.1093/jxb/eru033</a>
 </div>
+<div id="ref-vapnik1998statistical" class="csl-entry" role="listitem">
+Vapnik, V. N. (1998). <em>Statistical Learning Theory</em>.
+</div>
 <div id="ref-volterra1931theorie" class="csl-entry" role="listitem">
 Volterra, V. (1931). <em>Théorie Mathématique de la Lutte pour la Vie</em>. Gauthier-Villars.
 </div>
 </div>
+</section>
 </section>
 </section>
 
