@@ -51,7 +51,7 @@ format:
   html:
     theme:
       dark: darkly
-      light: cerulean
+      light: cosmo
     toc: true
     toc-depth: 3
     grid:
