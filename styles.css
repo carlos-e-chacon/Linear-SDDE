@@ -53,3 +53,13 @@
     font-weight: 600;
     letter-spacing: 0.5px;
   }
+p {
+    text-align: justify;
+    text-justify: inter-word; /* Mejora el espaciado entre palabras */
+    hyphens: auto;           /* Divide palabras largas con guiones para evitar huecos */
+}
+
+/* Opcional: Justificar también las listas si lo deseas */
+ul, ol {
+    text-align: justify;
+}

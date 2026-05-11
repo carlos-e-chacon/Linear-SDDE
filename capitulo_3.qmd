@@ -5,6 +5,7 @@ format:
     toc: true
     toc-depth: 2
     number-sections: true
+    css: styles.css
 ---
 ## Modelo SDDE en tiempo continuo
 
