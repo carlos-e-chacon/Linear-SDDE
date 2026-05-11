@@ -7,12 +7,6 @@
     color: #33ccff;
   }
   
-  /* Mejora visual del sidebar */
-  .sidebar {
-    background-color: #222 !important;
-    border-right: 1px solid #444;
-  }
-  
   /* Color activo del capítulo actual */
   .sidebar-item.active {
     background-color: #117a8b !important;
