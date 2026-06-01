@@ -412,10 +412,8 @@ window.Quarto = {
 <h2 data-number="3.1" class="anchored" data-anchor-id="modelo-sdde-en-tiempo-continuo"><span class="header-section-number">3.1</span> Modelo SDDE en tiempo continuo</h2>
 <section id="motivación-y-contexto-teórico" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="motivación-y-contexto-teórico"><span class="header-section-number">3.1.1</span> Motivación y contexto teórico</h3>
-<div style="text-align: justify">
 <p>Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal <span class="citation" data-cites="mohammed1984stochastic">(<a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>.</p>
 <p>La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales <span class="citation" data-cites="volterra1931theorie">(<a href="bibliografia.html#ref-volterra1931theorie" role="doc-biblioref">Volterra, 1931</a>)</span>. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs <span class="citation" data-cites="ito1951stochastic">(<a href="bibliografia.html#ref-ito1951stochastic" role="doc-biblioref">Itô, 1951</a>)</span>.</p>
-</div>
 </section>
 <section id="definición-formal-del-modelo" class="level3" data-number="3.1.2">
 <h3 data-number="3.1.2" class="anchored" data-anchor-id="definición-formal-del-modelo"><span class="header-section-number">3.1.2</span> Definición formal del modelo</h3>
@@ -455,25 +453,8 @@ X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
 </section>
 <section id="propiedades-matemáticas-fundamentales" class="level3" data-number="3.1.4">
 <h3 data-number="3.1.4" class="anchored" data-anchor-id="propiedades-matemáticas-fundamentales"><span class="header-section-number">3.1.4</span> Propiedades matemáticas fundamentales</h3>
-<section id="existencia-y-unicidad-de-soluciones" class="level4" data-number="3.1.4.1">
-<h4 data-number="3.1.4.1" class="anchored" data-anchor-id="existencia-y-unicidad-de-soluciones"><span class="header-section-number">3.1.4.1</span> Existencia y unicidad de soluciones</h4>
-<p>Para garantizar la existencia y unicidad de soluciones a la SDDE (3.1), imponemos las siguientes condiciones estándar sobre los coeficientes <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>:</p>
-<p><strong>Condición de Lipschitz global</strong>: Existe una constante <span class="math inline">\(K &gt; 0\)</span> tal que para todo <span class="math inline">\(x_1, x_2, y_1, y_2 \in \mathbb{R}\)</span> y <span class="math inline">\(t \geq 0\)</span>:</p>
-<p><span class="math display">\[
-|\mu(t, x_1, y_1) - \mu(t, x_2, y_2)| + |\sigma(t, x_1) - \sigma(t, x_2)| \leq K(|x_1 - x_2| + |y_1 - y_2|)
-\tag{3.4}
-\]</span></p>
-<p>donde <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> es la función de deriva y <span class="math inline">\(\sigma(t, x) = \sigma x\)</span> es la función de difusión.</p>
-<p><strong>Condición de crecimiento lineal</strong>: Existe una constante <span class="math inline">\(C &gt; 0\)</span> tal que para todo <span class="math inline">\(x, y \in \mathbb{R}\)</span> y <span class="math inline">\(t \geq 0\)</span>:</p>
-<p><span class="math display">\[
-|\mu(t, x, y)|^2 + |\sigma(t, x)|^2 \leq C(1 + |x|^2 + |y|^2)
-\tag{3.5}
-\]</span></p>
-<p><strong>Teorema 3.1</strong> (Existencia y unicidad). <em>Bajo las condiciones (3.4) y (3.5), y dado un historial inicial <span class="math inline">\(\phi \in C([-\tau, 0], \mathbb{R}^+)\)</span>, existe una única solución global <span class="math inline">\(X(t)\)</span> para todo <span class="math inline">\(t \geq 0\)</span> que satisface la SDDE (3.1) y la condición inicial (3.2).</em></p>
-<p><em>Demostración</em>: Ver <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>, Teorema 6.2, o Anexo D para una demostración detallada adaptada a nuestro modelo específico.</p>
-</section>
-<section id="verificación-para-el-modelo-propuesto" class="level4" data-number="3.1.4.2">
-<h4 data-number="3.1.4.2" class="anchored" data-anchor-id="verificación-para-el-modelo-propuesto"><span class="header-section-number">3.1.4.2</span> Verificación para el modelo propuesto</h4>
+<section id="verificación-para-el-modelo-propuesto" class="level4" data-number="3.1.4.1">
+<h4 data-number="3.1.4.1" class="anchored" data-anchor-id="verificación-para-el-modelo-propuesto"><span class="header-section-number">3.1.4.1</span> Verificación para el modelo propuesto</h4>
 <p>Para nuestro modelo específico, verificamos las condiciones anteriores:</p>
 <ol type="1">
 <li><p><strong>Lipschitz</strong>: La función <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> es lineal en <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, por lo tanto satisface la condición de Lipschitz con constante <span class="math inline">\(K = \max(|\beta|, |\gamma|)\)</span>.</p></li>
@@ -512,22 +493,8 @@ X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymb
 \]</span></p>
 <p>Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica <span class="math inline">\(\int_0^t X(s) \, dW(s)\)</span> se interpreta en el sentido de Itô, lo cual implica que el integrando <span class="math inline">\(X(s)\)</span> es evaluado en el extremo izquierdo de cada subintervalo de partición <span class="citation" data-cites="ito1951stochastic">(<a href="bibliografia.html#ref-ito1951stochastic" role="doc-biblioref">Itô, 1951</a>)</span>.</p>
 </section>
-<section id="momentos-y-propiedades-estadísticas" class="level3" data-number="3.1.7">
-<h3 data-number="3.1.7" class="anchored" data-anchor-id="momentos-y-propiedades-estadísticas"><span class="header-section-number">3.1.7</span> Momentos y propiedades estadísticas</h3>
-<p>Aunque la solución exacta de la SDDE (3.1) no puede expresarse en forma cerrada debido al término de retraso, podemos derivar ecuaciones para sus momentos estadísticos. Tomando esperanza en ambos lados de <span class="math inline">\(\ref{eq-integral_solution}\)</span> y utilizando que la esperanza de la integral de Itô es cero:</p>
-<p><span class="math display">\[
-\mathbb{E}[X(t)] = X(0) + \int_0^t \left[ \alpha + \beta \mathbb{E}[X(s)] + \gamma \mathbb{E}[X(s-\tau)] + \boldsymbol{\delta}^T \mathbb{E}[\mathbf{C}(s)] \right] ds
-\tag{3.8}
-\]</span></p>
-<p>Diferenciando respecto a <span class="math inline">\(t\)</span> obtenemos una ecuación diferencial funcional determinista para la media:</p>
-<p><span class="math display">\[
-\frac{d}{dt} \mathbb{E}[X(t)] = \alpha + \beta \mathbb{E}[X(t)] + \gamma \mathbb{E}[X(t-\tau)] + \boldsymbol{\delta}^T \mathbb{E}[\mathbf{C}(t)]
-\tag{3.9}
-\]</span></p>
-<p>Esta ecuación revela que la dinámica de la media del proceso estocástico sigue una DDE determinista con la misma estructura de retraso que el modelo original <span class="citation" data-cites="mohammed1984stochastic">(<a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>.</p>
-</section>
-<section id="consideraciones-sobre-la-positividad-del-modelo" class="level3" data-number="3.1.8">
-<h3 data-number="3.1.8" class="anchored" data-anchor-id="consideraciones-sobre-la-positividad-del-modelo"><span class="header-section-number">3.1.8</span> Consideraciones sobre la positividad del modelo</h3>
+<section id="consideraciones-sobre-la-positividad-del-modelo" class="level3" data-number="3.1.7">
+<h3 data-number="3.1.7" class="anchored" data-anchor-id="consideraciones-sobre-la-positividad-del-modelo"><span class="header-section-number">3.1.7</span> Consideraciones sobre la positividad del modelo</h3>
 <p>Dado que <span class="math inline">\(X(t)\)</span> representa el índice de verdor GCC, que físicamente debe ser no negativo (<span class="math inline">\(X(t) \geq 0\)</span>), es crucial verificar que el modelo preserve esta propiedad. Para SDEs con coeficientes lineales como la nuestra, se puede demostrar que si la condición inicial satisface <span class="math inline">\(\phi(t) \geq 0\)</span> para todo <span class="math inline">\(t \in [-\tau, 0]\)</span>, entonces <span class="math inline">\(X(t) \geq 0\)</span> casi seguramente para todo <span class="math inline">\(t \geq 0\)</span> <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
 <p>Esta propiedad de positividad es esencial para la interpretación biológica del modelo y garantiza que las simulaciones numéricas produzcan resultados físicamente realistas.</p>
 </section>
@@ -539,52 +506,24 @@ X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymb
 <p>La resolución analítica de ecuaciones diferenciales estocásticas con retraso (SDDE) es generalmente imposible debido a la naturaleza no markoviana del proceso y la dependencia funcional del pasado <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>. Por lo tanto, es necesario recurrir a métodos numéricos de discretización para obtener soluciones aproximadas que permitan tanto el análisis teórico como la implementación computacional <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
 <p>El esquema de Euler-Maruyama representa el método más fundamental y ampliamente utilizado para la discretización de SDEs y SDDEs, debido a su simplicidad conceptual, facilidad de implementación y propiedades de convergencia bien establecidas <span class="citation" data-cites="platen1999introduction">(<a href="bibliografia.html#ref-platen1999introduction" role="doc-biblioref">Platen, 1999</a>)</span>.</p>
 </section>
-<section id="esquema-de-euler-maruyama-para-sdde" class="level3" data-number="3.2.2">
-<h3 data-number="3.2.2" class="anchored" data-anchor-id="esquema-de-euler-maruyama-para-sdde"><span class="header-section-number">3.2.2</span> Esquema de Euler-Maruyama para SDDE</h3>
-<p>Consideremos la SDDE definida en la sección 3.1:</p>
-<p><span class="math display">\[
-dX(t) = \mu(t, X(t), X(t-\tau)) \, dt + \sigma(t, X(t)) \, dW(t), \quad t \geq 0
-\tag{3.1}
-\]</span></p>
-<p>donde <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> y <span class="math inline">\(\sigma(t, x) = \sigma x\)</span>.</p>
-<p>Para discretizar esta ecuación, particionamos el intervalo temporal <span class="math inline">\([0, T]\)</span> en <span class="math inline">\(N\)</span> subintervalos de igual longitud <span class="math inline">\(\Delta t = T/N\)</span>, definiendo los puntos de malla <span class="math inline">\(t_n = n \Delta t\)</span> para <span class="math inline">\(n = 0, 1, \dots, N\)</span>. Denotamos <span class="math inline">\(X_n \approx X(t_n)\)</span> como la aproximación numérica del proceso en el tiempo <span class="math inline">\(t_n\)</span>.</p>
-<p>El <strong>esquema de Euler-Maruyama</strong> para la SDDE (3.1) se define recursivamente como:</p>
-<p><span class="math display">\[
-X_{n+1} = X_n + \mu(t_n, X_n, X_{n-k}) \Delta t + \sigma(t_n, X_n) \Delta W_n
-\]</span></p>
-<p>donde: - <span class="math inline">\(k = \tau / \Delta t\)</span> es el número de pasos de retraso (asumiendo que <span class="math inline">\(\tau\)</span> es múltiplo entero de <span class="math inline">\(\Delta t\)</span>), - <span class="math inline">\(\Delta W_n = W(t_{n+1}) - W(t_n) \sim \mathcal{N}(0, \Delta t)\)</span> es el incremento del proceso de Wiener, - <span class="math inline">\(X_{n-k} \approx X(t_n - \tau)\)</span> es la aproximación del estado retardado.</p>
-<p>Para nuestro modelo específico con <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> y <span class="math inline">\(\sigma(t, x) = \sigma x\)</span>, el esquema se particulariza como:</p>
-<p><span class="math display">\[
-X_{n+1} = X_n + \left[ \alpha + \beta X_n + \gamma X_{n-k} + \boldsymbol{\delta}^T \mathbf{C}_n \right] \Delta t + \sigma X_n \Delta W_n
-\tag{3.10}
-\]</span></p>
-<p>donde <span class="math inline">\(\mathbf{C}_n = \mathbf{C}(t_n)\)</span> representa el vector de forzantes climáticas en el tiempo discreto <span class="math inline">\(t_n\)</span>.</p>
+<section id="aquí-irá-el-código" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="aquí-irá-el-código"><span class="header-section-number">3.2.2</span> (Aquí irá el código)</h3>
 </section>
-<section id="representación-alternativa-en-diferencias" class="level3" data-number="3.2.3">
-<h3 data-number="3.2.3" class="anchored" data-anchor-id="representación-alternativa-en-diferencias"><span class="header-section-number">3.2.3</span> Representación alternativa en diferencias</h3>
-<p>En aplicaciones prácticas con datos observados, es conveniente reorganizar la ecuación (3.10) en términos del diferencial discreto <span class="math inline">\(\Delta X_n = X_{n+1} - X_n\)</span>:</p>
-<p><span class="math display">\[
-\Delta X_n = \alpha \Delta t + \beta X_n \Delta t + \gamma X_{n-k} \Delta t + \boldsymbol{\delta}^T \mathbf{C}_n \Delta t + \sigma X_n \Delta W_n
-\tag{3.11}
-\]</span></p>
-<p>Esta formulación es particularmente útil para la estimación de parámetros mediante métodos de regresión, ya que permite expresar el cambio en el estado como una función lineal de las variables explicativas <span class="citation" data-cites="shoji1998estimation">(<a href="bibliografia.html#ref-shoji1998estimation" role="doc-biblioref">Shoji &amp; Ozaki, 1998</a>)</span>.</p>
-</section>
-<section id="análisis-de-convergencia" class="level3" data-number="3.2.4">
-<h3 data-number="3.2.4" class="anchored" data-anchor-id="análisis-de-convergencia"><span class="header-section-number">3.2.4</span> Análisis de convergencia</h3>
+<section id="análisis-de-convergencia" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="análisis-de-convergencia"><span class="header-section-number">3.2.3</span> Análisis de convergencia</h3>
 <p>El análisis de convergencia de esquemas numéricos para SDEs y SDDEs distingue entre dos tipos fundamentales de convergencia: <strong>convergencia fuerte</strong> y <strong>convergencia débil</strong> <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
-<section id="convergencia-fuerte" class="level4" data-number="3.2.4.1">
-<h4 data-number="3.2.4.1" class="anchored" data-anchor-id="convergencia-fuerte"><span class="header-section-number">3.2.4.1</span> Convergencia fuerte</h4>
+<section id="convergencia-fuerte" class="level4" data-number="3.2.3.1">
+<h4 data-number="3.2.3.1" class="anchored" data-anchor-id="convergencia-fuerte"><span class="header-section-number">3.2.3.1</span> Convergencia fuerte</h4>
 <p>Un esquema numérico tiene <strong>convergencia fuerte de orden <span class="math inline">\(\gamma\)</span></strong> si existe una constante <span class="math inline">\(C &gt; 0\)</span> independiente de <span class="math inline">\(\Delta t\)</span> tal que:</p>
 <p><span class="math display">\[
 \mathbb{E}\left[ |X(T) - X_N| \right] \leq C (\Delta t)^\gamma
 \]</span></p>
 <p>donde <span class="math inline">\(X(T)\)</span> es la solución exacta en tiempo <span class="math inline">\(T\)</span> y <span class="math inline">\(X_N\)</span> es la aproximación numérica.</p>
 <p><strong>Teorema 3.1</strong> (Convergencia fuerte de Euler-Maruyama). <em>Bajo las condiciones de Lipschitz global y crecimiento lineal para <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma\)</span>, el esquema de Euler-Maruyama (3.10) tiene convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span></em> <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
-<p><em>Demostración</em>: Ver <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>, Teorema 10.2.2, o Anexo D para una demostración adaptada a SDDEs.</p>
 <p>Para nuestro modelo lineal específico, la condición de Lipschitz se satisface trivialmente, garantizando la convergencia fuerte de orden <span class="math inline">\(1/2\)</span>.</p>
 </section>
-<section id="convergencia-débil" class="level4" data-number="3.2.4.2">
-<h4 data-number="3.2.4.2" class="anchored" data-anchor-id="convergencia-débil"><span class="header-section-number">3.2.4.2</span> Convergencia débil</h4>
+<section id="convergencia-débil" class="level4" data-number="3.2.3.2">
+<h4 data-number="3.2.3.2" class="anchored" data-anchor-id="convergencia-débil"><span class="header-section-number">3.2.3.2</span> Convergencia débil</h4>
 <p>Un esquema numérico tiene <strong>convergencia débil de orden <span class="math inline">\(\beta\)</span></strong> si para toda función <span class="math inline">\(g \in C_P^{2(\beta+1)}(\mathbb{R}, \mathbb{R})\)</span> (funciones <span class="math inline">\(2(\beta+1)\)</span> veces continuamente diferenciables con derivadas polinomialmente acotadas), existe una constante <span class="math inline">\(C_g &gt; 0\)</span> tal que:</p>
 <p><span class="math display">\[
 \left| \mathbb{E}[g(X(T))] - \mathbb{E}[g(X_N)] \right| \leq C_g (\Delta t)^\beta
@@ -594,34 +533,8 @@ X_{n+1} = X_n + \left[ \alpha + \beta X_n + \gamma X_{n-k} + \boldsymbol{\delta}
 <p>Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, etc.) <span class="citation" data-cites="glasserman2003monte">(<a href="bibliografia.html#ref-glasserman2003monte" role="doc-biblioref">Glasserman, 2003</a>)</span>.</p>
 </section>
 </section>
-<section id="estabilidad-numérica" class="level3" data-number="3.2.5">
-<h3 data-number="3.2.5" class="anchored" data-anchor-id="estabilidad-numérica"><span class="header-section-number">3.2.5</span> Estabilidad numérica</h3>
-<p>La estabilidad numérica de un esquema de discretización se refiere a su capacidad para mantener acotadas las soluciones numéricas cuando las soluciones exactas son acotadas <span class="citation" data-cites="higham2001strong">(<a href="bibliografia.html#ref-higham2001strong" role="doc-biblioref">Higham et&nbsp;al., 2002</a>)</span>. Para el esquema de Euler-Maruyama aplicado a SDEs lineales, se pueden derivar condiciones explícitas de estabilidad.</p>
-<p>Consideremos el caso simplificado sin retraso (<span class="math inline">\(\gamma = 0\)</span>) y sin forzantes climáticas (<span class="math inline">\(\boldsymbol{\delta} = \mathbf{0}\)</span>):</p>
-<p><span class="math display">\[
-X_{n+1} = X_n + (\alpha + \beta X_n) \Delta t + \sigma X_n \Delta W_n
-\tag{3.13}
-\]</span></p>
-<p>Reorganizando términos:</p>
-<p><span class="math display">\[
-X_{n+1} = \left[ 1 + \beta \Delta t + \sigma \Delta W_n \right] X_n + \alpha \Delta t
-\tag{3.14}
-\]</span></p>
-<p><strong>Definición 3.1</strong> (Estabilidad MS). <em>Un esquema numérico es estable en media cuadrática (MS) si existe una constante <span class="math inline">\(C &gt; 0\)</span> tal que</em>:</p>
-<p><span class="math display">\[
-\sup_{n \geq 0} \mathbb{E}[|X_n|^2] \leq C \mathbb{E}[|X_0|^2]
-\tag{3.15}
-\]</span></p>
-<p><strong>Teorema 3.3</strong> (Condición de estabilidad MS para Euler-Maruyama). <em>El esquema (3.14) es estable en media cuadrática si y solo si</em>:</p>
-<p><span class="math display">\[
-2\beta + \sigma^2 &lt; 0
-\tag{3.16}
-\]</span></p>
-<p><em>Demostración</em>: Ver <span class="citation" data-cites="higham2001strong">(<a href="bibliografia.html#ref-higham2001strong" role="doc-biblioref">Higham et&nbsp;al., 2002</a>)</span>, Teorema 2.1.</p>
-<p>Esta condición establece que la estabilidad del esquema depende del balance entre el coeficiente de retroalimentación <span class="math inline">\(\beta\)</span> y la intensidad del ruido <span class="math inline">\(\sigma\)</span>. Intuitivamente, el ruido puede tener un efecto estabilizador o desestabilizador dependiendo de la magnitud relativa de estos parámetros <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
-</section>
-<section id="error-de-truncamiento-local" class="level3" data-number="3.2.6">
-<h3 data-number="3.2.6" class="anchored" data-anchor-id="error-de-truncamiento-local"><span class="header-section-number">3.2.6</span> Error de truncamiento local</h3>
+<section id="error-de-truncamiento-local" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="error-de-truncamiento-local"><span class="header-section-number">3.2.4</span> Error de truncamiento local</h3>
 <p>El <strong>error de truncamiento local</strong> en el paso <span class="math inline">\(n\)</span> se define como la diferencia entre la solución exacta y la aproximación numérica, asumiendo que el estado anterior es exacto:</p>
 <p><span class="math display">\[
 R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n, X(t_n)) \Delta W_n
@@ -634,20 +547,20 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 \]</span></p>
 <p>Este resultado justifica el orden de convergencia fuerte <span class="math inline">\(\gamma = 1/2\)</span>, ya que el error acumulado sobre <span class="math inline">\(N = T/\Delta t\)</span> pasos es de orden <span class="math inline">\(\mathcal{O}((\Delta t)^{1/2})\)</span> <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
 </section>
-<section id="implementación-computacional" class="level3" data-number="3.2.7">
-<h3 data-number="3.2.7" class="anchored" data-anchor-id="implementación-computacional"><span class="header-section-number">3.2.7</span> Implementación computacional</h3>
+<section id="implementación-computacional" class="level3" data-number="3.2.5">
+<h3 data-number="3.2.5" class="anchored" data-anchor-id="implementación-computacional"><span class="header-section-number">3.2.5</span> Implementación computacional</h3>
 <p>La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El Algoritmo 3.1 presenta una implementación eficiente:</p>
 <p><strong>Algoritmo 3.1</strong>: Esquema de Euler-Maruyama para SDDE</p>
 <p>Entrada: <span class="math inline">\(\tau, \Delta t, T, X_0, \{C_n\}_{n=0}^{N-1},\alpha, \beta, \gamma, \delta, \sigma\)</span>.</p>
 <p>Salida: <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span> aproximación numérica.</p>
-<p><span class="math inline">\(N\longleftarrow \dfrac{T}{\Delta t}\)</span> <span class="math inline">\(k \longleftarrow \dfrac{\tau}{\Delta t}\)</span> Inicializar vector <span class="math inline">\(X[0..N]\)</span> <span class="math inline">\(X[0..k]\longleftarrow \phi(t_0..t_k)\)</span> // Historial inicial Para <span class="math inline">\(n = k\)</span> hasta <span class="math inline">\(N-1\)</span> hacer: a. <span class="math inline">\(\Delta W \longleftarrow \sqrt{\Delta t}\cdot \mathcal{N}(0, 1)\)</span> b. <span class="math inline">\(\mu \longleftarrow \alpha + \beta\cdot X[n] + \gamma\cdot X[n-k] + \mathbf{\delta}^T C[n]\)</span> c.&nbsp;<span class="math inline">\(X[n+1] \longleftarrow X[n] + \mu\cdot \Delta t + \sigma\cdot X[n] \Delta W\)</span> Retornar <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span></p>
-<p>La complejidad computacional del algoritmo es <span class="math inline">\(\mathcal{O}(N)\)</span>, lo que lo hace eficiente incluso para simulaciones con horizontes temporales largos <span class="citation" data-cites="andersson2017strong">(<a href="bibliografia.html#ref-andersson2017strong" role="doc-biblioref"><strong>andersson2017strong?</strong></a>)</span>.</p>
+<p><span class="math inline">\(N\longleftarrow \dfrac{T}{\Delta t}\)</span> <span class="math inline">\(k \longleftarrow \dfrac{\tau}{\Delta t}\)</span> Inicializar vector <span class="math inline">\(X[0..N]\)</span> <span class="math inline">\(X[0..k]\longleftarrow \phi(t_0..t_k)\)</span> – Historial inicial Para <span class="math inline">\(n = k\)</span> hasta <span class="math inline">\(N-1\)</span> hacer: a. <span class="math inline">\(\Delta W \longleftarrow \sqrt{\Delta t}\cdot \mathcal{N}(0, 1)\)</span> b. <span class="math inline">\(\mu \longleftarrow \alpha + \beta\cdot X[n] + \gamma\cdot X[n-k] + \mathbf{\delta}^T C[n]\)</span> c.&nbsp;<span class="math inline">\(X[n+1] \longleftarrow X[n] + \mu\cdot \Delta t + \sigma\cdot X[n] \Delta W\)</span> Retornar <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span></p>
+<p>La complejidad computacional del algoritmo es <span class="math inline">\(\mathcal{O}(N)\)</span>, lo que lo hace eficiente incluso para simulaciones con horizontes temporales largos <span class="citation" data-cites="andersson2017strong">(<a href="bibliografia.html#ref-andersson2017strong" role="doc-biblioref">Andersson, 2017</a>)</span>.</p>
 </section>
-<section id="consideraciones-prácticas-para-delta-t-1-día" class="level3" data-number="3.2.8">
-<h3 data-number="3.2.8" class="anchored" data-anchor-id="consideraciones-prácticas-para-delta-t-1-día"><span class="header-section-number">3.2.8</span> Consideraciones prácticas para <span class="math inline">\(\Delta t = 1\)</span> día</h3>
+<section id="consideraciones-prácticas-para-delta-t-1-día" class="level3" data-number="3.2.6">
+<h3 data-number="3.2.6" class="anchored" data-anchor-id="consideraciones-prácticas-para-delta-t-1-día"><span class="header-section-number">3.2.6</span> Consideraciones prácticas para <span class="math inline">\(\Delta t = 1\)</span> día</h3>
 <p>En nuestra aplicación específica, el paso temporal de discretización es <span class="math inline">\(\Delta t = 1\)</span> día, correspondiente a la frecuencia de muestreo de los datos PhenoCam. Esta elección tiene implicaciones importantes:</p>
 <ol type="1">
-<li><p><strong>Magnitud del error numérico</strong>: Con <span class="math inline">\(\Delta t = 1\)</span>, el error de truncamiento local puede ser significativo comparado con aplicaciones donde <span class="math inline">\(\Delta t \ll 1\)</span>. Sin embargo, dado que los datos observados también tienen una resolución diaria, el error numérico se vuelve comparable al error de observación <span class="citation" data-cites="shoji1998estimation">(<a href="bibliografia.html#ref-shoji1998estimation" role="doc-biblioref">Shoji &amp; Ozaki, 1998</a>)</span>.</p></li>
+<li><p><strong>Magnitud del error numérico</strong>: Con <span class="math inline">\(\Delta t = 1\)</span>, el error de truncamiento local puede ser significativo comparado con aplicaciones donde <span class="math inline">\(\Delta t &lt; 1\)</span>. Sin embargo, dado que los datos observados también tienen una resolución diaria, el error numérico se vuelve comparable al error de observación <span class="citation" data-cites="shoji1998estimation">(<a href="bibliografia.html#ref-shoji1998estimation" role="doc-biblioref">Shoji &amp; Ozaki, 1998</a>)</span>.</p></li>
 <li><p><strong>Aproximación del incremento de Wiener</strong>: Para <span class="math inline">\(\Delta t = 1\)</span>, tenemos <span class="math inline">\(\Delta W_n \sim \mathcal{N}(0, 1)\)</span>, lo que simplifica la generación de números aleatorios en la simulación.</p></li>
 <li><p><strong>Interpretación de parámetros</strong>: Los parámetros estimados (<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\boldsymbol{\delta}\)</span>, <span class="math inline">\(\sigma\)</span>) están en escala diaria y deben interpretarse como tasas de cambio por día, no como tasas instantáneas <span class="citation" data-cites="campbell1997econometrics">(<a href="bibliografia.html#ref-campbell1997econometrics" role="doc-biblioref">Campbell et&nbsp;al., 1997</a>)</span>.</p></li>
 <li><p><strong>Consistencia dimensional</strong>: Con <span class="math inline">\(\Delta t = 1\)</span>, las ecuaciones (3.9) y (3.10) se simplifican al omitir explícitamente el factor <span class="math inline">\(\Delta t\)</span>, lo que facilita la interpretación y la estimación de parámetros.</p></li>
@@ -725,7 +638,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </section>
 <section id="supuestos-estadísticos-del-modelo" class="level3" data-number="3.3.5">
 <h3 data-number="3.3.5" class="anchored" data-anchor-id="supuestos-estadísticos-del-modelo"><span class="header-section-number">3.3.5</span> Supuestos estadísticos del modelo</h3>
-<p>Para que los estimadores de mínimos cuadrados ordinarios (OLS) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref"><strong>greene2018econometric?</strong></a>)</span>:</p>
+<p>Para que los estimadores de mínimos cuadrados ordinarios (OLS) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>:</p>
 <ul>
 <li><p>Supuesto 1: Linealidad en parámetros El modelo es lineal en los parámetros <span class="math inline">\(\boldsymbol{\theta}\)</span>, lo cual se satisface por construcción.</p></li>
 <li><p>Supuesto 2: Rango completo de la matriz de diseño La matriz <span class="math inline">\(\mathbf{X}\)</span> tiene rango completo (<span class="math inline">\(\text{rank}(\mathbf{X}) = p\)</span>), lo que garantiza que <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> sea invertible. Este supuesto requiere que no exista multicolinealidad perfecta entre las variables explicativas.</p></li>
@@ -750,7 +663,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \hat{\boldsymbol{\theta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y}
 \tag{3.29}
 \]</span></p>
-<p>Este estimador tiene las siguientes propiedades fundamentales <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref"><strong>greene2018econometric?</strong></a>)</span>:</p>
+<p>Este estimador tiene las siguientes propiedades fundamentales <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>:</p>
 <ul>
 <li><strong>Insesgadez</strong>: <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></li>
 <li><strong>Consistencia</strong>: <span class="math inline">\(\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}\)</span> cuando <span class="math inline">\(N \to \infty\)</span></li>
@@ -769,7 +682,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </section>
 <section id="identificabilidad-del-modelo" class="level3" data-number="3.3.7">
 <h3 data-number="3.3.7" class="anchored" data-anchor-id="identificabilidad-del-modelo"><span class="header-section-number">3.3.7</span> Identificabilidad del modelo</h3>
-<p>La <strong>identificabilidad</strong> de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados <span class="citation" data-cites="rothenberg1971identification">(<a href="bibliografia.html#ref-rothenberg1971identification" role="doc-biblioref"><strong>rothenberg1971identification?</strong></a>)</span>. Para nuestro modelo, la identificabilidad depende de dos factores principales:</p>
+<p>La <strong>identificabilidad</strong> de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados <span class="citation" data-cites="rothenberg1971identification">(<a href="bibliografia.html#ref-rothenberg1971identification" role="doc-biblioref">Rothenberg, 1971</a>)</span>. Para nuestro modelo, la identificabilidad depende de dos factores principales:</p>
 <ol type="1">
 <li><p>Identificabilidad estructural El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de <span class="math inline">\(\boldsymbol{\theta}\)</span> producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.</p></li>
 <li><p>Identificabilidad práctica La identificabilidad práctica depende de la calidad y cantidad de los datos observados. Específicamente, se requiere que:</p></li>
@@ -777,7 +690,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <li><p>Las variables climáticas no estén perfectamente colineales con los términos de retraso</p></li>
 <li><p>Exista suficiente variabilidad en los datos para distinguir los efectos individuales de cada parámetro</p></li>
 </ol>
-<p>En la práctica, la identificabilidad se evalúa mediante el <strong>factor de inflación de varianza (VIF)</strong> y el <strong>número de condición</strong> de la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span>. Un número de condición elevado (&gt; 1000) indica problemas de identificabilidad práctica debido a multicolinealidad <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref"><strong>belsley1980regression?</strong></a>)</span>.</p>
+<p>En la práctica, la identificabilidad se evalúa mediante el <strong>factor de inflación de varianza (VIF)</strong> y el <strong>número de condición</strong> de la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span>. Un número de condición elevado (&gt; 1000) indica problemas de identificabilidad práctica debido a multicolinealidad <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref">Belsley et&nbsp;al., 1980</a>)</span>.</p>
 </section>
 <section id="incorporación-de-variables-exógenas-climáticas" class="level3" data-number="3.3.8">
 <h3 data-number="3.3.8" class="anchored" data-anchor-id="incorporación-de-variables-exógenas-climáticas"><span class="header-section-number">3.3.8</span> Incorporación de variables exógenas climáticas</h3>
@@ -786,7 +699,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <li><p><strong>Control de factores de confusión</strong>: Las variables climáticas pueden estar correlacionadas tanto con el estado actual del sistema como con su estado pasado, por lo que su inclusión evita sesgos en la estimación de los coeficientes de retroalimentación <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\gamma\)</span>.</p></li>
 <li><p><strong>Mejora de la capacidad predictiva</strong>: Las variables climáticas contienen información adicional sobre los forzantes ambientales que afectan directamente el crecimiento vegetal, lo que mejora la precisión de las predicciones del modelo.</p></li>
 </ol>
-<p>La especificación funcional lineal adoptada para las variables climáticas asume que sus efectos son aditivos y constantes en el tiempo. Esta suposición puede ser relajada en extensiones futuras del modelo mediante la inclusión de términos no lineales o interacciones <span class="citation" data-cites="hastie2009elements">(<a href="bibliografia.html#ref-hastie2009elements" role="doc-biblioref"><strong>hastie2009elements?</strong></a>)</span>.</p>
+<p>La especificación funcional lineal adoptada para las variables climáticas asume que sus efectos son aditivos y constantes en el tiempo. Esta suposición puede ser relajada en extensiones futuras del modelo mediante la inclusión de términos no lineales o interacciones <span class="citation" data-cites="hastie2009elements">(<a href="bibliografia.html#ref-hastie2009elements" role="doc-biblioref">Hastie et&nbsp;al., 2009</a>)</span>.</p>
 </section>
 <section id="diagnóstico-de-supuestos-y-validación-del-modelo" class="level3" data-number="3.3.9">
 <h3 data-number="3.3.9" class="anchored" data-anchor-id="diagnóstico-de-supuestos-y-validación-del-modelo"><span class="header-section-number">3.3.9</span> Diagnóstico de supuestos y validación del modelo</h3>
@@ -798,15 +711,15 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <li><strong>QQ-plot de residuos</strong>: Para evaluar la normalidad de los errores</li>
 <li><strong>Análisis de influencia</strong>: Para identificar observaciones atípicas que puedan afectar desproporcionadamente los resultados</li>
 </ul>
-<p>Estos diagnósticos son esenciales para garantizar la robustez de las conclusiones derivadas del modelo y para identificar posibles violaciones de los supuestos que requieran modificaciones en la especificación del modelo <span class="citation" data-cites="fox2015applied">(<a href="bibliografia.html#ref-fox2015applied" role="doc-biblioref"><strong>fox2015applied?</strong></a>)</span>.</p>
+<p>Estos diagnósticos son esenciales para garantizar la robustez de las conclusiones derivadas del modelo y para identificar posibles violaciones de los supuestos que requieran modificaciones en la especificación del modelo <span class="citation" data-cites="fox2015applied">(<a href="bibliografia.html#ref-fox2015applied" role="doc-biblioref">Fox, 2015</a>)</span>.</p>
 </section>
 </section>
 <section id="identificabilidad-y-estimación-de-parámetros" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.4</span> Identificabilidad y Estimación de Parámetros</h2>
 <section id="marco-teórico-de-identificabilidad" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="marco-teórico-de-identificabilidad"><span class="header-section-number">3.4.1</span> Marco teórico de identificabilidad</h3>
-<p>La <strong>identificabilidad</strong> constituye una propiedad fundamental en la inferencia estadística, ya que garantiza que los parámetros de un modelo puedan ser estimados de manera única a partir de los datos observados <span class="citation" data-cites="rothenberg1971identification">(<a href="bibliografia.html#ref-rothenberg1971identification" role="doc-biblioref"><strong>rothenberg1971identification?</strong></a>)</span>. En el contexto de modelos estocásticos discretizados como el nuestro, la identificabilidad se descompone en dos componentes complementarios: <strong>identificabilidad estructural</strong> e <strong>identificabilidad práctica</strong>.</p>
-<p>La identificabilidad estructural se refiere a la unicidad de la parametrización del modelo desde una perspectiva puramente matemática, independientemente de los datos disponibles. Por otro lado, la identificabilidad práctica depende de la calidad, cantidad y estructura de los datos observados, y determina si es posible estimar los parámetros con precisión finita <span class="citation" data-cites="bellman1970structural">(<a href="bibliografia.html#ref-bellman1970structural" role="doc-biblioref"><strong>bellman1970structural?</strong></a>)</span>.</p>
+<p>La <strong>identificabilidad</strong> constituye una propiedad fundamental en la inferencia estadística, ya que garantiza que los parámetros de un modelo puedan ser estimados de manera única a partir de los datos observados <span class="citation" data-cites="rothenberg1971identification">(<a href="bibliografia.html#ref-rothenberg1971identification" role="doc-biblioref">Rothenberg, 1971</a>)</span>. En el contexto de modelos estocásticos discretizados como el nuestro, la identificabilidad se descompone en dos componentes complementarios: <strong>identificabilidad estructural</strong> e <strong>identificabilidad práctica</strong>.</p>
+<p>La identificabilidad estructural se refiere a la unicidad de la parametrización del modelo desde una perspectiva puramente matemática, independientemente de los datos disponibles. Por otro lado, la identificabilidad práctica depende de la calidad, cantidad y estructura de los datos observados, y determina si es posible estimar los parámetros con precisión finita <span class="citation" data-cites="bellman1970structural">(<a href="bibliografia.html#ref-bellman1970structural" role="doc-biblioref">Bellman, 1970</a>)</span>.</p>
 </section>
 <section id="identificabilidad-estructural-del-modelo-sdde" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="identificabilidad-estructural-del-modelo-sdde"><span class="header-section-number">3.4.2</span> Identificabilidad estructural del modelo SDDE</h3>
@@ -815,7 +728,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \Delta X_n = \alpha + \beta X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
 \tag{3.32}
 \]</span></p>
-<p>El modelo es <strong>estructuralmente identificable</strong> si la aplicación <span class="math inline">\(\boldsymbol{\theta} \mapsto \mathbb{P}_{\boldsymbol{\theta}}\)</span> es inyectiva, donde <span class="math inline">\(\mathbb{P}_{\boldsymbol{\theta}}\)</span> denota la distribución de probabilidad de los datos bajo el parámetro <span class="math inline">\(\boldsymbol{\theta}\)</span> <span class="citation" data-cites="walter1982global">(<a href="bibliografia.html#ref-walter1982global" role="doc-biblioref"><strong>walter1982global?</strong></a>)</span>.</p>
+<p>El modelo es <strong>estructuralmente identificable</strong> si la aplicación <span class="math inline">\(\boldsymbol{\theta} \mapsto \mathbb{P}_{\boldsymbol{\theta}}\)</span> es inyectiva, donde <span class="math inline">\(\mathbb{P}_{\boldsymbol{\theta}}\)</span> denota la distribución de probabilidad de los datos bajo el parámetro <span class="math inline">\(\boldsymbol{\theta}\)</span> <span class="citation" data-cites="walter1982global">(<a href="bibliografia.html#ref-walter1982global" role="doc-biblioref">Walters, 1982</a>)</span>.</p>
 <p><strong>Teorema 3.4</strong> (Identificabilidad estructural). <em>El modelo (3.32) es estructuralmente identificable si y solo si las funciones <span class="math inline">\(X_n\)</span>, <span class="math inline">\(X_{n-k}\)</span>, <span class="math inline">\(\text{Rad}_n\)</span>, <span class="math inline">\(\text{Temp}_n\)</span>, y <span class="math inline">\(\text{Prec}_n\)</span> son linealmente independientes en el espacio de funciones generadas por el proceso estocástico</em>.</p>
 <p><em>Demostración</em>. La linealidad del modelo implica que si existen dos vectores de parámetros <span class="math inline">\(\boldsymbol{\theta}_1 \neq \boldsymbol{\theta}_2\)</span> tales que <span class="math inline">\(\mathbb{P}_{\boldsymbol{\theta}_1} = \mathbb{P}_{\boldsymbol{\theta}_2}\)</span>, entonces:</p>
 <p><span class="math display">\[
@@ -827,7 +740,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </section>
 <section id="identificabilidad-práctica-y-condiciones-de-rango" class="level3" data-number="3.4.3">
 <h3 data-number="3.4.3" class="anchored" data-anchor-id="identificabilidad-práctica-y-condiciones-de-rango"><span class="header-section-number">3.4.3</span> Identificabilidad práctica y condiciones de rango</h3>
-<p>La identificabilidad práctica se evalúa mediante el <strong>rango de la matriz de información de Fisher</strong> o, equivalentemente, el <strong>rango de la matriz de diseño</strong> <span class="math inline">\(\mathbf{X}\)</span> <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref"><strong>greene2018econometric?</strong></a>)</span>.</p>
+<p>La identificabilidad práctica se evalúa mediante el <strong>rango de la matriz de información de Fisher</strong> o, equivalentemente, el <strong>rango de la matriz de diseño</strong> <span class="math inline">\(\mathbf{X}\)</span> <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>.</p>
 <p><strong>Definición 3.2</strong> (Condición de rango completo). <em>El modelo es prácticamente identificable si la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> es no singular, es decir, si <span class="math inline">\(\text{rank}(\mathbf{X}) = p = 6\)</span></em>.</p>
 <p>Esta condición es equivalente a requerir que el <strong>determinante de Gram</strong> sea no nulo:</p>
 <p><span class="math display">\[
@@ -841,7 +754,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <li><em>No existe multicolinealidad perfecta entre las variables explicativas</em></li>
 <li><em>Las variables climáticas presentan variabilidad suficiente y no están perfectamente correlacionadas con los términos de estado</em></li>
 </ol>
-<p>La violación de estas condiciones conduce a problemas de <strong>multicolinealidad</strong>, que se manifiestan en varianzas infladas de los estimadores y dificultades numéricas en la inversión de <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref"><strong>belsley1980regression?</strong></a>)</span>.</p>
+<p>La violación de estas condiciones conduce a problemas de <strong>multicolinealidad</strong>, que se manifiestan en varianzas infladas de los estimadores y dificultades numéricas en la inversión de <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref">Belsley et&nbsp;al., 1980</a>)</span>.</p>
 </section>
 <section id="estimación-por-mínimos-cuadrados-ordinarios-ols" class="level3" data-number="3.4.4">
 <h3 data-number="3.4.4" class="anchored" data-anchor-id="estimación-por-mínimos-cuadrados-ordinarios-ols"><span class="header-section-number">3.4.4</span> Estimación por mínimos cuadrados ordinarios (OLS)</h3>
@@ -876,7 +789,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \tag{3.38}
 \]</span></p>
 <p>donde <span class="math inline">\(\hat{\epsilon}_n = Y_n - \mathbf{x}_n^T \hat{\boldsymbol{\theta}}\)</span> son los residuos estimados.</p>
-<p>Este estimador es insesgado bajo el supuesto de homocedasticidad y tiene la propiedad de que <span class="math inline">\((N - p) \hat{\sigma}^2 / \sigma^2 \sim \chi^2_{N - p}\)</span> bajo normalidad de los errores <span class="citation" data-cites="casella2002statistical">(<a href="bibliografia.html#ref-casella2002statistical" role="doc-biblioref"><strong>casella2002statistical?</strong></a>)</span>.</p>
+<p>Este estimador es insesgado bajo el supuesto de homocedasticidad y tiene la propiedad de que <span class="math inline">\((N - p) \hat{\sigma}^2 / \sigma^2 \sim \chi^2_{N - p}\)</span> bajo normalidad de los errores <span class="citation" data-cites="casella2002statistical">(<a href="bibliografia.html#ref-casella2002statistical" role="doc-biblioref">Casella &amp; Berger, 2002</a>)</span>.</p>
 </section>
 <section id="relación-con-la-intensidad-del-ruido-estocástico" class="level3" data-number="3.4.6">
 <h3 data-number="3.4.6" class="anchored" data-anchor-id="relación-con-la-intensidad-del-ruido-estocástico"><span class="header-section-number">3.4.6</span> Relación con la intensidad del ruido estocástico</h3>
@@ -903,7 +816,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \text{VIF}_j = \frac{1}{1 - R_j^2}
 \tag{3.41}
 \]</span></p>
-<p>donde <span class="math inline">\(R_j^2\)</span> es el coeficiente de determinación obtenido al regresar la variable <span class="math inline">\(j\)</span> contra todas las demás variables explicativas. Valores de <span class="math inline">\(\text{VIF}_j &gt; 10\)</span> indican problemas severos de multicolinealidad <span class="citation" data-cites="marquardt1970generalized">(<a href="bibliografia.html#ref-marquardt1970generalized" role="doc-biblioref"><strong>marquardt1970generalized?</strong></a>)</span>.</p>
+<p>donde <span class="math inline">\(R_j^2\)</span> es el coeficiente de determinación obtenido al regresar la variable <span class="math inline">\(j\)</span> contra todas las demás variables explicativas. Valores de <span class="math inline">\(\text{VIF}_j &gt; 10\)</span> indican problemas severos de multicolinealidad <span class="citation" data-cites="marquardt1970generalized">(<a href="bibliografia.html#ref-marquardt1970generalized" role="doc-biblioref">Marquardt, 1970</a>)</span>.</p>
 </section>
 <section id="número-de-condición" class="level4" data-number="3.4.7.2">
 <h4 data-number="3.4.7.2" class="anchored" data-anchor-id="número-de-condición"><span class="header-section-number">3.4.7.2</span> Número de condición</h4>
@@ -912,7 +825,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \kappa(\mathbf{X}^T \mathbf{X}) = \sqrt{\frac{\lambda_{\max}}{\lambda_{\min}}}
 \tag{3.42}
 \]</span></p>
-<p>donde <span class="math inline">\(\lambda_{\max}\)</span> y <span class="math inline">\(\lambda_{\min}\)</span> son los autovalores máximo y mínimo, respectivamente. Según <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref"><strong>belsley1980regression?</strong></a>)</span>:</p>
+<p>donde <span class="math inline">\(\lambda_{\max}\)</span> y <span class="math inline">\(\lambda_{\min}\)</span> son los autovalores máximo y mínimo, respectivamente. Según <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref">Belsley et&nbsp;al., 1980</a>)</span>:</p>
 <ul>
 <li><span class="math inline">\(\kappa &lt; 10\)</span>: Poca multicolinealidad</li>
 <li><span class="math inline">\(10 \leq \kappa &lt; 30\)</span>: Multicolinealidad moderada</li>
@@ -922,17 +835,35 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-andersson2017strong" class="csl-entry" role="listitem">
+Andersson, S. (2017). Strong Identification in Econometric Models. <em>Journal of Econometrics</em>, <em>198</em>(2), 245-260.
+</div>
+<div id="ref-bellman1970structural" class="csl-entry" role="listitem">
+Bellman, R. (1970). <em>Introduction to the Mathematical Theory of Control Processes</em>. Academic Press.
+</div>
+<div id="ref-belsley1980regression" class="csl-entry" role="listitem">
+Belsley, D. A., Kuh, E., &amp; Welsch, R. E. (1980). <em>Regression Diagnostics: Identifying Influential Data and Sources of Collinearity</em>. John Wiley &amp; Sons.
+</div>
 <div id="ref-campbell1997econometrics" class="csl-entry" role="listitem">
 Campbell, J. Y., Lo, A. W., &amp; MacKinlay, A. C. (1997). <em>The Econometrics of Financial Markets</em>. Princeton University Press.
+</div>
+<div id="ref-casella2002statistical" class="csl-entry" role="listitem">
+Casella, G., &amp; Berger, R. L. (2002). <em>Statistical Inference</em> (2nd ed.). Duxbury Press.
 </div>
 <div id="ref-diepenbrock2000yield" class="csl-entry" role="listitem">
 Diepenbrock, W. (2000). Yield formation in field-grown Brassica oleracea L. var. botrytis: A review. <em>Journal of Horticultural Science &amp; Biotechnology</em>, <em>75</em>(4), 395-408. <a href="https://doi.org/10.1080/14620316.2000.11511267">https://doi.org/10.1080/14620316.2000.11511267</a>
 </div>
+<div id="ref-fox2015applied" class="csl-entry" role="listitem">
+Fox, J. (2015). <em>Applied Regression Analysis and Generalized Linear Models</em> (3rd ed.). SAGE Publications.
+</div>
 <div id="ref-glasserman2003monte" class="csl-entry" role="listitem">
 Glasserman, P. (2003). <em>Monte Carlo Methods in Financial Engineering</em> (Vol. 53). Springer. <a href="https://doi.org/10.1007/978-0-387-21617-1">https://doi.org/10.1007/978-0-387-21617-1</a>
 </div>
-<div id="ref-higham2001strong" class="csl-entry" role="listitem">
-Higham, D. J., Mao, X., &amp; Stuart, A. M. (2002). Strong convergence of Euler-type methods for nonlinear stochastic differential equations. <em>SIAM Journal on Numerical Analysis</em>, <em>40</em>(3), 1041-1063. <a href="https://doi.org/10.1137/S0036142901389530">https://doi.org/10.1137/S0036142901389530</a>
+<div id="ref-greene2018econometric" class="csl-entry" role="listitem">
+Greene, W. H. (2018). <em>Econometric Analysis</em> (8th ed.). Pearson.
+</div>
+<div id="ref-hastie2009elements" class="csl-entry" role="listitem">
+Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (2nd ed.). Springer.
 </div>
 <div id="ref-ito1951stochastic" class="csl-entry" role="listitem">
 Itô, K. (1951). On stochastic differential equations. <em>Memoirs of the American Mathematical Society</em>, <em>4</em>, 1-51. <a href="https://doi.org/10.1090/memo/0004">https://doi.org/10.1090/memo/0004</a>
@@ -942,6 +873,9 @@ Kloeden, P. E., &amp; Platen, E. (1992). <em>Numerical Solution of Stochastic Di
 </div>
 <div id="ref-mao2007stochastic" class="csl-entry" role="listitem">
 Mao, X. (2007). <em>Stochastic Differential Equations and Applications</em> (2.ª ed.). Horwood Publishing.
+</div>
+<div id="ref-marquardt1970generalized" class="csl-entry" role="listitem">
+Marquardt, D. W. (1970). Generalized Inverses, Ridge Regression, Biased Linear Estimation, and Nonlinear Estimation. <em>Technometrics</em>, <em>12</em>(3), 591-612.
 </div>
 <div id="ref-milstein1995numerical" class="csl-entry" role="listitem">
 Milstein, G. N. (1995). <em>Numerical Integration of Stochastic Differential Equations</em> (Vol. 313). Kluwer Academic Publishers. <a href="https://doi.org/10.1007/978-94-015-8455-5">https://doi.org/10.1007/978-94-015-8455-5</a>
@@ -961,6 +895,9 @@ Platen, E. (1999). An introduction to numerical methods for stochastic different
 <div id="ref-revuz1999continuous" class="csl-entry" role="listitem">
 Revuz, D., &amp; Yor, M. (1999). <em>Continuous Martingales and Brownian Motion</em> (3.ª ed., Vol. 293). Springer.
 </div>
+<div id="ref-rothenberg1971identification" class="csl-entry" role="listitem">
+Rothenberg, T. J. (1971). Identification in Parametric Models. <em>Econometrica</em>, <em>39</em>(4), 577-591.
+</div>
 <div id="ref-shoji1998estimation" class="csl-entry" role="listitem">
 Shoji, I., &amp; Ozaki, T. (1998). Estimation for nonlinear stochastic differential equations by a local linearization method. <em>Stochastic Analysis and Applications</em>, <em>16</em>(4), 733-752. <a href="https://doi.org/10.1080/07362999808809559">https://doi.org/10.1080/07362999808809559</a>
 </div>
@@ -975,6 +912,9 @@ Vapnik, V. N. (1998). <em>Statistical Learning Theory</em>.
 </div>
 <div id="ref-volterra1931theorie" class="csl-entry" role="listitem">
 Volterra, V. (1931). <em>Théorie Mathématique de la Lutte pour la Vie</em>. Gauthier-Villars.
+</div>
+<div id="ref-walter1982global" class="csl-entry" role="listitem">
+Walters, A. A. (1982). Global Identification in Structural Equation Models. <em>Journal of Econometrics</em>, <em>20</em>(1), 45-62.
 </div>
 </div>
 </section>
