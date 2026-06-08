@@ -412,7 +412,7 @@ window.Quarto = {
 <h2 data-number="3.1" class="anchored" data-anchor-id="modelo-sdde-en-tiempo-continuo"><span class="header-section-number">3.1</span> Modelo SDDE en tiempo continuo</h2>
 <section id="motivación-y-contexto-teórico" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="motivación-y-contexto-teórico"><span class="header-section-number">3.1.1</span> Motivación y contexto teórico</h3>
-<p>Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal <span class="citation" data-cites="mohammed1984stochastic">(<a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>.</p>
+<p>Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal <span class="citation" data-cites="hutchinson1948">(<a href="bibliografia.html#ref-hutchinson1948" role="doc-biblioref">HUTCHINSON, 1948</a>)</span>.</p>
 <p>La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales <span class="citation" data-cites="volterra1931theorie">(<a href="bibliografia.html#ref-volterra1931theorie" role="doc-biblioref">Volterra, 1931</a>)</span>. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs de parte de Kiyosi Itô visto en el artículo <span class="citation" data-cites="ito1951stochastic">Itô (<a href="bibliografia.html#ref-ito1951stochastic" role="doc-biblioref">1951</a>)</span>.</p>
 </section>
 <section id="definición-formal-del-modelo" class="level3" data-number="3.1.2">
@@ -546,11 +546,40 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 </section>
 <section id="implementación-computacional" class="level3" data-number="3.2.5">
 <h3 data-number="3.2.5" class="anchored" data-anchor-id="implementación-computacional"><span class="header-section-number">3.2.5</span> Implementación computacional</h3>
-<p>La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El Algoritmo 3.1 presenta una implementación eficiente:</p>
-<p><strong>Algoritmo 3.1</strong>: Esquema de Euler-Maruyama para SDDE</p>
-<p>Entrada: <span class="math inline">\(\tau, \Delta t, T, X_0, \{C_n\}_{n=0}^{N-1},\alpha, \beta, \gamma, \delta, \sigma\)</span>.</p>
-<p>Salida: <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span> aproximación numérica.</p>
-<p><span class="math inline">\(N\longleftarrow \dfrac{T}{\Delta t}\)</span> <span class="math inline">\(k \longleftarrow \dfrac{\tau}{\Delta t}\)</span> Inicializar vector <span class="math inline">\(X[0..N]\)</span> <span class="math inline">\(X[0..k]\longleftarrow \phi(t_0..t_k)\)</span> – Historial inicial Para <span class="math inline">\(n = k\)</span> hasta <span class="math inline">\(N-1\)</span> hacer: a. <span class="math inline">\(\Delta W \longleftarrow \sqrt{\Delta t}\cdot \mathcal{N}(0, 1)\)</span> b. <span class="math inline">\(\mu \longleftarrow \alpha + \beta\cdot X[n] + \gamma\cdot X[n-k] + \mathbf{\delta}^T C[n]\)</span> c.&nbsp;<span class="math inline">\(X[n+1] \longleftarrow X[n] + \mu\cdot \Delta t + \sigma\cdot X[n] \Delta W\)</span> Retornar <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span></p>
+<p>La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El <a href="#alg-euler" class="quarto-xref">Algoritmo&nbsp;<span>3.1</span></a> presenta una implementación eficiente:</p>
+<div id="alg-euler" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-alg figure">
+<div aria-describedby="alg-euler-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Entrada:</strong> <span class="math inline">\(\tau, \Delta t, T, X_0, \{C_n\}_{n=0}^{N-1}, \alpha, \beta, \gamma, \delta, \sigma\)</span>.<br>
+<strong>Salida:</strong> <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span> aproximación numérica.</p>
+<ol type="1">
+<li><span class="math inline">\(N \longleftarrow \frac{T}{\Delta t}\)</span></li>
+<li><span class="math inline">\(k \longleftarrow \frac{\tau}{\Delta t}\)</span></li>
+<li>Inicializar vector <span class="math inline">\(X[0..N]\)</span></li>
+<li><span class="math inline">\(X[0..k] \longleftarrow \phi(t_0..t_k)\)</span> <em>(Historial inicial)</em></li>
+<li><strong>Para</strong> <span class="math inline">\(n = k\)</span> <strong>hasta</strong> <span class="math inline">\(N-1\)</span> <strong>hacer:</strong>
+<ol type="a">
+<li><span class="math inline">\(\Delta W \longleftarrow \sqrt{\Delta t} \cdot \mathcal{N}(0, 1)\)</span></li>
+<li><span class="math inline">\(\mu \longleftarrow \alpha + \beta \cdot X[n] + \gamma \cdot X[n-k] + \delta^T C[n]\)</span></li>
+<li><span class="math inline">\(X[n+1] \longleftarrow X[n] + \mu \cdot \Delta t + \sigma \cdot X[n] \Delta W\)</span></li>
+</ol></li>
+<li><strong>Retornar</strong> <span class="math inline">\(\{X_n\}_{n=0}^{N}\)</span></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-alg" id="alg-euler-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Algoritmo&nbsp;3.1: Esquema de Euler-Maruyama para SDDE
+</figcaption>
+</figure>
+</div>
 <p>La complejidad computacional del algoritmo es <span class="math inline">\(\mathcal{O}(N)\)</span>, lo que lo hace eficiente incluso para simulaciones con horizontes temporales largos <span class="citation" data-cites="andersson2017strong">(<a href="bibliografia.html#ref-andersson2017strong" role="doc-biblioref">Andersson, 2017</a>)</span>.</p>
 </section>
 <section id="consideraciones-prácticas-para-delta-t-1-día" class="level3" data-number="3.2.6">
@@ -874,6 +903,9 @@ Greene, W. H. (2018). <em>Econometric Analysis</em> (8th ed.). Pearson.
 </div>
 <div id="ref-hastie2009elements" class="csl-entry" role="listitem">
 Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (2nd ed.). Springer.
+</div>
+<div id="ref-hutchinson1948" class="csl-entry" role="listitem">
+HUTCHINSON, G. E. (1948). CIRCULAR CAUSAL SYSTEMS IN ECOLOGY. <em>Annals of the New York Academy of Sciences</em>, <em>50</em>(4), 221-246. https://doi.org/<a href="https://doi.org/10.1111/j.1749-6632.1948.tb39854.x">https://doi.org/10.1111/j.1749-6632.1948.tb39854.x</a>
 </div>
 <div id="ref-ito1951stochastic" class="csl-entry" role="listitem">
 Itô, K. (1951). On stochastic differential equations. <em>Memoirs of the American Mathematical Society</em>, <em>4</em>, 1-51. <a href="https://doi.org/10.1090/memo/0004">https://doi.org/10.1090/memo/0004</a>
