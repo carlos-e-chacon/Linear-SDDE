@@ -1,0 +1,61 @@
+% ==========================================
+% PREÁMBULO PARA QUARTO PDF
+% ==========================================
+
+% --- 1. Matemáticas y Estilos de Teoremas ---
+\usepackage{amsmath, amsthm, amssymb}
+
+% Configuración de entornos matemáticos elegantes
+\newtheoremstyle{estiloacademico}
+  {12pt}      % Espacio arriba
+  {12pt}      % Espacio abajo
+  {\itshape}  % Fuente del cuerpo (cursiva para teoremas)
+  {}          % Sangría
+  {\bfseries} % Fuente del encabezado (negrita)
+  {.}         % Puntuación después del encabezado
+  {0.5em}     % Espacio después del encabezado
+  {}          % Especificación del encabezado
+
+\theoremstyle{estiloacademico}
+\newtheorem{teorema}{Teorema}[section]
+\newtheorem{lema}[teorema]{Lema}
+\newtheorem{proposicion}[teorema]{Proposición}
+
+\theoremstyle{definition} % Estilo sin cursivas para definiciones
+\newtheorem{definicion}{Definición}[section]
+\newtheorem{ejemplo}{Ejemplo}[section]
+
+% --- 2. TikZ y PGFPlots ---
+% Fundamental para asegurar que las gráficas compilen correctamente
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} % Ajusta a la versión más reciente que tengas
+\usetikzlibrary{calc, positioning, arrows.meta, decorations.pathreplacing}
+
+% --- 3. Diseño de Página (Encabezados y Pies) ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % Limpia la configuración por defecto
+\fancyhead[L]{\nouppercase{\leftmark}} % Nombre del capítulo actual a la izquierda
+\fancyhead[R]{\thepage}  % Número de página a la derecha
+\renewcommand{\headrulewidth}{0.4pt} % Grosor de la línea superior
+\renewcommand{\footrulewidth}{0pt}   % Sin línea inferior
+
+% Para que las páginas de inicio de capítulo no tengan un encabezado extraño
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \fancyfoot[C]{\thepage}
+}
+
+% --- 4. Configuración de Enlaces y Referencias ---
+% Reemplaza los cuadros de colores por texto de color profesional
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,     % Color de referencias internas (ecuaciones, secciones)
+    filecolor=magenta,      
+    urlcolor=blue,       % Color de enlaces web
+    citecolor=blue,      % Color de citas bibliográficas
+    pdfpagemode=UseOutlines
+}

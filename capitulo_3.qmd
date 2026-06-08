@@ -11,9 +11,9 @@ format:
 
 ### Motivación y contexto teórico
 
-Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema [@mao2007stochastic]. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal [@mohammed1984stochastic].
+Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema [@mao2007stochastic]. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal [@hutchinson1948].
 
-La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales [@volterra1931theorie]. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs [@ito1951stochastic].
+La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales [@volterra1931theorie]. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs de parte de Kiyosi Itô visto en el artículo @ito1951stochastic.
 
 ### Definición formal del modelo
 
@@ -22,9 +22,8 @@ Consideremos un espacio de probabilidad filtrado $(\Omega, \mathcal{F}, \{\mathc
 El modelo propuesto para la dinámica del índice de verdor GCC se define mediante la siguiente ecuación diferencial estocástica con retraso:
 
 $$
-dX(t) = \left[ \alpha + \beta X(t) + \gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
-\tag{3.1}
-$$
+dX(t) = \left[ \alpha + \beta X(t) +\gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
+$$ {#eq-sdde}
 
 donde las variables y parámetros se definen en el contexto biológico de la siguiente manera:
 
@@ -54,8 +53,7 @@ A diferencia de las SDEs clásicas, las SDDEs requieren una **función inicial**
 
 $$
 X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
-\tag{3.2}
-$$
+$$ {#eq-inicial}
 
 donde $\phi: [-\tau, 0] \to \mathbb{R}^+$ es una función continua y determinista que representa el historial del sistema antes del tiempo inicial $t=0$.
 
@@ -84,7 +82,7 @@ Por lo tanto, el modelo propuesto garantiza existencia y unicidad de soluciones 
 
 #### Término de deriva determinista
 
-El término de deriva en la ecuación (3.1) puede descomponerse en cuatro componentes:
+El término de deriva en la @eq-sdde puede descomponerse en cuatro componentes:
 
 $$
 \mu(t, X(t), X(t-\tau)) = \underbrace{\alpha}_{\begin{matrix} \text{Crecimiento} \\ \text{basal} \end{matrix}} + \underbrace{\beta X(t)}_{\begin{matrix}\text{Retroalimentación}\\ \text{actual}\end{matrix}} + \underbrace{\gamma X(t-\tau)}_{\begin{matrix}\text{Memoria} \\ \text{fisiológica}\end{matrix}} + \underbrace{\boldsymbol{\delta}^T \mathbf{C}(t)}_{\begin{matrix}\text{Forzantes} \\ \text{climáticas}\end{matrix}}
@@ -105,14 +103,13 @@ El término de difusión $\sigma X(t) \, dW(t)$ modela la variabilidad ambiental
 
 ### Solución formal y representación integral
 
-La solución de la SDDE (3.1) puede expresarse en forma integral utilizando el Cálculo de Itô [@oksendal2003stochastic]:
+La solución de la @eq-sdde puede expresarse en forma integral utilizando el Cálculo de Itô [@oksendal2003stochastic]:
 
 $$
 X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymbol{\delta}^T \mathbf{C}(s) \right] ds + \sigma \int_0^t X(s) \, dW(s)
-\tag{3.7}\label{eq-integral_solution}
-$$ 
+$$ {#eq-integral_solution}
 
-Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica $\int_0^t X(s) \, dW(s)$ se interpreta en el sentido de Itô, lo cual implica que el integrando $X(s)$ es evaluado en el extremo izquierdo de cada subintervalo de partición [@ito1951stochastic].
+Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica $\int_0^t X(s) \, dW(s)$ se interpreta en el sentido de Itô, lo cual implica que el integrando $X(s)$ es evaluado en el extremo izquierdo de cada subintervalo de partición de acuerdo con la definición formal.
 
 ### Consideraciones sobre la positividad del modelo
 
@@ -181,23 +178,25 @@ Este resultado justifica el orden de convergencia fuerte $\gamma = 1/2$, ya que 
 
 ### Implementación computacional
 
-La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El Algoritmo 3.1 presenta una implementación eficiente:
+La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El @alg-euler presenta una implementación eficiente:
 
-**Algoritmo 3.1**: Esquema de Euler-Maruyama para SDDE
+::: {#alg-euler}
+::: {.callout-note appearance="minimal" icon=false}
+**Entrada:** $\tau, \Delta t, T, X_0, \{C_n\}_{n=0}^{N-1}, \alpha, \beta, \gamma, \delta, \sigma$.  
+**Salida:** $\{X_n\}_{n=0}^{N}$ aproximación numérica.
 
-Entrada: $\tau, \Delta t, T, X_0, \{C_n\}_{n=0}^{N-1},\alpha, \beta, \gamma, \delta, \sigma$.
-
-Salida: $\{X_n\}_{n=0}^{N}$ aproximación numérica.
-
-$N\longleftarrow \dfrac{T}{\Delta t}$
-$k \longleftarrow \dfrac{\tau}{\Delta t}$
-Inicializar vector $X[0..N]$
-$X[0..k]\longleftarrow \phi(t_0..t_k)$ -- Historial inicial
-Para $n = k$ hasta $N-1$ hacer:
-  a. $\Delta W \longleftarrow \sqrt{\Delta t}\cdot \mathcal{N}(0, 1)$
-  b. $\mu \longleftarrow \alpha + \beta\cdot X[n] + \gamma\cdot X[n-k] + \mathbf{\delta}^T C[n]$
-  c. $X[n+1] \longleftarrow X[n] + \mu\cdot \Delta t + \sigma\cdot X[n] \Delta W$
-Retornar $\{X_n\}_{n=0}^{N}$
+1. $N \longleftarrow \frac{T}{\Delta t}$
+2. $k \longleftarrow \frac{\tau}{\Delta t}$
+3. Inicializar vector $X[0..N]$
+4. $X[0..k] \longleftarrow \phi(t_0..t_k)$ *(Historial inicial)*
+5. **Para** $n = k$ **hasta** $N-1$ **hacer:**
+    a. $\Delta W \longleftarrow \sqrt{\Delta t} \cdot \mathcal{N}(0, 1)$
+    b. $\mu \longleftarrow \alpha + \beta \cdot X[n] + \gamma \cdot X[n-k] + \delta^T C[n]$
+    c. $X[n+1] \longleftarrow X[n] + \mu \cdot \Delta t + \sigma \cdot X[n] \Delta W$
+6. **Retornar** $\{X_n\}_{n=0}^{N}$
+:::
+Esquema de Euler-Maruyama para SDDE
+:::
 
 La complejidad computacional del algoritmo es $\mathcal{O}(N)$, lo que lo hace eficiente incluso para simulaciones con horizontes temporales largos [@andersson2017strong].
 
@@ -249,9 +248,13 @@ $$
 $$
 
 donde:
+
 - $\mathbf{Y} \in \mathbb{R}^N$ es el vector de observaciones de la variable dependiente ($\Delta X_n$),
+
 - $\mathbf{X} \in \mathbb{R}^{N \times p}$ es la matriz de diseño con $p = 6$ columnas,
+
 - $\boldsymbol{\theta} \in \mathbb{R}^p$ es el vector de parámetros desconocidos,
+
 - $\boldsymbol{\epsilon} \in \mathbb{R}^N$ es el vector de errores aleatorios.
 
 La matriz de diseño $\mathbf{X}$ tiene la siguiente estructura:
@@ -350,7 +353,9 @@ $$
 Este estimador tiene las siguientes propiedades fundamentales [@greene2018econometric]:
 
 - **Insesgadez**: $\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}$
+
 - **Consistencia**: $\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}$ cuando $N \to \infty$
+
 - **Eficiencia**: Entre todos los estimadores lineales insesgados, $\hat{\boldsymbol{\theta}}$ tiene la menor varianza (teorema de Gauss-Markov)
 
 La matriz de varianza-covarianza del estimador es:
@@ -371,15 +376,15 @@ $$
 
 La **identificabilidad** de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados [@rothenberg1971identification]. Para nuestro modelo, la identificabilidad depende de dos factores principales:
 
-1. Identificabilidad estructural
-El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de $\boldsymbol{\theta}$ producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.
+1. Identificabilidad estructural. El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de $\boldsymbol{\theta}$ producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.
 
-2. Identificabilidad práctica
-La identificabilidad práctica depende de la calidad y cantidad de los datos observados. Específicamente, se requiere que:
+2. Identificabilidad práctica. La identificabilidad práctica depende de la calidad y cantidad de los datos observados. Específicamente, se requiere que:
 
-1. La matriz $\mathbf{X}^T \mathbf{X}$ sea no singular (rango completo)
-2. Las variables climáticas no estén perfectamente colineales con los términos de retraso
-3. Exista suficiente variabilidad en los datos para distinguir los efectos individuales de cada parámetro
+  - La matriz $\mathbf{X}^T \mathbf{X}$ sea no singular (rango completo)
+  
+  - Las variables climáticas no estén perfectamente colineales con los términos de retraso
+  
+  - Exista suficiente variabilidad en los datos para distinguir los efectos individuales de cada parámetro
 
 En la práctica, la identificabilidad se evalúa mediante el **factor de inflación de varianza (VIF)** y el **número de condición** de la matriz $\mathbf{X}^T \mathbf{X}$. Un número de condición elevado (> 1000) indica problemas de identificabilidad práctica debido a multicolinealidad [@belsley1980regression].
 
@@ -398,9 +403,13 @@ La especificación funcional lineal adoptada para las variables climáticas asum
 La validez de las inferencias estadísticas basadas en el modelo de regresión depende de la verificación de los supuestos establecidos en la sección 3.3.5. Los principales métodos de diagnóstico incluyen:
 
 - **Gráfico de residuos vs valores ajustados**: Para detectar heterocedasticidad y no linealidad
+
 - **Test de Durbin-Watson**: Para detectar autocorrelación serial en los residuos
+
 - **Test de Breusch-Pagan**: Para detectar heterocedasticidad
+
 - **QQ-plot de residuos**: Para evaluar la normalidad de los errores
+
 - **Análisis de influencia**: Para identificar observaciones atípicas que puedan afectar desproporcionadamente los resultados
 
 Estos diagnósticos son esenciales para garantizar la robustez de las conclusiones derivadas del modelo y para identificar posibles violaciones de los supuestos que requieran modificaciones en la especificación del modelo [@fox2015applied].
@@ -437,8 +446,11 @@ $$
 donde $\mathbf{x}_n = [1, X_n, X_{n-k}, \text{Rad}_n, \text{Temp}_n, \text{Prec}_n]^T$. Esto ocurre si y solo si las componentes de $\mathbf{x}_n$ son linealmente dependientes, lo cual contradice la hipótesis del teorema. ∎
 
 En la práctica, la independencia lineal se satisface siempre que:
+
 1. Las variables climáticas no son funciones deterministas del estado del sistema ($X_n$ o $X_{n-k}$)
+
 2. El retraso $\tau$ es tal que $X_n$ y $X_{n-\tau}$ no son perfectamente correlacionados
+
 3. Existe suficiente variabilidad en los datos para distinguir los efectos individuales
 
 ### Identificabilidad práctica y condiciones de rango
@@ -483,7 +495,9 @@ $$
 Este estimador posee propiedades óptimas bajo los supuestos del modelo lineal clásico:
 
 - **Insesgadez**: $\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}$
+
 - **Consistencia**: $\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}$ cuando $N \to \infty$
+
 - **Eficiencia**: $\text{Var}(\hat{\boldsymbol{\theta}}) \leq \text{Var}(\tilde{\boldsymbol{\theta}})$ para cualquier otro estimador lineal insesgado $\tilde{\boldsymbol{\theta}}$ (teorema de Gauss-Markov)
 
 La matriz de varianza-covarianza del estimador es:
@@ -555,7 +569,9 @@ $$
 donde $\lambda_{\max}$ y $\lambda_{\min}$ son los autovalores máximo y mínimo, respectivamente. Según [@belsley1980regression]:
 
 - $\kappa < 10$: Poca multicolinealidad
+
 - $10 \leq \kappa < 30$: Multicolinealidad moderada
+
 - $\kappa \geq 30$: Multicolinealidad severa
 
 Estos diagnósticos son esenciales para evaluar la fiabilidad de las estimaciones de parámetros y para identificar posibles reformulaciones del modelo que mejoren su identificabilidad práctica.

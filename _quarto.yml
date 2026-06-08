@@ -15,6 +15,13 @@ website:
   comments:
     hypothesis: true
 
+crossref:
+  custom:
+    - kind: float
+      key: alg
+      reference-prefix: Algoritmo
+      latex-env: algorithm
+
 book:
   title: "Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación"
   reader-mode: true
@@ -67,7 +74,7 @@ format:
   
   pdf:  
     documentclass: book
-    #include-in-header: latex/preamble.tex
+    include-in-header: latex/preamble.tex
     #include-before-body: latex/portada.tex
     #include-after-body: latex/hoja_final.tex
     titlepage: false
