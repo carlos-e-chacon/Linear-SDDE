@@ -413,16 +413,15 @@ window.Quarto = {
 <section id="motivación-y-contexto-teórico" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="motivación-y-contexto-teórico"><span class="header-section-number">3.1.1</span> Motivación y contexto teórico</h3>
 <p>Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal <span class="citation" data-cites="mohammed1984stochastic">(<a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>.</p>
-<p>La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales <span class="citation" data-cites="volterra1931theorie">(<a href="bibliografia.html#ref-volterra1931theorie" role="doc-biblioref">Volterra, 1931</a>)</span>. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs <span class="citation" data-cites="ito1951stochastic">(<a href="bibliografia.html#ref-ito1951stochastic" role="doc-biblioref">Itô, 1951</a>)</span>.</p>
+<p>La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales <span class="citation" data-cites="volterra1931theorie">(<a href="bibliografia.html#ref-volterra1931theorie" role="doc-biblioref">Volterra, 1931</a>)</span>. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs de parte de Kiyosi Itô visto en el artículo (<span class="citation" data-cites="ito1951stochastic">Itô (<a href="bibliografia.html#ref-ito1951stochastic" role="doc-biblioref">1951</a>)</span>).</p>
 </section>
 <section id="definición-formal-del-modelo" class="level3" data-number="3.1.2">
 <h3 data-number="3.1.2" class="anchored" data-anchor-id="definición-formal-del-modelo"><span class="header-section-number">3.1.2</span> Definición formal del modelo</h3>
 <p>Consideremos un espacio de probabilidad filtrado <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)</span> que satisface las condiciones usuales de completitud y continuidad derecha <span class="citation" data-cites="revuz1999continuous">(<a href="bibliografia.html#ref-revuz1999continuous" role="doc-biblioref">Revuz &amp; Yor, 1999</a>)</span>. Sea <span class="math inline">\(W(t)\)</span> un proceso de Wiener estándar (movimiento browniano) adaptado a la filtración <span class="math inline">\(\{\mathcal{F}_t\}\)</span>.</p>
 <p>El modelo propuesto para la dinámica del índice de verdor GCC se define mediante la siguiente ecuación diferencial estocástica con retraso:</p>
-<p><span class="math display">\[
-dX(t) = \left[ \alpha + \beta X(t) + \gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
-\tag{3.1}
-\]</span></p>
+<p><span id="eq-sdde"><span class="math display">\[
+dX(t) = \left[ \alpha + \beta X(t) +\gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
+\tag{3.1}\]</span></span></p>
 <p>donde las variables y parámetros se definen en el contexto biológico de la siguiente manera:</p>
 <ul>
 <li><p><span class="math inline">\(X(t) \in \mathbb{R}^+\)</span>: Proceso estocástico del GCC, que representa la biomasa verde activa en el tiempo <span class="math inline">\(t\)</span>.</p></li>
@@ -439,10 +438,9 @@ dX(t) = \left[ \alpha + \beta X(t) + \gamma X(t-\tau) + \boldsymbol{\delta}^T \m
 <section id="condiciones-iniciales-y-espacio-de-fases" class="level3" data-number="3.1.3">
 <h3 data-number="3.1.3" class="anchored" data-anchor-id="condiciones-iniciales-y-espacio-de-fases"><span class="header-section-number">3.1.3</span> Condiciones iniciales y espacio de fases</h3>
 <p>A diferencia de las SDEs clásicas, las SDDEs requieren una <strong>función inicial</strong> definida en un intervalo pasado, debido a la dependencia del término <span class="math inline">\(X(t-\tau)\)</span> <span class="citation" data-cites="mohammed1984stochastic">(<a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>. El problema de valor inicial se especifica como:</p>
-<p><span class="math display">\[
+<p><span id="eq-inicial"><span class="math display">\[
 X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
-\tag{3.2}
-\]</span></p>
+\tag{3.2}\]</span></span></p>
 <p>donde <span class="math inline">\(\phi: [-\tau, 0] \to \mathbb{R}^+\)</span> es una función continua y determinista que representa el historial del sistema antes del tiempo inicial <span class="math inline">\(t=0\)</span>.</p>
 <p>El <strong>espacio de fases</strong> para una SDDE es infinito-dimensional, específicamente el espacio de Banach <span class="math inline">\(C([-\tau, 0], \mathbb{R})\)</span> de funciones continuas del intervalo <span class="math inline">\([-\tau, 0]\)</span> en <span class="math inline">\(\mathbb{R}\)</span>, equipado con la norma del supremo:</p>
 <p><span class="math display">\[
@@ -467,7 +465,7 @@ X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
 <h3 data-number="3.1.5" class="anchored" data-anchor-id="interpretación-biológica-de-los-términos"><span class="header-section-number">3.1.5</span> Interpretación biológica de los términos</h3>
 <section id="término-de-deriva-determinista" class="level4" data-number="3.1.5.1">
 <h4 data-number="3.1.5.1" class="anchored" data-anchor-id="término-de-deriva-determinista"><span class="header-section-number">3.1.5.1</span> Término de deriva determinista</h4>
-<p>El término de deriva en la ecuación (3.1) puede descomponerse en cuatro componentes:</p>
+<p>El término de deriva en la <a href="#eq-sdde" class="quarto-xref">Ecuación&nbsp;<span>3.1</span></a> puede descomponerse en cuatro componentes:</p>
 <p><span class="math display">\[
 \mu(t, X(t), X(t-\tau)) = \underbrace{\alpha}_{\begin{matrix} \text{Crecimiento} \\ \text{basal} \end{matrix}} + \underbrace{\beta X(t)}_{\begin{matrix}\text{Retroalimentación}\\ \text{actual}\end{matrix}} + \underbrace{\gamma X(t-\tau)}_{\begin{matrix}\text{Memoria} \\ \text{fisiológica}\end{matrix}} + \underbrace{\boldsymbol{\delta}^T \mathbf{C}(t)}_{\begin{matrix}\text{Forzantes} \\ \text{climáticas}\end{matrix}}
 \tag{3.6}
@@ -486,12 +484,11 @@ X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
 </section>
 <section id="solución-formal-y-representación-integral" class="level3" data-number="3.1.6">
 <h3 data-number="3.1.6" class="anchored" data-anchor-id="solución-formal-y-representación-integral"><span class="header-section-number">3.1.6</span> Solución formal y representación integral</h3>
-<p>La solución de la SDDE (3.1) puede expresarse en forma integral utilizando el Cálculo de Itô <span class="citation" data-cites="oksendal2003stochastic">(<a href="bibliografia.html#ref-oksendal2003stochastic" role="doc-biblioref">Øksendal, 2003</a>)</span>:</p>
-<p><span class="math display">\[
+<p>La solución de la <a href="#eq-sdde" class="quarto-xref">Ecuación&nbsp;<span>3.1</span></a> puede expresarse en forma integral utilizando el Cálculo de Itô <span class="citation" data-cites="oksendal2003stochastic">(<a href="bibliografia.html#ref-oksendal2003stochastic" role="doc-biblioref">Øksendal, 2003</a>)</span>:</p>
+<p><span id="eq-integral_solution"><span class="math display">\[
 X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymbol{\delta}^T \mathbf{C}(s) \right] ds + \sigma \int_0^t X(s) \, dW(s)
-\tag{3.7}\label{eq-integral_solution}
-\]</span></p>
-<p>Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica <span class="math inline">\(\int_0^t X(s) \, dW(s)\)</span> se interpreta en el sentido de Itô, lo cual implica que el integrando <span class="math inline">\(X(s)\)</span> es evaluado en el extremo izquierdo de cada subintervalo de partición <span class="citation" data-cites="ito1951stochastic">(<a href="bibliografia.html#ref-ito1951stochastic" role="doc-biblioref">Itô, 1951</a>)</span>.</p>
+\tag{3.3}\]</span></span></p>
+<p>Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica <span class="math inline">\(\int_0^t X(s) \, dW(s)\)</span> se interpreta en el sentido de Itô, lo cual implica que el integrando <span class="math inline">\(X(s)\)</span> es evaluado en el extremo izquierdo de cada subintervalo de partición de acuerdo con la definición formal.</p>
 </section>
 <section id="consideraciones-sobre-la-positividad-del-modelo" class="level3" data-number="3.1.7">
 <h3 data-number="3.1.7" class="anchored" data-anchor-id="consideraciones-sobre-la-positividad-del-modelo"><span class="header-section-number">3.1.7</span> Consideraciones sobre la positividad del modelo</h3>
@@ -591,7 +588,13 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 \mathbf{Y} = \mathbf{X} \boldsymbol{\theta} + \boldsymbol{\epsilon}
 \tag{3.20}
 \]</span></p>
-<p>donde: - <span class="math inline">\(\mathbf{Y} \in \mathbb{R}^N\)</span> es el vector de observaciones de la variable dependiente (<span class="math inline">\(\Delta X_n\)</span>), - <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{N \times p}\)</span> es la matriz de diseño con <span class="math inline">\(p = 6\)</span> columnas, - <span class="math inline">\(\boldsymbol{\theta} \in \mathbb{R}^p\)</span> es el vector de parámetros desconocidos, - <span class="math inline">\(\boldsymbol{\epsilon} \in \mathbb{R}^N\)</span> es el vector de errores aleatorios.</p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\mathbf{Y} \in \mathbb{R}^N\)</span> es el vector de observaciones de la variable dependiente (<span class="math inline">\(\Delta X_n\)</span>),</p></li>
+<li><p><span class="math inline">\(\mathbf{X} \in \mathbb{R}^{N \times p}\)</span> es la matriz de diseño con <span class="math inline">\(p = 6\)</span> columnas,</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\theta} \in \mathbb{R}^p\)</span> es el vector de parámetros desconocidos,</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\epsilon} \in \mathbb{R}^N\)</span> es el vector de errores aleatorios.</p></li>
+</ul>
 <p>La matriz de diseño <span class="math inline">\(\mathbf{X}\)</span> tiene la siguiente estructura:</p>
 <p><span class="math display">\[
 \mathbf{X} =
@@ -665,9 +668,9 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span></p>
 <p>Este estimador tiene las siguientes propiedades fundamentales <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>:</p>
 <ul>
-<li><strong>Insesgadez</strong>: <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></li>
-<li><strong>Consistencia</strong>: <span class="math inline">\(\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}\)</span> cuando <span class="math inline">\(N \to \infty\)</span></li>
-<li><strong>Eficiencia</strong>: Entre todos los estimadores lineales insesgados, <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> tiene la menor varianza (teorema de Gauss-Markov)</li>
+<li><p><strong>Insesgadez</strong>: <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></p></li>
+<li><p><strong>Consistencia</strong>: <span class="math inline">\(\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}\)</span> cuando <span class="math inline">\(N \to \infty\)</span></p></li>
+<li><p><strong>Eficiencia</strong>: Entre todos los estimadores lineales insesgados, <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> tiene la menor varianza (teorema de Gauss-Markov)</p></li>
 </ul>
 <p>La matriz de varianza-covarianza del estimador es:</p>
 <p><span class="math display">\[
@@ -684,12 +687,14 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <h3 data-number="3.3.7" class="anchored" data-anchor-id="identificabilidad-del-modelo"><span class="header-section-number">3.3.7</span> Identificabilidad del modelo</h3>
 <p>La <strong>identificabilidad</strong> de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados <span class="citation" data-cites="rothenberg1971identification">(<a href="bibliografia.html#ref-rothenberg1971identification" role="doc-biblioref">Rothenberg, 1971</a>)</span>. Para nuestro modelo, la identificabilidad depende de dos factores principales:</p>
 <ol type="1">
-<li><p>Identificabilidad estructural El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de <span class="math inline">\(\boldsymbol{\theta}\)</span> producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.</p></li>
-<li><p>Identificabilidad práctica La identificabilidad práctica depende de la calidad y cantidad de los datos observados. Específicamente, se requiere que:</p></li>
+<li><p>Identificabilidad estructural. El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de <span class="math inline">\(\boldsymbol{\theta}\)</span> producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.</p></li>
+<li><p>Identificabilidad práctica. La identificabilidad práctica depende de la calidad y cantidad de los datos observados. Específicamente, se requiere que:</p></li>
+</ol>
+<ul>
 <li><p>La matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> sea no singular (rango completo)</p></li>
 <li><p>Las variables climáticas no estén perfectamente colineales con los términos de retraso</p></li>
 <li><p>Exista suficiente variabilidad en los datos para distinguir los efectos individuales de cada parámetro</p></li>
-</ol>
+</ul>
 <p>En la práctica, la identificabilidad se evalúa mediante el <strong>factor de inflación de varianza (VIF)</strong> y el <strong>número de condición</strong> de la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span>. Un número de condición elevado (&gt; 1000) indica problemas de identificabilidad práctica debido a multicolinealidad <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref">Belsley et&nbsp;al., 1980</a>)</span>.</p>
 </section>
 <section id="incorporación-de-variables-exógenas-climáticas" class="level3" data-number="3.3.8">
@@ -705,11 +710,11 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <h3 data-number="3.3.9" class="anchored" data-anchor-id="diagnóstico-de-supuestos-y-validación-del-modelo"><span class="header-section-number">3.3.9</span> Diagnóstico de supuestos y validación del modelo</h3>
 <p>La validez de las inferencias estadísticas basadas en el modelo de regresión depende de la verificación de los supuestos establecidos en la sección 3.3.5. Los principales métodos de diagnóstico incluyen:</p>
 <ul>
-<li><strong>Gráfico de residuos vs valores ajustados</strong>: Para detectar heterocedasticidad y no linealidad</li>
-<li><strong>Test de Durbin-Watson</strong>: Para detectar autocorrelación serial en los residuos</li>
-<li><strong>Test de Breusch-Pagan</strong>: Para detectar heterocedasticidad</li>
-<li><strong>QQ-plot de residuos</strong>: Para evaluar la normalidad de los errores</li>
-<li><strong>Análisis de influencia</strong>: Para identificar observaciones atípicas que puedan afectar desproporcionadamente los resultados</li>
+<li><p><strong>Gráfico de residuos vs valores ajustados</strong>: Para detectar heterocedasticidad y no linealidad</p></li>
+<li><p><strong>Test de Durbin-Watson</strong>: Para detectar autocorrelación serial en los residuos</p></li>
+<li><p><strong>Test de Breusch-Pagan</strong>: Para detectar heterocedasticidad</p></li>
+<li><p><strong>QQ-plot de residuos</strong>: Para evaluar la normalidad de los errores</p></li>
+<li><p><strong>Análisis de influencia</strong>: Para identificar observaciones atípicas que puedan afectar desproporcionadamente los resultados</p></li>
 </ul>
 <p>Estos diagnósticos son esenciales para garantizar la robustez de las conclusiones derivadas del modelo y para identificar posibles violaciones de los supuestos que requieran modificaciones en la especificación del modelo <span class="citation" data-cites="fox2015applied">(<a href="bibliografia.html#ref-fox2015applied" role="doc-biblioref">Fox, 2015</a>)</span>.</p>
 </section>
@@ -736,7 +741,12 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \tag{3.33}
 \]</span></p>
 <p>donde <span class="math inline">\(\mathbf{x}_n = [1, X_n, X_{n-k}, \text{Rad}_n, \text{Temp}_n, \text{Prec}_n]^T\)</span>. Esto ocurre si y solo si las componentes de <span class="math inline">\(\mathbf{x}_n\)</span> son linealmente dependientes, lo cual contradice la hipótesis del teorema. ∎</p>
-<p>En la práctica, la independencia lineal se satisface siempre que: 1. Las variables climáticas no son funciones deterministas del estado del sistema (<span class="math inline">\(X_n\)</span> o <span class="math inline">\(X_{n-k}\)</span>) 2. El retraso <span class="math inline">\(\tau\)</span> es tal que <span class="math inline">\(X_n\)</span> y <span class="math inline">\(X_{n-\tau}\)</span> no son perfectamente correlacionados 3. Existe suficiente variabilidad en los datos para distinguir los efectos individuales</p>
+<p>En la práctica, la independencia lineal se satisface siempre que:</p>
+<ol type="1">
+<li><p>Las variables climáticas no son funciones deterministas del estado del sistema (<span class="math inline">\(X_n\)</span> o <span class="math inline">\(X_{n-k}\)</span>)</p></li>
+<li><p>El retraso <span class="math inline">\(\tau\)</span> es tal que <span class="math inline">\(X_n\)</span> y <span class="math inline">\(X_{n-\tau}\)</span> no son perfectamente correlacionados</p></li>
+<li><p>Existe suficiente variabilidad en los datos para distinguir los efectos individuales</p></li>
+</ol>
 </section>
 <section id="identificabilidad-práctica-y-condiciones-de-rango" class="level3" data-number="3.4.3">
 <h3 data-number="3.4.3" class="anchored" data-anchor-id="identificabilidad-práctica-y-condiciones-de-rango"><span class="header-section-number">3.4.3</span> Identificabilidad práctica y condiciones de rango</h3>
@@ -770,9 +780,9 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span></p>
 <p>Este estimador posee propiedades óptimas bajo los supuestos del modelo lineal clásico:</p>
 <ul>
-<li><strong>Insesgadez</strong>: <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></li>
-<li><strong>Consistencia</strong>: <span class="math inline">\(\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}\)</span> cuando <span class="math inline">\(N \to \infty\)</span></li>
-<li><strong>Eficiencia</strong>: <span class="math inline">\(\text{Var}(\hat{\boldsymbol{\theta}}) \leq \text{Var}(\tilde{\boldsymbol{\theta}})\)</span> para cualquier otro estimador lineal insesgado <span class="math inline">\(\tilde{\boldsymbol{\theta}}\)</span> (teorema de Gauss-Markov)</li>
+<li><p><strong>Insesgadez</strong>: <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></p></li>
+<li><p><strong>Consistencia</strong>: <span class="math inline">\(\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}\)</span> cuando <span class="math inline">\(N \to \infty\)</span></p></li>
+<li><p><strong>Eficiencia</strong>: <span class="math inline">\(\text{Var}(\hat{\boldsymbol{\theta}}) \leq \text{Var}(\tilde{\boldsymbol{\theta}})\)</span> para cualquier otro estimador lineal insesgado <span class="math inline">\(\tilde{\boldsymbol{\theta}}\)</span> (teorema de Gauss-Markov)</p></li>
 </ul>
 <p>La matriz de varianza-covarianza del estimador es:</p>
 <p><span class="math display">\[
@@ -827,9 +837,9 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span></p>
 <p>donde <span class="math inline">\(\lambda_{\max}\)</span> y <span class="math inline">\(\lambda_{\min}\)</span> son los autovalores máximo y mínimo, respectivamente. Según <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref">Belsley et&nbsp;al., 1980</a>)</span>:</p>
 <ul>
-<li><span class="math inline">\(\kappa &lt; 10\)</span>: Poca multicolinealidad</li>
-<li><span class="math inline">\(10 \leq \kappa &lt; 30\)</span>: Multicolinealidad moderada</li>
-<li><span class="math inline">\(\kappa \geq 30\)</span>: Multicolinealidad severa</li>
+<li><p><span class="math inline">\(\kappa &lt; 10\)</span>: Poca multicolinealidad</p></li>
+<li><p><span class="math inline">\(10 \leq \kappa &lt; 30\)</span>: Multicolinealidad moderada</p></li>
+<li><p><span class="math inline">\(\kappa \geq 30\)</span>: Multicolinealidad severa</p></li>
 </ul>
 <p>Estos diagnósticos son esenciales para evaluar la fiabilidad de las estimaciones de parámetros y para identificar posibles reformulaciones del modelo que mejoren su identificabilidad práctica.</p>
 
