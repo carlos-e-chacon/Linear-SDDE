@@ -382,7 +382,7 @@ window.Quarto = {
   <li><a href="#discretización-numérica-y-propiedades-del-esquema" id="toc-discretización-numérica-y-propiedades-del-esquema" class="nav-link" data-scroll-target="#discretización-numérica-y-propiedades-del-esquema"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</a></li>
   <li><a href="#formulación-estadística-como-modelo-de-regresión" id="toc-formulación-estadística-como-modelo-de-regresión" class="nav-link" data-scroll-target="#formulación-estadística-como-modelo-de-regresión"><span class="header-section-number">3.3</span> Formulación Estadística como Modelo de Regresión</a></li>
   <li><a href="#identificabilidad-y-estimación-de-parámetros" id="toc-identificabilidad-y-estimación-de-parámetros" class="nav-link" data-scroll-target="#identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.4</span> Identificabilidad y Estimación de Parámetros</a></li>
-  <li><a href="#diagnóstico-estadístico-y-validación-del-modelo" id="toc-diagnóstico-estadístico-y-validación-del-modelo" class="nav-link" data-scroll-target="#diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.5</span> 3.5. Diagnóstico Estadístico y Validación del Modelo</a></li>
+  <li><a href="#diagnóstico-estadístico-y-validación-del-modelo" id="toc-diagnóstico-estadístico-y-validación-del-modelo" class="nav-link" data-scroll-target="#diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.5</span> Diagnóstico Estadístico y Validación del Modelo</a></li>
   </ul>
 <div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/capitulo_3.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/capitulo_3.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -867,25 +867,25 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </section>
 </section>
 <section id="diagnóstico-estadístico-y-validación-del-modelo" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.5</span> 3.5. Diagnóstico Estadístico y Validación del Modelo</h2>
+<h2 data-number="3.5" class="anchored" data-anchor-id="diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.5</span> Diagnóstico Estadístico y Validación del Modelo</h2>
 <section id="marco-teórico-del-diagnóstico-de-regresión" class="level3" data-number="3.5.1">
-<h3 data-number="3.5.1" class="anchored" data-anchor-id="marco-teórico-del-diagnóstico-de-regresión"><span class="header-section-number">3.5.1</span> 3.5.1. Marco teórico del diagnóstico de regresión</h3>
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="marco-teórico-del-diagnóstico-de-regresión"><span class="header-section-number">3.5.1</span> Marco teórico del diagnóstico de regresión</h3>
 <p>El diagnóstico estadístico constituye una etapa fundamental en el análisis de modelos de regresión lineal, ya que permite verificar la validez de los supuestos subyacentes y evaluar la calidad del ajuste <span class="citation" data-cites="fox2015applied">(<a href="bibliografia.html#ref-fox2015applied" role="doc-biblioref">Fox, 2015</a>)</span>. En el contexto de modelos derivados de ecuaciones diferenciales estocásticas con retraso (SDDE) discretizadas, el diagnóstico adquiere una relevancia adicional: cualquier violación de los supuestos puede comprometer no solo la inferencia estadística, sino también la interpretación biológica y fenomenológica de los parámetros estimados <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>.</p>
 <p>Los supuestos clásicos del modelo lineal —linealidad, independencia, homocedasticidad y normalidad— deben ser verificados sistemáticamente para garantizar la robustez de las conclusiones y la estabilidad numérica de la matriz de diseño.</p>
 </section>
 <section id="supuestos-del-modelo-y-sus-implicaciones" class="level3" data-number="3.5.2">
-<h3 data-number="3.5.2" class="anchored" data-anchor-id="supuestos-del-modelo-y-sus-implicaciones"><span class="header-section-number">3.5.2</span> 3.5.2. Supuestos del modelo y sus implicaciones</h3>
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="supuestos-del-modelo-y-sus-implicaciones"><span class="header-section-number">3.5.2</span> Supuestos del modelo y sus implicaciones</h3>
 <section id="supuesto-de-linealidad" class="level4" data-number="3.5.2.1">
 <h4 data-number="3.5.2.1" class="anchored" data-anchor-id="supuesto-de-linealidad"><span class="header-section-number">3.5.2.1</span> Supuesto de linealidad</h4>
 <p>El modelo asume que la relación entre la tasa de cambio del índice de verdor (<span class="math inline">\(\Delta X_n\)</span>) y las covariables explicativas (estados previos y forzantes climáticas) es estrictamente lineal en los parámetros. La violación de este supuesto suele manifestarse mediante patrones sistemáticos en los residuos frente a los valores ajustados, sugiriendo la necesidad de incorporar interacciones o términos polinomiales.</p>
 </section>
 <section id="supuesto-de-independencia" class="level4" data-number="3.5.2.2">
 <h4 data-number="3.5.2.2" class="anchored" data-anchor-id="supuesto-de-independencia"><span class="header-section-number">3.5.2.2</span> Supuesto de independencia</h4>
-<p>Se asume que los errores aleatorios <span class="math inline">\(\epsilon_n\)</span> son independientes entre sí, lo cual implica la ausencia de autocorrelación serial. En el análisis de series temporales fenológicas, este supuesto es particularmente crítico; la dependencia temporal residual no modelada puede subestimar las varianzas de los estimadores y sesgar las pruebas de significancia <span class="citation" data-cites="hamilton1994time">(<a href="bibliografia.html#ref-hamilton1994time" role="doc-biblioref"><strong>hamilton1994time?</strong></a>)</span>.</p>
+<p>Se asume que los errores aleatorios <span class="math inline">\(\epsilon_n\)</span> son independientes entre sí, lo cual implica la ausencia de autocorrelación serial. En el análisis de series temporales fenológicas, este supuesto es particularmente crítico; la dependencia temporal residual no modelada puede subestimar las varianzas de los estimadores y sesgar las pruebas de significancia <span class="citation" data-cites="hamilton1994time">(<a href="bibliografia.html#ref-hamilton1994time" role="doc-biblioref">Hamilton, 1994</a>)</span>.</p>
 </section>
 <section id="supuesto-de-homocedasticidad" class="level4" data-number="3.5.2.3">
 <h4 data-number="3.5.2.3" class="anchored" data-anchor-id="supuesto-de-homocedasticidad"><span class="header-section-number">3.5.2.3</span> Supuesto de homocedasticidad</h4>
-<p>La varianza de los errores debe permanecer constante a lo largo del periodo de observación, es decir, <span class="math inline">\(\text{Var}(\epsilon_n) = \sigma^2\)</span> para todo <span class="math inline">\(n\)</span>. La presencia de heterocedasticidad invalida los errores estándar convencionales de OLS, requiriendo el uso de estimadores de covarianza robustos <span class="citation" data-cites="white1980heteroskedasticity">(<a href="bibliografia.html#ref-white1980heteroskedasticity" role="doc-biblioref"><strong>white1980heteroskedasticity?</strong></a>)</span>.</p>
+<p>La varianza de los errores debe permanecer constante a lo largo del periodo de observación, es decir, <span class="math inline">\(\text{Var}(\epsilon_n) = \sigma^2\)</span> para todo <span class="math inline">\(n\)</span>. La presencia de heterocedasticidad invalida los errores estándar convencionales de OLS, requiriendo el uso de estimadores de covarianza robustos <span class="citation" data-cites="white1980heteroskedasticity">(<a href="bibliografia.html#ref-white1980heteroskedasticity" role="doc-biblioref">White, 1980</a>)</span>.</p>
 </section>
 <section id="supuesto-de-normalidad" class="level4" data-number="3.5.2.4">
 <h4 data-number="3.5.2.4" class="anchored" data-anchor-id="supuesto-de-normalidad"><span class="header-section-number">3.5.2.4</span> Supuesto de normalidad</h4>
@@ -893,15 +893,15 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </section>
 </section>
 <section id="métodos-de-diagnóstico-gráfico" class="level3" data-number="3.5.3">
-<h3 data-number="3.5.3" class="anchored" data-anchor-id="métodos-de-diagnóstico-gráfico"><span class="header-section-number">3.5.3</span> 3.5.3. Métodos de diagnóstico gráfico</h3>
+<h3 data-number="3.5.3" class="anchored" data-anchor-id="métodos-de-diagnóstico-gráfico"><span class="header-section-number">3.5.3</span> Métodos de diagnóstico gráfico</h3>
 <p>El análisis de los residuos estimados <span class="math inline">\(\hat{\epsilon}_n = Y_n - \mathbf{x}_n^T \hat{\boldsymbol{\theta}}\)</span> conforma la base visual empírica del diagnóstico. Las dos herramientas gráficas principales son:</p>
 <ul>
 <li><p><strong>Gráfico de residuos vs.&nbsp;valores ajustados</strong>: Permite identificar desviaciones de la linealidad (patrones curvilíneos), heterocedasticidad (forma de embudo o dispersión variable) y observaciones atípicas extremas.</p></li>
-<li><p><strong>Gráfico de probabilidad normal (QQ-plot)</strong>: Compara los cuantiles empíricos de los residuos estandarizados contra los cuantiles teóricos de una distribución normal estándar. Las colas pesadas o desviaciones sistemáticas de la línea de identidad (<span class="math inline">\(45^\circ\)</span>) evidencian violaciones al supuesto de normalidad <span class="citation" data-cites="wilks1962statistical">(<a href="bibliografia.html#ref-wilks1962statistical" role="doc-biblioref"><strong>wilks1962statistical?</strong></a>)</span>.</p></li>
+<li><p><strong>Gráfico de probabilidad normal (QQ-plot)</strong>: Compara los cuantiles empíricos de los residuos estandarizados contra los cuantiles teóricos de una distribución normal estándar. Las colas pesadas o desviaciones sistemáticas de la línea de identidad (<span class="math inline">\(45^\circ\)</span>) evidencian violaciones al supuesto de normalidad <span class="citation" data-cites="wilks2019statistical">(<a href="bibliografia.html#ref-wilks2019statistical" role="doc-biblioref">Wilks, 2019</a>)</span>.</p></li>
 </ul>
 </section>
 <section id="pruebas-estadísticas-formales" class="level3" data-number="3.5.4">
-<h3 data-number="3.5.4" class="anchored" data-anchor-id="pruebas-estadísticas-formales"><span class="header-section-number">3.5.4</span> 3.5.4. Pruebas estadísticas formales</h3>
+<h3 data-number="3.5.4" class="anchored" data-anchor-id="pruebas-estadísticas-formales"><span class="header-section-number">3.5.4</span> Pruebas estadísticas formales</h3>
 <p>Para complementar el análisis gráfico, se emplean contrastes de hipótesis rigurosos:</p>
 <section id="test-de-durbin-watson-para-autocorrelación" class="level4" data-number="3.5.4.1">
 <h4 data-number="3.5.4.1" class="anchored" data-anchor-id="test-de-durbin-watson-para-autocorrelación"><span class="header-section-number">3.5.4.1</span> Test de Durbin-Watson para autocorrelación</h4>
@@ -910,7 +910,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 d = \frac{\sum_{n=2}^N (\hat{\epsilon}_n - \hat{\epsilon}_{n-1})^2}{\sum_{n=1}^N \hat{\epsilon}_n^2}
 \tag{3.43}
 \]</span></p>
-<p>Bajo la hipótesis nula, el estadístico ronda un valor de <span class="math inline">\(d \approx 2\)</span>. Valores significativamente menores a 2 indican autocorrelación positiva (común en series de tiempo ecológicas), mientras que valores mayores a 2 sugieren autocorrelación negativa <span class="citation" data-cites="durbin1950testing">(<a href="bibliografia.html#ref-durbin1950testing" role="doc-biblioref"><strong>durbin1950testing?</strong></a>)</span>.</p>
+<p>Bajo la hipótesis nula, el estadístico ronda un valor de <span class="math inline">\(d \approx 2\)</span>. Valores significativamente menores a 2 indican autocorrelación positiva (común en series de tiempo ecológicas), mientras que valores mayores a 2 sugieren autocorrelación negativa <span class="citation" data-cites="durbin1950testing">(<a href="bibliografia.html#ref-durbin1950testing" role="doc-biblioref">Durbin &amp; Watson, 1950</a>)</span>.</p>
 </section>
 <section id="test-de-breusch-pagan-para-heterocedasticidad" class="level4" data-number="3.5.4.2">
 <h4 data-number="3.5.4.2" class="anchored" data-anchor-id="test-de-breusch-pagan-para-heterocedasticidad"><span class="header-section-number">3.5.4.2</span> Test de Breusch-Pagan para heterocedasticidad</h4>
@@ -919,7 +919,7 @@ d = \frac{\sum_{n=2}^N (\hat{\epsilon}_n - \hat{\epsilon}_{n-1})^2}{\sum_{n=1}^N
 \hat{\epsilon}_n^2 = \alpha_0 + \sum_{j=1}^p \alpha_j x_{nj} + u_n
 \tag{3.44}
 \]</span></p>
-<p>La hipótesis nula de homocedasticidad se rechaza si el estadístico de prueba <span class="math inline">\(LM = N \cdot R^2_{\text{aux}}\)</span> excede el valor crítico de la distribución <span class="math inline">\(\chi^2_{p-1}\)</span> <span class="citation" data-cites="breusch1979simple">(<a href="bibliografia.html#ref-breusch1979simple" role="doc-biblioref"><strong>breusch1979simple?</strong></a>)</span>.</p>
+<p>La hipótesis nula de homocedasticidad se rechaza si el estadístico de prueba <span class="math inline">\(LM = N \cdot R^2_{\text{aux}}\)</span> excede el valor crítico de la distribución <span class="math inline">\(\chi^2_{p-1}\)</span> <span class="citation" data-cites="breusch1979simple">(<a href="bibliografia.html#ref-breusch1979simple" role="doc-biblioref">Breusch &amp; Pagan, 1979</a>)</span>.</p>
 </section>
 <section id="test-de-jarque-bera-para-normalidad" class="level4" data-number="3.5.4.3">
 <h4 data-number="3.5.4.3" class="anchored" data-anchor-id="test-de-jarque-bera-para-normalidad"><span class="header-section-number">3.5.4.3</span> Test de Jarque-Bera para normalidad</h4>
@@ -928,17 +928,17 @@ d = \frac{\sum_{n=2}^N (\hat{\epsilon}_n - \hat{\epsilon}_{n-1})^2}{\sum_{n=1}^N
 JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
 \tag{3.45}
 \]</span></p>
-<p>Valores estadísticamente significativos de <span class="math inline">\(JB\)</span> conllevan al rechazo de la hipótesis de normalidad <span class="citation" data-cites="jarque1980efficient">(<a href="bibliografia.html#ref-jarque1980efficient" role="doc-biblioref"><strong>jarque1980efficient?</strong></a>)</span>.</p>
+<p>Valores estadísticamente significativos de <span class="math inline">\(JB\)</span> conllevan al rechazo de la hipótesis de normalidad <span class="citation" data-cites="jarque1980efficient">(<a href="bibliografia.html#ref-jarque1980efficient" role="doc-biblioref">Jarque &amp; Bera, 1980</a>)</span>.</p>
 </section>
 </section>
 <section id="diagnóstico-de-multicolinealidad" class="level3" data-number="3.5.5">
-<h3 data-number="3.5.5" class="anchored" data-anchor-id="diagnóstico-de-multicolinealidad"><span class="header-section-number">3.5.5</span> 3.5.5. Diagnóstico de multicolinealidad</h3>
+<h3 data-number="3.5.5" class="anchored" data-anchor-id="diagnóstico-de-multicolinealidad"><span class="header-section-number">3.5.5</span> Diagnóstico de multicolinealidad</h3>
 <p>Como se estableció en la sección de identificabilidad teórica, la existencia de correlaciones altas entre las covariables climáticas y los rezagos autorregresivos infla las varianzas de los estimadores, dificultando la separación de los efectos biológicos individuales.</p>
 <p>La evaluación práctica de este fenómeno se realiza utilizando el <strong>Factor de Inflación de Varianza (VIF)</strong> y el <strong>Número de Condición</strong> (<span class="math inline">\(\kappa\)</span>), cuyas definiciones formales se detallan en las ecuaciones (3.41) y (3.42) de la Sección 3.4. Siguiendo la literatura estadística moderna <span class="citation" data-cites="montgomery2021introduction">(<a href="bibliografia.html#ref-montgomery2021introduction" role="doc-biblioref">Montgomery et&nbsp;al., 2021</a>)</span>, se aplican los umbrales críticos previamente justificados (<span class="math inline">\(\text{VIF}_j &gt; 10\)</span> y <span class="math inline">\(\kappa \geq 30\)</span>) para identificar problemas severos que ameriten la eliminación de forzantes redundantes o la aplicación de técnicas de regularización (como regresión Ridge) para estabilizar la matriz <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span>.</p>
 </section>
 <section id="criterios-de-información-para-selección-de-modelos" class="level3" data-number="3.5.6">
-<h3 data-number="3.5.6" class="anchored" data-anchor-id="criterios-de-información-para-selección-de-modelos"><span class="header-section-number">3.5.6</span> 3.5.6. Criterios de información para selección de modelos</h3>
-<p>La parsimonia es un principio rector en el modelado estocástico. Los criterios de información permiten comparar modelos con diferentes estructuras de rezago y combinaciones de forzantes climáticas, introduciendo una penalización matemática por la complejidad para evitar el sobreajuste <span class="citation" data-cites="akaike1974new">(<a href="bibliografia.html#ref-akaike1974new" role="doc-biblioref"><strong>akaike1974new?</strong></a>)</span>.</p>
+<h3 data-number="3.5.6" class="anchored" data-anchor-id="criterios-de-información-para-selección-de-modelos"><span class="header-section-number">3.5.6</span> Criterios de información para selección de modelos</h3>
+<p>La parsimonia es un principio rector en el modelado estocástico. Los criterios de información permiten comparar modelos con diferentes estructuras de rezago y combinaciones de forzantes climáticas, introduciendo una penalización matemática por la complejidad para evitar el sobreajuste <span class="citation" data-cites="akaike1974new">(<a href="bibliografia.html#ref-akaike1974new" role="doc-biblioref">Akaike, 1974</a>)</span>.</p>
 <section id="criterio-de-información-de-akaike-aic" class="level4" data-number="3.5.6.1">
 <h4 data-number="3.5.6.1" class="anchored" data-anchor-id="criterio-de-información-de-akaike-aic"><span class="header-section-number">3.5.6.1</span> Criterio de Información de Akaike (AIC)</h4>
 <p>Fundamentado en la teoría de la información, el AIC estima la pérdida relativa de información al aproximar la realidad con el modelo ajustado:</p>
@@ -964,20 +964,23 @@ JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
 \text{BIC} = N \ln\left(\frac{\text{RSS}}{N}\right) + p \ln(N)
 \tag{3.49}
 \]</span></p>
-<p>El BIC es asintóticamente consistente, asegurando la selección del modelo verdadero con probabilidad aproximándose a <span class="math inline">\(1\)</span> conforme <span class="math inline">\(N \to \infty\)</span>, siempre que este se encuentre entre las formulaciones candidatas <span class="citation" data-cites="schwarz1978estimating">(<a href="bibliografia.html#ref-schwarz1978estimating" role="doc-biblioref"><strong>schwarz1978estimating?</strong></a>)</span>.</p>
+<p>El BIC es asintóticamente consistente, asegurando la selección del modelo verdadero con probabilidad aproximándose a <span class="math inline">\(1\)</span> conforme <span class="math inline">\(N \to \infty\)</span>, siempre que este se encuentre entre las formulaciones candidatas <span class="citation" data-cites="schwarz1978estimating">(<a href="bibliografia.html#ref-schwarz1978estimating" role="doc-biblioref">Schwarz, 1978</a>)</span>.</p>
 </section>
 </section>
 <section id="validación-del-modelo-mediante-comparación-con-benchmarks" class="level3" data-number="3.5.7">
-<h3 data-number="3.5.7" class="anchored" data-anchor-id="validación-del-modelo-mediante-comparación-con-benchmarks"><span class="header-section-number">3.5.7</span> 3.5.7. Validación del modelo mediante comparación con <em>benchmarks</em></h3>
+<h3 data-number="3.5.7" class="anchored" data-anchor-id="validación-del-modelo-mediante-comparación-con-benchmarks"><span class="header-section-number">3.5.7</span> Validación del modelo mediante comparación con <em>benchmarks</em></h3>
 <p>La fase final de validación del modelo biológico SDDE se efectúa mediante una comparación estructurada contra <em>benchmarks</em> puramente estadísticos (como modelos ARMA/AR(<span class="math inline">\(p\)</span>) genéricos). Esta comparación se ejecuta bajo tres ejes fundamentales:</p>
 <ol type="1">
-<li><p><strong>Ajuste penalizado</strong>: Se evalúa la superioridad algorítmica si la diferencia en los criterios es sustancial (<span class="math inline">\(\Delta \text{AIC} \leq -2\)</span> o <span class="math inline">\(\Delta \text{BIC} \leq -2\)</span>) a favor del SDDE <span class="citation" data-cites="burnham2002model">(<a href="bibliografia.html#ref-burnham2002model" role="doc-biblioref"><strong>burnham2002model?</strong></a>)</span>.</p></li>
+<li><p><strong>Ajuste penalizado</strong>: Se evalúa la superioridad algorítmica si la diferencia en los criterios es sustancial (<span class="math inline">\(\Delta \text{AIC} \leq -2\)</span> o <span class="math inline">\(\Delta \text{BIC} \leq -2\)</span>) a favor del SDDE <span class="citation" data-cites="burnham2002model">(<a href="bibliografia.html#ref-burnham2002model" role="doc-biblioref">Burnham &amp; Anderson, 2002</a>)</span>.</p></li>
 <li><p><strong>Capacidad predictiva (<em>Out-of-sample</em>)</strong>: Se contrasta el Error Cuadrático Medio (RMSE) y el Pseudo-<span class="math inline">\(R^2\)</span> iterando predicciones sobre un conjunto de datos de validación cruzada no visto durante el entrenamiento.</p></li>
 <li><p><strong>Interpretabilidad biológica</strong>: A diferencia de la naturaleza de “caja negra” de los polinomios autorregresivos profundos, la parametrización esparsa del SDDE (Ecuación 3.25) se justifica porque ofrece una traducción directa a la dinámica fisiológica de la vegetación (tasas de crecimiento, memoria de fotoasimilados y sensibilidad ambiental empírica) <span class="citation" data-cites="cuddington2013process">(<a href="bibliografia.html#ref-cuddington2013process" role="doc-biblioref">Cuddington et&nbsp;al., 2013</a>)</span>.</p></li>
 </ol>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-akaike1974new" class="csl-entry" role="listitem">
+Akaike, H. (1974). A new look at the statistical model identification. <em>IEEE Transactions on Automatic Control</em>, <em>19</em>(6), 716-723. <a href="https://doi.org/10.1109/TAC.1974.1100705">https://doi.org/10.1109/TAC.1974.1100705</a>
+</div>
 <div id="ref-andersson2017strong" class="csl-entry" role="listitem">
 Andersson, S. (2017). Strong Identification in Econometric Models. <em>Journal of Econometrics</em>, <em>198</em>(2), 245-260.
 </div>
@@ -986,6 +989,12 @@ Bellman, R. (1970). <em>Introduction to the Mathematical Theory of Control Proce
 </div>
 <div id="ref-belsley1980regression" class="csl-entry" role="listitem">
 Belsley, D. A., Kuh, E., &amp; Welsch, R. E. (1980). <em>Regression Diagnostics: Identifying Influential Data and Sources of Collinearity</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-breusch1979simple" class="csl-entry" role="listitem">
+Breusch, T. S., &amp; Pagan, A. R. (1979). A Simple Test for Heteroscedasticity and Random Coefficient Variation. <em>Econometrica</em>, <em>47</em>(5), 1287-1294. <a href="https://doi.org/10.2307/1911963">https://doi.org/10.2307/1911963</a>
+</div>
+<div id="ref-burnham2002model" class="csl-entry" role="listitem">
+Burnham, K. P., &amp; Anderson, D. R. (2002). <em>Model Selection and Multimodel Inference: A Practical Information-Theoretic Approach</em> (2nd ed.). Springer.
 </div>
 <div id="ref-casella2002statistical" class="csl-entry" role="listitem">
 Casella, G., &amp; Berger, R. L. (2002). <em>Statistical Inference</em> (2nd ed.). Duxbury Press.
@@ -999,11 +1008,17 @@ Diepenbrock, W. (2000). Yield formation in field-grown Brassica oleracea L. var.
 <div id="ref-dietze2017ecological" class="csl-entry" role="listitem">
 Dietze, M. C. (2017). <em>Ecological Forecasting</em>. Princeton University Press.
 </div>
+<div id="ref-durbin1950testing" class="csl-entry" role="listitem">
+Durbin, J., &amp; Watson, G. S. (1950). Testing for Serial Correlation in Least Squares Regression: I. <em>Biometrika</em>, <em>37</em>(3/4), 409-428. <a href="https://doi.org/10.2307/2332391">https://doi.org/10.2307/2332391</a>
+</div>
 <div id="ref-fox2015applied" class="csl-entry" role="listitem">
 Fox, J. (2015). <em>Applied Regression Analysis and Generalized Linear Models</em> (3rd ed.). SAGE Publications.
 </div>
 <div id="ref-greene2018econometric" class="csl-entry" role="listitem">
 Greene, W. H. (2018). <em>Econometric Analysis</em> (8th ed.). Pearson.
+</div>
+<div id="ref-hamilton1994time" class="csl-entry" role="listitem">
+Hamilton, J. D. (1994). <em>Time Series Analysis</em>. Princeton University Press.
 </div>
 <div id="ref-hastie2009elements" class="csl-entry" role="listitem">
 Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (2nd ed.). Springer.
@@ -1013,6 +1028,9 @@ Hatfield, J. L., &amp; Prueger, J. H. (2015). Temperature extremes: Effect on pl
 </div>
 <div id="ref-ito1951stochastic" class="csl-entry" role="listitem">
 Itô, K. (1951). On stochastic differential equations. <em>Memoirs of the American Mathematical Society</em>, <em>4</em>, 1-51. <a href="https://doi.org/10.1090/memo/0004">https://doi.org/10.1090/memo/0004</a>
+</div>
+<div id="ref-jarque1980efficient" class="csl-entry" role="listitem">
+Jarque, C. M., &amp; Bera, A. K. (1980). Efficient tests for normality, homoscedasticity and serial independence of regression residuals. <em>Economics Letters</em>, <em>6</em>(3), 255-259. <a href="https://doi.org/10.1016/0165-1765(80)90024-5">https://doi.org/10.1016/0165-1765(80)90024-5</a>
 </div>
 <div id="ref-kloeden1992numerical" class="csl-entry" role="listitem">
 Kloeden, P. E., &amp; Platen, E. (1992). <em>Numerical Solution of Stochastic Differential Equations</em> (Vol. 23). Springer-Verlag. <a href="https://doi.org/10.1007/978-3-662-12616-5">https://doi.org/10.1007/978-3-662-12616-5</a>
@@ -1047,6 +1065,9 @@ Richardson, A. D., Hufkens, K., Milliman, T., Aubrecht, D. M., Furze, M. E., Sey
 <div id="ref-sarkka2019applied" class="csl-entry" role="listitem">
 Särkkä, S., &amp; Solin, A. (2019). <em>Applied Stochastic Differential Equations</em>. Cambridge University Press. <a href="https://doi.org/10.1017/9781108186735">https://doi.org/10.1017/9781108186735</a>
 </div>
+<div id="ref-schwarz1978estimating" class="csl-entry" role="listitem">
+Schwarz, G. (1978). Estimating the dimension of a model. <em>The Annals of Statistics</em>, <em>6</em>(2), 461-464. <a href="https://doi.org/10.1214/aos/1176344136">https://doi.org/10.1214/aos/1176344136</a>
+</div>
 <div id="ref-shoji1998estimation" class="csl-entry" role="listitem">
 Shoji, I., &amp; Ozaki, T. (1998). Estimation for nonlinear stochastic differential equations by a local linearization method. <em>Stochastic Analysis and Applications</em>, <em>16</em>(4), 733-752. <a href="https://doi.org/10.1080/07362999808809559">https://doi.org/10.1080/07362999808809559</a>
 </div>
@@ -1059,8 +1080,14 @@ Thomas, H., &amp; Ougham, H. (2014). The stay-green trait. <em>Journal of Experi
 <div id="ref-volterra1931theorie" class="csl-entry" role="listitem">
 Volterra, V. (1931). <em>Théorie Mathématique de la Lutte pour la Vie</em>. Gauthier-Villars.
 </div>
+<div id="ref-white1980heteroskedasticity" class="csl-entry" role="listitem">
+White, H. (1980). A Heteroskedasticity-Consistent Covariance Matrix Estimator and a Direct Test for Heteroskedasticity. <em>Econometrica</em>, <em>48</em>(4), 817-838. <a href="https://doi.org/10.2307/1912934">https://doi.org/10.2307/1912934</a>
+</div>
 <div id="ref-wilkinson2018stochastic" class="csl-entry" role="listitem">
 Wilkinson, D. J. (2018). <em>Stochastic Modelling for Systems Biology</em> (3rd ed.). CRC Press.
+</div>
+<div id="ref-wilks2019statistical" class="csl-entry" role="listitem">
+Wilks, D. S. (2019). <em>Statistical Methods in the Atmospheric Sciences</em> (4th ed.). Elsevier.
 </div>
 </div>
 </section>
