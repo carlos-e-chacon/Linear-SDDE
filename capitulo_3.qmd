@@ -11,7 +11,7 @@ format:
 
 ### Motivación y contexto teórico
 
-Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema [@mao2007stochastic]. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal [@hutchinson1948].
+Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema [@mao2007stochastic]. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal [@ogle2015quantifying].
 
 La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales [@volterra1931theorie]. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs de parte de Kiyosi Itô visto en el artículo @ito1951stochastic.
 
@@ -89,13 +89,13 @@ $$
 \tag{3.6}
 $$
 
-- **Crecimiento basal ($\alpha$)**: Representa la tasa de crecimiento intrínseca del sistema en ausencia de retroalimentación y forzantes externos. En el contexto vegetal, esto corresponde al crecimiento mínimo sostenido por procesos metabólicos básicos [@taiz2010plant].
+- **Crecimiento basal ($\alpha$)**: Representa la tasa de crecimiento intrínseca del sistema en ausencia de retroalimentación y forzantes externos. En el contexto vegetal, esto corresponde al crecimiento mínimo sostenido por procesos metabólicos básicos [@taiz2022plant].
 
 - **Retroalimentación actual ($\beta X(t)$)**: Modela la autorregulación del crecimiento basada en el estado actual del sistema. Un valor $\beta > 0$ indica crecimiento autocatalítico (aceleración), mientras que $\beta < 0$ representa saturación o competencia intraespecífica [@diepenbrock2000yield].
 
 - **Memoria fisiológica ($\gamma X(t-\tau)$)**: Captura explícitamente la dependencia del pasado, representando procesos como la translocación de fotoasimilados, acumulación de reservas o respuesta hormonal retardada [@thomas2014stay]. El signo de $\gamma$ determina si el efecto es positivo (persistencia) o negativo (agotamiento de recursos).
 
-- **Forzantes climáticas ($\boldsymbol{\delta}^T \mathbf{C}(t)$)**: Incorpora la influencia directa de variables ambientales sobre el crecimiento. Cada componente $\delta_i$ cuantifica la sensibilidad del sistema a la variable climática correspondiente [@monteith1977climate].
+- **Forzantes climáticas ($\boldsymbol{\delta}^T \mathbf{C}(t)$)**: Incorpora la influencia directa de variables ambientales sobre el crecimiento. Cada componente $\delta_i$ cuantifica la sensibilidad del sistema a la variable climática correspondiente [@hatfield2015temperature].
 
 #### Término de difusión estocástica
 
@@ -103,7 +103,7 @@ El término de difusión $\sigma X(t) \, dW(t)$ modela la variabilidad ambiental
 
 ### Solución formal y representación integral
 
-La solución de la @eq-sdde puede expresarse en forma integral utilizando el Cálculo de Itô [@oksendal2003stochastic]:
+La solución de la @eq-sdde puede expresarse en forma integral utilizando el Cálculo de Itô [@sarkka2019applied]:
 
 $$
 X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymbol{\delta}^T \mathbf{C}(s) \right] ds + \sigma \int_0^t X(s) \, dW(s)
@@ -156,7 +156,7 @@ $$
 
 **Teorema 3.2** (Convergencia débil de Euler-Maruyama). *Bajo las mismas condiciones del Teorema 3.1, el esquema de Euler-Maruyama tiene convergencia débil de orden $\beta = 1$* [@milstein1995numerical].
 
-Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, etc.) [@glasserman2003monte].
+Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, etc.) [@wilkinson2018stochastic].
 
 ### Error de truncamiento local
 
@@ -178,9 +178,8 @@ Este resultado justifica el orden de convergencia fuerte $\gamma = 1/2$, ya que 
 
 ### Implementación computacional
 
-La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El @alg-euler presenta una implementación eficiente:
+La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El siguiente algoritmo presenta una implementación eficiente:
 
-::: {#alg-euler}
 ::: {.callout-note appearance="minimal" icon=false}
 **Entrada:** $\tau, \Delta t, T, X_0, \{C_n\}_{n=0}^{N-1}, \alpha, \beta, \gamma, \delta, \sigma$.  
 **Salida:** $\{X_n\}_{n=0}^{N}$ aproximación numérica.
@@ -195,8 +194,6 @@ La implementación del esquema de Euler-Maruyama para SDDEs requiere especial at
     c. $X[n+1] \longleftarrow X[n] + \mu \cdot \Delta t + \sigma \cdot X[n] \Delta W$
 6. **Retornar** $\{X_n\}_{n=0}^{N}$
 :::
-Esquema de Euler-Maruyama para SDDE
-:::
 
 La complejidad computacional del algoritmo es $\mathcal{O}(N)$, lo que lo hace eficiente incluso para simulaciones con horizontes temporales largos [@andersson2017strong].
 
@@ -204,11 +201,11 @@ La complejidad computacional del algoritmo es $\mathcal{O}(N)$, lo que lo hace e
 
 En nuestra aplicación específica, el paso temporal de discretización es $\Delta t = 1$ día, correspondiente a la frecuencia de muestreo de los datos PhenoCam. Esta elección tiene implicaciones importantes:
 
-1. **Magnitud del error numérico**: Con $\Delta t = 1$, el error de truncamiento local puede ser significativo comparado con aplicaciones donde $\Delta t < 1$. Sin embargo, dado que los datos observados también tienen una resolución diaria, el error numérico se vuelve comparable al error de observación [@shoji1998estimation].
+1. **Magnitud del error numérico**: Con $\Delta t = 1$, el error de truncamiento local puede ser significativo comparado con aplicaciones donde $\Delta t < 1$. Sin embargo, dado que los datos observados también tienen una resolución diaria, el error numérico se vuelve comparable al error de observación [@richardson2018tracking].
 
 2. **Aproximación del incremento de Wiener**: Para $\Delta t = 1$, tenemos $\Delta W_n \sim \mathcal{N}(0, 1)$, lo que simplifica la generación de números aleatorios en la simulación.
 
-3. **Interpretación de parámetros**: Los parámetros estimados ($\alpha$, $\beta$, $\gamma$, $\boldsymbol{\delta}$, $\sigma$) están en escala diaria y deben interpretarse como tasas de cambio por día, no como tasas instantáneas [@campbell1997econometrics].
+3. **Interpretación de parámetros**: Los parámetros estimados ($\alpha$, $\beta$, $\gamma$, $\boldsymbol{\delta}$, $\sigma$) están en escala diaria y deben interpretarse como tasas de cambio por día, no como tasas instantáneas [@dietze2017ecological].
 
 4. **Consistencia dimensional**: Con $\Delta t = 1$, las ecuaciones (3.9) y (3.10) se simplifican al omitir explícitamente el factor $\Delta t$, lo que facilita la interpretación y la estimación de parámetros.
 
@@ -216,7 +213,7 @@ En nuestra aplicación específica, el paso temporal de discretización es $\Del
 
 ### Motivación y contexto estadístico
 
-La discretización del modelo SDDE mediante el esquema de Euler-Maruyama, presentada en la sección 3.2, proporciona una aproximación numérica que facilita la transición desde un marco teórico continuo a un problema de inferencia estadística discreta [@shoji1998estimation]. Esta formulación permite estimar los parámetros del modelo utilizando técnicas estándar de regresión lineal, lo cual es computacionalmente eficiente y estadísticamente bien fundamentado [@campbell1997econometrics].
+La discretización del modelo SDDE mediante el esquema de Euler-Maruyama, presentada en la sección 3.2, proporciona una aproximación numérica que facilita la transición desde un marco teórico continuo a un problema de inferencia estadística discreta. Esta formulación permite estimar los parámetros del modelo utilizando técnicas estándar de regresión lineal, lo cual es computacionalmente eficiente y estadísticamente bien fundamentado para el pronóstico de ecosistemas [@dietze2017ecological].
 
 El enfoque de regresión lineal para modelos estocásticos discretizados ha sido ampliamente utilizado en finanzas, ecología y ciencias ambientales, donde la combinación de dinámica determinista y ruido estocástico es inherente a los sistemas naturales [@kloeden1992numerical].
 
@@ -308,7 +305,7 @@ $$
 \tag{3.25}
 $$
 
-Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un **modelo AR(p) con restricciones estructurales**, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato ($i=1$) y el correspondiente al retraso biológico ($i=k=\tau$). Esta estructura esparsa reduce drásticamente la dimensionalidad del problema de $p+1$ parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema [@vapnik1998statistical].
+Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un **modelo AR(p) con restricciones estructurales**, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato ($i=1$) y el correspondiente al retraso biológico ($i=k=\tau$). Esta estructura esparsa reduce drásticamente la dimensionalidad del problema de $p+1$ parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema [@cuddington2013process].
 
 ### Supuestos estadísticos del modelo
 
@@ -374,7 +371,7 @@ $$
 
 ### Identificabilidad del modelo
 
-La **identificabilidad** de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados [@rothenberg1971identification]. Para nuestro modelo, la identificabilidad depende de dos factores principales:
+La **identificabilidad** de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados [@miao2011identifiability]. Para nuestro modelo, la identificabilidad depende de dos factores principales:
 
 1. Identificabilidad estructural. El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de $\boldsymbol{\theta}$ producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.
 
@@ -419,7 +416,7 @@ Estos diagnósticos son esenciales para garantizar la robustez de las conclusion
 
 ### Marco teórico de identificabilidad
 
-La **identificabilidad** constituye una propiedad fundamental en la inferencia estadística, ya que garantiza que los parámetros de un modelo puedan ser estimados de manera única a partir de los datos observados [@rothenberg1971identification]. En el contexto de modelos estocásticos discretizados como el nuestro, la identificabilidad se descompone en dos componentes complementarios: **identificabilidad estructural** e **identificabilidad práctica**.
+La **identificabilidad** constituye una propiedad fundamental en la inferencia estadística, ya que garantiza que los parámetros de un modelo puedan ser estimados de manera única a partir de los datos observados [@miao2011identifiability]. En el contexto de modelos estocásticos discretizados como el nuestro, la identificabilidad se descompone en dos componentes complementarios: **identificabilidad estructural** e **identificabilidad práctica**.
 
 La identificabilidad estructural se refiere a la unicidad de la parametrización del modelo desde una perspectiva puramente matemática, independientemente de los datos disponibles. Por otro lado, la identificabilidad práctica depende de la calidad, cantidad y estructura de los datos observados, y determina si es posible estimar los parámetros con precisión finita [@bellman1970structural].
 
@@ -432,7 +429,7 @@ $$
 \tag{3.32}
 $$
 
-El modelo es **estructuralmente identificable** si la aplicación $\boldsymbol{\theta} \mapsto \mathbb{P}_{\boldsymbol{\theta}}$ es inyectiva, donde $\mathbb{P}_{\boldsymbol{\theta}}$ denota la distribución de probabilidad de los datos bajo el parámetro $\boldsymbol{\theta}$ [@walter1982global].
+El modelo es **estructuralmente identificable** si la aplicación $\boldsymbol{\theta} \mapsto \mathbb{P}_{\boldsymbol{\theta}}$ es inyectiva, donde $\mathbb{P}_{\boldsymbol{\theta}}$ denota la distribución de probabilidad de los datos bajo el parámetro $\boldsymbol{\theta}$ [@miao2011identifiability].
 
 **Teorema 3.4** (Identificabilidad estructural). *El modelo (3.32) es estructuralmente identificable si y solo si las funciones $X_n$, $X_{n-k}$, $\text{Rad}_n$, $\text{Temp}_n$, y $\text{Prec}_n$ son linealmente independientes en el espacio de funciones generadas por el proceso estocástico*.
 
@@ -555,23 +552,139 @@ $$
 \tag{3.41}
 $$
 
-donde $R_j^2$ es el coeficiente de determinación obtenido al regresar la variable $j$ contra todas las demás variables explicativas. Valores de $\text{VIF}_j > 10$ indican problemas severos de multicolinealidad [@marquardt1970generalized].
+donde $R_j^2$ es el coeficiente de determinación obtenido al regresar la variable $j$ contra todas las demás variables explicativas. Esta métrica cuantifica cuánto se incrementa la varianza de un coeficiente estimado debido a la correlación lineal entre los predictores. En la práctica, valores de $\text{VIF}_j > 10$ se consideran un indicador de multicolinealidad severa, lo que compromete la precisión y estabilidad de las estimaciones del modelo [@montgomery2021introduction].
 
 #### Número de condición
 
-El número de condición de la matriz $\mathbf{X}^T \mathbf{X}$ se define como:
+El número de condición de la matriz de diseño, evaluado a través de $\mathbf{X}^T \mathbf{X}$, se define como:
 
 $$
 \kappa(\mathbf{X}^T \mathbf{X}) = \sqrt{\frac{\lambda_{\max}}{\lambda_{\min}}}
 \tag{3.42}
 $$
 
-donde $\lambda_{\max}$ y $\lambda_{\min}$ son los autovalores máximo y mínimo, respectivamente. Según [@belsley1980regression]:
+donde $\lambda_{\max}$ y $\lambda_{\min}$ representan los autovalores máximo y mínimo de la matriz, respectivamente. Este índice mide la sensibilidad geométrica y numérica de las estimaciones ante pequeños cambios en los datos. Siguiendo los criterios analíticos establecidos por [@belsley1980regression] y respaldados en la literatura estadística moderna [@montgomery2021introduction], los umbrales de diagnóstico son:
 
-- $\kappa < 10$: Poca multicolinealidad
+- $\kappa < 10$: Poca o nula multicolinealidad.
 
-- $10 \leq \kappa < 30$: Multicolinealidad moderada
+- $10 \leq \kappa < 30$: Multicolinealidad moderada.
 
-- $\kappa \geq 30$: Multicolinealidad severa
+- $\kappa \geq 30$: Multicolinealidad severa (alta inestabilidad computacional).
 
-Estos diagnósticos son esenciales para evaluar la fiabilidad de las estimaciones de parámetros y para identificar posibles reformulaciones del modelo que mejoren su identificabilidad práctica.
+En conjunto, el análisis de VIF y el número de condición son esenciales para evaluar la fiabilidad de las estimaciones de los parámetros empíricos. Detectar valores críticos en ambos diagnósticos justifica la necesidad de reformular el modelo, eliminar variables redundantes o aplicar técnicas de regularización para asegurar su identificabilidad práctica.
+
+## Diagnóstico Estadístico y Validación del Modelo
+
+### Marco teórico del diagnóstico de regresión
+
+El diagnóstico estadístico constituye una etapa fundamental en el análisis de modelos de regresión lineal, ya que permite verificar la validez de los supuestos subyacentes y evaluar la calidad del ajuste [@fox2015applied]. En el contexto de modelos derivados de ecuaciones diferenciales estocásticas con retraso (SDDE) discretizadas, el diagnóstico adquiere una relevancia adicional: cualquier violación de los supuestos puede comprometer no solo la inferencia estadística, sino también la interpretación biológica y fenomenológica de los parámetros estimados [@greene2018econometric].
+
+Los supuestos clásicos del modelo lineal —linealidad, independencia, homocedasticidad y normalidad— deben ser verificados sistemáticamente para garantizar la robustez de las conclusiones y la estabilidad numérica de la matriz de diseño.
+
+### Supuestos del modelo y sus implicaciones
+
+#### Supuesto de linealidad
+El modelo asume que la relación entre la tasa de cambio del índice de verdor ($\Delta X_n$) y las covariables explicativas (estados previos y forzantes climáticas) es estrictamente lineal en los parámetros. La violación de este supuesto suele manifestarse mediante patrones sistemáticos en los residuos frente a los valores ajustados, sugiriendo la necesidad de incorporar interacciones o términos polinomiales.
+
+#### Supuesto de independencia
+Se asume que los errores aleatorios $\epsilon_n$ son independientes entre sí, lo cual implica la ausencia de autocorrelación serial. En el análisis de series temporales fenológicas, este supuesto es particularmente crítico; la dependencia temporal residual no modelada puede subestimar las varianzas de los estimadores y sesgar las pruebas de significancia [@hamilton1994time].
+
+#### Supuesto de homocedasticidad
+La varianza de los errores debe permanecer constante a lo largo del periodo de observación, es decir, $\text{Var}(\epsilon_n) = \sigma^2$ para todo $n$. La presencia de heterocedasticidad invalida los errores estándar convencionales de OLS, requiriendo el uso de estimadores de covarianza robustos [@white1980heteroskedasticity].
+
+#### Supuesto de normalidad
+Aunque el teorema del límite central garantiza la consistencia asintótica de los estimadores sin requerir normalidad estricta, que los errores sigan una distribución gaussiana ($\epsilon_n \sim \mathcal{N}(0, \sigma^2)$) es una condición necesaria para realizar inferencia exacta en muestras finitas (pruebas $t$, $F$ e intervalos de confianza) [@casella2002statistical].
+
+### Métodos de diagnóstico gráfico
+
+El análisis de los residuos estimados $\hat{\epsilon}_n = Y_n - \mathbf{x}_n^T \hat{\boldsymbol{\theta}}$ conforma la base visual empírica del diagnóstico. Las dos herramientas gráficas principales son:
+
+- **Gráfico de residuos vs. valores ajustados**: Permite identificar desviaciones de la linealidad (patrones curvilíneos), heterocedasticidad (forma de embudo o dispersión variable) y observaciones atípicas extremas.
+
+- **Gráfico de probabilidad normal (QQ-plot)**: Compara los cuantiles empíricos de los residuos estandarizados contra los cuantiles teóricos de una distribución normal estándar. Las colas pesadas o desviaciones sistemáticas de la línea de identidad ($45^\circ$) evidencian violaciones al supuesto de normalidad [@wilks2019statistical].
+
+### Pruebas estadísticas formales
+
+Para complementar el análisis gráfico, se emplean contrastes de hipótesis rigurosos:
+
+#### Test de Durbin-Watson para autocorrelación
+Evalúa la hipótesis nula de ausencia de autocorrelación serial de primer orden en los residuos:
+
+$$
+d = \frac{\sum_{n=2}^N (\hat{\epsilon}_n - \hat{\epsilon}_{n-1})^2}{\sum_{n=1}^N \hat{\epsilon}_n^2}
+\tag{3.43}
+$$
+
+Bajo la hipótesis nula, el estadístico ronda un valor de $d \approx 2$. Valores significativamente menores a 2 indican autocorrelación positiva (común en series de tiempo ecológicas), mientras que valores mayores a 2 sugieren autocorrelación negativa [@durbin1950testing].
+
+#### Test de Breusch-Pagan para heterocedasticidad
+Este contraste modela la varianza residual en función de las variables explicativas mediante una regresión auxiliar:
+
+$$
+\hat{\epsilon}_n^2 = \alpha_0 + \sum_{j=1}^p \alpha_j x_{nj} + u_n
+\tag{3.44}
+$$
+
+La hipótesis nula de homocedasticidad se rechaza si el estadístico de prueba $LM = N \cdot R^2_{\text{aux}}$ excede el valor crítico de la distribución $\chi^2_{p-1}$ [@breusch1979simple].
+
+#### Test de Jarque-Bera para normalidad
+Cuantifica las desviaciones de la normalidad basándose en los momentos de tercer y cuarto orden (asimetría $S$ y curtosis $K$) de los residuos empíricos:
+
+$$
+JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
+\tag{3.45}
+$$
+
+Valores estadísticamente significativos de $JB$ conllevan al rechazo de la hipótesis de normalidad [@jarque1980efficient].
+
+### Diagnóstico de multicolinealidad
+
+Como se estableció en la sección de identificabilidad teórica, la existencia de correlaciones altas entre las covariables climáticas y los rezagos autorregresivos infla las varianzas de los estimadores, dificultando la separación de los efectos biológicos individuales.
+
+La evaluación práctica de este fenómeno se realiza utilizando el **Factor de Inflación de Varianza (VIF)** y el **Número de Condición** ($\kappa$), cuyas definiciones formales se detallan en las ecuaciones (3.41) y (3.42) de la Sección 3.4. Siguiendo la literatura estadística moderna [@montgomery2021introduction], se aplican los umbrales críticos previamente justificados ($\text{VIF}_j > 10$ y $\kappa \geq 30$) para identificar problemas severos que ameriten la eliminación de forzantes redundantes o la aplicación de técnicas de regularización (como regresión Ridge) para estabilizar la matriz $\mathbf{X}^T\mathbf{X}$.
+
+### Criterios de información para selección de modelos
+
+La parsimonia es un principio rector en el modelado estocástico. Los criterios de información permiten comparar modelos con diferentes estructuras de rezago y combinaciones de forzantes climáticas, introduciendo una penalización matemática por la complejidad para evitar el sobreajuste [@akaike1974new].
+
+#### Criterio de Información de Akaike (AIC)
+Fundamentado en la teoría de la información, el AIC estima la pérdida relativa de información al aproximar la realidad con el modelo ajustado:
+
+$$
+\text{AIC} = 2p - 2\ln(\hat{L})
+\tag{3.46}
+$$
+
+donde $p$ es el número total de parámetros y $\hat{L}$ es la verosimilitud máxima. Para modelos gaussianos de mínimos cuadrados, asumiendo varianza constante, se expresa operativamente como:
+
+$$
+\text{AIC} = N \ln\left(\frac{\text{RSS}}{N}\right) + 2p
+\tag{3.47}
+$$
+
+donde $\text{RSS} = \|\mathbf{Y} - \mathbf{X}\hat{\boldsymbol{\theta}}\|^2$ es la suma de cuadrados residuales.
+
+#### Criterio de Información Bayesiano (BIC)
+El BIC introduce una penalización logarítmica más estricta en función del tamaño muestral $N$, favoreciendo modelos más simples en conjuntos de datos grandes:
+
+$$
+\text{BIC} = p \ln(N) - 2\ln(\hat{L})
+\tag{3.48}
+$$
+
+$$
+\text{BIC} = N \ln\left(\frac{\text{RSS}}{N}\right) + p \ln(N)
+\tag{3.49}
+$$
+
+El BIC es asintóticamente consistente, asegurando la selección del modelo verdadero con probabilidad aproximándose a $1$ conforme $N \to \infty$, siempre que este se encuentre entre las formulaciones candidatas [@schwarz1978estimating].
+
+### Validación del modelo mediante comparación con *benchmarks*
+
+La fase final de validación del modelo biológico SDDE se efectúa mediante una comparación estructurada contra *benchmarks* puramente estadísticos (como modelos ARMA/AR($p$) genéricos). Esta comparación se ejecuta bajo tres ejes fundamentales:
+
+1. **Ajuste penalizado**: Se evalúa la superioridad algorítmica si la diferencia en los criterios es sustancial ($\Delta \text{AIC} \leq -2$ o $\Delta \text{BIC} \leq -2$) a favor del SDDE [@burnham2002model].
+
+2. **Capacidad predictiva (*Out-of-sample*)**: Se contrasta el Error Cuadrático Medio (RMSE) y el Pseudo-$R^2$ iterando predicciones sobre un conjunto de datos de validación cruzada no visto durante el entrenamiento.
+
+3. **Interpretabilidad biológica**: A diferencia de la naturaleza de "caja negra" de los polinomios autorregresivos profundos, la parametrización esparsa del SDDE (Ecuación 3.25) se justifica porque ofrece una traducción directa a la dinámica fisiológica de la vegetación (tasas de crecimiento, memoria de fotoasimilados y sensibilidad ambiental empírica) [@cuddington2013process].
