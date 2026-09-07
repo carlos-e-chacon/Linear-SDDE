@@ -25,46 +25,60 @@ $$
 dX(t) = \left[ \alpha + \beta X(t) +\gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
 $$ {#eq-sdde}
 
-donde las variables y parámetros se definen en el contexto biológico de la siguiente manera:
 
-- $X(t) \in \mathbb{R}^+$: Proceso estocástico del GCC, que representa la biomasa verde activa en el tiempo $t$.
+donde las variables y parámetros se definen en el contexto biológico y dimensional de la siguiente manera (considerando un paso temporal $\Delta t = 1$ día):
 
-- $\alpha \in \mathbb{R}$: Tasa de crecimiento basal, asociada al crecimiento intrínseco del sistema en ausencia de forzantes externos.
+- $X(t) \in \mathbb{R}^+$: Proceso estocástico del GCC, que representa la biomasa verde activa en el tiempo $t$.  
+  **Unidad:** Adimensional (índice de proporción entre 0 y 1).
 
-- $\beta \in \mathbb{R}$: Coeficiente de retroalimentación actual, el cual modela el efecto de autorregulación del crecimiento.
+- $\alpha \in \mathbb{R}$: Tasa de crecimiento basal, asociada al crecimiento intrínseco del sistema en ausencia de forzantes externos.  
+  **Unidad:** $\text{días}^{-1}$ (cambio en el GCC por día).
 
-- $\gamma \in \mathbb{R}$: Coeficiente de retroalimentación retardada, que representa la memoria fisiológica del sistema, vinculada a la translocación de fotoasimilados.
+- $\beta \in \mathbb{R}$: Coeficiente de retroalimentación actual, el cual modela el efecto de autorregulación del crecimiento.  
+  **Unidad:** $\text{días}^{-1}$.
 
-- $\tau \in \mathbb{R}^+$: Tiempo de retraso, correspondiente al periodo característico de los procesos fisiológicos involucrados.
+- $\gamma \in \mathbb{R}$: Coeficiente de retroalimentación retardada, que representa la memoria fisiológica del sistema, vinculada a la translocación de fotoasimilados.  
+  **Unidad:** $\text{días}^{-1}$.
 
-- $\mathbf{C}(t) \in \mathbb{R}^3$: Vector de forzantes climáticas, definido como $\mathbf{C}(t) = [\text{Rad}_t, \text{Temp}_t, \text{Prec}_t]^T$.
+- $\tau \in \mathbb{R}^+$: Tiempo de retraso, correspondiente al periodo característico de los procesos fisiológicos involucrados.  
+  **Unidad:** Días.
 
-- $\boldsymbol{\delta} \in \mathbb{R}^3$: Vector de sensibilidades climáticas, que cuantifica la respuesta del sistema ante variaciones en las variables climáticas.
+- $\mathbf{C}(t) \in \mathbb{R}^3$: Vector de forzantes climáticas, definido como $\mathbf{C}(t) = [\text{Rad}_t, \text{Temp}_t, \text{Prec}_t]^T$.  
+  **Unidades:** $\text{W/m}^2$ (Radiación solar promedio diaria), $\text{K}$ (Temperatura del aire) y $\text{m}$ (Precipitación acumulada diaria).  
+%  *Nota: Se recomienda escalar $\text{Prec}_t$ a milímetros ($\text{mm}$) antes de la estimación para mejorar la estabilidad numérica.*
 
-- $\sigma \in \mathbb{R}^+$: Intensidad del ruido estocástico, que representa la variabilidad ambiental no explicada por el modelo determinista.
+- $\boldsymbol{\delta} \in \mathbb{R}^3$: Vector de sensibilidades climáticas, que cuantifica la respuesta del sistema ante variaciones en las variables climáticas ($\boldsymbol{\delta} = [\delta_1, \delta_2, \delta_3]^T$).  
+  **Unidades:** $\text{días}^{-1}/(\text{W/m}^2)$, $\text{días}^{-1}/\text{K}$ y $\text{días}^{-1}/\text{m}$ (o $\text{días}^{-1}/\text{mm}$ si se escala la precipitación), respectivamente.
 
-- $W(t) \in \mathbb{R}$: Proceso de Wiener estándar, utilizado para modelar el ruido blanco gaussiano que perturba el sistema.
+- $\sigma \in \mathbb{R}^+$: Intensidad del ruido estocástico, que representa la variabilidad ambiental no explicada por el modelo determinista.  
+  **Unidad:** $\text{días}^{-1/2}$ (en la formulación de tiempo continuo; en la discretización con $\Delta t = 1$, se absorbe en la varianza del incremento de Wiener).
 
- 
+- $W(t) \in \mathbb{R}$: Proceso de Wiener estándar, utilizado para modelar el ruido blanco gaussiano que perturba el sistema.  
+  **Unidad:** $\sqrt{\text{días}}$ (dado que $\text{Var}(W(t)) = t$). 
 
-### Condiciones iniciales y espacio de fases
 
-A diferencia de las SDEs clásicas, las SDDEs requieren una **función inicial** definida en un intervalo pasado, debido a la dependencia del término $X(t-\tau)$ [@mohammed1984stochastic]. El problema de valor inicial se especifica como:
+### Condiciones iniciales y espacio de fases {#sec-condiciones-iniciales}
 
-$$
-X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
-$$ {#eq-inicial}
+A diferencia de las ecuaciones diferenciales estocásticas clásicas, las SDDEs presentan una característica estructural fundamental: su **espacio de fases es infinito-dimensional**. Específicamente, el estado del sistema en el tiempo $t$ no está determinado por un punto en $\mathbb{R}^n$, sino por un **segmento de historia** $X_t \in C([-\tau, 0], \mathbb{R})$, definido como $X_t(\theta) = X(t+\theta)$ para $\theta \in [-\tau, 0]$.
 
-donde $\phi: [-\tau, 0] \to \mathbb{R}^+$ es una función continua y determinista que representa el historial del sistema antes del tiempo inicial $t=0$.
-
-El **espacio de fases** para una SDDE es infinito-dimensional, específicamente el espacio de Banach $C([-\tau, 0], \mathbb{R})$ de funciones continuas del intervalo $[-\tau, 0]$ en $\mathbb{R}$, equipado con la norma del supremo:
+Este espacio de funciones continuas, equipado con la norma del supremo:
 
 $$
 \|\phi\| = \sup_{\theta \in [-\tau, 0]} |\phi(\theta)|
 \tag{3.3}
 $$
 
-Esta característica fundamental distingue a las SDDEs de las SDEs y tiene implicaciones profundas para el análisis de existencia, unicidad y estabilidad de soluciones [@mao2007stochastic].
+constituye un espacio de Banach que captura la memoria del sistema. Como establece el marco teórico de Mao [-@mao2007stochastic], esta naturaleza funcional obliga a reformular las herramientas clásicas del análisis estocástico: las condiciones de Lipschitz y crecimiento lineal deben evaluarse sobre funcionales dependientes del retraso, y los teoremas de existencia y unicidad requieren condiciones iniciales que sean funciones completas, no valores puntuales.
+
+En consecuencia, el **problema de valor inicial** para una SDDE se especifica mediante una función de historial:
+
+$$
+X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
+$$ {#eq-inicial}
+
+donde $\phi: [-\tau, 0] \to \mathbb{R}^+$ es una función continua y determinista que representa el estado del sistema antes del tiempo inicial $t=0$. Esta formulación garantiza que, al iniciar la integración en $t=0$, el término retardado $X(t-\tau)$ esté bien definido para todo $t \geq 0$, ya que $t-\tau \in [-\tau, 0]$ cuando $t \in [0, \tau]$.
+
+La distinción entre SDEs y SDDEs radica precisamente en esta transición de un espacio de estados finito a uno infinito-dimensional. Tal como demuestran Mao [-@mao2007stochastic] y Mohammed [-@mohammed1984stochastic], esta propiedad tiene implicaciones profundas tanto teóricas como computacionales: los métodos numéricos deben almacenar y actualizar trayectorias completas (no solo el valor actual), y el análisis de estabilidad asintótica requiere el uso de funcionales de Lyapunov-Krasovskii o teoremas de tipo Razumikhin, los cuales evalúan la energía del sistema considerando su historial pasado y no únicamente su estado instantáneo.
 
 ### Propiedades matemáticas fundamentales
 
@@ -117,21 +131,21 @@ Dado que $X(t)$ representa el índice de verdor GCC, que físicamente debe ser n
 
 Esta propiedad de positividad es esencial para la interpretación biológica del modelo y garantiza que las simulaciones numéricas produzcan resultados físicamente realistas.
 
-## Discretización Numérica y Propiedades del Esquema
+## Discretización Numérica y Propiedades del Esquema {#sec-discretizacion}
 
-### Motivación y contexto metodológico
+### Motivación y contexto metodológico {#sec-motivacion-discretizacion}
 
-La resolución analítica de ecuaciones diferenciales estocásticas con retraso (SDDE) es generalmente imposible debido a la naturaleza no markoviana del proceso y la dependencia funcional del pasado [@kloeden1992numerical]. Por lo tanto, es necesario recurrir a métodos numéricos de discretización para obtener soluciones aproximadas que permitan tanto el análisis teórico como la implementación computacional [@mao2007stochastic].
+La resolución analítica de ecuaciones diferenciales estocásticas con retraso (SDDE) es generalmente imposible debido a la naturaleza no markoviana del proceso y la dependencia funcional del pasado [@kloeden1992numerical]. Por lo tanto, es necesario recurrir a métodos numéricos de discretización para obtener soluciones aproximadas que permitan tanto el análisis teórico como la implementación computacional.
 
-El esquema de Euler-Maruyama representa el método más fundamental y ampliamente utilizado para la discretización de SDEs y SDDEs, debido a su simplicidad conceptual, facilidad de implementación y propiedades de convergencia bien establecidas [@platen1999introduction].
+Para el caso específico de SDDEs, Mao [-@mao2007stochastic, p. 164-165] establece en la Sección 5.5 que los procedimientos de aproximación de Caratheodory y Euler-Maruyama, originalmente desarrollados para SDEs clásicas, pueden extenderse al contexto de ecuaciones diferenciales estocásticas funcionales. Entre estos métodos, el esquema de **Euler-Maruyama** representa el enfoque más fundamental y ampliamente utilizado para la discretización de SDDEs, debido a su simplicidad conceptual, facilidad de implementación y propiedades de convergencia bien establecidas tanto para SDEs como para SDDEs.
 
 ### (Aquí irá el código)
 
-### Análisis de convergencia
+### Análisis de convergencia {#sec-convergencia}
 
-El análisis de convergencia de esquemas numéricos para SDEs y SDDEs distingue entre dos tipos fundamentales de convergencia: **convergencia fuerte** y **convergencia débil** [@kloeden1992numerical].
+El análisis de convergencia de esquemas numéricos para SDEs y SDDEs distingue entre dos tipos fundamentales de convergencia: **convergencia fuerte** y **convergencia débil** [@kloeden1992numerical]. Esta distinción es crucial porque cada tipo de convergencia responde a objetivos computacionales diferentes: la convergencia fuerte es relevante cuando se busca aproximar trayectorias individuales del proceso (simulación de escenarios), mientras que la convergencia débil es suficiente cuando solo interesan cantidades estadísticas como esperanzas o varianzas [@milstein1995numerical].
 
-#### Convergencia fuerte
+#### Convergencia fuerte {#sec-convergencia-fuerte}
 
 Un esquema numérico tiene **convergencia fuerte de orden $\gamma$** si existe una constante $C > 0$ independiente de $\Delta t$ tal que:
 
@@ -141,11 +155,19 @@ $$
 
 donde $X(T)$ es la solución exacta en tiempo $T$ y $X_N$ es la aproximación numérica.
 
-**Teorema 3.1** (Convergencia fuerte de Euler-Maruyama). *Bajo las condiciones de Lipschitz global y crecimiento lineal para $\mu$ y $\sigma$, el esquema de Euler-Maruyama (3.10) tiene convergencia fuerte de orden $\gamma = 1/2$* [@kloeden1992numerical].
+**Teorema 3.1** (Convergencia fuerte de Euler-Maruyama para SDDEs). *Bajo las condiciones de Lipschitz global y crecimiento lineal para los coeficientes de deriva $\mu$ y difusión $\sigma$, el esquema de Euler-Maruyama aplicado a SDDEs tiene convergencia fuerte de orden $\gamma = 1/2$* [@mao2007stochastic, p. 166; @kloeden1992numerical].
 
-Para nuestro modelo lineal específico, la condición de Lipschitz se satisface trivialmente, garantizando la convergencia fuerte de orden $1/2$.
+La demostración de este teorema para SDDEs, presentada por Mao [-@mao2007stochastic, p. 166-168], requiere extender las técnicas clásicas de SDEs para manejar la dependencia del historial $X(t-\tau)$. Específicamente, Mao demuestra que, bajo las condiciones de Lipschitz y crecimiento lineal uniformes, el error fuerte acumulado satisface:
 
-#### Convergencia débil
+$$
+\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X(t) - Y(t)|^2 \right] \leq C \Delta t
+$$
+
+donde $Y(t)$ denota la aproximación numérica continua. Este resultado implica que el orden de convergencia fuerte es $\gamma = 1/2$, idéntico al caso de SDEs sin retraso.
+
+Para nuestro modelo lineal específico, las condiciones de Lipschitz y crecimiento lineal se satisfacen trivialmente, garantizando así la convergencia fuerte de orden $1/2$.
+
+#### Convergencia débil {#sec-convergencia-debil}
 
 Un esquema numérico tiene **convergencia débil de orden $\beta$** si para toda función $g \in C_P^{2(\beta+1)}(\mathbb{R}, \mathbb{R})$ (funciones $2(\beta+1)$ veces continuamente diferenciables con derivadas polinomialmente acotadas), existe una constante $C_g > 0$ tal que:
 
@@ -156,9 +178,11 @@ $$
 
 **Teorema 3.2** (Convergencia débil de Euler-Maruyama). *Bajo las mismas condiciones del Teorema 3.1, el esquema de Euler-Maruyama tiene convergencia débil de orden $\beta = 1$* [@milstein1995numerical].
 
-Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, etc.) [@wilkinson2018stochastic].
+Es importante notar que, aunque la literatura sobre convergencia débil para SDDEs es menos extensa que para SDEs, los resultados fundamentales se mantienen bajo condiciones similares [@kloeden1992numerical]. La demostración típica utiliza la ecuación de Kolmogorov hacia atrás asociada a la SDDE y requiere estimaciones adicionales para manejar el término retardado.
 
-### Error de truncamiento local
+Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, momentos estadísticos, etc.) en lugar de aproximar trayectorias individuales [@wilkinson2018stochastic]. En el contexto de nuestro modelo fenológico, la convergencia débil garantiza que las estimaciones de parámetros obtenidas por máxima verosimilitud o mínimos cuadrados serán consistentes a medida que $\Delta t \to 0$.
+
+### Error de truncamiento local {#sec-error-truncamiento}
 
 El **error de truncamiento local** en el paso $n$ se define como la diferencia entre la solución exacta y la aproximación numérica, asumiendo que el estado anterior es exacto:
 
@@ -174,7 +198,13 @@ $$
 \tag{3.18}
 $$
 
-Este resultado justifica el orden de convergencia fuerte $\gamma = 1/2$, ya que el error acumulado sobre $N = T/\Delta t$ pasos es de orden $\mathcal{O}((\Delta t)^{1/2})$ [@kloeden1992numerical].
+Este resultado, establecido por Kloeden y Platen [-@kloeden1992numerical, p. 330-332] para SDEs y extendido por Mao [-@mao2007stochastic, p. 166-167] para SDDEs, justifica el orden de convergencia fuerte $\gamma = 1/2$. La intuición es la siguiente: el error local por paso es de orden $\mathcal{O}((\Delta t)^{3/2})$ en norma $L^2$, pero al acumularse sobre $N = T/\Delta t$ pasos independientes, el error global resulta ser de orden:
+
+$$
+\sqrt{N} \cdot \mathcal{O}((\Delta t)^{3/2}) = \sqrt{\frac{T}{\Delta t}} \cdot \mathcal{O}((\Delta t)^{3/2}) = \mathcal{O}((\Delta t)^{1/2})
+$$
+
+Esta propagación del error es característica de los procesos estocásticos y difiere fundamentalmente del caso determinista, donde el error local $\mathcal{O}((\Delta t)^2)$ produce un error global $\mathcal{O}(\Delta t)$ (convergencia de orden 1).
 
 ### Implementación computacional
 
@@ -279,7 +309,7 @@ $$
 
 ### Relación estructural con modelos AR(p)
 
-El modelo de regresión (3.19) puede reinterpretarse como un modelo autorregresivo con estructura esparsa. Reorganizando la ecuación (3.19):
+El modelo de regresión (3.19) puede reinterpretarse como un modelo autorregresivo con estructura dispersa. Reorganizando la ecuación (3.19):
 
 $$
 X_{n+1} = \alpha + (1 + \beta) X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
@@ -305,11 +335,11 @@ $$
 \tag{3.25}
 $$
 
-Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un **modelo AR(p) con restricciones estructurales**, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato ($i=1$) y el correspondiente al retraso biológico ($i=k=\tau$). Esta estructura esparsa reduce drásticamente la dimensionalidad del problema de $p+1$ parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema [@cuddington2013process].
+Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un **modelo AR(p) con restricciones estructurales**, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato ($i=1$) y el correspondiente al retraso biológico ($i=k=\tau$). Esta estructura dispersa reduce drásticamente la dimensionalidad del problema de $p+1$ parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema [@cuddington2013process].
 
 ### Supuestos estadísticos del modelo
 
-Para que los estimadores de mínimos cuadrados ordinarios (OLS) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal [@greene2018econometric]:
+Para que los estimadores de mínimos cuadrados ordinarios (OLS, Ordinary Least Squares) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal [@greene2018econometric]:
 
 - Supuesto 1: Linealidad en parámetros
 El modelo es lineal en los parámetros $\boldsymbol{\theta}$, lo cual se satisface por construcción.
@@ -322,7 +352,7 @@ $$
 \mathbb{E}[\epsilon_n | \mathbf{X}] = 0
 \tag{3.26}
 $$
-Este supuesto implica que los errores no están correlacionados con las variables explicativas, lo cual es crucial para la insesgadez de los estimadores.
+Este supuesto implica que los errores no están correlacionados con las variables explicativas, lo cual es crucial para que los estimadores resulten insesgados.
 
 - Supuesto 4: Homocedasticidad y no autocorrelación
 $$
@@ -349,7 +379,7 @@ $$
 
 Este estimador tiene las siguientes propiedades fundamentales [@greene2018econometric]:
 
-- **Insesgadez**: $\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}$
+- Los estimadores son insesgados, esto es, $\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}$
 
 - **Consistencia**: $\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}$ cuando $N \to \infty$
 
@@ -687,4 +717,4 @@ La fase final de validación del modelo biológico SDDE se efectúa mediante una
 
 2. **Capacidad predictiva (*Out-of-sample*)**: Se contrasta el Error Cuadrático Medio (RMSE) y el Pseudo-$R^2$ iterando predicciones sobre un conjunto de datos de validación cruzada no visto durante el entrenamiento.
 
-3. **Interpretabilidad biológica**: A diferencia de la naturaleza de "caja negra" de los polinomios autorregresivos profundos, la parametrización esparsa del SDDE (Ecuación 3.25) se justifica porque ofrece una traducción directa a la dinámica fisiológica de la vegetación (tasas de crecimiento, memoria de fotoasimilados y sensibilidad ambiental empírica) [@cuddington2013process].
+3. **Interpretabilidad biológica**: A diferencia de la naturaleza de "caja negra" de los polinomios autorregresivos profundos, la parametrización dispersa del SDDE (Ecuación 3.25) se justifica porque ofrece una traducción directa a la dinámica fisiológica de la vegetación (tasas de crecimiento, memoria de fotoasimilados y sensibilidad ambiental empírica) [@cuddington2013process].

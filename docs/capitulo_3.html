@@ -379,7 +379,7 @@ window.Quarto = {
    
   <ul class="collapse">
   <li><a href="#modelo-sdde-en-tiempo-continuo" id="toc-modelo-sdde-en-tiempo-continuo" class="nav-link active" data-scroll-target="#modelo-sdde-en-tiempo-continuo"><span class="header-section-number">3.1</span> Modelo SDDE en tiempo continuo</a></li>
-  <li><a href="#discretización-numérica-y-propiedades-del-esquema" id="toc-discretización-numérica-y-propiedades-del-esquema" class="nav-link" data-scroll-target="#discretización-numérica-y-propiedades-del-esquema"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</a></li>
+  <li><a href="#sec-discretizacion" id="toc-sec-discretizacion" class="nav-link" data-scroll-target="#sec-discretizacion"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</a></li>
   <li><a href="#formulación-estadística-como-modelo-de-regresión" id="toc-formulación-estadística-como-modelo-de-regresión" class="nav-link" data-scroll-target="#formulación-estadística-como-modelo-de-regresión"><span class="header-section-number">3.3</span> Formulación Estadística como Modelo de Regresión</a></li>
   <li><a href="#identificabilidad-y-estimación-de-parámetros" id="toc-identificabilidad-y-estimación-de-parámetros" class="nav-link" data-scroll-target="#identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.4</span> Identificabilidad y Estimación de Parámetros</a></li>
   <li><a href="#diagnóstico-estadístico-y-validación-del-modelo" id="toc-diagnóstico-estadístico-y-validación-del-modelo" class="nav-link" data-scroll-target="#diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.5</span> Diagnóstico Estadístico y Validación del Modelo</a></li>
@@ -423,32 +423,44 @@ window.Quarto = {
 <p><span id="eq-sdde"><span class="math display">\[
 dX(t) = \left[ \alpha + \beta X(t) +\gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
 \tag{3.1}\]</span></span></p>
-<p>donde las variables y parámetros se definen en el contexto biológico de la siguiente manera:</p>
+<p>donde las variables y parámetros se definen en el contexto biológico y dimensional de la siguiente manera (considerando un paso temporal <span class="math inline">\(\Delta t = 1\)</span> día):</p>
 <ul>
-<li><p><span class="math inline">\(X(t) \in \mathbb{R}^+\)</span>: Proceso estocástico del GCC, que representa la biomasa verde activa en el tiempo <span class="math inline">\(t\)</span>.</p></li>
-<li><p><span class="math inline">\(\alpha \in \mathbb{R}\)</span>: Tasa de crecimiento basal, asociada al crecimiento intrínseco del sistema en ausencia de forzantes externos.</p></li>
-<li><p><span class="math inline">\(\beta \in \mathbb{R}\)</span>: Coeficiente de retroalimentación actual, el cual modela el efecto de autorregulación del crecimiento.</p></li>
-<li><p><span class="math inline">\(\gamma \in \mathbb{R}\)</span>: Coeficiente de retroalimentación retardada, que representa la memoria fisiológica del sistema, vinculada a la translocación de fotoasimilados.</p></li>
-<li><p><span class="math inline">\(\tau \in \mathbb{R}^+\)</span>: Tiempo de retraso, correspondiente al periodo característico de los procesos fisiológicos involucrados.</p></li>
-<li><p><span class="math inline">\(\mathbf{C}(t) \in \mathbb{R}^3\)</span>: Vector de forzantes climáticas, definido como <span class="math inline">\(\mathbf{C}(t) = [\text{Rad}_t, \text{Temp}_t, \text{Prec}_t]^T\)</span>.</p></li>
-<li><p><span class="math inline">\(\boldsymbol{\delta} \in \mathbb{R}^3\)</span>: Vector de sensibilidades climáticas, que cuantifica la respuesta del sistema ante variaciones en las variables climáticas.</p></li>
-<li><p><span class="math inline">\(\sigma \in \mathbb{R}^+\)</span>: Intensidad del ruido estocástico, que representa la variabilidad ambiental no explicada por el modelo determinista.</p></li>
-<li><p><span class="math inline">\(W(t) \in \mathbb{R}\)</span>: Proceso de Wiener estándar, utilizado para modelar el ruido blanco gaussiano que perturba el sistema.</p></li>
+<li><p><span class="math inline">\(X(t) \in \mathbb{R}^+\)</span>: Proceso estocástico del GCC, que representa la biomasa verde activa en el tiempo <span class="math inline">\(t\)</span>.<br>
+<strong>Unidad:</strong> Adimensional (índice de proporción entre 0 y 1).</p></li>
+<li><p><span class="math inline">\(\alpha \in \mathbb{R}\)</span>: Tasa de crecimiento basal, asociada al crecimiento intrínseco del sistema en ausencia de forzantes externos.<br>
+<strong>Unidad:</strong> <span class="math inline">\(\text{días}^{-1}\)</span> (cambio en el GCC por día).</p></li>
+<li><p><span class="math inline">\(\beta \in \mathbb{R}\)</span>: Coeficiente de retroalimentación actual, el cual modela el efecto de autorregulación del crecimiento.<br>
+<strong>Unidad:</strong> <span class="math inline">\(\text{días}^{-1}\)</span>.</p></li>
+<li><p><span class="math inline">\(\gamma \in \mathbb{R}\)</span>: Coeficiente de retroalimentación retardada, que representa la memoria fisiológica del sistema, vinculada a la translocación de fotoasimilados.<br>
+<strong>Unidad:</strong> <span class="math inline">\(\text{días}^{-1}\)</span>.</p></li>
+<li><p><span class="math inline">\(\tau \in \mathbb{R}^+\)</span>: Tiempo de retraso, correspondiente al periodo característico de los procesos fisiológicos involucrados.<br>
+<strong>Unidad:</strong> Días.</p></li>
+<li><p><span class="math inline">\(\mathbf{C}(t) \in \mathbb{R}^3\)</span>: Vector de forzantes climáticas, definido como <span class="math inline">\(\mathbf{C}(t) = [\text{Rad}_t, \text{Temp}_t, \text{Prec}_t]^T\)</span>.<br>
+<strong>Unidades:</strong> <span class="math inline">\(\text{W/m}^2\)</span> (Radiación solar promedio diaria), <span class="math inline">\(\text{K}\)</span> (Temperatura del aire) y <span class="math inline">\(\text{m}\)</span> (Precipitación acumulada diaria).<br>
+% <em>Nota: Se recomienda escalar <span class="math inline">\(\text{Prec}_t\)</span> a milímetros (<span class="math inline">\(\text{mm}\)</span>) antes de la estimación para mejorar la estabilidad numérica.</em></p></li>
+<li><p><span class="math inline">\(\boldsymbol{\delta} \in \mathbb{R}^3\)</span>: Vector de sensibilidades climáticas, que cuantifica la respuesta del sistema ante variaciones en las variables climáticas (<span class="math inline">\(\boldsymbol{\delta} = [\delta_1, \delta_2, \delta_3]^T\)</span>).<br>
+<strong>Unidades:</strong> <span class="math inline">\(\text{días}^{-1}/(\text{W/m}^2)\)</span>, <span class="math inline">\(\text{días}^{-1}/\text{K}\)</span> y <span class="math inline">\(\text{días}^{-1}/\text{m}\)</span> (o <span class="math inline">\(\text{días}^{-1}/\text{mm}\)</span> si se escala la precipitación), respectivamente.</p></li>
+<li><p><span class="math inline">\(\sigma \in \mathbb{R}^+\)</span>: Intensidad del ruido estocástico, que representa la variabilidad ambiental no explicada por el modelo determinista.<br>
+<strong>Unidad:</strong> <span class="math inline">\(\text{días}^{-1/2}\)</span> (en la formulación de tiempo continuo; en la discretización con <span class="math inline">\(\Delta t = 1\)</span>, se absorbe en la varianza del incremento de Wiener).</p></li>
+<li><p><span class="math inline">\(W(t) \in \mathbb{R}\)</span>: Proceso de Wiener estándar, utilizado para modelar el ruido blanco gaussiano que perturba el sistema.<br>
+<strong>Unidad:</strong> <span class="math inline">\(\sqrt{\text{días}}\)</span> (dado que <span class="math inline">\(\text{Var}(W(t)) = t\)</span>).</p></li>
 </ul>
 </section>
-<section id="condiciones-iniciales-y-espacio-de-fases" class="level3" data-number="3.1.3">
-<h3 data-number="3.1.3" class="anchored" data-anchor-id="condiciones-iniciales-y-espacio-de-fases"><span class="header-section-number">3.1.3</span> Condiciones iniciales y espacio de fases</h3>
-<p>A diferencia de las SDEs clásicas, las SDDEs requieren una <strong>función inicial</strong> definida en un intervalo pasado, debido a la dependencia del término <span class="math inline">\(X(t-\tau)\)</span> <span class="citation" data-cites="mohammed1984stochastic">(<a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>. El problema de valor inicial se especifica como:</p>
-<p><span id="eq-inicial"><span class="math display">\[
-X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
-\tag{3.2}\]</span></span></p>
-<p>donde <span class="math inline">\(\phi: [-\tau, 0] \to \mathbb{R}^+\)</span> es una función continua y determinista que representa el historial del sistema antes del tiempo inicial <span class="math inline">\(t=0\)</span>.</p>
-<p>El <strong>espacio de fases</strong> para una SDDE es infinito-dimensional, específicamente el espacio de Banach <span class="math inline">\(C([-\tau, 0], \mathbb{R})\)</span> de funciones continuas del intervalo <span class="math inline">\([-\tau, 0]\)</span> en <span class="math inline">\(\mathbb{R}\)</span>, equipado con la norma del supremo:</p>
+<section id="sec-condiciones-iniciales" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="sec-condiciones-iniciales"><span class="header-section-number">3.1.3</span> Condiciones iniciales y espacio de fases</h3>
+<p>A diferencia de las ecuaciones diferenciales estocásticas clásicas, las SDDEs presentan una característica estructural fundamental: su <strong>espacio de fases es infinito-dimensional</strong>. Específicamente, el estado del sistema en el tiempo <span class="math inline">\(t\)</span> no está determinado por un punto en <span class="math inline">\(\mathbb{R}^n\)</span>, sino por un <strong>segmento de historia</strong> <span class="math inline">\(X_t \in C([-\tau, 0], \mathbb{R})\)</span>, definido como <span class="math inline">\(X_t(\theta) = X(t+\theta)\)</span> para <span class="math inline">\(\theta \in [-\tau, 0]\)</span>.</p>
+<p>Este espacio de funciones continuas, equipado con la norma del supremo:</p>
 <p><span class="math display">\[
 \|\phi\| = \sup_{\theta \in [-\tau, 0]} |\phi(\theta)|
 \tag{3.3}
 \]</span></p>
-<p>Esta característica fundamental distingue a las SDDEs de las SDEs y tiene implicaciones profundas para el análisis de existencia, unicidad y estabilidad de soluciones <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
+<p>constituye un espacio de Banach que captura la memoria del sistema. Como establece el marco teórico de Mao <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">2007</a>)</span>, esta naturaleza funcional obliga a reformular las herramientas clásicas del análisis estocástico: las condiciones de Lipschitz y crecimiento lineal deben evaluarse sobre funcionales dependientes del retraso, y los teoremas de existencia y unicidad requieren condiciones iniciales que sean funciones completas, no valores puntuales.</p>
+<p>En consecuencia, el <strong>problema de valor inicial</strong> para una SDDE se especifica mediante una función de historial:</p>
+<p><span id="eq-inicial"><span class="math display">\[
+X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
+\tag{3.2}\]</span></span></p>
+<p>donde <span class="math inline">\(\phi: [-\tau, 0] \to \mathbb{R}^+\)</span> es una función continua y determinista que representa el estado del sistema antes del tiempo inicial <span class="math inline">\(t=0\)</span>. Esta formulación garantiza que, al iniciar la integración en <span class="math inline">\(t=0\)</span>, el término retardado <span class="math inline">\(X(t-\tau)\)</span> esté bien definido para todo <span class="math inline">\(t \geq 0\)</span>, ya que <span class="math inline">\(t-\tau \in [-\tau, 0]\)</span> cuando <span class="math inline">\(t \in [0, \tau]\)</span>.</p>
+<p>La distinción entre SDEs y SDDEs radica precisamente en esta transición de un espacio de estados finito a uno infinito-dimensional. Tal como demuestran Mao <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">2007</a>)</span> y Mohammed <span class="citation" data-cites="mohammed1984stochastic">(<a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">1984</a>)</span>, esta propiedad tiene implicaciones profundas tanto teóricas como computacionales: los métodos numéricos deben almacenar y actualizar trayectorias completas (no solo el valor actual), y el análisis de estabilidad asintótica requiere el uso de funcionales de Lyapunov-Krasovskii o teoremas de tipo Razumikhin, los cuales evalúan la energía del sistema considerando su historial pasado y no únicamente su estado instantáneo.</p>
 </section>
 <section id="propiedades-matemáticas-fundamentales" class="level3" data-number="3.1.4">
 <h3 data-number="3.1.4" class="anchored" data-anchor-id="propiedades-matemáticas-fundamentales"><span class="header-section-number">3.1.4</span> Propiedades matemáticas fundamentales</h3>
@@ -497,42 +509,48 @@ X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymb
 <p>Esta propiedad de positividad es esencial para la interpretación biológica del modelo y garantiza que las simulaciones numéricas produzcan resultados físicamente realistas.</p>
 </section>
 </section>
-<section id="discretización-numérica-y-propiedades-del-esquema" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="discretización-numérica-y-propiedades-del-esquema"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</h2>
-<section id="motivación-y-contexto-metodológico" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="motivación-y-contexto-metodológico"><span class="header-section-number">3.2.1</span> Motivación y contexto metodológico</h3>
-<p>La resolución analítica de ecuaciones diferenciales estocásticas con retraso (SDDE) es generalmente imposible debido a la naturaleza no markoviana del proceso y la dependencia funcional del pasado <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>. Por lo tanto, es necesario recurrir a métodos numéricos de discretización para obtener soluciones aproximadas que permitan tanto el análisis teórico como la implementación computacional <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
-<p>El esquema de Euler-Maruyama representa el método más fundamental y ampliamente utilizado para la discretización de SDEs y SDDEs, debido a su simplicidad conceptual, facilidad de implementación y propiedades de convergencia bien establecidas <span class="citation" data-cites="platen1999introduction">(<a href="bibliografia.html#ref-platen1999introduction" role="doc-biblioref">Platen, 1999</a>)</span>.</p>
+<section id="sec-discretizacion" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="sec-discretizacion"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</h2>
+<section id="sec-motivacion-discretizacion" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="sec-motivacion-discretizacion"><span class="header-section-number">3.2.1</span> Motivación y contexto metodológico</h3>
+<p>La resolución analítica de ecuaciones diferenciales estocásticas con retraso (SDDE) es generalmente imposible debido a la naturaleza no markoviana del proceso y la dependencia funcional del pasado <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>. Por lo tanto, es necesario recurrir a métodos numéricos de discretización para obtener soluciones aproximadas que permitan tanto el análisis teórico como la implementación computacional.</p>
+<p>Para el caso específico de SDDEs, Mao <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">2007, pp. 164-165</a>)</span> establece en la Sección 5.5 que los procedimientos de aproximación de Caratheodory y Euler-Maruyama, originalmente desarrollados para SDEs clásicas, pueden extenderse al contexto de ecuaciones diferenciales estocásticas funcionales. Entre estos métodos, el esquema de <strong>Euler-Maruyama</strong> representa el enfoque más fundamental y ampliamente utilizado para la discretización de SDDEs, debido a su simplicidad conceptual, facilidad de implementación y propiedades de convergencia bien establecidas tanto para SDEs como para SDDEs.</p>
 </section>
 <section id="aquí-irá-el-código" class="level3" data-number="3.2.2">
 <h3 data-number="3.2.2" class="anchored" data-anchor-id="aquí-irá-el-código"><span class="header-section-number">3.2.2</span> (Aquí irá el código)</h3>
 </section>
-<section id="análisis-de-convergencia" class="level3" data-number="3.2.3">
-<h3 data-number="3.2.3" class="anchored" data-anchor-id="análisis-de-convergencia"><span class="header-section-number">3.2.3</span> Análisis de convergencia</h3>
-<p>El análisis de convergencia de esquemas numéricos para SDEs y SDDEs distingue entre dos tipos fundamentales de convergencia: <strong>convergencia fuerte</strong> y <strong>convergencia débil</strong> <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
-<section id="convergencia-fuerte" class="level4" data-number="3.2.3.1">
-<h4 data-number="3.2.3.1" class="anchored" data-anchor-id="convergencia-fuerte"><span class="header-section-number">3.2.3.1</span> Convergencia fuerte</h4>
+<section id="sec-convergencia" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="sec-convergencia"><span class="header-section-number">3.2.3</span> Análisis de convergencia</h3>
+<p>El análisis de convergencia de esquemas numéricos para SDEs y SDDEs distingue entre dos tipos fundamentales de convergencia: <strong>convergencia fuerte</strong> y <strong>convergencia débil</strong> <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>. Esta distinción es crucial porque cada tipo de convergencia responde a objetivos computacionales diferentes: la convergencia fuerte es relevante cuando se busca aproximar trayectorias individuales del proceso (simulación de escenarios), mientras que la convergencia débil es suficiente cuando solo interesan cantidades estadísticas como esperanzas o varianzas <span class="citation" data-cites="milstein1995numerical">(<a href="bibliografia.html#ref-milstein1995numerical" role="doc-biblioref">Milstein, 1995</a>)</span>.</p>
+<section id="sec-convergencia-fuerte" class="level4" data-number="3.2.3.1">
+<h4 data-number="3.2.3.1" class="anchored" data-anchor-id="sec-convergencia-fuerte"><span class="header-section-number">3.2.3.1</span> Convergencia fuerte</h4>
 <p>Un esquema numérico tiene <strong>convergencia fuerte de orden <span class="math inline">\(\gamma\)</span></strong> si existe una constante <span class="math inline">\(C &gt; 0\)</span> independiente de <span class="math inline">\(\Delta t\)</span> tal que:</p>
 <p><span class="math display">\[
 \mathbb{E}\left[ |X(T) - X_N| \right] \leq C (\Delta t)^\gamma
 \]</span></p>
 <p>donde <span class="math inline">\(X(T)\)</span> es la solución exacta en tiempo <span class="math inline">\(T\)</span> y <span class="math inline">\(X_N\)</span> es la aproximación numérica.</p>
-<p><strong>Teorema 3.1</strong> (Convergencia fuerte de Euler-Maruyama). <em>Bajo las condiciones de Lipschitz global y crecimiento lineal para <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma\)</span>, el esquema de Euler-Maruyama (3.10) tiene convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span></em> <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
-<p>Para nuestro modelo lineal específico, la condición de Lipschitz se satisface trivialmente, garantizando la convergencia fuerte de orden <span class="math inline">\(1/2\)</span>.</p>
+<p><strong>Teorema 3.1</strong> (Convergencia fuerte de Euler-Maruyama para SDDEs). <em>Bajo las condiciones de Lipschitz global y crecimiento lineal para los coeficientes de deriva <span class="math inline">\(\mu\)</span> y difusión <span class="math inline">\(\sigma\)</span>, el esquema de Euler-Maruyama aplicado a SDDEs tiene convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span></em> <span class="citation" data-cites="mao2007stochastic kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>; <a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007, p. 166</a>)</span>.</p>
+<p>La demostración de este teorema para SDDEs, presentada por Mao <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">2007, pp. 166-168</a>)</span>, requiere extender las técnicas clásicas de SDEs para manejar la dependencia del historial <span class="math inline">\(X(t-\tau)\)</span>. Específicamente, Mao demuestra que, bajo las condiciones de Lipschitz y crecimiento lineal uniformes, el error fuerte acumulado satisface:</p>
+<p><span class="math display">\[
+\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X(t) - Y(t)|^2 \right] \leq C \Delta t
+\]</span></p>
+<p>donde <span class="math inline">\(Y(t)\)</span> denota la aproximación numérica continua. Este resultado implica que el orden de convergencia fuerte es <span class="math inline">\(\gamma = 1/2\)</span>, idéntico al caso de SDEs sin retraso.</p>
+<p>Para nuestro modelo lineal específico, las condiciones de Lipschitz y crecimiento lineal se satisfacen trivialmente, garantizando así la convergencia fuerte de orden <span class="math inline">\(1/2\)</span>.</p>
 </section>
-<section id="convergencia-débil" class="level4" data-number="3.2.3.2">
-<h4 data-number="3.2.3.2" class="anchored" data-anchor-id="convergencia-débil"><span class="header-section-number">3.2.3.2</span> Convergencia débil</h4>
+<section id="sec-convergencia-debil" class="level4" data-number="3.2.3.2">
+<h4 data-number="3.2.3.2" class="anchored" data-anchor-id="sec-convergencia-debil"><span class="header-section-number">3.2.3.2</span> Convergencia débil</h4>
 <p>Un esquema numérico tiene <strong>convergencia débil de orden <span class="math inline">\(\beta\)</span></strong> si para toda función <span class="math inline">\(g \in C_P^{2(\beta+1)}(\mathbb{R}, \mathbb{R})\)</span> (funciones <span class="math inline">\(2(\beta+1)\)</span> veces continuamente diferenciables con derivadas polinomialmente acotadas), existe una constante <span class="math inline">\(C_g &gt; 0\)</span> tal que:</p>
 <p><span class="math display">\[
 \left| \mathbb{E}[g(X(T))] - \mathbb{E}[g(X_N)] \right| \leq C_g (\Delta t)^\beta
 \tag{3.12}
 \]</span></p>
 <p><strong>Teorema 3.2</strong> (Convergencia débil de Euler-Maruyama). <em>Bajo las mismas condiciones del Teorema 3.1, el esquema de Euler-Maruyama tiene convergencia débil de orden <span class="math inline">\(\beta = 1\)</span></em> <span class="citation" data-cites="milstein1995numerical">(<a href="bibliografia.html#ref-milstein1995numerical" role="doc-biblioref">Milstein, 1995</a>)</span>.</p>
-<p>Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, etc.) <span class="citation" data-cites="wilkinson2018stochastic">(<a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>.</p>
+<p>Es importante notar que, aunque la literatura sobre convergencia débil para SDDEs es menos extensa que para SDEs, los resultados fundamentales se mantienen bajo condiciones similares <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>. La demostración típica utiliza la ecuación de Kolmogorov hacia atrás asociada a la SDDE y requiere estimaciones adicionales para manejar el término retardado.</p>
+<p>Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, momentos estadísticos, etc.) en lugar de aproximar trayectorias individuales <span class="citation" data-cites="wilkinson2018stochastic">(<a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>. En el contexto de nuestro modelo fenológico, la convergencia débil garantiza que las estimaciones de parámetros obtenidas por máxima verosimilitud o mínimos cuadrados serán consistentes a medida que <span class="math inline">\(\Delta t \to 0\)</span>.</p>
 </section>
 </section>
-<section id="error-de-truncamiento-local" class="level3" data-number="3.2.4">
-<h3 data-number="3.2.4" class="anchored" data-anchor-id="error-de-truncamiento-local"><span class="header-section-number">3.2.4</span> Error de truncamiento local</h3>
+<section id="sec-error-truncamiento" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="sec-error-truncamiento"><span class="header-section-number">3.2.4</span> Error de truncamiento local</h3>
 <p>El <strong>error de truncamiento local</strong> en el paso <span class="math inline">\(n\)</span> se define como la diferencia entre la solución exacta y la aproximación numérica, asumiendo que el estado anterior es exacto:</p>
 <p><span class="math display">\[
 R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n, X(t_n)) \Delta W_n
@@ -543,7 +561,11 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 \mathbb{E}[|R_n|^2]^{1/2} = \mathcal{O}((\Delta t)^{3/2})
 \tag{3.18}
 \]</span></p>
-<p>Este resultado justifica el orden de convergencia fuerte <span class="math inline">\(\gamma = 1/2\)</span>, ya que el error acumulado sobre <span class="math inline">\(N = T/\Delta t\)</span> pasos es de orden <span class="math inline">\(\mathcal{O}((\Delta t)^{1/2})\)</span> <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
+<p>Este resultado, establecido por Kloeden y Platen <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">1992, pp. 330-332</a>)</span> para SDEs y extendido por Mao <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">2007, pp. 166-167</a>)</span> para SDDEs, justifica el orden de convergencia fuerte <span class="math inline">\(\gamma = 1/2\)</span>. La intuición es la siguiente: el error local por paso es de orden <span class="math inline">\(\mathcal{O}((\Delta t)^{3/2})\)</span> en norma <span class="math inline">\(L^2\)</span>, pero al acumularse sobre <span class="math inline">\(N = T/\Delta t\)</span> pasos independientes, el error global resulta ser de orden:</p>
+<p><span class="math display">\[
+\sqrt{N} \cdot \mathcal{O}((\Delta t)^{3/2}) = \sqrt{\frac{T}{\Delta t}} \cdot \mathcal{O}((\Delta t)^{3/2}) = \mathcal{O}((\Delta t)^{1/2})
+\]</span></p>
+<p>Esta propagación del error es característica de los procesos estocásticos y difiere fundamentalmente del caso determinista, donde el error local <span class="math inline">\(\mathcal{O}((\Delta t)^2)\)</span> produce un error global <span class="math inline">\(\mathcal{O}(\Delta t)\)</span> (convergencia de orden 1).</p>
 </section>
 <section id="implementación-computacional" class="level3" data-number="3.2.5">
 <h3 data-number="3.2.5" class="anchored" data-anchor-id="implementación-computacional"><span class="header-section-number">3.2.5</span> Implementación computacional</h3>
@@ -638,7 +660,7 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 </section>
 <section id="relación-estructural-con-modelos-arp" class="level3" data-number="3.3.4">
 <h3 data-number="3.3.4" class="anchored" data-anchor-id="relación-estructural-con-modelos-arp"><span class="header-section-number">3.3.4</span> Relación estructural con modelos AR(p)</h3>
-<p>El modelo de regresión (3.19) puede reinterpretarse como un modelo autorregresivo con estructura esparsa. Reorganizando la ecuación (3.19):</p>
+<p>El modelo de regresión (3.19) puede reinterpretarse como un modelo autorregresivo con estructura dispersa. Reorganizando la ecuación (3.19):</p>
 <p><span class="math display">\[
 X_{n+1} = \alpha + (1 + \beta) X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
 \tag{3.23}
@@ -658,18 +680,18 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \end{cases}
 \tag{3.25}
 \]</span></p>
-<p>Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un <strong>modelo AR(p) con restricciones estructurales</strong>, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato (<span class="math inline">\(i=1\)</span>) y el correspondiente al retraso biológico (<span class="math inline">\(i=k=\tau\)</span>). Esta estructura esparsa reduce drásticamente la dimensionalidad del problema de <span class="math inline">\(p+1\)</span> parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema <span class="citation" data-cites="cuddington2013process">(<a href="bibliografia.html#ref-cuddington2013process" role="doc-biblioref">Cuddington et&nbsp;al., 2013</a>)</span>.</p>
+<p>Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un <strong>modelo AR(p) con restricciones estructurales</strong>, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato (<span class="math inline">\(i=1\)</span>) y el correspondiente al retraso biológico (<span class="math inline">\(i=k=\tau\)</span>). Esta estructura dispersa reduce drásticamente la dimensionalidad del problema de <span class="math inline">\(p+1\)</span> parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema <span class="citation" data-cites="cuddington2013process">(<a href="bibliografia.html#ref-cuddington2013process" role="doc-biblioref">Cuddington et&nbsp;al., 2013</a>)</span>.</p>
 </section>
 <section id="supuestos-estadísticos-del-modelo" class="level3" data-number="3.3.5">
 <h3 data-number="3.3.5" class="anchored" data-anchor-id="supuestos-estadísticos-del-modelo"><span class="header-section-number">3.3.5</span> Supuestos estadísticos del modelo</h3>
-<p>Para que los estimadores de mínimos cuadrados ordinarios (OLS) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>:</p>
+<p>Para que los estimadores de mínimos cuadrados ordinarios (OLS, Ordinary Least Squares) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>:</p>
 <ul>
 <li><p>Supuesto 1: Linealidad en parámetros El modelo es lineal en los parámetros <span class="math inline">\(\boldsymbol{\theta}\)</span>, lo cual se satisface por construcción.</p></li>
 <li><p>Supuesto 2: Rango completo de la matriz de diseño La matriz <span class="math inline">\(\mathbf{X}\)</span> tiene rango completo (<span class="math inline">\(\text{rank}(\mathbf{X}) = p\)</span>), lo que garantiza que <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> sea invertible. Este supuesto requiere que no exista multicolinealidad perfecta entre las variables explicativas.</p></li>
 <li><p>Supuesto 3: Esperanza condicional nula <span class="math display">\[
 \mathbb{E}[\epsilon_n | \mathbf{X}] = 0
 \tag{3.26}
-\]</span> Este supuesto implica que los errores no están correlacionados con las variables explicativas, lo cual es crucial para la insesgadez de los estimadores.</p></li>
+\]</span> Este supuesto implica que los errores no están correlacionados con las variables explicativas, lo cual es crucial para que los estimadores resulten insesgados.</p></li>
 <li><p>Supuesto 4: Homocedasticidad y no autocorrelación <span class="math display">\[
 \text{Var}(\boldsymbol{\epsilon} | \mathbf{X}) = \sigma^2 \mathbf{I}_N
 \tag{3.27}
@@ -689,7 +711,7 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span></p>
 <p>Este estimador tiene las siguientes propiedades fundamentales <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>:</p>
 <ul>
-<li><p><strong>Insesgadez</strong>: <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></p></li>
+<li><p>Los estimadores son insesgados, esto es, <span class="math inline">\(\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}\)</span></p></li>
 <li><p><strong>Consistencia</strong>: <span class="math inline">\(\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}\)</span> cuando <span class="math inline">\(N \to \infty\)</span></p></li>
 <li><p><strong>Eficiencia</strong>: Entre todos los estimadores lineales insesgados, <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> tiene la menor varianza (teorema de Gauss-Markov)</p></li>
 </ul>
@@ -973,7 +995,7 @@ JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
 <ol type="1">
 <li><p><strong>Ajuste penalizado</strong>: Se evalúa la superioridad algorítmica si la diferencia en los criterios es sustancial (<span class="math inline">\(\Delta \text{AIC} \leq -2\)</span> o <span class="math inline">\(\Delta \text{BIC} \leq -2\)</span>) a favor del SDDE <span class="citation" data-cites="burnham2002model">(<a href="bibliografia.html#ref-burnham2002model" role="doc-biblioref">Burnham &amp; Anderson, 2002</a>)</span>.</p></li>
 <li><p><strong>Capacidad predictiva (<em>Out-of-sample</em>)</strong>: Se contrasta el Error Cuadrático Medio (RMSE) y el Pseudo-<span class="math inline">\(R^2\)</span> iterando predicciones sobre un conjunto de datos de validación cruzada no visto durante el entrenamiento.</p></li>
-<li><p><strong>Interpretabilidad biológica</strong>: A diferencia de la naturaleza de “caja negra” de los polinomios autorregresivos profundos, la parametrización esparsa del SDDE (Ecuación 3.25) se justifica porque ofrece una traducción directa a la dinámica fisiológica de la vegetación (tasas de crecimiento, memoria de fotoasimilados y sensibilidad ambiental empírica) <span class="citation" data-cites="cuddington2013process">(<a href="bibliografia.html#ref-cuddington2013process" role="doc-biblioref">Cuddington et&nbsp;al., 2013</a>)</span>.</p></li>
+<li><p><strong>Interpretabilidad biológica</strong>: A diferencia de la naturaleza de “caja negra” de los polinomios autorregresivos profundos, la parametrización dispersa del SDDE (Ecuación 3.25) se justifica porque ofrece una traducción directa a la dinámica fisiológica de la vegetación (tasas de crecimiento, memoria de fotoasimilados y sensibilidad ambiental empírica) <span class="citation" data-cites="cuddington2013process">(<a href="bibliografia.html#ref-cuddington2013process" role="doc-biblioref">Cuddington et&nbsp;al., 2013</a>)</span>.</p></li>
 </ol>
 
 
@@ -1052,9 +1074,6 @@ Montgomery, D. C., Peck, E. A., &amp; Vining, G. G. (2021). <em>Introduction to 
 </div>
 <div id="ref-ogle2015quantifying" class="csl-entry" role="listitem">
 Ogle, K., Barber, J. J., Barron-Gafford, G. A., Bentley, L. P., Cable, J. M., Huxman, T. E., Loik, M. E., &amp; Tissue, D. T. (2015). Quantifying ecological memory in plant and ecosystem processes. <em>Ecology Letters</em>, <em>18</em>(3), 221-235. <a href="https://doi.org/10.1111/ele.12399">https://doi.org/10.1111/ele.12399</a>
-</div>
-<div id="ref-platen1999introduction" class="csl-entry" role="listitem">
-Platen, E. (1999). An introduction to numerical methods for stochastic differential equations. <em>Acta Numerica</em>, <em>8</em>, 197-246. <a href="https://doi.org/10.1017/S0962492900002941">https://doi.org/10.1017/S0962492900002941</a>
 </div>
 <div id="ref-revuz1999continuous" class="csl-entry" role="listitem">
 Revuz, D., &amp; Yor, M. (1999). <em>Continuous Martingales and Brownian Motion</em> (3.ª ed., Vol. 293). Springer.
