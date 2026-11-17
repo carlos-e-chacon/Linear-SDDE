@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Formulación del Modelo Matemático – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</title>
+<title>3&nbsp; Modelo SDDE en tiempo continuo – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -50,8 +50,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./bibliografia.html" rel="next">
-<link href="./capitulo_2.html" rel="prev">
+<link href="./cap4_metodologia.html" rel="next">
+<link href="./cap2_biologicos.html" rel="prev">
 <link href="./figuras/unach.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -131,9 +131,11 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="3&nbsp; Formulación del Modelo Matemático – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta property="og:title" content="3&nbsp; Modelo SDDE en tiempo continuo – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta property="og:description" content="">
 <meta property="og:site_name" content="Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
-<meta name="twitter:title" content="3&nbsp; Formulación del Modelo Matemático – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta name="twitter:title" content="3&nbsp; Modelo SDDE en tiempo continuo – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -306,7 +308,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./capitulo_3.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Formulación del Modelo Matemático</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cap3_modelo.html">Modelación y Metodología</a></li><li class="breadcrumb-item"><a href="./cap3_modelo.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelo SDDE en tiempo continuo</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
@@ -347,21 +349,84 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</span></span></a>
+ <span class="menu-text">Resumen</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./capitulo_2.html" class="sidebar-item-text sidebar-link">
+  <a href="./introduccion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introducción</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Marco Teórico</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap1_matematicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fundamentos Matemáticos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap2_biologicos.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fundamentos Biológicos</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Modelación y Metodología</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./capitulo_3.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Formulación del Modelo Matemático</span></span></a>
+  <a href="./cap3_modelo.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelo SDDE en tiempo continuo</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap4_metodologia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Metodología de Estimación</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Resultados y Conclusiones</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap5_resultados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Resultados y Discusión</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap6_conclusiones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./bibliografia.html" class="sidebar-item-text sidebar-link">
@@ -377,22 +442,65 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Tabla de contenidos</h2>
    
+  <ul>
+  <li><a href="#motivación-y-contexto-teórico" id="toc-motivación-y-contexto-teórico" class="nav-link active" data-scroll-target="#motivación-y-contexto-teórico"><span class="header-section-number">3.0.1</span> Motivación y contexto teórico</a></li>
+  <li><a href="#definición-formal-del-modelo" id="toc-definición-formal-del-modelo" class="nav-link" data-scroll-target="#definición-formal-del-modelo"><span class="header-section-number">3.0.2</span> Definición formal del modelo</a></li>
+  <li><a href="#sec-condiciones-iniciales" id="toc-sec-condiciones-iniciales" class="nav-link" data-scroll-target="#sec-condiciones-iniciales"><span class="header-section-number">3.0.3</span> Condiciones iniciales y espacio de fases</a></li>
+  <li><a href="#propiedades-matemáticas-fundamentales" id="toc-propiedades-matemáticas-fundamentales" class="nav-link" data-scroll-target="#propiedades-matemáticas-fundamentales"><span class="header-section-number">3.0.4</span> Propiedades matemáticas fundamentales</a></li>
+  <li><a href="#interpretación-biológica-de-los-términos" id="toc-interpretación-biológica-de-los-términos" class="nav-link" data-scroll-target="#interpretación-biológica-de-los-términos"><span class="header-section-number">3.0.5</span> Interpretación biológica de los términos</a></li>
+  <li><a href="#solución-formal-y-representación-integral" id="toc-solución-formal-y-representación-integral" class="nav-link" data-scroll-target="#solución-formal-y-representación-integral"><span class="header-section-number">3.0.6</span> Solución formal y representación integral</a></li>
+  <li><a href="#consideraciones-sobre-la-positividad-del-modelo" id="toc-consideraciones-sobre-la-positividad-del-modelo" class="nav-link" data-scroll-target="#consideraciones-sobre-la-positividad-del-modelo"><span class="header-section-number">3.0.7</span> Consideraciones sobre la positividad del modelo</a></li>
+  <li><a href="#sec-discretizacion" id="toc-sec-discretizacion" class="nav-link" data-scroll-target="#sec-discretizacion"><span class="header-section-number">3.1</span> Discretización Numérica y Propiedades del Esquema</a>
   <ul class="collapse">
-  <li><a href="#modelo-sdde-en-tiempo-continuo" id="toc-modelo-sdde-en-tiempo-continuo" class="nav-link active" data-scroll-target="#modelo-sdde-en-tiempo-continuo"><span class="header-section-number">3.1</span> Modelo SDDE en tiempo continuo</a></li>
-  <li><a href="#sec-discretizacion" id="toc-sec-discretizacion" class="nav-link" data-scroll-target="#sec-discretizacion"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</a></li>
-  <li><a href="#formulación-estadística-como-modelo-de-regresión" id="toc-formulación-estadística-como-modelo-de-regresión" class="nav-link" data-scroll-target="#formulación-estadística-como-modelo-de-regresión"><span class="header-section-number">3.3</span> Formulación Estadística como Modelo de Regresión</a></li>
-  <li><a href="#identificabilidad-y-estimación-de-parámetros" id="toc-identificabilidad-y-estimación-de-parámetros" class="nav-link" data-scroll-target="#identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.4</span> Identificabilidad y Estimación de Parámetros</a></li>
-  <li><a href="#diagnóstico-estadístico-y-validación-del-modelo" id="toc-diagnóstico-estadístico-y-validación-del-modelo" class="nav-link" data-scroll-target="#diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.5</span> Diagnóstico Estadístico y Validación del Modelo</a></li>
+  <li><a href="#sec-motivacion-discretizacion" id="toc-sec-motivacion-discretizacion" class="nav-link" data-scroll-target="#sec-motivacion-discretizacion"><span class="header-section-number">3.1.1</span> Motivación y contexto metodológico</a></li>
+  <li><a href="#aquí-irá-el-código" id="toc-aquí-irá-el-código" class="nav-link" data-scroll-target="#aquí-irá-el-código"><span class="header-section-number">3.1.2</span> (Aquí irá el código)</a></li>
+  <li><a href="#sec-convergencia" id="toc-sec-convergencia" class="nav-link" data-scroll-target="#sec-convergencia"><span class="header-section-number">3.1.3</span> Análisis de convergencia</a></li>
+  <li><a href="#sec-error-truncamiento" id="toc-sec-error-truncamiento" class="nav-link" data-scroll-target="#sec-error-truncamiento"><span class="header-section-number">3.1.4</span> Error de truncamiento local</a></li>
+  <li><a href="#implementación-computacional" id="toc-implementación-computacional" class="nav-link" data-scroll-target="#implementación-computacional"><span class="header-section-number">3.1.5</span> Implementación computacional</a></li>
+  <li><a href="#consideraciones-prácticas-para-delta-t-1-día" id="toc-consideraciones-prácticas-para-delta-t-1-día" class="nav-link" data-scroll-target="#consideraciones-prácticas-para-delta-t-1-día"><span class="header-section-number">3.1.6</span> Consideraciones prácticas para <span class="math inline">\(\Delta t = 1\)</span> día</a></li>
+  </ul></li>
+  <li><a href="#formulación-estadística-como-modelo-de-regresión" id="toc-formulación-estadística-como-modelo-de-regresión" class="nav-link" data-scroll-target="#formulación-estadística-como-modelo-de-regresión"><span class="header-section-number">3.2</span> Formulación Estadística como Modelo de Regresión</a>
+  <ul class="collapse">
+  <li><a href="#motivación-y-contexto-estadístico" id="toc-motivación-y-contexto-estadístico" class="nav-link" data-scroll-target="#motivación-y-contexto-estadístico"><span class="header-section-number">3.2.1</span> Motivación y contexto estadístico</a></li>
+  <li><a href="#modelo-de-regresión-lineal-derivado-del-sdde" id="toc-modelo-de-regresión-lineal-derivado-del-sdde" class="nav-link" data-scroll-target="#modelo-de-regresión-lineal-derivado-del-sdde"><span class="header-section-number">3.2.2</span> Modelo de regresión lineal derivado del SDDE</a></li>
+  <li><a href="#notación-matricial-y-vector-de-parámetros" id="toc-notación-matricial-y-vector-de-parámetros" class="nav-link" data-scroll-target="#notación-matricial-y-vector-de-parámetros"><span class="header-section-number">3.2.3</span> Notación matricial y vector de parámetros</a></li>
+  <li><a href="#relación-estructural-con-modelos-arp" id="toc-relación-estructural-con-modelos-arp" class="nav-link" data-scroll-target="#relación-estructural-con-modelos-arp"><span class="header-section-number">3.2.4</span> Relación estructural con modelos AR(p)</a></li>
+  <li><a href="#supuestos-estadísticos-del-modelo" id="toc-supuestos-estadísticos-del-modelo" class="nav-link" data-scroll-target="#supuestos-estadísticos-del-modelo"><span class="header-section-number">3.2.5</span> Supuestos estadísticos del modelo</a></li>
+  <li><a href="#estimación-de-parámetros-por-mínimos-cuadrados-ordinarios" id="toc-estimación-de-parámetros-por-mínimos-cuadrados-ordinarios" class="nav-link" data-scroll-target="#estimación-de-parámetros-por-mínimos-cuadrados-ordinarios"><span class="header-section-number">3.2.6</span> Estimación de parámetros por mínimos cuadrados ordinarios</a></li>
+  <li><a href="#identificabilidad-del-modelo" id="toc-identificabilidad-del-modelo" class="nav-link" data-scroll-target="#identificabilidad-del-modelo"><span class="header-section-number">3.2.7</span> Identificabilidad del modelo</a></li>
+  <li><a href="#incorporación-de-variables-exógenas-climáticas" id="toc-incorporación-de-variables-exógenas-climáticas" class="nav-link" data-scroll-target="#incorporación-de-variables-exógenas-climáticas"><span class="header-section-number">3.2.8</span> Incorporación de variables exógenas climáticas</a></li>
+  <li><a href="#diagnóstico-de-supuestos-y-validación-del-modelo" id="toc-diagnóstico-de-supuestos-y-validación-del-modelo" class="nav-link" data-scroll-target="#diagnóstico-de-supuestos-y-validación-del-modelo"><span class="header-section-number">3.2.9</span> Diagnóstico de supuestos y validación del modelo</a></li>
+  </ul></li>
+  <li><a href="#identificabilidad-y-estimación-de-parámetros" id="toc-identificabilidad-y-estimación-de-parámetros" class="nav-link" data-scroll-target="#identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.3</span> Identificabilidad y Estimación de Parámetros</a>
+  <ul class="collapse">
+  <li><a href="#marco-teórico-de-identificabilidad" id="toc-marco-teórico-de-identificabilidad" class="nav-link" data-scroll-target="#marco-teórico-de-identificabilidad"><span class="header-section-number">3.3.1</span> Marco teórico de identificabilidad</a></li>
+  <li><a href="#identificabilidad-estructural-del-modelo-sdde" id="toc-identificabilidad-estructural-del-modelo-sdde" class="nav-link" data-scroll-target="#identificabilidad-estructural-del-modelo-sdde"><span class="header-section-number">3.3.2</span> Identificabilidad estructural del modelo SDDE</a></li>
+  <li><a href="#identificabilidad-práctica-y-condiciones-de-rango" id="toc-identificabilidad-práctica-y-condiciones-de-rango" class="nav-link" data-scroll-target="#identificabilidad-práctica-y-condiciones-de-rango"><span class="header-section-number">3.3.3</span> Identificabilidad práctica y condiciones de rango</a></li>
+  <li><a href="#estimación-por-mínimos-cuadrados-ordinarios-ols" id="toc-estimación-por-mínimos-cuadrados-ordinarios-ols" class="nav-link" data-scroll-target="#estimación-por-mínimos-cuadrados-ordinarios-ols"><span class="header-section-number">3.3.4</span> Estimación por mínimos cuadrados ordinarios (OLS)</a></li>
+  <li><a href="#estimación-de-la-varianza-del-error" id="toc-estimación-de-la-varianza-del-error" class="nav-link" data-scroll-target="#estimación-de-la-varianza-del-error"><span class="header-section-number">3.3.5</span> Estimación de la varianza del error</a></li>
+  <li><a href="#relación-con-la-intensidad-del-ruido-estocástico" id="toc-relación-con-la-intensidad-del-ruido-estocástico" class="nav-link" data-scroll-target="#relación-con-la-intensidad-del-ruido-estocástico"><span class="header-section-number">3.3.6</span> Relación con la intensidad del ruido estocástico</a></li>
+  <li><a href="#diagnóstico-de-identificabilidad-práctica" id="toc-diagnóstico-de-identificabilidad-práctica" class="nav-link" data-scroll-target="#diagnóstico-de-identificabilidad-práctica"><span class="header-section-number">3.3.7</span> Diagnóstico de identificabilidad práctica</a></li>
+  </ul></li>
+  <li><a href="#diagnóstico-estadístico-y-validación-del-modelo" id="toc-diagnóstico-estadístico-y-validación-del-modelo" class="nav-link" data-scroll-target="#diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.4</span> Diagnóstico Estadístico y Validación del Modelo</a>
+  <ul class="collapse">
+  <li><a href="#marco-teórico-del-diagnóstico-de-regresión" id="toc-marco-teórico-del-diagnóstico-de-regresión" class="nav-link" data-scroll-target="#marco-teórico-del-diagnóstico-de-regresión"><span class="header-section-number">3.4.1</span> Marco teórico del diagnóstico de regresión</a></li>
+  <li><a href="#supuestos-del-modelo-y-sus-implicaciones" id="toc-supuestos-del-modelo-y-sus-implicaciones" class="nav-link" data-scroll-target="#supuestos-del-modelo-y-sus-implicaciones"><span class="header-section-number">3.4.2</span> Supuestos del modelo y sus implicaciones</a></li>
+  <li><a href="#métodos-de-diagnóstico-gráfico" id="toc-métodos-de-diagnóstico-gráfico" class="nav-link" data-scroll-target="#métodos-de-diagnóstico-gráfico"><span class="header-section-number">3.4.3</span> Métodos de diagnóstico gráfico</a></li>
+  <li><a href="#pruebas-estadísticas-formales" id="toc-pruebas-estadísticas-formales" class="nav-link" data-scroll-target="#pruebas-estadísticas-formales"><span class="header-section-number">3.4.4</span> Pruebas estadísticas formales</a></li>
+  <li><a href="#diagnóstico-de-multicolinealidad" id="toc-diagnóstico-de-multicolinealidad" class="nav-link" data-scroll-target="#diagnóstico-de-multicolinealidad"><span class="header-section-number">3.4.5</span> Diagnóstico de multicolinealidad</a></li>
+  <li><a href="#criterios-de-información-para-selección-de-modelos" id="toc-criterios-de-información-para-selección-de-modelos" class="nav-link" data-scroll-target="#criterios-de-información-para-selección-de-modelos"><span class="header-section-number">3.4.6</span> Criterios de información para selección de modelos</a></li>
+  <li><a href="#validación-del-modelo-mediante-comparación-con-benchmarks" id="toc-validación-del-modelo-mediante-comparación-con-benchmarks" class="nav-link" data-scroll-target="#validación-del-modelo-mediante-comparación-con-benchmarks"><span class="header-section-number">3.4.7</span> Validación del modelo mediante comparación con <em>benchmarks</em></a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/capitulo_3.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/capitulo_3.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/cap3_modelo.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/cap3_modelo.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cap3_modelo.html">Modelación y Metodología</a></li><li class="breadcrumb-item"><a href="./cap3_modelo.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelo SDDE en tiempo continuo</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Formulación del Modelo Matemático</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelo SDDE en tiempo continuo</span></h1>
 </div>
 
 
@@ -409,15 +517,13 @@ window.Quarto = {
 </header>
 
 
-<section id="modelo-sdde-en-tiempo-continuo" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="modelo-sdde-en-tiempo-continuo"><span class="header-section-number">3.1</span> Modelo SDDE en tiempo continuo</h2>
-<section id="motivación-y-contexto-teórico" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="motivación-y-contexto-teórico"><span class="header-section-number">3.1.1</span> Motivación y contexto teórico</h3>
+<section id="motivación-y-contexto-teórico" class="level3" data-number="3.0.1">
+<h3 data-number="3.0.1" class="anchored" data-anchor-id="motivación-y-contexto-teórico"><span class="header-section-number">3.0.1</span> Motivación y contexto teórico</h3>
 <p>Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal <span class="citation" data-cites="ogle2015quantifying">(<a href="bibliografia.html#ref-ogle2015quantifying" role="doc-biblioref">Ogle et&nbsp;al., 2015</a>)</span>.</p>
 <p>La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales <span class="citation" data-cites="volterra1931theorie">(<a href="bibliografia.html#ref-volterra1931theorie" role="doc-biblioref">Volterra, 1931</a>)</span>. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs de parte de Kiyosi Itô visto en el artículo <span class="citation" data-cites="ito1951stochastic">Itô (<a href="bibliografia.html#ref-ito1951stochastic" role="doc-biblioref">1951</a>)</span>.</p>
 </section>
-<section id="definición-formal-del-modelo" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="definición-formal-del-modelo"><span class="header-section-number">3.1.2</span> Definición formal del modelo</h3>
+<section id="definición-formal-del-modelo" class="level3" data-number="3.0.2">
+<h3 data-number="3.0.2" class="anchored" data-anchor-id="definición-formal-del-modelo"><span class="header-section-number">3.0.2</span> Definición formal del modelo</h3>
 <p>Consideremos un espacio de probabilidad filtrado <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)</span> que satisface las condiciones usuales de completitud y continuidad derecha <span class="citation" data-cites="revuz1999continuous">(<a href="bibliografia.html#ref-revuz1999continuous" role="doc-biblioref">Revuz &amp; Yor, 1999</a>)</span>. Sea <span class="math inline">\(W(t)\)</span> un proceso de Wiener estándar (movimiento browniano) adaptado a la filtración <span class="math inline">\(\{\mathcal{F}_t\}\)</span>.</p>
 <p>El modelo propuesto para la dinámica del índice de verdor GCC se define mediante la siguiente ecuación diferencial estocástica con retraso:</p>
 <p><span id="eq-sdde"><span class="math display">\[
@@ -446,8 +552,8 @@ dX(t) = \left[ \alpha + \beta X(t) +\gamma X(t-\tau) + \boldsymbol{\delta}^T \ma
 <strong>Unidad:</strong> <span class="math inline">\(\sqrt{\text{días}}\)</span> (dado que <span class="math inline">\(\text{Var}(W(t)) = t\)</span>).</p></li>
 </ul>
 </section>
-<section id="sec-condiciones-iniciales" class="level3" data-number="3.1.3">
-<h3 data-number="3.1.3" class="anchored" data-anchor-id="sec-condiciones-iniciales"><span class="header-section-number">3.1.3</span> Condiciones iniciales y espacio de fases</h3>
+<section id="sec-condiciones-iniciales" class="level3" data-number="3.0.3">
+<h3 data-number="3.0.3" class="anchored" data-anchor-id="sec-condiciones-iniciales"><span class="header-section-number">3.0.3</span> Condiciones iniciales y espacio de fases</h3>
 <p>A diferencia de las ecuaciones diferenciales estocásticas clásicas, las SDDEs presentan una característica estructural fundamental: su <strong>espacio de fases es infinito-dimensional</strong>. Específicamente, el estado del sistema en el tiempo <span class="math inline">\(t\)</span> no está determinado por un punto en <span class="math inline">\(\mathbb{R}^n\)</span>, sino por un <strong>segmento de historia</strong> <span class="math inline">\(X_t \in C([-\tau, 0], \mathbb{R})\)</span>, definido como <span class="math inline">\(X_t(\theta) = X(t+\theta)\)</span> para <span class="math inline">\(\theta \in [-\tau, 0]\)</span>.</p>
 <p>Este espacio de funciones continuas, equipado con la norma del supremo:</p>
 <p><span class="math display">\[
@@ -462,10 +568,10 @@ X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
 <p>donde <span class="math inline">\(\phi: [-\tau, 0] \to \mathbb{R}^+\)</span> es una función continua y determinista que representa el estado del sistema antes del tiempo inicial <span class="math inline">\(t=0\)</span>. Esta formulación garantiza que, al iniciar la integración en <span class="math inline">\(t=0\)</span>, el término retardado <span class="math inline">\(X(t-\tau)\)</span> esté bien definido para todo <span class="math inline">\(t \geq 0\)</span>, ya que <span class="math inline">\(t-\tau \in [-\tau, 0]\)</span> cuando <span class="math inline">\(t \in [0, \tau]\)</span>.</p>
 <p>La distinción entre SDEs y SDDEs radica precisamente en esta transición de un espacio de estados finito a uno infinito-dimensional. Tal como demuestran Mao <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">2007</a>)</span> y Mohammed <span class="citation" data-cites="mohammed1984stochastic">(<a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">1984</a>)</span>, esta propiedad tiene implicaciones profundas tanto teóricas como computacionales: los métodos numéricos deben almacenar y actualizar trayectorias completas (no solo el valor actual), y el análisis de estabilidad asintótica requiere el uso de funcionales de Lyapunov-Krasovskii o teoremas de tipo Razumikhin, los cuales evalúan la energía del sistema considerando su historial pasado y no únicamente su estado instantáneo.</p>
 </section>
-<section id="propiedades-matemáticas-fundamentales" class="level3" data-number="3.1.4">
-<h3 data-number="3.1.4" class="anchored" data-anchor-id="propiedades-matemáticas-fundamentales"><span class="header-section-number">3.1.4</span> Propiedades matemáticas fundamentales</h3>
-<section id="verificación-para-el-modelo-propuesto" class="level4" data-number="3.1.4.1">
-<h4 data-number="3.1.4.1" class="anchored" data-anchor-id="verificación-para-el-modelo-propuesto"><span class="header-section-number">3.1.4.1</span> Verificación para el modelo propuesto</h4>
+<section id="propiedades-matemáticas-fundamentales" class="level3" data-number="3.0.4">
+<h3 data-number="3.0.4" class="anchored" data-anchor-id="propiedades-matemáticas-fundamentales"><span class="header-section-number">3.0.4</span> Propiedades matemáticas fundamentales</h3>
+<section id="verificación-para-el-modelo-propuesto" class="level4" data-number="3.0.4.1">
+<h4 data-number="3.0.4.1" class="anchored" data-anchor-id="verificación-para-el-modelo-propuesto"><span class="header-section-number">3.0.4.1</span> Verificación para el modelo propuesto</h4>
 <p>Para nuestro modelo específico, verificamos las condiciones anteriores:</p>
 <ol type="1">
 <li><p><strong>Lipschitz</strong>: La función <span class="math inline">\(\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)\)</span> es lineal en <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, por lo tanto satisface la condición de Lipschitz con constante <span class="math inline">\(K = \max(|\beta|, |\gamma|)\)</span>.</p></li>
@@ -474,10 +580,10 @@ X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
 <p>Por lo tanto, el modelo propuesto garantiza existencia y unicidad de soluciones para cualquier historial inicial continuo <span class="math inline">\(\phi\)</span>.</p>
 </section>
 </section>
-<section id="interpretación-biológica-de-los-términos" class="level3" data-number="3.1.5">
-<h3 data-number="3.1.5" class="anchored" data-anchor-id="interpretación-biológica-de-los-términos"><span class="header-section-number">3.1.5</span> Interpretación biológica de los términos</h3>
-<section id="término-de-deriva-determinista" class="level4" data-number="3.1.5.1">
-<h4 data-number="3.1.5.1" class="anchored" data-anchor-id="término-de-deriva-determinista"><span class="header-section-number">3.1.5.1</span> Término de deriva determinista</h4>
+<section id="interpretación-biológica-de-los-términos" class="level3" data-number="3.0.5">
+<h3 data-number="3.0.5" class="anchored" data-anchor-id="interpretación-biológica-de-los-términos"><span class="header-section-number">3.0.5</span> Interpretación biológica de los términos</h3>
+<section id="término-de-deriva-determinista" class="level4" data-number="3.0.5.1">
+<h4 data-number="3.0.5.1" class="anchored" data-anchor-id="término-de-deriva-determinista"><span class="header-section-number">3.0.5.1</span> Término de deriva determinista</h4>
 <p>El término de deriva en la <a href="#eq-sdde" class="quarto-xref">Ecuación&nbsp;<span>3.1</span></a> puede descomponerse en cuatro componentes:</p>
 <p><span class="math display">\[
 \mu(t, X(t), X(t-\tau)) = \underbrace{\alpha}_{\begin{matrix} \text{Crecimiento} \\ \text{basal} \end{matrix}} + \underbrace{\beta X(t)}_{\begin{matrix}\text{Retroalimentación}\\ \text{actual}\end{matrix}} + \underbrace{\gamma X(t-\tau)}_{\begin{matrix}\text{Memoria} \\ \text{fisiológica}\end{matrix}} + \underbrace{\boldsymbol{\delta}^T \mathbf{C}(t)}_{\begin{matrix}\text{Forzantes} \\ \text{climáticas}\end{matrix}}
@@ -490,40 +596,39 @@ X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
 <li><p><strong>Forzantes climáticas (<span class="math inline">\(\boldsymbol{\delta}^T \mathbf{C}(t)\)</span>)</strong>: Incorpora la influencia directa de variables ambientales sobre el crecimiento. Cada componente <span class="math inline">\(\delta_i\)</span> cuantifica la sensibilidad del sistema a la variable climática correspondiente <span class="citation" data-cites="hatfield2015temperature">(<a href="bibliografia.html#ref-hatfield2015temperature" role="doc-biblioref">Hatfield &amp; Prueger, 2015</a>)</span>.</p></li>
 </ul>
 </section>
-<section id="término-de-difusión-estocástica" class="level4" data-number="3.1.5.2">
-<h4 data-number="3.1.5.2" class="anchored" data-anchor-id="término-de-difusión-estocástica"><span class="header-section-number">3.1.5.2</span> Término de difusión estocástica</h4>
+<section id="término-de-difusión-estocástica" class="level4" data-number="3.0.5.2">
+<h4 data-number="3.0.5.2" class="anchored" data-anchor-id="término-de-difusión-estocástica"><span class="header-section-number">3.0.5.2</span> Término de difusión estocástica</h4>
 <p>El término de difusión <span class="math inline">\(\sigma X(t) \, dW(t)\)</span> modela la variabilidad ambiental no explicada por las variables climáticas incluidas explícitamente. La forma multiplicativa <span class="math inline">\(\sigma X(t)\)</span> implica que la intensidad del ruido es proporcional al tamaño del sistema, lo cual es biológicamente razonable: sistemas más grandes (mayor GCC) exhiben mayor variabilidad absoluta <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
 </section>
 </section>
-<section id="solución-formal-y-representación-integral" class="level3" data-number="3.1.6">
-<h3 data-number="3.1.6" class="anchored" data-anchor-id="solución-formal-y-representación-integral"><span class="header-section-number">3.1.6</span> Solución formal y representación integral</h3>
+<section id="solución-formal-y-representación-integral" class="level3" data-number="3.0.6">
+<h3 data-number="3.0.6" class="anchored" data-anchor-id="solución-formal-y-representación-integral"><span class="header-section-number">3.0.6</span> Solución formal y representación integral</h3>
 <p>La solución de la <a href="#eq-sdde" class="quarto-xref">Ecuación&nbsp;<span>3.1</span></a> puede expresarse en forma integral utilizando el Cálculo de Itô <span class="citation" data-cites="sarkka2019applied">(<a href="bibliografia.html#ref-sarkka2019applied" role="doc-biblioref">Särkkä &amp; Solin, 2019</a>)</span>:</p>
 <p><span id="eq-integral_solution"><span class="math display">\[
 X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymbol{\delta}^T \mathbf{C}(s) \right] ds + \sigma \int_0^t X(s) \, dW(s)
 \tag{3.3}\]</span></span></p>
 <p>Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica <span class="math inline">\(\int_0^t X(s) \, dW(s)\)</span> se interpreta en el sentido de Itô, lo cual implica que el integrando <span class="math inline">\(X(s)\)</span> es evaluado en el extremo izquierdo de cada subintervalo de partición de acuerdo con la definición formal.</p>
 </section>
-<section id="consideraciones-sobre-la-positividad-del-modelo" class="level3" data-number="3.1.7">
-<h3 data-number="3.1.7" class="anchored" data-anchor-id="consideraciones-sobre-la-positividad-del-modelo"><span class="header-section-number">3.1.7</span> Consideraciones sobre la positividad del modelo</h3>
+<section id="consideraciones-sobre-la-positividad-del-modelo" class="level3" data-number="3.0.7">
+<h3 data-number="3.0.7" class="anchored" data-anchor-id="consideraciones-sobre-la-positividad-del-modelo"><span class="header-section-number">3.0.7</span> Consideraciones sobre la positividad del modelo</h3>
 <p>Dado que <span class="math inline">\(X(t)\)</span> representa el índice de verdor GCC, que físicamente debe ser no negativo (<span class="math inline">\(X(t) \geq 0\)</span>), es crucial verificar que el modelo preserve esta propiedad. Para SDEs con coeficientes lineales como la nuestra, se puede demostrar que si la condición inicial satisface <span class="math inline">\(\phi(t) \geq 0\)</span> para todo <span class="math inline">\(t \in [-\tau, 0]\)</span>, entonces <span class="math inline">\(X(t) \geq 0\)</span> casi seguramente para todo <span class="math inline">\(t \geq 0\)</span> <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>.</p>
 <p>Esta propiedad de positividad es esencial para la interpretación biológica del modelo y garantiza que las simulaciones numéricas produzcan resultados físicamente realistas.</p>
 </section>
-</section>
-<section id="sec-discretizacion" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="sec-discretizacion"><span class="header-section-number">3.2</span> Discretización Numérica y Propiedades del Esquema</h2>
-<section id="sec-motivacion-discretizacion" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="sec-motivacion-discretizacion"><span class="header-section-number">3.2.1</span> Motivación y contexto metodológico</h3>
+<section id="sec-discretizacion" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="sec-discretizacion"><span class="header-section-number">3.1</span> Discretización Numérica y Propiedades del Esquema</h2>
+<section id="sec-motivacion-discretizacion" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="sec-motivacion-discretizacion"><span class="header-section-number">3.1.1</span> Motivación y contexto metodológico</h3>
 <p>La resolución analítica de ecuaciones diferenciales estocásticas con retraso (SDDE) es generalmente imposible debido a la naturaleza no markoviana del proceso y la dependencia funcional del pasado <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>. Por lo tanto, es necesario recurrir a métodos numéricos de discretización para obtener soluciones aproximadas que permitan tanto el análisis teórico como la implementación computacional.</p>
 <p>Para el caso específico de SDDEs, Mao <span class="citation" data-cites="mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">2007, pp. 164-165</a>)</span> establece en la Sección 5.5 que los procedimientos de aproximación de Caratheodory y Euler-Maruyama, originalmente desarrollados para SDEs clásicas, pueden extenderse al contexto de ecuaciones diferenciales estocásticas funcionales. Entre estos métodos, el esquema de <strong>Euler-Maruyama</strong> representa el enfoque más fundamental y ampliamente utilizado para la discretización de SDDEs, debido a su simplicidad conceptual, facilidad de implementación y propiedades de convergencia bien establecidas tanto para SDEs como para SDDEs.</p>
 </section>
-<section id="aquí-irá-el-código" class="level3" data-number="3.2.2">
-<h3 data-number="3.2.2" class="anchored" data-anchor-id="aquí-irá-el-código"><span class="header-section-number">3.2.2</span> (Aquí irá el código)</h3>
+<section id="aquí-irá-el-código" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="aquí-irá-el-código"><span class="header-section-number">3.1.2</span> (Aquí irá el código)</h3>
 </section>
-<section id="sec-convergencia" class="level3" data-number="3.2.3">
-<h3 data-number="3.2.3" class="anchored" data-anchor-id="sec-convergencia"><span class="header-section-number">3.2.3</span> Análisis de convergencia</h3>
+<section id="sec-convergencia" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="sec-convergencia"><span class="header-section-number">3.1.3</span> Análisis de convergencia</h3>
 <p>El análisis de convergencia de esquemas numéricos para SDEs y SDDEs distingue entre dos tipos fundamentales de convergencia: <strong>convergencia fuerte</strong> y <strong>convergencia débil</strong> <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>. Esta distinción es crucial porque cada tipo de convergencia responde a objetivos computacionales diferentes: la convergencia fuerte es relevante cuando se busca aproximar trayectorias individuales del proceso (simulación de escenarios), mientras que la convergencia débil es suficiente cuando solo interesan cantidades estadísticas como esperanzas o varianzas <span class="citation" data-cites="milstein1995numerical">(<a href="bibliografia.html#ref-milstein1995numerical" role="doc-biblioref">Milstein, 1995</a>)</span>.</p>
-<section id="sec-convergencia-fuerte" class="level4" data-number="3.2.3.1">
-<h4 data-number="3.2.3.1" class="anchored" data-anchor-id="sec-convergencia-fuerte"><span class="header-section-number">3.2.3.1</span> Convergencia fuerte</h4>
+<section id="sec-convergencia-fuerte" class="level4" data-number="3.1.3.1">
+<h4 data-number="3.1.3.1" class="anchored" data-anchor-id="sec-convergencia-fuerte"><span class="header-section-number">3.1.3.1</span> Convergencia fuerte</h4>
 <p>Un esquema numérico tiene <strong>convergencia fuerte de orden <span class="math inline">\(\gamma\)</span></strong> si existe una constante <span class="math inline">\(C &gt; 0\)</span> independiente de <span class="math inline">\(\Delta t\)</span> tal que:</p>
 <p><span class="math display">\[
 \mathbb{E}\left[ |X(T) - X_N| \right] \leq C (\Delta t)^\gamma
@@ -537,8 +642,8 @@ X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymb
 <p>donde <span class="math inline">\(Y(t)\)</span> denota la aproximación numérica continua. Este resultado implica que el orden de convergencia fuerte es <span class="math inline">\(\gamma = 1/2\)</span>, idéntico al caso de SDEs sin retraso.</p>
 <p>Para nuestro modelo lineal específico, las condiciones de Lipschitz y crecimiento lineal se satisfacen trivialmente, garantizando así la convergencia fuerte de orden <span class="math inline">\(1/2\)</span>.</p>
 </section>
-<section id="sec-convergencia-debil" class="level4" data-number="3.2.3.2">
-<h4 data-number="3.2.3.2" class="anchored" data-anchor-id="sec-convergencia-debil"><span class="header-section-number">3.2.3.2</span> Convergencia débil</h4>
+<section id="sec-convergencia-debil" class="level4" data-number="3.1.3.2">
+<h4 data-number="3.1.3.2" class="anchored" data-anchor-id="sec-convergencia-debil"><span class="header-section-number">3.1.3.2</span> Convergencia débil</h4>
 <p>Un esquema numérico tiene <strong>convergencia débil de orden <span class="math inline">\(\beta\)</span></strong> si para toda función <span class="math inline">\(g \in C_P^{2(\beta+1)}(\mathbb{R}, \mathbb{R})\)</span> (funciones <span class="math inline">\(2(\beta+1)\)</span> veces continuamente diferenciables con derivadas polinomialmente acotadas), existe una constante <span class="math inline">\(C_g &gt; 0\)</span> tal que:</p>
 <p><span class="math display">\[
 \left| \mathbb{E}[g(X(T))] - \mathbb{E}[g(X_N)] \right| \leq C_g (\Delta t)^\beta
@@ -549,8 +654,8 @@ X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymb
 <p>Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, momentos estadísticos, etc.) en lugar de aproximar trayectorias individuales <span class="citation" data-cites="wilkinson2018stochastic">(<a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>. En el contexto de nuestro modelo fenológico, la convergencia débil garantiza que las estimaciones de parámetros obtenidas por máxima verosimilitud o mínimos cuadrados serán consistentes a medida que <span class="math inline">\(\Delta t \to 0\)</span>.</p>
 </section>
 </section>
-<section id="sec-error-truncamiento" class="level3" data-number="3.2.4">
-<h3 data-number="3.2.4" class="anchored" data-anchor-id="sec-error-truncamiento"><span class="header-section-number">3.2.4</span> Error de truncamiento local</h3>
+<section id="sec-error-truncamiento" class="level3" data-number="3.1.4">
+<h3 data-number="3.1.4" class="anchored" data-anchor-id="sec-error-truncamiento"><span class="header-section-number">3.1.4</span> Error de truncamiento local</h3>
 <p>El <strong>error de truncamiento local</strong> en el paso <span class="math inline">\(n\)</span> se define como la diferencia entre la solución exacta y la aproximación numérica, asumiendo que el estado anterior es exacto:</p>
 <p><span class="math display">\[
 R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n, X(t_n)) \Delta W_n
@@ -567,8 +672,8 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 \]</span></p>
 <p>Esta propagación del error es característica de los procesos estocásticos y difiere fundamentalmente del caso determinista, donde el error local <span class="math inline">\(\mathcal{O}((\Delta t)^2)\)</span> produce un error global <span class="math inline">\(\mathcal{O}(\Delta t)\)</span> (convergencia de orden 1).</p>
 </section>
-<section id="implementación-computacional" class="level3" data-number="3.2.5">
-<h3 data-number="3.2.5" class="anchored" data-anchor-id="implementación-computacional"><span class="header-section-number">3.2.5</span> Implementación computacional</h3>
+<section id="implementación-computacional" class="level3" data-number="3.1.5">
+<h3 data-number="3.1.5" class="anchored" data-anchor-id="implementación-computacional"><span class="header-section-number">3.1.5</span> Implementación computacional</h3>
 <p>La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El siguiente algoritmo presenta una implementación eficiente:</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
@@ -596,8 +701,8 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 </div>
 <p>La complejidad computacional del algoritmo es <span class="math inline">\(\mathcal{O}(N)\)</span>, lo que lo hace eficiente incluso para simulaciones con horizontes temporales largos <span class="citation" data-cites="andersson2017strong">(<a href="bibliografia.html#ref-andersson2017strong" role="doc-biblioref">Andersson, 2017</a>)</span>.</p>
 </section>
-<section id="consideraciones-prácticas-para-delta-t-1-día" class="level3" data-number="3.2.6">
-<h3 data-number="3.2.6" class="anchored" data-anchor-id="consideraciones-prácticas-para-delta-t-1-día"><span class="header-section-number">3.2.6</span> Consideraciones prácticas para <span class="math inline">\(\Delta t = 1\)</span> día</h3>
+<section id="consideraciones-prácticas-para-delta-t-1-día" class="level3" data-number="3.1.6">
+<h3 data-number="3.1.6" class="anchored" data-anchor-id="consideraciones-prácticas-para-delta-t-1-día"><span class="header-section-number">3.1.6</span> Consideraciones prácticas para <span class="math inline">\(\Delta t = 1\)</span> día</h3>
 <p>En nuestra aplicación específica, el paso temporal de discretización es <span class="math inline">\(\Delta t = 1\)</span> día, correspondiente a la frecuencia de muestreo de los datos PhenoCam. Esta elección tiene implicaciones importantes:</p>
 <ol type="1">
 <li><p><strong>Magnitud del error numérico</strong>: Con <span class="math inline">\(\Delta t = 1\)</span>, el error de truncamiento local puede ser significativo comparado con aplicaciones donde <span class="math inline">\(\Delta t &lt; 1\)</span>. Sin embargo, dado que los datos observados también tienen una resolución diaria, el error numérico se vuelve comparable al error de observación <span class="citation" data-cites="richardson2018tracking">(<a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>)</span>.</p></li>
@@ -607,15 +712,15 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 </ol>
 </section>
 </section>
-<section id="formulación-estadística-como-modelo-de-regresión" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="formulación-estadística-como-modelo-de-regresión"><span class="header-section-number">3.3</span> Formulación Estadística como Modelo de Regresión</h2>
-<section id="motivación-y-contexto-estadístico" class="level3" data-number="3.3.1">
-<h3 data-number="3.3.1" class="anchored" data-anchor-id="motivación-y-contexto-estadístico"><span class="header-section-number">3.3.1</span> Motivación y contexto estadístico</h3>
+<section id="formulación-estadística-como-modelo-de-regresión" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="formulación-estadística-como-modelo-de-regresión"><span class="header-section-number">3.2</span> Formulación Estadística como Modelo de Regresión</h2>
+<section id="motivación-y-contexto-estadístico" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="motivación-y-contexto-estadístico"><span class="header-section-number">3.2.1</span> Motivación y contexto estadístico</h3>
 <p>La discretización del modelo SDDE mediante el esquema de Euler-Maruyama, presentada en la sección 3.2, proporciona una aproximación numérica que facilita la transición desde un marco teórico continuo a un problema de inferencia estadística discreta. Esta formulación permite estimar los parámetros del modelo utilizando técnicas estándar de regresión lineal, lo cual es computacionalmente eficiente y estadísticamente bien fundamentado para el pronóstico de ecosistemas <span class="citation" data-cites="dietze2017ecological">(<a href="bibliografia.html#ref-dietze2017ecological" role="doc-biblioref">Dietze, 2017</a>)</span>.</p>
 <p>El enfoque de regresión lineal para modelos estocásticos discretizados ha sido ampliamente utilizado en finanzas, ecología y ciencias ambientales, donde la combinación de dinámica determinista y ruido estocástico es inherente a los sistemas naturales <span class="citation" data-cites="kloeden1992numerical">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>)</span>.</p>
 </section>
-<section id="modelo-de-regresión-lineal-derivado-del-sdde" class="level3" data-number="3.3.2">
-<h3 data-number="3.3.2" class="anchored" data-anchor-id="modelo-de-regresión-lineal-derivado-del-sdde"><span class="header-section-number">3.3.2</span> Modelo de regresión lineal derivado del SDDE</h3>
+<section id="modelo-de-regresión-lineal-derivado-del-sdde" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="modelo-de-regresión-lineal-derivado-del-sdde"><span class="header-section-number">3.2.2</span> Modelo de regresión lineal derivado del SDDE</h3>
 <p>Partiendo del esquema de Euler-Maruyama para nuestro modelo SDDE específico (ecuación 3.9), y considerando un paso temporal <span class="math inline">\(\Delta t = 1\)</span> día, podemos reorganizar la ecuación para expresar el cambio en el estado como una función lineal de las variables explicativas:</p>
 <p><span class="math display">\[
 \Delta X_n = \alpha + \beta X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
@@ -624,8 +729,8 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 <p>donde: - <span class="math inline">\(\Delta X_n = X_{n+1} - X_n\)</span> es el cambio observado en el índice GCC entre el día <span class="math inline">\(n\)</span> y <span class="math inline">\(n+1\)</span>, - <span class="math inline">\(X_n\)</span> es el valor del GCC en el día <span class="math inline">\(n\)</span>, - <span class="math inline">\(X_{n-k}\)</span> es el valor del GCC en el día <span class="math inline">\(n-k\)</span>, donde <span class="math inline">\(k = \tau\)</span> representa el número de días de retraso, - <span class="math inline">\(\text{Rad}_n\)</span>, <span class="math inline">\(\text{Temp}_n\)</span>, <span class="math inline">\(\text{Prec}_n\)</span> son las variables climáticas observadas en el día <span class="math inline">\(n\)</span>, - <span class="math inline">\(\epsilon_n = \sigma X_n \Delta W_n\)</span> es el término de error estocástico.</p>
 <p>Esta formulación constituye un <strong>modelo de regresión lineal múltiple</strong> donde la variable dependiente es <span class="math inline">\(\Delta X_n\)</span> y las variables independientes son <span class="math inline">\(X_n\)</span>, <span class="math inline">\(X_{n-k}\)</span>, y las tres variables climáticas.</p>
 </section>
-<section id="notación-matricial-y-vector-de-parámetros" class="level3" data-number="3.3.3">
-<h3 data-number="3.3.3" class="anchored" data-anchor-id="notación-matricial-y-vector-de-parámetros"><span class="header-section-number">3.3.3</span> Notación matricial y vector de parámetros</h3>
+<section id="notación-matricial-y-vector-de-parámetros" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="notación-matricial-y-vector-de-parámetros"><span class="header-section-number">3.2.3</span> Notación matricial y vector de parámetros</h3>
 <p>En notación matricial compacta, el modelo (3.19) se expresa como:</p>
 <p><span class="math display">\[
 \mathbf{Y} = \mathbf{X} \boldsymbol{\theta} + \boldsymbol{\epsilon}
@@ -658,8 +763,8 @@ R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n,
 \tag{3.22}
 \]</span></p>
 </section>
-<section id="relación-estructural-con-modelos-arp" class="level3" data-number="3.3.4">
-<h3 data-number="3.3.4" class="anchored" data-anchor-id="relación-estructural-con-modelos-arp"><span class="header-section-number">3.3.4</span> Relación estructural con modelos AR(p)</h3>
+<section id="relación-estructural-con-modelos-arp" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="relación-estructural-con-modelos-arp"><span class="header-section-number">3.2.4</span> Relación estructural con modelos AR(p)</h3>
 <p>El modelo de regresión (3.19) puede reinterpretarse como un modelo autorregresivo con estructura dispersa. Reorganizando la ecuación (3.19):</p>
 <p><span class="math display">\[
 X_{n+1} = \alpha + (1 + \beta) X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
@@ -682,8 +787,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span></p>
 <p>Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un <strong>modelo AR(p) con restricciones estructurales</strong>, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato (<span class="math inline">\(i=1\)</span>) y el correspondiente al retraso biológico (<span class="math inline">\(i=k=\tau\)</span>). Esta estructura dispersa reduce drásticamente la dimensionalidad del problema de <span class="math inline">\(p+1\)</span> parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema <span class="citation" data-cites="cuddington2013process">(<a href="bibliografia.html#ref-cuddington2013process" role="doc-biblioref">Cuddington et&nbsp;al., 2013</a>)</span>.</p>
 </section>
-<section id="supuestos-estadísticos-del-modelo" class="level3" data-number="3.3.5">
-<h3 data-number="3.3.5" class="anchored" data-anchor-id="supuestos-estadísticos-del-modelo"><span class="header-section-number">3.3.5</span> Supuestos estadísticos del modelo</h3>
+<section id="supuestos-estadísticos-del-modelo" class="level3" data-number="3.2.5">
+<h3 data-number="3.2.5" class="anchored" data-anchor-id="supuestos-estadísticos-del-modelo"><span class="header-section-number">3.2.5</span> Supuestos estadísticos del modelo</h3>
 <p>Para que los estimadores de mínimos cuadrados ordinarios (OLS, Ordinary Least Squares) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>:</p>
 <ul>
 <li><p>Supuesto 1: Linealidad en parámetros El modelo es lineal en los parámetros <span class="math inline">\(\boldsymbol{\theta}\)</span>, lo cual se satisface por construcción.</p></li>
@@ -702,8 +807,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span> Este supuesto es necesario para realizar pruebas de hipótesis y construir intervalos de confianza exactos, aunque no es requerido para la consistencia de los estimadores.</p></li>
 </ul>
 </section>
-<section id="estimación-de-parámetros-por-mínimos-cuadrados-ordinarios" class="level3" data-number="3.3.6">
-<h3 data-number="3.3.6" class="anchored" data-anchor-id="estimación-de-parámetros-por-mínimos-cuadrados-ordinarios"><span class="header-section-number">3.3.6</span> Estimación de parámetros por mínimos cuadrados ordinarios</h3>
+<section id="estimación-de-parámetros-por-mínimos-cuadrados-ordinarios" class="level3" data-number="3.2.6">
+<h3 data-number="3.2.6" class="anchored" data-anchor-id="estimación-de-parámetros-por-mínimos-cuadrados-ordinarios"><span class="header-section-number">3.2.6</span> Estimación de parámetros por mínimos cuadrados ordinarios</h3>
 <p>Bajo los supuestos anteriores, el estimador de mínimos cuadrados ordinarios (OLS) de <span class="math inline">\(\boldsymbol{\theta}\)</span> se define como:</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\theta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y}
@@ -726,8 +831,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \tag{3.31}
 \]</span></p>
 </section>
-<section id="identificabilidad-del-modelo" class="level3" data-number="3.3.7">
-<h3 data-number="3.3.7" class="anchored" data-anchor-id="identificabilidad-del-modelo"><span class="header-section-number">3.3.7</span> Identificabilidad del modelo</h3>
+<section id="identificabilidad-del-modelo" class="level3" data-number="3.2.7">
+<h3 data-number="3.2.7" class="anchored" data-anchor-id="identificabilidad-del-modelo"><span class="header-section-number">3.2.7</span> Identificabilidad del modelo</h3>
 <p>La <strong>identificabilidad</strong> de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados <span class="citation" data-cites="miao2011identifiability">(<a href="bibliografia.html#ref-miao2011identifiability" role="doc-biblioref">Miao et&nbsp;al., 2011</a>)</span>. Para nuestro modelo, la identificabilidad depende de dos factores principales:</p>
 <ol type="1">
 <li><p>Identificabilidad estructural. El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de <span class="math inline">\(\boldsymbol{\theta}\)</span> producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.</p></li>
@@ -740,8 +845,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </ul>
 <p>En la práctica, la identificabilidad se evalúa mediante el <strong>factor de inflación de varianza (VIF)</strong> y el <strong>número de condición</strong> de la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span>. Un número de condición elevado (&gt; 1000) indica problemas de identificabilidad práctica debido a multicolinealidad <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref">Belsley et&nbsp;al., 1980</a>)</span>.</p>
 </section>
-<section id="incorporación-de-variables-exógenas-climáticas" class="level3" data-number="3.3.8">
-<h3 data-number="3.3.8" class="anchored" data-anchor-id="incorporación-de-variables-exógenas-climáticas"><span class="header-section-number">3.3.8</span> Incorporación de variables exógenas climáticas</h3>
+<section id="incorporación-de-variables-exógenas-climáticas" class="level3" data-number="3.2.8">
+<h3 data-number="3.2.8" class="anchored" data-anchor-id="incorporación-de-variables-exógenas-climáticas"><span class="header-section-number">3.2.8</span> Incorporación de variables exógenas climáticas</h3>
 <p>La inclusión de variables climáticas exógenas en el modelo responde a dos objetivos fundamentales:</p>
 <ol type="1">
 <li><p><strong>Control de factores de confusión</strong>: Las variables climáticas pueden estar correlacionadas tanto con el estado actual del sistema como con su estado pasado, por lo que su inclusión evita sesgos en la estimación de los coeficientes de retroalimentación <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\gamma\)</span>.</p></li>
@@ -749,8 +854,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </ol>
 <p>La especificación funcional lineal adoptada para las variables climáticas asume que sus efectos son aditivos y constantes en el tiempo. Esta suposición puede ser relajada en extensiones futuras del modelo mediante la inclusión de términos no lineales o interacciones <span class="citation" data-cites="hastie2009elements">(<a href="bibliografia.html#ref-hastie2009elements" role="doc-biblioref">Hastie et&nbsp;al., 2009</a>)</span>.</p>
 </section>
-<section id="diagnóstico-de-supuestos-y-validación-del-modelo" class="level3" data-number="3.3.9">
-<h3 data-number="3.3.9" class="anchored" data-anchor-id="diagnóstico-de-supuestos-y-validación-del-modelo"><span class="header-section-number">3.3.9</span> Diagnóstico de supuestos y validación del modelo</h3>
+<section id="diagnóstico-de-supuestos-y-validación-del-modelo" class="level3" data-number="3.2.9">
+<h3 data-number="3.2.9" class="anchored" data-anchor-id="diagnóstico-de-supuestos-y-validación-del-modelo"><span class="header-section-number">3.2.9</span> Diagnóstico de supuestos y validación del modelo</h3>
 <p>La validez de las inferencias estadísticas basadas en el modelo de regresión depende de la verificación de los supuestos establecidos en la sección 3.3.5. Los principales métodos de diagnóstico incluyen:</p>
 <ul>
 <li><p><strong>Gráfico de residuos vs valores ajustados</strong>: Para detectar heterocedasticidad y no linealidad</p></li>
@@ -762,15 +867,15 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <p>Estos diagnósticos son esenciales para garantizar la robustez de las conclusiones derivadas del modelo y para identificar posibles violaciones de los supuestos que requieran modificaciones en la especificación del modelo <span class="citation" data-cites="fox2015applied">(<a href="bibliografia.html#ref-fox2015applied" role="doc-biblioref">Fox, 2015</a>)</span>.</p>
 </section>
 </section>
-<section id="identificabilidad-y-estimación-de-parámetros" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.4</span> Identificabilidad y Estimación de Parámetros</h2>
-<section id="marco-teórico-de-identificabilidad" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="marco-teórico-de-identificabilidad"><span class="header-section-number">3.4.1</span> Marco teórico de identificabilidad</h3>
+<section id="identificabilidad-y-estimación-de-parámetros" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="identificabilidad-y-estimación-de-parámetros"><span class="header-section-number">3.3</span> Identificabilidad y Estimación de Parámetros</h2>
+<section id="marco-teórico-de-identificabilidad" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="marco-teórico-de-identificabilidad"><span class="header-section-number">3.3.1</span> Marco teórico de identificabilidad</h3>
 <p>La <strong>identificabilidad</strong> constituye una propiedad fundamental en la inferencia estadística, ya que garantiza que los parámetros de un modelo puedan ser estimados de manera única a partir de los datos observados <span class="citation" data-cites="miao2011identifiability">(<a href="bibliografia.html#ref-miao2011identifiability" role="doc-biblioref">Miao et&nbsp;al., 2011</a>)</span>. En el contexto de modelos estocásticos discretizados como el nuestro, la identificabilidad se descompone en dos componentes complementarios: <strong>identificabilidad estructural</strong> e <strong>identificabilidad práctica</strong>.</p>
 <p>La identificabilidad estructural se refiere a la unicidad de la parametrización del modelo desde una perspectiva puramente matemática, independientemente de los datos disponibles. Por otro lado, la identificabilidad práctica depende de la calidad, cantidad y estructura de los datos observados, y determina si es posible estimar los parámetros con precisión finita <span class="citation" data-cites="bellman1970structural">(<a href="bibliografia.html#ref-bellman1970structural" role="doc-biblioref">Bellman, 1970</a>)</span>.</p>
 </section>
-<section id="identificabilidad-estructural-del-modelo-sdde" class="level3" data-number="3.4.2">
-<h3 data-number="3.4.2" class="anchored" data-anchor-id="identificabilidad-estructural-del-modelo-sdde"><span class="header-section-number">3.4.2</span> Identificabilidad estructural del modelo SDDE</h3>
+<section id="identificabilidad-estructural-del-modelo-sdde" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="identificabilidad-estructural-del-modelo-sdde"><span class="header-section-number">3.3.2</span> Identificabilidad estructural del modelo SDDE</h3>
 <p>Consideremos el modelo de regresión lineal derivado del SDDE (ecuación 3.19):</p>
 <p><span class="math display">\[
 \Delta X_n = \alpha + \beta X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
@@ -791,8 +896,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <li><p>Existe suficiente variabilidad en los datos para distinguir los efectos individuales</p></li>
 </ol>
 </section>
-<section id="identificabilidad-práctica-y-condiciones-de-rango" class="level3" data-number="3.4.3">
-<h3 data-number="3.4.3" class="anchored" data-anchor-id="identificabilidad-práctica-y-condiciones-de-rango"><span class="header-section-number">3.4.3</span> Identificabilidad práctica y condiciones de rango</h3>
+<section id="identificabilidad-práctica-y-condiciones-de-rango" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="identificabilidad-práctica-y-condiciones-de-rango"><span class="header-section-number">3.3.3</span> Identificabilidad práctica y condiciones de rango</h3>
 <p>La identificabilidad práctica se evalúa mediante el <strong>rango de la matriz de información de Fisher</strong> o, equivalentemente, el <strong>rango de la matriz de diseño</strong> <span class="math inline">\(\mathbf{X}\)</span> <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>.</p>
 <p><strong>Definición 3.2</strong> (Condición de rango completo). <em>El modelo es prácticamente identificable si la matriz <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> es no singular, es decir, si <span class="math inline">\(\text{rank}(\mathbf{X}) = p = 6\)</span></em>.</p>
 <p>Esta condición es equivalente a requerir que el <strong>determinante de Gram</strong> sea no nulo:</p>
@@ -809,8 +914,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </ol>
 <p>La violación de estas condiciones conduce a problemas de <strong>multicolinealidad</strong>, que se manifiestan en varianzas infladas de los estimadores y dificultades numéricas en la inversión de <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span> <span class="citation" data-cites="belsley1980regression">(<a href="bibliografia.html#ref-belsley1980regression" role="doc-biblioref">Belsley et&nbsp;al., 1980</a>)</span>.</p>
 </section>
-<section id="estimación-por-mínimos-cuadrados-ordinarios-ols" class="level3" data-number="3.4.4">
-<h3 data-number="3.4.4" class="anchored" data-anchor-id="estimación-por-mínimos-cuadrados-ordinarios-ols"><span class="header-section-number">3.4.4</span> Estimación por mínimos cuadrados ordinarios (OLS)</h3>
+<section id="estimación-por-mínimos-cuadrados-ordinarios-ols" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="estimación-por-mínimos-cuadrados-ordinarios-ols"><span class="header-section-number">3.3.4</span> Estimación por mínimos cuadrados ordinarios (OLS)</h3>
 <p>Bajo las condiciones de identificabilidad establecidas, el estimador de mínimos cuadrados ordinarios (OLS) se define como la solución al problema de optimización:</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\theta}} = \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^p} \|\mathbf{Y} - \mathbf{X} \boldsymbol{\theta}\|^2
@@ -834,8 +939,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span></p>
 <p>donde <span class="math inline">\(\sigma^2 = \text{Var}(\epsilon_n)\)</span> es la varianza del error.</p>
 </section>
-<section id="estimación-de-la-varianza-del-error" class="level3" data-number="3.4.5">
-<h3 data-number="3.4.5" class="anchored" data-anchor-id="estimación-de-la-varianza-del-error"><span class="header-section-number">3.4.5</span> Estimación de la varianza del error</h3>
+<section id="estimación-de-la-varianza-del-error" class="level3" data-number="3.3.5">
+<h3 data-number="3.3.5" class="anchored" data-anchor-id="estimación-de-la-varianza-del-error"><span class="header-section-number">3.3.5</span> Estimación de la varianza del error</h3>
 <p>La varianza del error <span class="math inline">\(\sigma^2\)</span> se estima mediante el estimador insesgado:</p>
 <p><span class="math display">\[
 \hat{\sigma}^2 = \frac{1}{N - p} \sum_{n=1}^N \hat{\epsilon}_n^2 = \frac{\|\mathbf{Y} - \mathbf{X} \hat{\boldsymbol{\theta}}\|^2}{N - p}
@@ -844,8 +949,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 <p>donde <span class="math inline">\(\hat{\epsilon}_n = Y_n - \mathbf{x}_n^T \hat{\boldsymbol{\theta}}\)</span> son los residuos estimados.</p>
 <p>Este estimador es insesgado bajo el supuesto de homocedasticidad y tiene la propiedad de que <span class="math inline">\((N - p) \hat{\sigma}^2 / \sigma^2 \sim \chi^2_{N - p}\)</span> bajo normalidad de los errores <span class="citation" data-cites="casella2002statistical">(<a href="bibliografia.html#ref-casella2002statistical" role="doc-biblioref">Casella &amp; Berger, 2002</a>)</span>.</p>
 </section>
-<section id="relación-con-la-intensidad-del-ruido-estocástico" class="level3" data-number="3.4.6">
-<h3 data-number="3.4.6" class="anchored" data-anchor-id="relación-con-la-intensidad-del-ruido-estocástico"><span class="header-section-number">3.4.6</span> Relación con la intensidad del ruido estocástico</h3>
+<section id="relación-con-la-intensidad-del-ruido-estocástico" class="level3" data-number="3.3.6">
+<h3 data-number="3.3.6" class="anchored" data-anchor-id="relación-con-la-intensidad-del-ruido-estocástico"><span class="header-section-number">3.3.6</span> Relación con la intensidad del ruido estocástico</h3>
 <p>En el contexto del modelo SDDE original, la varianza del error <span class="math inline">\(\sigma^2\)</span> está relacionada con la intensidad del ruido estocástico <span class="math inline">\(\sigma_{\text{SDDE}}\)</span> del proceso continuo. Recordando que el término de error en la discretización es <span class="math inline">\(\epsilon_n = \sigma_{\text{SDDE}} X_n \Delta W_n\)</span>, y que <span class="math inline">\(\Delta W_n \sim \mathcal{N}(0, \Delta t)\)</span>, tenemos:</p>
 <p><span class="math display">\[
 \text{Var}(\epsilon_n | X_n) = \sigma_{\text{SDDE}}^2 X_n^2 \Delta t
@@ -859,11 +964,11 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span></p>
 <p>Esta estimación es consistente bajo condiciones regulares y permite interpretar el parámetro <span class="math inline">\(\sigma_{\text{SDDE}}\)</span> en términos del modelo continuo original.</p>
 </section>
-<section id="diagnóstico-de-identificabilidad-práctica" class="level3" data-number="3.4.7">
-<h3 data-number="3.4.7" class="anchored" data-anchor-id="diagnóstico-de-identificabilidad-práctica"><span class="header-section-number">3.4.7</span> Diagnóstico de identificabilidad práctica</h3>
+<section id="diagnóstico-de-identificabilidad-práctica" class="level3" data-number="3.3.7">
+<h3 data-number="3.3.7" class="anchored" data-anchor-id="diagnóstico-de-identificabilidad-práctica"><span class="header-section-number">3.3.7</span> Diagnóstico de identificabilidad práctica</h3>
 <p>La identificabilidad práctica se diagnostica mediante métricas numéricas que cuantifican el grado de multicolinealidad en la matriz de diseño:</p>
-<section id="factor-de-inflación-de-varianza-vif" class="level4" data-number="3.4.7.1">
-<h4 data-number="3.4.7.1" class="anchored" data-anchor-id="factor-de-inflación-de-varianza-vif"><span class="header-section-number">3.4.7.1</span> Factor de inflación de varianza (VIF)</h4>
+<section id="factor-de-inflación-de-varianza-vif" class="level4" data-number="3.3.7.1">
+<h4 data-number="3.3.7.1" class="anchored" data-anchor-id="factor-de-inflación-de-varianza-vif"><span class="header-section-number">3.3.7.1</span> Factor de inflación de varianza (VIF)</h4>
 <p>Para cada variable explicativa <span class="math inline">\(j\)</span>, el VIF se define como:</p>
 <p><span class="math display">\[
 \text{VIF}_j = \frac{1}{1 - R_j^2}
@@ -871,8 +976,8 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 \]</span></p>
 <p>donde <span class="math inline">\(R_j^2\)</span> es el coeficiente de determinación obtenido al regresar la variable <span class="math inline">\(j\)</span> contra todas las demás variables explicativas. Esta métrica cuantifica cuánto se incrementa la varianza de un coeficiente estimado debido a la correlación lineal entre los predictores. En la práctica, valores de <span class="math inline">\(\text{VIF}_j &gt; 10\)</span> se consideran un indicador de multicolinealidad severa, lo que compromete la precisión y estabilidad de las estimaciones del modelo <span class="citation" data-cites="montgomery2021introduction">(<a href="bibliografia.html#ref-montgomery2021introduction" role="doc-biblioref">Montgomery et&nbsp;al., 2021</a>)</span>.</p>
 </section>
-<section id="número-de-condición" class="level4" data-number="3.4.7.2">
-<h4 data-number="3.4.7.2" class="anchored" data-anchor-id="número-de-condición"><span class="header-section-number">3.4.7.2</span> Número de condición</h4>
+<section id="número-de-condición" class="level4" data-number="3.3.7.2">
+<h4 data-number="3.3.7.2" class="anchored" data-anchor-id="número-de-condición"><span class="header-section-number">3.3.7.2</span> Número de condición</h4>
 <p>El número de condición de la matriz de diseño, evaluado a través de <span class="math inline">\(\mathbf{X}^T \mathbf{X}\)</span>, se define como:</p>
 <p><span class="math display">\[
 \kappa(\mathbf{X}^T \mathbf{X}) = \sqrt{\frac{\lambda_{\max}}{\lambda_{\min}}}
@@ -888,45 +993,45 @@ X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
 </section>
 </section>
 </section>
-<section id="diagnóstico-estadístico-y-validación-del-modelo" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.5</span> Diagnóstico Estadístico y Validación del Modelo</h2>
-<section id="marco-teórico-del-diagnóstico-de-regresión" class="level3" data-number="3.5.1">
-<h3 data-number="3.5.1" class="anchored" data-anchor-id="marco-teórico-del-diagnóstico-de-regresión"><span class="header-section-number">3.5.1</span> Marco teórico del diagnóstico de regresión</h3>
+<section id="diagnóstico-estadístico-y-validación-del-modelo" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="diagnóstico-estadístico-y-validación-del-modelo"><span class="header-section-number">3.4</span> Diagnóstico Estadístico y Validación del Modelo</h2>
+<section id="marco-teórico-del-diagnóstico-de-regresión" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="marco-teórico-del-diagnóstico-de-regresión"><span class="header-section-number">3.4.1</span> Marco teórico del diagnóstico de regresión</h3>
 <p>El diagnóstico estadístico constituye una etapa fundamental en el análisis de modelos de regresión lineal, ya que permite verificar la validez de los supuestos subyacentes y evaluar la calidad del ajuste <span class="citation" data-cites="fox2015applied">(<a href="bibliografia.html#ref-fox2015applied" role="doc-biblioref">Fox, 2015</a>)</span>. En el contexto de modelos derivados de ecuaciones diferenciales estocásticas con retraso (SDDE) discretizadas, el diagnóstico adquiere una relevancia adicional: cualquier violación de los supuestos puede comprometer no solo la inferencia estadística, sino también la interpretación biológica y fenomenológica de los parámetros estimados <span class="citation" data-cites="greene2018econometric">(<a href="bibliografia.html#ref-greene2018econometric" role="doc-biblioref">Greene, 2018</a>)</span>.</p>
 <p>Los supuestos clásicos del modelo lineal —linealidad, independencia, homocedasticidad y normalidad— deben ser verificados sistemáticamente para garantizar la robustez de las conclusiones y la estabilidad numérica de la matriz de diseño.</p>
 </section>
-<section id="supuestos-del-modelo-y-sus-implicaciones" class="level3" data-number="3.5.2">
-<h3 data-number="3.5.2" class="anchored" data-anchor-id="supuestos-del-modelo-y-sus-implicaciones"><span class="header-section-number">3.5.2</span> Supuestos del modelo y sus implicaciones</h3>
-<section id="supuesto-de-linealidad" class="level4" data-number="3.5.2.1">
-<h4 data-number="3.5.2.1" class="anchored" data-anchor-id="supuesto-de-linealidad"><span class="header-section-number">3.5.2.1</span> Supuesto de linealidad</h4>
+<section id="supuestos-del-modelo-y-sus-implicaciones" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="supuestos-del-modelo-y-sus-implicaciones"><span class="header-section-number">3.4.2</span> Supuestos del modelo y sus implicaciones</h3>
+<section id="supuesto-de-linealidad" class="level4" data-number="3.4.2.1">
+<h4 data-number="3.4.2.1" class="anchored" data-anchor-id="supuesto-de-linealidad"><span class="header-section-number">3.4.2.1</span> Supuesto de linealidad</h4>
 <p>El modelo asume que la relación entre la tasa de cambio del índice de verdor (<span class="math inline">\(\Delta X_n\)</span>) y las covariables explicativas (estados previos y forzantes climáticas) es estrictamente lineal en los parámetros. La violación de este supuesto suele manifestarse mediante patrones sistemáticos en los residuos frente a los valores ajustados, sugiriendo la necesidad de incorporar interacciones o términos polinomiales.</p>
 </section>
-<section id="supuesto-de-independencia" class="level4" data-number="3.5.2.2">
-<h4 data-number="3.5.2.2" class="anchored" data-anchor-id="supuesto-de-independencia"><span class="header-section-number">3.5.2.2</span> Supuesto de independencia</h4>
+<section id="supuesto-de-independencia" class="level4" data-number="3.4.2.2">
+<h4 data-number="3.4.2.2" class="anchored" data-anchor-id="supuesto-de-independencia"><span class="header-section-number">3.4.2.2</span> Supuesto de independencia</h4>
 <p>Se asume que los errores aleatorios <span class="math inline">\(\epsilon_n\)</span> son independientes entre sí, lo cual implica la ausencia de autocorrelación serial. En el análisis de series temporales fenológicas, este supuesto es particularmente crítico; la dependencia temporal residual no modelada puede subestimar las varianzas de los estimadores y sesgar las pruebas de significancia <span class="citation" data-cites="hamilton1994time">(<a href="bibliografia.html#ref-hamilton1994time" role="doc-biblioref">Hamilton, 1994</a>)</span>.</p>
 </section>
-<section id="supuesto-de-homocedasticidad" class="level4" data-number="3.5.2.3">
-<h4 data-number="3.5.2.3" class="anchored" data-anchor-id="supuesto-de-homocedasticidad"><span class="header-section-number">3.5.2.3</span> Supuesto de homocedasticidad</h4>
+<section id="supuesto-de-homocedasticidad" class="level4" data-number="3.4.2.3">
+<h4 data-number="3.4.2.3" class="anchored" data-anchor-id="supuesto-de-homocedasticidad"><span class="header-section-number">3.4.2.3</span> Supuesto de homocedasticidad</h4>
 <p>La varianza de los errores debe permanecer constante a lo largo del periodo de observación, es decir, <span class="math inline">\(\text{Var}(\epsilon_n) = \sigma^2\)</span> para todo <span class="math inline">\(n\)</span>. La presencia de heterocedasticidad invalida los errores estándar convencionales de OLS, requiriendo el uso de estimadores de covarianza robustos <span class="citation" data-cites="white1980heteroskedasticity">(<a href="bibliografia.html#ref-white1980heteroskedasticity" role="doc-biblioref">White, 1980</a>)</span>.</p>
 </section>
-<section id="supuesto-de-normalidad" class="level4" data-number="3.5.2.4">
-<h4 data-number="3.5.2.4" class="anchored" data-anchor-id="supuesto-de-normalidad"><span class="header-section-number">3.5.2.4</span> Supuesto de normalidad</h4>
+<section id="supuesto-de-normalidad" class="level4" data-number="3.4.2.4">
+<h4 data-number="3.4.2.4" class="anchored" data-anchor-id="supuesto-de-normalidad"><span class="header-section-number">3.4.2.4</span> Supuesto de normalidad</h4>
 <p>Aunque el teorema del límite central garantiza la consistencia asintótica de los estimadores sin requerir normalidad estricta, que los errores sigan una distribución gaussiana (<span class="math inline">\(\epsilon_n \sim \mathcal{N}(0, \sigma^2)\)</span>) es una condición necesaria para realizar inferencia exacta en muestras finitas (pruebas <span class="math inline">\(t\)</span>, <span class="math inline">\(F\)</span> e intervalos de confianza) <span class="citation" data-cites="casella2002statistical">(<a href="bibliografia.html#ref-casella2002statistical" role="doc-biblioref">Casella &amp; Berger, 2002</a>)</span>.</p>
 </section>
 </section>
-<section id="métodos-de-diagnóstico-gráfico" class="level3" data-number="3.5.3">
-<h3 data-number="3.5.3" class="anchored" data-anchor-id="métodos-de-diagnóstico-gráfico"><span class="header-section-number">3.5.3</span> Métodos de diagnóstico gráfico</h3>
+<section id="métodos-de-diagnóstico-gráfico" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="métodos-de-diagnóstico-gráfico"><span class="header-section-number">3.4.3</span> Métodos de diagnóstico gráfico</h3>
 <p>El análisis de los residuos estimados <span class="math inline">\(\hat{\epsilon}_n = Y_n - \mathbf{x}_n^T \hat{\boldsymbol{\theta}}\)</span> conforma la base visual empírica del diagnóstico. Las dos herramientas gráficas principales son:</p>
 <ul>
 <li><p><strong>Gráfico de residuos vs.&nbsp;valores ajustados</strong>: Permite identificar desviaciones de la linealidad (patrones curvilíneos), heterocedasticidad (forma de embudo o dispersión variable) y observaciones atípicas extremas.</p></li>
 <li><p><strong>Gráfico de probabilidad normal (QQ-plot)</strong>: Compara los cuantiles empíricos de los residuos estandarizados contra los cuantiles teóricos de una distribución normal estándar. Las colas pesadas o desviaciones sistemáticas de la línea de identidad (<span class="math inline">\(45^\circ\)</span>) evidencian violaciones al supuesto de normalidad <span class="citation" data-cites="wilks2019statistical">(<a href="bibliografia.html#ref-wilks2019statistical" role="doc-biblioref">Wilks, 2019</a>)</span>.</p></li>
 </ul>
 </section>
-<section id="pruebas-estadísticas-formales" class="level3" data-number="3.5.4">
-<h3 data-number="3.5.4" class="anchored" data-anchor-id="pruebas-estadísticas-formales"><span class="header-section-number">3.5.4</span> Pruebas estadísticas formales</h3>
+<section id="pruebas-estadísticas-formales" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="pruebas-estadísticas-formales"><span class="header-section-number">3.4.4</span> Pruebas estadísticas formales</h3>
 <p>Para complementar el análisis gráfico, se emplean contrastes de hipótesis rigurosos:</p>
-<section id="test-de-durbin-watson-para-autocorrelación" class="level4" data-number="3.5.4.1">
-<h4 data-number="3.5.4.1" class="anchored" data-anchor-id="test-de-durbin-watson-para-autocorrelación"><span class="header-section-number">3.5.4.1</span> Test de Durbin-Watson para autocorrelación</h4>
+<section id="test-de-durbin-watson-para-autocorrelación" class="level4" data-number="3.4.4.1">
+<h4 data-number="3.4.4.1" class="anchored" data-anchor-id="test-de-durbin-watson-para-autocorrelación"><span class="header-section-number">3.4.4.1</span> Test de Durbin-Watson para autocorrelación</h4>
 <p>Evalúa la hipótesis nula de ausencia de autocorrelación serial de primer orden en los residuos:</p>
 <p><span class="math display">\[
 d = \frac{\sum_{n=2}^N (\hat{\epsilon}_n - \hat{\epsilon}_{n-1})^2}{\sum_{n=1}^N \hat{\epsilon}_n^2}
@@ -934,8 +1039,8 @@ d = \frac{\sum_{n=2}^N (\hat{\epsilon}_n - \hat{\epsilon}_{n-1})^2}{\sum_{n=1}^N
 \]</span></p>
 <p>Bajo la hipótesis nula, el estadístico ronda un valor de <span class="math inline">\(d \approx 2\)</span>. Valores significativamente menores a 2 indican autocorrelación positiva (común en series de tiempo ecológicas), mientras que valores mayores a 2 sugieren autocorrelación negativa <span class="citation" data-cites="durbin1950testing">(<a href="bibliografia.html#ref-durbin1950testing" role="doc-biblioref">Durbin &amp; Watson, 1950</a>)</span>.</p>
 </section>
-<section id="test-de-breusch-pagan-para-heterocedasticidad" class="level4" data-number="3.5.4.2">
-<h4 data-number="3.5.4.2" class="anchored" data-anchor-id="test-de-breusch-pagan-para-heterocedasticidad"><span class="header-section-number">3.5.4.2</span> Test de Breusch-Pagan para heterocedasticidad</h4>
+<section id="test-de-breusch-pagan-para-heterocedasticidad" class="level4" data-number="3.4.4.2">
+<h4 data-number="3.4.4.2" class="anchored" data-anchor-id="test-de-breusch-pagan-para-heterocedasticidad"><span class="header-section-number">3.4.4.2</span> Test de Breusch-Pagan para heterocedasticidad</h4>
 <p>Este contraste modela la varianza residual en función de las variables explicativas mediante una regresión auxiliar:</p>
 <p><span class="math display">\[
 \hat{\epsilon}_n^2 = \alpha_0 + \sum_{j=1}^p \alpha_j x_{nj} + u_n
@@ -943,8 +1048,8 @@ d = \frac{\sum_{n=2}^N (\hat{\epsilon}_n - \hat{\epsilon}_{n-1})^2}{\sum_{n=1}^N
 \]</span></p>
 <p>La hipótesis nula de homocedasticidad se rechaza si el estadístico de prueba <span class="math inline">\(LM = N \cdot R^2_{\text{aux}}\)</span> excede el valor crítico de la distribución <span class="math inline">\(\chi^2_{p-1}\)</span> <span class="citation" data-cites="breusch1979simple">(<a href="bibliografia.html#ref-breusch1979simple" role="doc-biblioref">Breusch &amp; Pagan, 1979</a>)</span>.</p>
 </section>
-<section id="test-de-jarque-bera-para-normalidad" class="level4" data-number="3.5.4.3">
-<h4 data-number="3.5.4.3" class="anchored" data-anchor-id="test-de-jarque-bera-para-normalidad"><span class="header-section-number">3.5.4.3</span> Test de Jarque-Bera para normalidad</h4>
+<section id="test-de-jarque-bera-para-normalidad" class="level4" data-number="3.4.4.3">
+<h4 data-number="3.4.4.3" class="anchored" data-anchor-id="test-de-jarque-bera-para-normalidad"><span class="header-section-number">3.4.4.3</span> Test de Jarque-Bera para normalidad</h4>
 <p>Cuantifica las desviaciones de la normalidad basándose en los momentos de tercer y cuarto orden (asimetría <span class="math inline">\(S\)</span> y curtosis <span class="math inline">\(K\)</span>) de los residuos empíricos:</p>
 <p><span class="math display">\[
 JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
@@ -953,16 +1058,16 @@ JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
 <p>Valores estadísticamente significativos de <span class="math inline">\(JB\)</span> conllevan al rechazo de la hipótesis de normalidad <span class="citation" data-cites="jarque1980efficient">(<a href="bibliografia.html#ref-jarque1980efficient" role="doc-biblioref">Jarque &amp; Bera, 1980</a>)</span>.</p>
 </section>
 </section>
-<section id="diagnóstico-de-multicolinealidad" class="level3" data-number="3.5.5">
-<h3 data-number="3.5.5" class="anchored" data-anchor-id="diagnóstico-de-multicolinealidad"><span class="header-section-number">3.5.5</span> Diagnóstico de multicolinealidad</h3>
+<section id="diagnóstico-de-multicolinealidad" class="level3" data-number="3.4.5">
+<h3 data-number="3.4.5" class="anchored" data-anchor-id="diagnóstico-de-multicolinealidad"><span class="header-section-number">3.4.5</span> Diagnóstico de multicolinealidad</h3>
 <p>Como se estableció en la sección de identificabilidad teórica, la existencia de correlaciones altas entre las covariables climáticas y los rezagos autorregresivos infla las varianzas de los estimadores, dificultando la separación de los efectos biológicos individuales.</p>
 <p>La evaluación práctica de este fenómeno se realiza utilizando el <strong>Factor de Inflación de Varianza (VIF)</strong> y el <strong>Número de Condición</strong> (<span class="math inline">\(\kappa\)</span>), cuyas definiciones formales se detallan en las ecuaciones (3.41) y (3.42) de la Sección 3.4. Siguiendo la literatura estadística moderna <span class="citation" data-cites="montgomery2021introduction">(<a href="bibliografia.html#ref-montgomery2021introduction" role="doc-biblioref">Montgomery et&nbsp;al., 2021</a>)</span>, se aplican los umbrales críticos previamente justificados (<span class="math inline">\(\text{VIF}_j &gt; 10\)</span> y <span class="math inline">\(\kappa \geq 30\)</span>) para identificar problemas severos que ameriten la eliminación de forzantes redundantes o la aplicación de técnicas de regularización (como regresión Ridge) para estabilizar la matriz <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span>.</p>
 </section>
-<section id="criterios-de-información-para-selección-de-modelos" class="level3" data-number="3.5.6">
-<h3 data-number="3.5.6" class="anchored" data-anchor-id="criterios-de-información-para-selección-de-modelos"><span class="header-section-number">3.5.6</span> Criterios de información para selección de modelos</h3>
+<section id="criterios-de-información-para-selección-de-modelos" class="level3" data-number="3.4.6">
+<h3 data-number="3.4.6" class="anchored" data-anchor-id="criterios-de-información-para-selección-de-modelos"><span class="header-section-number">3.4.6</span> Criterios de información para selección de modelos</h3>
 <p>La parsimonia es un principio rector en el modelado estocástico. Los criterios de información permiten comparar modelos con diferentes estructuras de rezago y combinaciones de forzantes climáticas, introduciendo una penalización matemática por la complejidad para evitar el sobreajuste <span class="citation" data-cites="akaike1974new">(<a href="bibliografia.html#ref-akaike1974new" role="doc-biblioref">Akaike, 1974</a>)</span>.</p>
-<section id="criterio-de-información-de-akaike-aic" class="level4" data-number="3.5.6.1">
-<h4 data-number="3.5.6.1" class="anchored" data-anchor-id="criterio-de-información-de-akaike-aic"><span class="header-section-number">3.5.6.1</span> Criterio de Información de Akaike (AIC)</h4>
+<section id="criterio-de-información-de-akaike-aic" class="level4" data-number="3.4.6.1">
+<h4 data-number="3.4.6.1" class="anchored" data-anchor-id="criterio-de-información-de-akaike-aic"><span class="header-section-number">3.4.6.1</span> Criterio de Información de Akaike (AIC)</h4>
 <p>Fundamentado en la teoría de la información, el AIC estima la pérdida relativa de información al aproximar la realidad con el modelo ajustado:</p>
 <p><span class="math display">\[
 \text{AIC} = 2p - 2\ln(\hat{L})
@@ -975,8 +1080,8 @@ JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
 \]</span></p>
 <p>donde <span class="math inline">\(\text{RSS} = \|\mathbf{Y} - \mathbf{X}\hat{\boldsymbol{\theta}}\|^2\)</span> es la suma de cuadrados residuales.</p>
 </section>
-<section id="criterio-de-información-bayesiano-bic" class="level4" data-number="3.5.6.2">
-<h4 data-number="3.5.6.2" class="anchored" data-anchor-id="criterio-de-información-bayesiano-bic"><span class="header-section-number">3.5.6.2</span> Criterio de Información Bayesiano (BIC)</h4>
+<section id="criterio-de-información-bayesiano-bic" class="level4" data-number="3.4.6.2">
+<h4 data-number="3.4.6.2" class="anchored" data-anchor-id="criterio-de-información-bayesiano-bic"><span class="header-section-number">3.4.6.2</span> Criterio de Información Bayesiano (BIC)</h4>
 <p>El BIC introduce una penalización logarítmica más estricta en función del tamaño muestral <span class="math inline">\(N\)</span>, favoreciendo modelos más simples en conjuntos de datos grandes:</p>
 <p><span class="math display">\[
 \text{BIC} = p \ln(N) - 2\ln(\hat{L})
@@ -989,8 +1094,8 @@ JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
 <p>El BIC es asintóticamente consistente, asegurando la selección del modelo verdadero con probabilidad aproximándose a <span class="math inline">\(1\)</span> conforme <span class="math inline">\(N \to \infty\)</span>, siempre que este se encuentre entre las formulaciones candidatas <span class="citation" data-cites="schwarz1978estimating">(<a href="bibliografia.html#ref-schwarz1978estimating" role="doc-biblioref">Schwarz, 1978</a>)</span>.</p>
 </section>
 </section>
-<section id="validación-del-modelo-mediante-comparación-con-benchmarks" class="level3" data-number="3.5.7">
-<h3 data-number="3.5.7" class="anchored" data-anchor-id="validación-del-modelo-mediante-comparación-con-benchmarks"><span class="header-section-number">3.5.7</span> Validación del modelo mediante comparación con <em>benchmarks</em></h3>
+<section id="validación-del-modelo-mediante-comparación-con-benchmarks" class="level3" data-number="3.4.7">
+<h3 data-number="3.4.7" class="anchored" data-anchor-id="validación-del-modelo-mediante-comparación-con-benchmarks"><span class="header-section-number">3.4.7</span> Validación del modelo mediante comparación con <em>benchmarks</em></h3>
 <p>La fase final de validación del modelo biológico SDDE se efectúa mediante una comparación estructurada contra <em>benchmarks</em> puramente estadísticos (como modelos ARMA/AR(<span class="math inline">\(p\)</span>) genéricos). Esta comparación se ejecuta bajo tres ejes fundamentales:</p>
 <ol type="1">
 <li><p><strong>Ajuste penalizado</strong>: Se evalúa la superioridad algorítmica si la diferencia en los criterios es sustancial (<span class="math inline">\(\Delta \text{AIC} \leq -2\)</span> o <span class="math inline">\(\Delta \text{BIC} \leq -2\)</span>) a favor del SDDE <span class="citation" data-cites="burnham2002model">(<a href="bibliografia.html#ref-burnham2002model" role="doc-biblioref">Burnham &amp; Anderson, 2002</a>)</span>.</p></li>
@@ -1067,7 +1172,7 @@ Miao, H., Xia, X., Perelson, A. S., &amp; Wu, H. (2011). On identifiability of n
 Milstein, G. N. (1995). <em>Numerical Integration of Stochastic Differential Equations</em> (Vol. 313). Kluwer Academic Publishers. <a href="https://doi.org/10.1007/978-94-015-8455-5">https://doi.org/10.1007/978-94-015-8455-5</a>
 </div>
 <div id="ref-mohammed1984stochastic" class="csl-entry" role="listitem">
-Mohammed, S.-E. A. (1984). <em>Stochastic Functional Differential Equations</em>. <em>99</em>.
+Mohammed, S.-E. A. (1984). <em>Stochastic Functional Differential Equations</em> (Vol. 99). Longman Scientific &amp; Technical.
 </div>
 <div id="ref-montgomery2021introduction" class="csl-entry" role="listitem">
 Montgomery, D. C., Peck, E. A., &amp; Vining, G. G. (2021). <em>Introduction to Linear Regression Analysis</em> (6th ed.). John Wiley &amp; Sons.
@@ -1532,13 +1637,13 @@ Wilks, D. S. (2019). <em>Statistical Methods in the Atmospheric Sciences</em> (4
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./capitulo_2.html" class="pagination-link" aria-label="Fundamentos Biológicos">
+      <a href="./cap2_biologicos.html" class="pagination-link" aria-label="Fundamentos Biológicos">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fundamentos Biológicos</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./bibliografia.html" class="pagination-link" aria-label="Referencias">
-        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./cap4_metodologia.html" class="pagination-link" aria-label="Metodología de Estimación">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Metodología de Estimación</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1546,14 +1651,14 @@ Wilks, D. S. (2019). <em>Statistical Methods in the Atmospheric Sciences</em> (4
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Carlos Eduardo Chacón Rodríguez</p>
+<p>Carlos Eduardo Chacón Rodríguez — FCFM, UNACH</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/capitulo_3.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/capitulo_3.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/cap3_modelo.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/cap3_modelo.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div>
     <div class="nav-footer-right">
-      &nbsp;
-    </div>
+<p>Dirigida por Dr.&nbsp;Yofre Hernán García Gómez</p>
+</div>
   </div>
 </footer>
 

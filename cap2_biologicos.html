@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Fundamentos Biológicos – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./cap3_modelo.html" rel="next">
+<link href="./cap1_matematicos.html" rel="prev">
+<link href="./figuras/unach.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-bd6ec10ea55a00b39f633ed526018651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-eca70b9ee43566ceee71405b32d074b7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="2&nbsp; Fundamentos Biológicos – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta property="og:description" content="">
+<meta property="og:site_name" content="Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta name="twitter:title" content="2&nbsp; Fundamentos Biológicos – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta name="twitter:description" content="">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cap1_matematicos.html">Marco Teórico</a></li><li class="breadcrumb-item"><a href="./cap2_biologicos.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fundamentos Biológicos</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./figuras/unach.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/carlos-e-chacon/Linear-SDDE" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+    <a href="./Modelo-Estocástico-con-Retraso-para-la-Dinámica-Fenológica-de-Vegetación.pdf" title="Descargar PDF" class="quarto-navigation-tool px-1" aria-label="Descargar PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Resumen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduccion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introducción</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Marco Teórico</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap1_matematicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fundamentos Matemáticos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap2_biologicos.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fundamentos Biológicos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Modelación y Metodología</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap3_modelo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelo SDDE en tiempo continuo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap4_metodologia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Metodología de Estimación</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Resultados y Conclusiones</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap5_resultados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Resultados y Discusión</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cap6_conclusiones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bibliografia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#sec-fenologia-cambio-climatico" id="toc-sec-fenologia-cambio-climatico" class="nav-link active" data-scroll-target="#sec-fenologia-cambio-climatico"><span class="header-section-number">2.1</span> Fenología vegetal y cambio climático</a></li>
+  <li><a href="#sec-fisiologia-cultivo" id="toc-sec-fisiologia-cultivo" class="nav-link" data-scroll-target="#sec-fisiologia-cultivo"><span class="header-section-number">2.2</span> Fisiología del cultivo</a></li>
+  <li><a href="#sec-procesos-retraso" id="toc-sec-procesos-retraso" class="nav-link" data-scroll-target="#sec-procesos-retraso"><span class="header-section-number">2.3</span> Procesos fisiológicos con retraso temporal</a></li>
+  <li><a href="#sec-phenocam-gcc" id="toc-sec-phenocam-gcc" class="nav-link" data-scroll-target="#sec-phenocam-gcc"><span class="header-section-number">2.4</span> PhenoCam y el índice GCC como proxy de biomasa</a></li>
+  <li><a href="#sec-variables-climaticas" id="toc-sec-variables-climaticas" class="nav-link" data-scroll-target="#sec-variables-climaticas"><span class="header-section-number">2.5</span> Variables climáticas y su influencia en el crecimiento</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/cap2_biologicos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/cap2_biologicos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cap1_matematicos.html">Marco Teórico</a></li><li class="breadcrumb-item"><a href="./cap2_biologicos.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fundamentos Biológicos</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-fundamentos-biologicos" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fundamentos Biológicos</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>La formulación de un modelo matemático estocástico con retraso temporal para describir la dinámica de la vegetación requiere fundamentar los mecanismos biofísicos y fisiológicos que gobiernan el crecimiento del dosel vegetal. A diferencia de los sistemas físicos inanimados, los tejidos vegetales responden a las fluctuaciones del entorno mediante procesos metabólicos regulados por la acumulación de reservas, el transporte vascular y la aclimatación fisiológica, los cuales operan intrínsecamente con memoria temporal. En este capítulo se exponen de manera sintética los principios de la fenología vegetal, la fisiología del dosel agrícola, el origen biológico del retraso temporal <span class="math inline">\(\tau\)</span>, la cuantificación del verdor mediante la red PhenoCam y el papel de las variables climáticas como forzamientos exógenos del sistema.</p>
+<section id="sec-fenologia-cambio-climatico" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-fenologia-cambio-climatico"><span class="header-section-number">2.1</span> Fenología vegetal y cambio climático</h2>
+<p>La <strong>fenología vegetal</strong> es el estudio de los eventos periódicos del ciclo de vida de las plantas —tales como la brotación, la expansión foliar, la floración, la maduración y la senescencia— y de su modulación por las variaciones estacionales e interanuales del clima <span class="citation" data-cites="menzel2006phenology cleland2007shifting">(<a href="bibliografia.html#ref-cleland2007shifting" role="doc-biblioref">Cleland et&nbsp;al., 2007</a>; <a href="bibliografia.html#ref-menzel2006phenology" role="doc-biblioref">Menzel &amp; Sparks, 2006</a>)</span>. Además de constituir el indicador biológico más sensible frente al cambio climático global, la dinámica fenológica regula los intercambios de carbono, agua y energía entre la superficie terrestre y la atmósfera <span class="citation" data-cites="cleland2007shifting richardson2018tracking">(<a href="bibliografia.html#ref-cleland2007shifting" role="doc-biblioref">Cleland et&nbsp;al., 2007</a>; <a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>)</span>.</p>
+<p>En ecosistemas y zonas agrícolas de latitudes medias y altas, como la región boreal y subártica de Escandinavia (donde se ubica la estación experimental de Röbäcksdalen en Umeå, Suecia, a <span class="math inline">\(63.81^\circ\text{N}\)</span>), la ventana de crecimiento vegetativo activo está fuertemente acotada por la estacionalidad astronómica de la radiación solar y el régimen térmico <span class="citation" data-cites="jensen2020phenological buitenwerf2021phenological">(<a href="bibliografia.html#ref-buitenwerf2021phenological" role="doc-biblioref">Buitenwerf et&nbsp;al., 2021</a>; <a href="bibliografia.html#ref-jensen2020phenological" role="doc-biblioref">Jensen et&nbsp;al., 2020</a>)</span>. En estas latitudes, pequeñas alteraciones en la temperatura primaveral o en el balance hídrico modifican de forma pronunciada las tasas de reverdecimiento (<em>green-up</em>) y el inicio de la senescencia otoñal <span class="citation" data-cites="seyednasrollah2019convergence buitenwerf2021phenological">(<a href="bibliografia.html#ref-buitenwerf2021phenological" role="doc-biblioref">Buitenwerf et&nbsp;al., 2021</a>; <a href="bibliografia.html#ref-seyednasrollah2019convergence" role="doc-biblioref">Seyednasrollah et&nbsp;al., 2019</a>)</span>. Por ello, modelar cuantitativamente la trayectoria diaria del dosel vegetal exige acoplar la dinámica interna de la planta con la variabilidad meteorológica observada <span class="citation" data-cites="dietze2017ecological">(<a href="bibliografia.html#ref-dietze2017ecological" role="doc-biblioref">Dietze, 2017</a>)</span>.</p>
+</section>
+<section id="sec-fisiologia-cultivo" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-fisiologia-cultivo"><span class="header-section-number">2.2</span> Fisiología del cultivo</h2>
+<p>El crecimiento y mantenimiento de la biomasa verde activa en un cultivo agrícola depende del balance entre la fijación fotosintética de carbono, la respiración celular de mantenimiento y la asignación de asimilados hacia los distintos órganos vegetales <span class="citation" data-cites="taiz2022plant">(<a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>. De acuerdo con el paradigma clásico de <span class="citation" data-cites="monteith1977climate">Monteith &amp; Moss (<a href="bibliografia.html#ref-monteith1977climate" role="doc-biblioref">1977</a>)</span>, la tasa de producción de materia seca vegetal es proporcional a la radiación fotosintéticamente activa (PAR) interceptada por el dosel y a la eficiencia con la que el cultivo convierte dicha energía radiante en biomasa.</p>
+<p>Desde el punto de vista de los sistemas dinámicos, la evolución temporal de la cobertura foliar presenta dos mecanismos fisiológicos esenciales de autorregulación:</p>
+<ol type="1">
+<li><strong>Crecimiento vegetativo e intercepción lumínica:</strong> Durante la fase inicial de emergencia y expansión foliar, el incremento del área verde aumenta la superficie de captación solar, impulsando la tasa de asimilación neta del cultivo <span class="citation" data-cites="taiz2022plant monteith1977climate">(<a href="bibliografia.html#ref-monteith1977climate" role="doc-biblioref">Monteith &amp; Moss, 1977</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>.</li>
+<li><strong>Saturación del dosel y retroalimentación negativa:</strong> A medida que el índice de área foliar aumenta y el dosel se cierra, se intensifica el autosombreado de los estratos inferiores, la competencia intraespecífica por agua y nutrientes edáficos, y el costo metabólico de respiración de mantenimiento <span class="citation" data-cites="taiz2022plant">(<a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>. Este fenómeno induce una desaceleración natural o reversión hacia un nivel de saturación, la cual se representa matemáticamente en el modelo diferencial mediante un coeficiente de retroalimentación instantánea negativo (<span class="math inline">\(\beta &lt; 0\)</span>). Posteriormente, el ciclo culmina con la degradación programada de la clorofila y la remmovilización de nutrientes durante la senescencia foliar <span class="citation" data-cites="thomas2014stay">(<a href="bibliografia.html#ref-thomas2014stay" role="doc-biblioref">Thomas &amp; Ougham, 2014</a>)</span>.</li>
+</ol>
+</section>
+<section id="sec-procesos-retraso" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-procesos-retraso"><span class="header-section-number">2.3</span> Procesos fisiológicos con retraso temporal</h2>
+<p>En el modelado ecológico clásico suele asumirse que la tasa de cambio de la biomasa en el instante <span class="math inline">\(t\)</span> responde de forma inmediata al estado presente del sistema. Sin embargo, como advirtió <span class="citation" data-cites="hutchinson1948">Hutchinson (<a href="bibliografia.html#ref-hutchinson1948" role="doc-biblioref">1948</a>)</span> al introducir los sistemas causales circulares con retardo en ecología, y como han formalizado <span class="citation" data-cites="ogle2015quantifying">Ogle et&nbsp;al. (<a href="bibliografia.html#ref-ogle2015quantifying" role="doc-biblioref">2015</a>)</span> bajo el concepto de <strong>memoria ecológica</strong>, la respuesta fisiológica de las plantas en el presente depende sustancialmente de sus estados y condiciones antecedentes a lo largo de un horizonte pasado <span class="math inline">\(t - \tau\)</span>.</p>
+<p>En la fisiología del cultivo, la existencia de un retraso temporal discreto <span class="math inline">\(\tau &gt; 0\)</span> entre el estado fotosintético previo <span class="math inline">\(X(t - \tau)\)</span> y la tasa actual de cambio <span class="math inline">\(dX(t)\)</span> se explica por la concatenación de cuatro procesos biofísicos que requieren un tiempo finito de integración <span class="citation" data-cites="taiz2022plant ogle2015quantifying">(<a href="bibliografia.html#ref-ogle2015quantifying" role="doc-biblioref">Ogle et&nbsp;al., 2015</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>:</p>
+<ul>
+<li><strong>Asimilación y almacenamiento de carbohidratos no estructurales:</strong> Los triosas fosfato generados en el ciclo de Calvin durante episodios favorables de radiación no se traducen instantáneamente en nuevo tejido estructural; una fracción importante se polimeriza temporalmente como almidón transitorio en los cloroplastos o sacarosa vacuolar, actuando como un reservorio energético amortiguador <span class="citation" data-cites="taiz2022plant ogle2015quantifying">(<a href="bibliografia.html#ref-ogle2015quantifying" role="doc-biblioref">Ogle et&nbsp;al., 2015</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>.</li>
+<li><strong>Translocación vascular por el floema (dinámica fuente-sumidero):</strong> El transporte masivo de fotoasimilados impulsado por gradientes de presión osmótica (flujo de Münch) desde las hojas maduras exportadoras (<em>fuentes</em>) hacia los meristemos apicales y hojas jóvenes en expansión (<em>sumideros</em>) conlleva un desfase temporal de varios días hasta manifestarse como un cambio ópticamente detectable en la cobertura verde <span class="citation" data-cites="taiz2022plant thomas2014stay">(<a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>; <a href="bibliografia.html#ref-thomas2014stay" role="doc-biblioref">Thomas &amp; Ougham, 2014</a>)</span>.</li>
+<li><strong>División, elongación celular y biosíntesis de clorofila:</strong> Una vez que los carbohidratos y compuestos nitrogenados arriban a los tejidos sumidero, los procesos de mitosis, expansión celular mediada por turgencia y diferenciación de cloroplastos requieren entre una y tres semanas para completar la maduración funcional de la lámina foliar <span class="citation" data-cites="taiz2022plant thomas2014stay">(<a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>; <a href="bibliografia.html#ref-thomas2014stay" role="doc-biblioref">Thomas &amp; Ougham, 2014</a>)</span>.</li>
+<li><strong>Señalización hormonal e inducción fenológica:</strong> Las transiciones entre fases del desarrollo están gobernadas por rutas de señalización sistémica (fitohormonas como auxinas, citocininas y ácido abscísico) y por la integración acumulada de señales térmicas y fotoperiódicas a lo largo de días previos <span class="citation" data-cites="searle2004induction taiz2022plant">(<a href="bibliografia.html#ref-searle2004induction" role="doc-biblioref">Searle &amp; Coupland, 2004</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>.</li>
+</ul>
+<p>Esta estructura de retardos biológicos justifica que la dinámica fenológica sea modelada mediante una ecuación diferencial estocástica con retraso (SDDE), donde el término <span class="math inline">\(\gamma X(t - \tau)\)</span> cuantifica el peso de la memoria fisiológica del cultivo sobre su tasa de crecimiento actual.</p>
+</section>
+<section id="sec-phenocam-gcc" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-phenocam-gcc"><span class="header-section-number">2.4</span> PhenoCam y el índice GCC como proxy de biomasa</h2>
+<p>La validación empírica de modelos fenológicos en tiempo continuo y discreto requiere observaciones de alta frecuencia temporal que superen las limitaciones de revisita y nubosidad de los sensores satelitales convencionales <span class="citation" data-cites="richardson2018tracking">(<a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>)</span>. La red <strong>PhenoCam</strong> constituye una infraestructura internacional de monitoreo fenológico cercano a la superficie basada en cámaras digitales multiespectrales automatizadas que capturan imágenes en el espectro visible —rojo (<span class="math inline">\(R\)</span>), verde (<span class="math inline">\(G\)</span>) y azul (<span class="math inline">\(B\)</span>)— a intervalos sub-diarios sobre una Región de Interés (<em>Region of Interest</em>, ROI) fija del dosel vegetal <span class="citation" data-cites="richardson2018tracking seyednasrollah2019convergence">(<a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>; <a href="bibliografia.html#ref-seyednasrollah2019convergence" role="doc-biblioref">Seyednasrollah et&nbsp;al., 2019</a>)</span>.</p>
+<p>Dado que los números digitales brutos de los tres canales cromáticos (<span class="math inline">\(R, G, B \in [0, 255]\)</span>) fluctúan conjuntamente ante cambios en la geometría de iluminación solar, presencia de nubes o ajustes de exposición del sensor, se define la <strong>Coordenada Cromática Verde</strong> (<em>Green Chromatic Coordinate</em>, <span class="math inline">\(\text{GCC}\)</span>) mediante la normalización radiométrica <span class="citation" data-cites="richardson2018tracking">(<a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>)</span>:</p>
+<p><span id="eq-definicion-gcc"><span class="math display">\[
+\text{GCC} = \frac{G}{R + G + B},
+\tag{2.1}\]</span></span></p>
+<p>donde <span class="math inline">\(R\)</span>, <span class="math inline">\(G\)</span> y <span class="math inline">\(B\)</span> representan la intensidad digital media de los píxeles dentro de la ROI para los canales rojo, verde y azul, respectivamente.</p>
+<p>Por construcción algebraica, el índice <span class="math inline">\(\text{GCC}\)</span> es una cantidad adimensional acotada en el intervalo <span class="math inline">\([0, 1]\)</span> (satisfaciendo <span class="math inline">\(\text{GCC} + \text{RCC} + \text{BCC} = 1\)</span>, donde <span class="math inline">\(\text{RCC}\)</span> y <span class="math inline">\(\text{BCC}\)</span> denotan las coordenadas cromáticas roja y azul). Esta proporción presenta propiedades biofísicas idóneas para representar la variable de estado <span class="math inline">\(X(t)\)</span> en el modelo SDDE:</p>
+<ol type="1">
+<li><strong>Supresión de artefactos de iluminación:</strong> Al dividir la reflectancia verde entre la brillantez total de la escena (<span class="math inline">\(R + G + B\)</span>), el <span class="math inline">\(\text{GCC}\)</span> atenúa las variaciones espurias de irradiancia incidente y elevación solar <span class="citation" data-cites="richardson2018tracking">(<a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>)</span>.</li>
+<li><strong>Correlación con la actividad fotosintética y biomasa foliar:</strong> Los pigmentos clorofílicos (<span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span>) absorben intensamente la radiación en las bandas azul y roja mientras reflejan la banda verde <span class="citation" data-cites="taiz2022plant">(<a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>. En consecuencia, la evolución temporal del <span class="math inline">\(\text{GCC}\)</span> actúa como un <em>proxy</em> directo, continuo y no destructivo de la biomasa verde activa, la concentración de clorofila del dosel y la capacidad fotosintética del cultivo a escala diaria (<span class="math inline">\(\Delta t = 1\)</span> día) <span class="citation" data-cites="richardson2018tracking seyednasrollah2019convergence">(<a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>; <a href="bibliografia.html#ref-seyednasrollah2019convergence" role="doc-biblioref">Seyednasrollah et&nbsp;al., 2019</a>)</span>.</li>
+</ol>
+</section>
+<section id="sec-variables-climaticas" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="sec-variables-climaticas"><span class="header-section-number">2.5</span> Variables climáticas y su influencia en el crecimiento</h2>
+<p>La dinámica fenológica no evoluciona de manera aislada; está impulsada continuamente por las condiciones micrometeorológicas del entorno <span class="citation" data-cites="menzel2006phenology dietze2017ecological">(<a href="bibliografia.html#ref-dietze2017ecological" role="doc-biblioref">Dietze, 2017</a>; <a href="bibliografia.html#ref-menzel2006phenology" role="doc-biblioref">Menzel &amp; Sparks, 2006</a>)</span>. En la formulación del modelo propuesto, el forzamiento ambiental externo en el tiempo <span class="math inline">\(t\)</span> se representa mediante el vector de covariables climáticas diarias <span class="math inline">\(\mathbf{C}(t) = [\text{Rad}(t), \text{Temp}(t), \text{Prec}(t)]^T\)</span>, obtenidas a partir del reanálisis climático global <strong>ERA5</strong> del Centro Europeo de Previsiones Meteorológicas a Plazo Medio (ECMWF) <span class="citation" data-cites="hersbach2020era5">(<a href="bibliografia.html#ref-hersbach2020era5" role="doc-biblioref">Hersbach et&nbsp;al., 2020</a>)</span>:</p>
+<ul>
+<li><strong>Radiación solar global horizontal (<span class="math inline">\(\text{Rad}(t)\)</span>, en <span class="math inline">\(\text{W/m}^2\)</span>):</strong> Constituye la fuente primaria de energía fotónica que impulsa la fase luminosa de la fotosíntesis, el transporte electrónico en los tilacoides y la apertura estomática diurna <span class="citation" data-cites="monteith1977climate taiz2022plant">(<a href="bibliografia.html#ref-monteith1977climate" role="doc-biblioref">Monteith &amp; Moss, 1977</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>. Además de suministrar energía para la fijación de carbono, la variación estacional de la radiación regula el fotoperiodo que sincroniza las transiciones fenológicas en latitudes boreales <span class="citation" data-cites="searle2004induction jensen2020phenological">(<a href="bibliografia.html#ref-jensen2020phenological" role="doc-biblioref">Jensen et&nbsp;al., 2020</a>; <a href="bibliografia.html#ref-searle2004induction" role="doc-biblioref">Searle &amp; Coupland, 2004</a>)</span>.</li>
+<li><strong>Temperatura del aire a 2 metros (<span class="math inline">\(\text{Temp}(t)\)</span>, en <span class="math inline">\(\text{K}\)</span>):</strong> Regula la cinética bioquímica de las enzimas fotosintéticas —particularmente la actividad carboxilasa de la RuBisCO— y la fluidez de las membranas celulares <span class="citation" data-cites="porter1999temperatures taiz2022plant">(<a href="bibliografia.html#ref-porter1999temperatures" role="doc-biblioref">Porter &amp; Gawith, 1999</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>. Dentro del rango fisiológico tolerable del cultivo, el incremento térmico acelera las tasas metabólicas y el desarrollo fenológico <span class="citation" data-cites="seyednasrollah2019convergence">(<a href="bibliografia.html#ref-seyednasrollah2019convergence" role="doc-biblioref">Seyednasrollah et&nbsp;al., 2019</a>)</span>; sin embargo, excursiones hacia temperaturas extremas bajas o altas inducen inhibición enzimática, cierre estomático y estrés oxidativo <span class="citation" data-cites="porter1999temperatures hatfield2015temperature">(<a href="bibliografia.html#ref-hatfield2015temperature" role="doc-biblioref">Hatfield &amp; Prueger, 2015</a>; <a href="bibliografia.html#ref-porter1999temperatures" role="doc-biblioref">Porter &amp; Gawith, 1999</a>)</span>.</li>
+<li><strong>Precipitación total diaria (<span class="math inline">\(\text{Prec}(t)\)</span>, en <span class="math inline">\(\text{m}\)</span> o <span class="math inline">\(\text{mm}\)</span>):</strong> Determina el reabastecimiento de humedad edáfica indispensable para sostener el potencial hídrico de la planta, el transporte xilemático de nutrientes minerales y la presión de turgencia celular que impulsa mecánicamente la expansión de las hojas <span class="citation" data-cites="taiz2022plant ogle2015quantifying">(<a href="bibliografia.html#ref-ogle2015quantifying" role="doc-biblioref">Ogle et&nbsp;al., 2015</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>. A escala diaria, no obstante, eventos intensos de precipitación pueden asociarse de forma simultánea con cobertura nubosa densa (reducción de radiación directa) o saturación hídrica del suelo, generando respuestas diferenciadas según el régimen estacional del cultivo.</li>
+</ul>
+<p>Finalmente, dado que existen fluctuaciones microclimáticas sub-diarias (ráfagas de viento, variaciones de humedad relativa, heterogeneidad espacial del suelo o perturbaciones bióticas menores) que no quedan explícitamente contenidas en el promedio diario del vector <span class="math inline">\(\mathbf{C}(t)\)</span>, su efecto agregado de alta frecuencia es capturado de forma natural por el término de difusión browniana <span class="math inline">\(\sigma dW(t)\)</span> de la ecuación diferencial estocástica <span class="citation" data-cites="mao2007stochastic wilkinson2018stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>; <a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-buitenwerf2021phenological" class="csl-entry" role="listitem">
+Buitenwerf, R., Eklundh, L., &amp; Olsson, L. (2021). Phenological shifts in Swedish vegetation linked to climate change. <em>Global Change Biology</em>, <em>27</em>(15), 3634-3646. <a href="https://doi.org/10.1111/gcb.15680">https://doi.org/10.1111/gcb.15680</a>
+</div>
+<div id="ref-cleland2007shifting" class="csl-entry" role="listitem">
+Cleland, E. E., Chuine, I., &amp; Walther, G.-R. (2007). Shifting plant phenology in response to global change. <em>Trends in Ecology &amp; Evolution</em>, <em>22</em>(7), 357-365. <a href="https://doi.org/10.1016/j.tree.2007.04.003">https://doi.org/10.1016/j.tree.2007.04.003</a>
+</div>
+<div id="ref-dietze2017ecological" class="csl-entry" role="listitem">
+Dietze, M. C. (2017). <em>Ecological Forecasting</em>. Princeton University Press.
+</div>
+<div id="ref-hatfield2015temperature" class="csl-entry" role="listitem">
+Hatfield, J. L., &amp; Prueger, J. H. (2015). Temperature extremes: Effect on plant growth and development. <em>Weather and Climate Extremes</em>, <em>10</em>, 4-10. <a href="https://doi.org/10.1016/j.wace.2015.08.001">https://doi.org/10.1016/j.wace.2015.08.001</a>
+</div>
+<div id="ref-hersbach2020era5" class="csl-entry" role="listitem">
+Hersbach, H., Bell, B., Berrisford, P., Hirahara, S., Horányi, A., Muñoz-Sabater, J., Nicolas, J., Peubey, C., Radu, R., Schepers, D., et&nbsp;al. (2020). The <span>ERA5</span> global reanalysis. <em>Quarterly Journal of the Royal Meteorological Society</em>, <em>146</em>(730), 1999-2049. <a href="https://doi.org/10.1002/qj.3803">https://doi.org/10.1002/qj.3803</a>
+</div>
+<div id="ref-hutchinson1948" class="csl-entry" role="listitem">
+Hutchinson, G. E. (1948). CIRCULAR CAUSAL SYSTEMS IN ECOLOGY. <em>Annals of the New York Academy of Sciences</em>, <em>50</em>(4), 221-246. https://doi.org/<a href="https://doi.org/10.1111/j.1749-6632.1948.tb39854.x">https://doi.org/10.1111/j.1749-6632.1948.tb39854.x</a>
+</div>
+<div id="ref-jensen2020phenological" class="csl-entry" role="listitem">
+Jensen, A. M., Eklundh, L., &amp; Ueyama, M. (2020). Phenological responses of Scandinavian vegetation to climate change. <em>Agricultural and Forest Meteorology</em>, <em>291</em>, 108063. <a href="https://doi.org/10.1016/j.agrformet.2020.108063">https://doi.org/10.1016/j.agrformet.2020.108063</a>
+</div>
+<div id="ref-mao2007stochastic" class="csl-entry" role="listitem">
+Mao, X. (2007). <em>Stochastic Differential Equations and Applications</em> (2.ª ed.). Horwood Publishing.
+</div>
+<div id="ref-menzel2006phenology" class="csl-entry" role="listitem">
+Menzel, A., &amp; Sparks, T. H. (Eds.). (2006). <em>Phenology: An Integrative Environmental Science</em> (2.ª ed.). Springer. <a href="https://doi.org/10.1007/1-4020-4440-9">https://doi.org/10.1007/1-4020-4440-9</a>
+</div>
+<div id="ref-monteith1977climate" class="csl-entry" role="listitem">
+Monteith, J. L., &amp; Moss, C. J. (1977). Climate and the efficiency of crop production in Britain. <em>Philosophical Transactions of the Royal Society B: Biological Sciences</em>, <em>281</em>(980), 277-294. <a href="https://doi.org/10.1098/rstb.1977.0140">https://doi.org/10.1098/rstb.1977.0140</a>
+</div>
+<div id="ref-ogle2015quantifying" class="csl-entry" role="listitem">
+Ogle, K., Barber, J. J., Barron-Gafford, G. A., Bentley, L. P., Cable, J. M., Huxman, T. E., Loik, M. E., &amp; Tissue, D. T. (2015). Quantifying ecological memory in plant and ecosystem processes. <em>Ecology Letters</em>, <em>18</em>(3), 221-235. <a href="https://doi.org/10.1111/ele.12399">https://doi.org/10.1111/ele.12399</a>
+</div>
+<div id="ref-porter1999temperatures" class="csl-entry" role="listitem">
+Porter, J. R., &amp; Gawith, M. (1999). Temperatures and the growth and development of wheat: A review. <em>European Journal of Agronomy</em>, <em>10</em>(1), 23-36. <a href="https://doi.org/10.1016/S1161-0301(98)00047-1">https://doi.org/10.1016/S1161-0301(98)00047-1</a>
+</div>
+<div id="ref-richardson2018tracking" class="csl-entry" role="listitem">
+Richardson, A. D., Hufkens, K., Milliman, T., Aubrecht, D. M., Furze, M. E., Seyednasrollah, B., et&nbsp;al. (2018). Tracking vegetation phenology across diverse biomes using version 2.0 of the PhenoCam dataset. <em>Scientific Data</em>, <em>6</em>(1), 222. <a href="https://doi.org/10.1038/s41597-018-0164-4">https://doi.org/10.1038/s41597-018-0164-4</a>
+</div>
+<div id="ref-searle2004induction" class="csl-entry" role="listitem">
+Searle, I. R., &amp; Coupland, G. (2004). Induction of flowering by seasonal cues in Arabidopsis. <em>The Plant Cell</em>, <em>16</em>(Suppl), S1-S12. <a href="https://doi.org/10.1105/tpc.017673">https://doi.org/10.1105/tpc.017673</a>
+</div>
+<div id="ref-seyednasrollah2019convergence" class="csl-entry" role="listitem">
+Seyednasrollah, B., Hufkens, K., Milliman, T., Friedl, M. A., &amp; Richardson, A. D. (2019). Convergence across biomes in the sensitivity of vegetation greenness to temperature. <em>Environmental Research Letters</em>, <em>14</em>(6), 064010. <a href="https://doi.org/10.1088/1748-9326/ab1b7f">https://doi.org/10.1088/1748-9326/ab1b7f</a>
+</div>
+<div id="ref-taiz2022plant" class="csl-entry" role="listitem">
+Taiz, L., Zeiger, E., Møller, I. M., &amp; Murphy, A. (2022). <em>Plant Physiology and Development</em> (7th ed.). Oxford University Press.
+</div>
+<div id="ref-thomas2014stay" class="csl-entry" role="listitem">
+Thomas, H., &amp; Ougham, H. (2014). The stay-green trait. <em>Journal of Experimental Botany</em>, <em>65</em>(14), 3889-3900. <a href="https://doi.org/10.1093/jxb/eru033">https://doi.org/10.1093/jxb/eru033</a>
+</div>
+<div id="ref-wilkinson2018stochastic" class="csl-entry" role="listitem">
+Wilkinson, D. J. (2018). <em>Stochastic Modelling for Systems Biology</em> (3rd ed.). CRC Press.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./cap1_matematicos.html" class="pagination-link" aria-label="Fundamentos Matemáticos">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fundamentos Matemáticos</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./cap3_modelo.html" class="pagination-link" aria-label="Modelo SDDE en tiempo continuo">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelo SDDE en tiempo continuo</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Carlos Eduardo Chacón Rodríguez — FCFM, UNACH</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/cap2_biologicos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/cap2_biologicos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Dirigida por Dr.&nbsp;Yofre Hernán García Gómez</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
