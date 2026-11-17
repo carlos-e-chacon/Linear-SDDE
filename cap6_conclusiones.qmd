@@ -1,0 +1,52 @@
+# Conclusiones 
+CAPÍTULO 1: FUNDAMENTOS MATEMÁTICOS
+1.1. Procesos estocásticos y movimiento browniano
+1.2. Ecuaciones diferenciales estocásticas (SDE)
+1.3. Ecuaciones diferenciales estocásticas con retraso (SDDE) (extenderlo)
+1.4. Existencia y unicidad de soluciones (extenderlo)
+1.5. Métodos de discretización: Euler-Maruyama
+1.6. Modelos de series de tiempo: AR(p) y su relación con SDE
+
+CAPÍTULO 2: FUNDAMENTOS BIOLÓGICOS (no debería ser tan largo)
+2.1. Fenología vegetal y cambio climático
+2.2. Fisiología del cultivo
+2.3. Procesos fisiológicos con retraso temporal
+2.4. PhenoCam y el índice GCC como proxy de biomasa
+2.5. Variables climáticas y su influencia en el crecimiento
+
+CAPÍTULO 3: FORMULACIÓN DEL MODELO MATEMÁTICO Y ESTADÍSTICO
+3.1. Modelo SDDE en Tiempo Continuo
+3.2. Discretización Numérica y Propiedades del Esquema
+3.3. Formulación Estadística como Modelo de Regresión (extenderlo)
+3.4. Identificabilidad y Estimación de Parámetros (extenderlo)
+3.5. Diagnóstico Estadístico y Validación del Modelo 
+
+CAPÍTULO 4: METODOLOGÍA DE ESTIMACIÓN
+4.1. Descripción de los datos y fuentes (corto, c.s. enlaces a caps ant.)
+4.2. Preprocesamiento y manejo de datos faltantes (corto)
+4.3. Segmentación en periodos continuos (extenderlo)
+4.4. Estimación de parámetros por mínimos cuadrados ordinarios (OLS)
+4.5. Estimación de la intensidad del ruido estocástico (extenderlo)
+4.6. Selección óptima del retraso temporal (τ)
+4.7. Simulación de Monte Carlo para validación
+
+CAPÍTULO 5: RESULTADOS Y DISCUSIÓN
+5.1. Estadística descriptiva de los datos (extenderlo, completo)
+5.2. Estimación de parámetros del modelo SDDE 
+5.3. Identificación del retraso óptimo τ
+5.4. Comparación del rendimiento: SDDE vs AR(p)
+5.5. Validación del modelo
+     - 5.5.1. Validación temporal (entrenamiento vs prueba)
+     - 5.5.2. Validación leave-one-dataset-out
+     - 5.5.3. Simulación de Monte Carlo y intervalos de confianza
+5.6. Análisis de sensibilidad de parámetros
+5.7. Interpretación biológica de los resultados
+5.8. Discusión de limitaciones del modelo (debería ser largo)
+
+CAPÍTULO 6: CONCLUSIONES Y PERSPECTIVAS
+6.1. Conclusiones principales
+6.2. Contribuciones del estudio
+6.3. Recomendaciones para futuras investigaciones
+6.4. Aplicaciones potenciales
+
+REFERENCIAS BIBLIOGRÁFICAS

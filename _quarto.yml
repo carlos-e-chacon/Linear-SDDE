@@ -1,31 +1,42 @@
-lang: es
-citeproc: true
-bibliography: bibliografia.bib
-csl: apa.csl
-
 project:
   type: book
   output-dir: docs
 
-website:
-  reader-mode: true
-  search:
-    location: sidebar
-    type: overlay
-  comments:
-    hypothesis: true
+lang: es
+citeproc: true
+bibliography: bibliografia.bib
+csl: apa.csl
+number-sections: true
 
 book:
   title: "Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación"
+  author: "Carlos Eduardo Chacón Rodríguez"
+  date: "2026-11-10"
   reader-mode: true
   favicon: figuras/unach.png
   cover-image: figuras/unach.png
+  
+  # Estructura actualizada al nuevo índice
   chapters:
-    - index.qmd
-    - capitulo_2.qmd
-    - capitulo_3.qmd
-    #- conclusiones.qmd
-    - bibliografia.qmd
+    - index.qmd                    # Resumen / Presentación ({.unnumbered})
+    - introduccion.qmd             # Introducción y Objetivos ({.unnumbered})
+    
+    - part: "Marco Teórico"
+      chapters:
+        - cap1_matematicos.qmd     # Cap 1: Fundamentos Matemáticos
+        - cap2_biologicos.qmd      # Cap 2: Fundamentos Biológicos
+        
+    - part: "Modelación y Metodología"
+      chapters:
+        - cap3_modelo.qmd          # Cap 3: Formulación del Modelo Matemático y Estadístico
+        - cap4_metodologia.qmd     # Cap 4: Metodología de Estimación
+        
+    - part: "Resultados y Conclusiones"
+      chapters:
+        - cap5_resultados.qmd      # Cap 5: Resultados y Discusión
+        - cap6_conclusiones.qmd    # Cap 6: Conclusiones y Perspectivas
+        
+    - bibliografia.qmd             # Referencias Bibliográficas ({.unnumbered})
 
   sidebar:
     logo: figuras/unach.png
@@ -39,13 +50,24 @@ book:
   repo-url: https://github.com/carlos-e-chacon/Linear-SDDE
   repo-actions: [edit, issue, source]
   page-navigation: true
-  downloads: 
-    - pdf
+  downloads: [pdf]
   page-footer:
-    left: "Carlos Eduardo Chacón Rodríguez"
+    left: "Carlos Eduardo Chacón Rodríguez — FCFM, UNACH"
+    right: "Dirigida por Dr. Yofre Hernán García Gómez"
 
 comments:
   hypothesis: true
+
+# Personalización de etiquetas para referencias cruzadas en español
+crossref:
+  fig-title: "Figura"
+  tbl-title: "Tabla"
+  eq-prefix: "Ecuación"
+  thm-title: "Teorema"
+  def-title: "Definición"
+  lem-title: "Lema"
+  prp-title: "Proposición"
+  cor-title: "Corolario"
 
 format:
   html:
@@ -54,11 +76,14 @@ format:
       light: cosmo
     toc: true
     toc-depth: 3
+    number-sections: true
     grid:
       sidebar-width: 300px
       body-width: 900px
       margin-width: 300px
       gutter-width: 1.5rem
+    code-fold: true                # Oculta el código en pestañas desplegables en la web
+    code-summary: "Mostrar código"
     code-copy: true
     code-overflow: wrap
     smooth-scroll: true
@@ -67,27 +92,40 @@ format:
   
   pdf:  
     documentclass: book
+    classoption: [oneside, openany] # Evita páginas en blanco innecesarias si se imprime a una cara
     include-in-header: latex/preamble.tex
-    #include-before-body: latex/portada.tex
-    #include-after-body: latex/hoja_final.tex
+    include-before-body: latex/portada.tex
+    # include-after-body: latex/hoja_final.tex
     titlepage: false
     toc: true
-    number-sections: false
+    toc-depth: 3
+    lof: true                      # Lista de figuras (habitual en tesis UNACH)
+    lot: true                      # Lista de tablas
+    number-sections: true          # CORREGIDO: Mantiene numeración de capítulos y secciones en el PDF
+    echo: false                    # Oculta bloques de código en el PDF impreso
     mainfont: Latin Modern Roman
     fontsize: 12pt
-    geometry: a4paper
-    output-file: tesis_carlos_chacon
+    geometry:
+      - letterpaper                # CORREGIDO: Tamaño Carta (estándar en México)
+      - inner=3cm
+      - outer=2.5cm
+      - top=2.5cm
+      - bottom=2.5cm
+    output-file: tesis_carlos_chacon.pdf
     dpi: 300
-    fig-format: png
+    fig-format: pdf                # Gráficos vectoriales de alta definición en LaTeX
     link-citations: true
-    urlcolor: blue 
+    colorlinks: true
+    linkcolor: black               # Enlaces internos sobrios para impresión
+    citecolor: blue
+    urlcolor: blue
 
 execute:
-  enabled: true
+  enabled: false                         # Deshabilita la ejecución de código al renderizar el documento
   engine: python
-  echo: true       # Muestra el código fuente
-  results: show    # Muestra los resultados formateados
-  output: true     # Muestra la salida estándar
-  warning: false   # Oculta advertencias (como DeprecationWarnings)
-  message: false   # Oculta mensajes de carga de paquetes, etc.
-  eval: true       # Asegura que el bloque se ejecute
+  freeze: auto                     # Evita re-ejecutar simulaciones pesadas si el código no cambió
+  results: show
+  output: true
+  warning: false
+  message: false
+  eval: true

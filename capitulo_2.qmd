@@ -1,9 +1,0 @@
----
-title: "Fundamentos Biológicos"
-format:
-  html:
-    toc: true
-    toc-depth: 2
-    number-sections: true
----
-## Introducción
