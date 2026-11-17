@@ -1,711 +1,654 @@
-## Modelo SDDE en tiempo continuo
+# Formulación del Modelo Matemático y Estadístico {#sec-formulacion-modelo}
 
-### Motivación y contexto teórico
+En los capítulos precedentes se establecieron los cimientos analíticos del cálculo estocástico de Itô para sistemas con memoria funcional (Capítulo 1) y los mecanismos ecofisiológicos que gobiernan la dinámica fenológica de la vegetación bajo forzamiento climático (Capítulo 2). El presente capítulo consolida ambos marcos teóricos mediante la formulación matemática de una Ecuación Diferencial Estocástica con Retraso (SDDE, por sus siglas en inglés) lineal no autónoma que describe la evolución temporal del índice cromático de verdor ($\text{GCC}$). Asimismo, se desarrolla su discretización numérica mediante el esquema de Euler-Maruyama y se deduce rigurosamente su representación estadística como un modelo de regresión lineal múltiple condicionado a la historia del proceso, estableciendo las condiciones de identificabilidad, los estimadores paramétricos y las pruebas formales de diagnóstico y validación implementadas computacionalmente.
 
-Las ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés) constituyen una extensión natural de las ecuaciones diferenciales estocásticas (SDE) clásicas, incorporando explícitamente la dependencia del pasado en la dinámica del sistema [@mao2007stochastic]. Este tipo de modelos es particularmente relevante en sistemas biológicos donde los procesos fisiológicos presentan memoria temporal inherente, como es el caso de la fenología vegetal [@ogle2015quantifying].
+## Modelo SDDE en Tiempo Continuo {#sec-modelo-sdde-continuo}
 
-La necesidad de incorporar términos de retraso en modelos matemáticos de sistemas dinámicos fue reconocida inicialmente por Volterra en el contexto de ecuaciones integro-diferenciales [@volterra1931theorie]. Sin embargo, fue con el desarrollo de la teoría de procesos estocásticos y el Cálculo de Itô que se estableció un marco riguroso para el análisis de SDDEs de parte de Kiyosi Itô visto en el artículo @ito1951stochastic.
+### Motivación y antecedente teórico: el modelo de crecimiento de Rupšys
 
-### Definición formal del modelo
+La modelación matemática de dinámicas de crecimiento biológico mediante ecuaciones diferenciales ordinarias clásicas suele asumir que la tasa de cambio instantánea depende exclusivamente del estado presente del organismo y que la evolución ocurre en un entorno determinista. Sin embargo, como señala @rupsys2008stochastic, la evolución de variables biométricas y fisiológicas en ecosistemas forestales y agrícolas está gobernada simultáneamente por dos fenómenos que rompen la propiedad markoviana clásica: la **retroalimentación con retraso temporal** (*time-delayed feedback*), originada por la memoria fisiológica del sistema [@ogle2015quantifying], y las **perturbaciones estocásticas ambientales**, asociadas a fluctuaciones microclimáticas no observadas [@mao2007stochastic].
 
-Consideremos un espacio de probabilidad filtrado $(\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})$ que satisface las condiciones usuales de completitud y continuidad derecha [@revuz1999continuous]. Sea $W(t)$ un proceso de Wiener estándar (movimiento browniano) adaptado a la filtración $\{\mathcal{F}_t\}$.
+La formulación propuesta en esta tesis toma como punto de partida teórico el modelo estocástico lineal con retraso desarrollado por @rupsys2008stochastic para describir leyes de crecimiento biológico en presencia de ruido blanco gaussiano. En su formulación original (Ecuación 8 de @rupsys2008stochastic), la evolución del estado biológico $X(t)$ sobre un intervalo $[t_0, T]$ se expresa mediante el problema de valor inicial funcional:
 
-El modelo propuesto para la dinámica del índice de verdor GCC se define mediante la siguiente ecuación diferencial estocástica con retraso:
+$$
+\begin{cases}
+dX(t) = \left[ K - a X(t) - b X(t-\tau) \right] dt + \sigma X(t) \, dW(t), & t \in [t_0, T], \\
+X(s) = \phi(s), & s \in [t_0 - \tau, t_0],
+\end{cases}
+$$ {#eq-modelo-rupsys}
+
+donde $K \in \mathbb{R}$ representa el potencial intrínseco de crecimiento basal, $a \in \mathbb{R}$ y $b \in \mathbb{R}$ (con $a + b > 0$) corresponden a los coeficientes de fricción o autorregulación instantánea y retardada respectivamente, $\tau > 0$ denota la magnitud del retraso temporal, $\sigma > 0$ cuantifica la intensidad de las fluctuaciones aleatorias, $\phi(s)$ define la función de condición inicial histórica sobre el segmento $[t_0 - \tau, t_0]$, y $W(t)$ es un movimiento browniano estándar escalar [@rupsys2008stochastic]. En ausencia de perturbaciones estocásticas ($\sigma = 0$), la @eq-modelo-rupsys converge hacia el punto fijo de equilibrio estacionario $X^* = \frac{K}{a + b}$. Asimismo, @rupsys2008stochastic analiza tanto la variante con difusión multiplicativa proporcional al estado, $g(X(t)) = \sigma X(t)$, como la variante con difusión aditiva constante, $g(X(t)) = \sigma$, demostrando que los parámetros del modelo se dividen de manera natural en dos subconjuntos disjuntos para propósitos de inferencia: los parámetros de deriva determinista ($K, a, b, \tau$), susceptibles de estimación por mínimos cuadrados, y el parámetro de difusión estocástica ($\sigma$).
+
+Si bien el modelo autónomo de @rupsys2008stochastic captura satisfactoriamente la dinámica endógena de crecimiento y autorregulación sobre escalas plurianuales, la fenología intra-anual del dosel vegetal medida a escala diaria mediante cámaras digitales (PhenoCam) no constituye un sistema cerrado, sino un sistema disipativo fuertemente acoplado a forzantes meteorológicos externos [@richardson2018tracking; @dietze2017ecological]. En consecuencia, en este trabajo se generaliza la formulación de @rupsys2008stochastic incorporando explícitamente un término lineal no autónomo de forzamiento climático $\boldsymbol{\delta}^T \mathbf{C}(t)$ dentro del funcional de deriva.
+
+### Planteamiento de la ecuación diferencial estocástica con retraso
+
+Sea $(\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \ge 0}, \mathbb{P})$ un espacio de probabilidad filtrado completo que satisface las condiciones habituales (completitud y continuidad por la derecha de la filtración $\{\mathcal{F}_t\}_{t \ge 0}$), sobre el cual está definido un movimiento browniano estándar unidimensional $\{W(t)\}_{t \ge 0}$ [@mao2007stochastic]. Redefiniendo los coeficientes endógenos de la @eq-modelo-rupsys mediante la correspondencia $\alpha = K$, $\beta = -a$ y $\gamma = -b$, el modelo propuesto para describir la dinámica temporal del índice de verdor cromático ($\text{GCC}$) se define mediante la siguiente ecuación diferencial estocástica con retraso:
 
 $$
 dX(t) = \left[ \alpha + \beta X(t) +\gamma X(t-\tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \right] dt + \sigma X(t) \, dW(t), \quad t \geq 0
 $$ {#eq-sdde}
 
+sujeta a la condición inicial funcional sobre el intervalo histórico pasado:
 
-donde las variables y parámetros se definen en el contexto biológico y dimensional de la siguiente manera (considerando un paso temporal $\Delta t = 1$ día):
+$$
+X(t) = \phi(t), \quad \forall t \in [-\tau, 0],
+$$ {#eq-condicion-inicial-sdde}
 
-- $X(t) \in \mathbb{R}^+$: Proceso estocástico del GCC, que representa la biomasa verde activa en el tiempo $t$.  
-  **Unidad:** Adimensional (índice de proporción entre 0 y 1).
+donde $\phi \in C([-\tau, 0]; \mathbb{R}^+)$ es una función continua y determinista (o $\mathcal{F}_0$-medible tal que $\mathbb{E}[\|\phi\|_\tau^2] < \infty$) que representa la trayectoria histórica observada del verdor de la vegetación durante los $\tau$ días previos al instante inicial de integración $t = 0$. Esta especificación funcional garantiza que, al iniciar la evolución dinámica en $t = 0$, el estado retardado $X(t - \tau)$ se encuentre unívocamente determinado para todo $t \in [0, \tau)$, dado que su argumento pertenece al dominio histórico $[-\tau, 0]$ [@mao2007stochastic; @mohammed1984stochastic].
 
-- $\alpha \in \mathbb{R}$: Tasa de crecimiento basal, asociada al crecimiento intrínseco del sistema en ausencia de forzantes externos.  
-  **Unidad:** $\text{días}^{-1}$ (cambio en el GCC por día).
+### Interpretación biológica y consistencia dimensional
 
-- $\beta \in \mathbb{R}$: Coeficiente de retroalimentación actual, el cual modela el efecto de autorregulación del crecimiento.  
+Para garantizar que la @eq-sdde sea físicamente coherente y biológicamente interpretable cuando se acopla con observaciones diarias ($\Delta t = 1\text{ día}$) de la red PhenoCam y del reanálisis meteorológico ERA5 [@richardson2018tracking; @hersbach2020era5], las variables de estado, las covariables exógenas y los parámetros del sistema se definen en el contexto biológico y dimensional de la siguiente manera:
+
+* $X(t) \in \mathbb{R}^+$: Proceso estocástico del índice $\text{GCC}$ (*Green Chromatic Coordinate*), que representa la biomasa verde activa y el estado fotosintético del dosel vegetal en el tiempo $t$.  
+  **Unidad:** Adimensional (índice de proporción cromática acotado en $(0, 1)$).
+
+* $\alpha \in \mathbb{R}$: Tasa de crecimiento basal, asociada al flujo intrínseco del sistema en ausencia de forzantes externos y de retroalimentación dependiente del estado.  
+  **Unidad:** $\text{días}^{-1}$ (cambio en el $\text{GCC}$ por día).
+
+* $\beta \in \mathbb{R}$: Coeficiente de retroalimentación actual, el cual modela el efecto de autorregulación instantánea del crecimiento (por ejemplo, sombreamiento mutuo foliar, respiración de mantenimiento o agotamiento local de recursos). Un valor $\beta < 0$ induce estabilidad amortiguada y reversión hacia el equilibrio.  
   **Unidad:** $\text{días}^{-1}$.
 
-- $\gamma \in \mathbb{R}$: Coeficiente de retroalimentación retardada, que representa la memoria fisiológica del sistema, vinculada a la translocación de fotoasimilados.  
+* $\gamma \in \mathbb{R}$: Coeficiente de retroalimentación retardada, que representa la memoria fisiológica del sistema, vinculada a procesos diferidos como la translocación de fotoasimilados no estructurales, la movilización de reservas radiculares y la maduración meristemática [@ogle2015quantifying].  
   **Unidad:** $\text{días}^{-1}$.
 
-- $\tau \in \mathbb{R}^+$: Tiempo de retraso, correspondiente al periodo característico de los procesos fisiológicos involucrados.  
-  **Unidad:** Días.
+* $\tau \in \mathbb{R}^+$: Tiempo de retraso fisiológico, correspondiente al periodo característico requerido para que los procesos metabólicos y de asignación de carbono ocurridos en el instante $t - \tau$ se manifiesten en la reflectancia verde del dosel en el instante $t$.  
+  **Unidad:** $\text{días}$.
 
-- $\mathbf{C}(t) \in \mathbb{R}^3$: Vector de forzantes climáticas, definido como $\mathbf{C}(t) = [\text{Rad}_t, \text{Temp}_t, \text{Prec}_t]^T$.  
+* $\mathbf{C}(t) \in \mathbb{R}^3$: Vector de forzantes climáticas exógenas en el instante $t$, definido explícitamente como:
+$$
+  \mathbf{C}(t) = \begin{bmatrix} \text{Rad}_t \\ \text{Temp}_t \\ \text{Prec}_t \end{bmatrix},
+$$ {#eq-vector-clima}
+cuyas componentes provienen de las series diarias del reanálisis ERA5: radiación solar global horizontal diaria ($\text{Rad}_t$, motor energético de la actividad fotosintética), temperatura del aire a $2\text{ m}$ ($\text{Temp}_t$, regulador cinético de la actividad enzimática) y precipitación total acumulada diaria ($\text{Prec}_t$, modulador de la disponibilidad hídrica y turgencia celular) [@hersbach2020era5].  
   **Unidades:** $\text{W/m}^2$ (Radiación solar promedio diaria), $\text{K}$ (Temperatura del aire) y $\text{m}$ (Precipitación acumulada diaria).  
-%  *Nota: Se recomienda escalar $\text{Prec}_t$ a milímetros ($\text{mm}$) antes de la estimación para mejorar la estabilidad numérica.*
+  *(Nota metodológica: En aplicaciones donde la matriz de diseño presente disparidad de escalas severa, es factible escalar $\text{Prec}_t$ a milímetros ($\text{mm}$) antes de la estimación para mejorar el condicionamiento numérico; en el flujo computacional de esta tesis se conserva la unidad estándar de ERA5 en metros empleando solucionadores matriciales directos de doble precisión).*
 
-- $\boldsymbol{\delta} \in \mathbb{R}^3$: Vector de sensibilidades climáticas, que cuantifica la respuesta del sistema ante variaciones en las variables climáticas ($\boldsymbol{\delta} = [\delta_1, \delta_2, \delta_3]^T$).  
-  **Unidades:** $\text{días}^{-1}/(\text{W/m}^2)$, $\text{días}^{-1}/\text{K}$ y $\text{días}^{-1}/\text{m}$ (o $\text{días}^{-1}/\text{mm}$ si se escala la precipitación), respectivamente.
+* $\boldsymbol{\delta} \in \mathbb{R}^3$: Vector de sensibilidades climáticas, definido como $\boldsymbol{\delta} = [\delta_1, \delta_2, \delta_3]^T$, el cual cuantifica la respuesta marginal instantánea de la tasa de cambio del $\text{GCC}$ ante variaciones unitarias en la radiación solar, la temperatura y la precipitación, respectivamente.  
+  **Unidades:** $\text{días}^{-1}/(\text{W/m}^2)$ para $\delta_1$, $\text{días}^{-1}/\text{K}$ para $\delta_2$, y $\text{días}^{-1}/\text{m}$ (o $\text{días}^{-1}/\text{mm}$ si se escala la precipitación) para $\delta_3$.
 
-- $\sigma \in \mathbb{R}^+$: Intensidad del ruido estocástico, que representa la variabilidad ambiental no explicada por el modelo determinista.  
-  **Unidad:** $\text{días}^{-1/2}$ (en la formulación de tiempo continuo; en la discretización con $\Delta t = 1$, se absorbe en la varianza del incremento de Wiener).
+* $\sigma \in \mathbb{R}^+$: Intensidad del ruido estocástico (coeficiente de difusión o volatilidad), que encapsula el efecto agregado de la variabilidad ambiental microclimática, perturbaciones bióticas y fluctuaciones radiométricas de observación no explicadas por el componente determinista del modelo.  
+  **Unidad:** $\text{días}^{-1/2}$ (en la formulación de tiempo continuo; en la discretización con paso unitario $\Delta t = 1\text{ día}$, se absorbe dimensionalmente en la desviación estándar del incremento browniano diario).
 
-- $W(t) \in \mathbb{R}$: Proceso de Wiener estándar, utilizado para modelar el ruido blanco gaussiano que perturba el sistema.  
-  **Unidad:** $\sqrt{\text{días}}$ (dado que $\text{Var}(W(t)) = t$). 
+* $W(t) \in \mathbb{R}$: Proceso de Wiener (movimiento browniano) estándar escalar, utilizado para modelar las perturbaciones de ruido blanco gaussiano en tiempo continuo a través de su diferencial formal $dW(t)$.  
+  **Unidad:** $\sqrt{\text{días}}$ (dado que los incrementos satisfacen $\text{Var}(W(t + \Delta t) - W(t)) = \Delta t$).
 
+La @tbl-parametros-modelo sintetiza la estructura matemática, el significado ecofisiológico y el análisis dimensional de cada elemento de la @eq-sdde, verificando que ambos términos de la ecuación diferencial resultan adimensionales al integrarse respecto al tiempo.
 
-### Condiciones iniciales y espacio de fases {#sec-condiciones-iniciales}
+| Símbolo | Dominio | Interpretación Biológica y Estadística | Unidad Física |
+|:---:|:---:|:---|:---:|
+| $X(t)$ | $\mathbb{R}^+$ | Índice de verdor cromático ($\text{GCC}$), proxy de biomasa foliar activa | Adimensional |
+| $\alpha$ | $\mathbb{R}$ | Tasa de crecimiento intrínseco o deriva basal del dosel | $\text{días}^{-1}$ |
+| $\beta$ | $\mathbb{R}$ | Coeficiente de retroalimentación y autorregulación instantánea | $\text{días}^{-1}$ |
+| $\gamma$ | $\mathbb{R}$ | Coeficiente de retroalimentación retardada (memoria fisiológica) | $\text{días}^{-1}$ |
+| $\tau$ | $\mathbb{R}^+$ | Tiempo de retraso característico de procesos metabólicos | $\text{días}$ |
+| $\text{Rad}_t$ | $\mathbb{R}^+$ | Radiación solar global horizontal promedio diaria (ERA5) | $\text{W/m}^2$ |
+| $\text{Temp}_t$ | $\mathbb{R}^+$ | Temperatura media diaria del aire a $2\text{ m}$ (ERA5) | $\text{K}$ |
+| $\text{Prec}_t$ | $\mathbb{R}^+_0$ | Precipitación diaria total acumulada (ERA5) | $\text{m}$ |
+| $\delta_1$ | $\mathbb{R}$ | Sensibilidad fenológica a la radiación solar | $\text{días}^{-1}\cdot\text{m}^2/\text{W}$ |
+| $\delta_2$ | $\mathbb{R}$ | Sensibilidad fenológica a la temperatura del aire | $\text{días}^{-1}\cdot\text{K}^{-1}$ |
+| $\delta_3$ | $\mathbb{R}$ | Sensibilidad fenológica a la precipitación | $\text{días}^{-1}\cdot\text{m}^{-1}$ |
+| $\sigma$ | $\mathbb{R}^+$ | Intensidad del ruido estocástico ambiental | $\text{días}^{-1/2}$ |
+| $W(t)$ | $\mathbb{R}$ | Proceso de Wiener estándar unidimensional | $\sqrt{\text{días}}$ |
 
-A diferencia de las ecuaciones diferenciales estocásticas clásicas, las SDDEs presentan una característica estructural fundamental: su **espacio de fases es infinito-dimensional**. Específicamente, el estado del sistema en el tiempo $t$ no está determinado por un punto en $\mathbb{R}^n$, sino por un **segmento de historia** $X_t \in C([-\tau, 0], \mathbb{R})$, definido como $X_t(\theta) = X(t+\theta)$ para $\theta \in [-\tau, 0]$.
+: Variables de estado, forzantes climáticas y parámetros del modelo fenológico SDDE en tiempo continuo. {#tbl-parametros-modelo}
 
-Este espacio de funciones continuas, equipado con la norma del supremo:
+### Existencia, unicidad, positividad y dinámica de momentos
 
-$$
-\|\phi\| = \sup_{\theta \in [-\tau, 0]} |\phi(\theta)|
-\tag{3.3}
-$$
-
-constituye un espacio de Banach que captura la memoria del sistema. Como establece el marco teórico de Mao [-@mao2007stochastic], esta naturaleza funcional obliga a reformular las herramientas clásicas del análisis estocástico: las condiciones de Lipschitz y crecimiento lineal deben evaluarse sobre funcionales dependientes del retraso, y los teoremas de existencia y unicidad requieren condiciones iniciales que sean funciones completas, no valores puntuales.
-
-En consecuencia, el **problema de valor inicial** para una SDDE se especifica mediante una función de historial:
-
-$$
-X(t) = \phi(t), \quad \forall t \in [-\tau, 0]
-$$ {#eq-inicial}
-
-donde $\phi: [-\tau, 0] \to \mathbb{R}^+$ es una función continua y determinista que representa el estado del sistema antes del tiempo inicial $t=0$. Esta formulación garantiza que, al iniciar la integración en $t=0$, el término retardado $X(t-\tau)$ esté bien definido para todo $t \geq 0$, ya que $t-\tau \in [-\tau, 0]$ cuando $t \in [0, \tau]$.
-
-La distinción entre SDEs y SDDEs radica precisamente en esta transición de un espacio de estados finito a uno infinito-dimensional. Tal como demuestran Mao [-@mao2007stochastic] y Mohammed [-@mohammed1984stochastic], esta propiedad tiene implicaciones profundas tanto teóricas como computacionales: los métodos numéricos deben almacenar y actualizar trayectorias completas (no solo el valor actual), y el análisis de estabilidad asintótica requiere el uso de funcionales de Lyapunov-Krasovskii o teoremas de tipo Razumikhin, los cuales evalúan la energía del sistema considerando su historial pasado y no únicamente su estado instantáneo.
-
-### Propiedades matemáticas fundamentales
-
-#### Verificación para el modelo propuesto
-
-Para nuestro modelo específico, verificamos las condiciones anteriores:
-
-1. **Lipschitz**: La función $\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t)$ es lineal en $x$ e $y$, por lo tanto satisface la condición de Lipschitz con constante $K = \max(|\beta|, |\gamma|)$.
-
-2. **Crecimiento lineal**: Dado que $\mu$ es lineal y $\sigma(t, x) = \sigma x$ también es lineal, ambas satisfacen trivialmente la condición de crecimiento lineal.
-
-Por lo tanto, el modelo propuesto garantiza existencia y unicidad de soluciones para cualquier historial inicial continuo $\phi$.
-
-### Interpretación biológica de los términos
-
-#### Término de deriva determinista
-
-El término de deriva en la @eq-sdde puede descomponerse en cuatro componentes:
+Para asegurar que el modelo propuesto en la @eq-sdde está matemáticamente bien planteado en cualquier horizonte temporal finito $[0, T]$, identificamos sus funciones de deriva $\mu: [0, T] \times \mathbb{R} \times \mathbb{R} \to \mathbb{R}$ y de difusión $g: [0, T] \times \mathbb{R} \times \mathbb{R} \to \mathbb{R}$ como:
 
 $$
-\mu(t, X(t), X(t-\tau)) = \underbrace{\alpha}_{\begin{matrix} \text{Crecimiento} \\ \text{basal} \end{matrix}} + \underbrace{\beta X(t)}_{\begin{matrix}\text{Retroalimentación}\\ \text{actual}\end{matrix}} + \underbrace{\gamma X(t-\tau)}_{\begin{matrix}\text{Memoria} \\ \text{fisiológica}\end{matrix}} + \underbrace{\boldsymbol{\delta}^T \mathbf{C}(t)}_{\begin{matrix}\text{Forzantes} \\ \text{climáticas}\end{matrix}}
-\tag{3.6}
-$$
+\mu(t, x, y) = \alpha + \beta x + \gamma y + \boldsymbol{\delta}^T \mathbf{C}(t), \qquad g(t, x, y) = \sigma x,
+$$ {#eq-coeficientes-sdde}
 
-- **Crecimiento basal ($\alpha$)**: Representa la tasa de crecimiento intrínseca del sistema en ausencia de retroalimentación y forzantes externos. En el contexto vegetal, esto corresponde al crecimiento mínimo sostenido por procesos metabólicos básicos [@taiz2022plant].
+donde $x = X(t)$ representa el estado presente e $y = X(t - \tau)$ denota el estado retardado.
 
-- **Retroalimentación actual ($\beta X(t)$)**: Modela la autorregulación del crecimiento basada en el estado actual del sistema. Un valor $\beta > 0$ indica crecimiento autocatalítico (aceleración), mientras que $\beta < 0$ representa saturación o competencia intraespecífica [@diepenbrock2000yield].
-
-- **Memoria fisiológica ($\gamma X(t-\tau)$)**: Captura explícitamente la dependencia del pasado, representando procesos como la translocación de fotoasimilados, acumulación de reservas o respuesta hormonal retardada [@thomas2014stay]. El signo de $\gamma$ determina si el efecto es positivo (persistencia) o negativo (agotamiento de recursos).
-
-- **Forzantes climáticas ($\boldsymbol{\delta}^T \mathbf{C}(t)$)**: Incorpora la influencia directa de variables ambientales sobre el crecimiento. Cada componente $\delta_i$ cuantifica la sensibilidad del sistema a la variable climática correspondiente [@hatfield2015temperature].
-
-#### Término de difusión estocástica
-
-El término de difusión $\sigma X(t) \, dW(t)$ modela la variabilidad ambiental no explicada por las variables climáticas incluidas explícitamente. La forma multiplicativa $\sigma X(t)$ implica que la intensidad del ruido es proporcional al tamaño del sistema, lo cual es biológicamente razonable: sistemas más grandes (mayor GCC) exhiben mayor variabilidad absoluta [@kloeden1992numerical].
-
-### Solución formal y representación integral
-
-La solución de la @eq-sdde puede expresarse en forma integral utilizando el Cálculo de Itô [@sarkka2019applied]:
-
-$$
-X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymbol{\delta}^T \mathbf{C}(s) \right] ds + \sigma \int_0^t X(s) \, dW(s)
-$$ {#eq-integral_solution}
-
-Esta representación integral es fundamental para el análisis teórico y la discretización numérica del modelo. La integral estocástica $\int_0^t X(s) \, dW(s)$ se interpreta en el sentido de Itô, lo cual implica que el integrando $X(s)$ es evaluado en el extremo izquierdo de cada subintervalo de partición de acuerdo con la definición formal.
-
-### Consideraciones sobre la positividad del modelo
-
-Dado que $X(t)$ representa el índice de verdor GCC, que físicamente debe ser no negativo ($X(t) \geq 0$), es crucial verificar que el modelo preserve esta propiedad. Para SDEs con coeficientes lineales como la nuestra, se puede demostrar que si la condición inicial satisface $\phi(t) \geq 0$ para todo $t \in [-\tau, 0]$, entonces $X(t) \geq 0$ casi seguramente para todo $t \geq 0$ [@mao2007stochastic].
-
-Esta propiedad de positividad es esencial para la interpretación biológica del modelo y garantiza que las simulaciones numéricas produzcan resultados físicamente realistas.
-
-## Discretización Numérica y Propiedades del Esquema {#sec-discretizacion}
-
-### Motivación y contexto metodológico {#sec-motivacion-discretizacion}
-
-La resolución analítica de ecuaciones diferenciales estocásticas con retraso (SDDE) es generalmente imposible debido a la naturaleza no markoviana del proceso y la dependencia funcional del pasado [@kloeden1992numerical]. Por lo tanto, es necesario recurrir a métodos numéricos de discretización para obtener soluciones aproximadas que permitan tanto el análisis teórico como la implementación computacional.
-
-Para el caso específico de SDDEs, Mao [-@mao2007stochastic, p. 164-165] establece en la Sección 5.5 que los procedimientos de aproximación de Caratheodory y Euler-Maruyama, originalmente desarrollados para SDEs clásicas, pueden extenderse al contexto de ecuaciones diferenciales estocásticas funcionales. Entre estos métodos, el esquema de **Euler-Maruyama** representa el enfoque más fundamental y ampliamente utilizado para la discretización de SDDEs, debido a su simplicidad conceptual, facilidad de implementación y propiedades de convergencia bien establecidas tanto para SDEs como para SDDEs.
-
-### (Aquí irá el código)
-
-### Análisis de convergencia {#sec-convergencia}
-
-El análisis de convergencia de esquemas numéricos para SDEs y SDDEs distingue entre dos tipos fundamentales de convergencia: **convergencia fuerte** y **convergencia débil** [@kloeden1992numerical]. Esta distinción es crucial porque cada tipo de convergencia responde a objetivos computacionales diferentes: la convergencia fuerte es relevante cuando se busca aproximar trayectorias individuales del proceso (simulación de escenarios), mientras que la convergencia débil es suficiente cuando solo interesan cantidades estadísticas como esperanzas o varianzas [@milstein1995numerical].
-
-#### Convergencia fuerte {#sec-convergencia-fuerte}
-
-Un esquema numérico tiene **convergencia fuerte de orden $\gamma$** si existe una constante $C > 0$ independiente de $\Delta t$ tal que:
-
-$$
-\mathbb{E}\left[ |X(T) - X_N| \right] \leq C (\Delta t)^\gamma
-$$
-
-donde $X(T)$ es la solución exacta en tiempo $T$ y $X_N$ es la aproximación numérica.
-
-**Teorema 3.1** (Convergencia fuerte de Euler-Maruyama para SDDEs). *Bajo las condiciones de Lipschitz global y crecimiento lineal para los coeficientes de deriva $\mu$ y difusión $\sigma$, el esquema de Euler-Maruyama aplicado a SDDEs tiene convergencia fuerte de orden $\gamma = 1/2$* [@mao2007stochastic, p. 166; @kloeden1992numerical].
-
-La demostración de este teorema para SDDEs, presentada por Mao [-@mao2007stochastic, p. 166-168], requiere extender las técnicas clásicas de SDEs para manejar la dependencia del historial $X(t-\tau)$. Específicamente, Mao demuestra que, bajo las condiciones de Lipschitz y crecimiento lineal uniformes, el error fuerte acumulado satisface:
-
-$$
-\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X(t) - Y(t)|^2 \right] \leq C \Delta t
-$$
-
-donde $Y(t)$ denota la aproximación numérica continua. Este resultado implica que el orden de convergencia fuerte es $\gamma = 1/2$, idéntico al caso de SDEs sin retraso.
-
-Para nuestro modelo lineal específico, las condiciones de Lipschitz y crecimiento lineal se satisfacen trivialmente, garantizando así la convergencia fuerte de orden $1/2$.
-
-#### Convergencia débil {#sec-convergencia-debil}
-
-Un esquema numérico tiene **convergencia débil de orden $\beta$** si para toda función $g \in C_P^{2(\beta+1)}(\mathbb{R}, \mathbb{R})$ (funciones $2(\beta+1)$ veces continuamente diferenciables con derivadas polinomialmente acotadas), existe una constante $C_g > 0$ tal que:
-
-$$
-\left| \mathbb{E}[g(X(T))] - \mathbb{E}[g(X_N)] \right| \leq C_g (\Delta t)^\beta
-\tag{3.12}
-$$
-
-**Teorema 3.2** (Convergencia débil de Euler-Maruyama). *Bajo las mismas condiciones del Teorema 3.1, el esquema de Euler-Maruyama tiene convergencia débil de orden $\beta = 1$* [@milstein1995numerical].
-
-Es importante notar que, aunque la literatura sobre convergencia débil para SDDEs es menos extensa que para SDEs, los resultados fundamentales se mantienen bajo condiciones similares [@kloeden1992numerical]. La demostración típica utiliza la ecuación de Kolmogorov hacia atrás asociada a la SDDE y requiere estimaciones adicionales para manejar el término retardado.
-
-Este resultado es particularmente relevante para aplicaciones en finanzas y ciencias naturales, donde el interés radica en calcular esperanzas de funcionales del proceso (precios de opciones, probabilidades de eventos, momentos estadísticos, etc.) en lugar de aproximar trayectorias individuales [@wilkinson2018stochastic]. En el contexto de nuestro modelo fenológico, la convergencia débil garantiza que las estimaciones de parámetros obtenidas por máxima verosimilitud o mínimos cuadrados serán consistentes a medida que $\Delta t \to 0$.
-
-### Error de truncamiento local {#sec-error-truncamiento}
-
-El **error de truncamiento local** en el paso $n$ se define como la diferencia entre la solución exacta y la aproximación numérica, asumiendo que el estado anterior es exacto:
-
-$$
-R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n-\tau)) \Delta t - \sigma(t_n, X(t_n)) \Delta W_n
-\tag{3.17}
-$$
-
-Para el esquema de Euler-Maruyama aplicado a SDEs con coeficientes suficientemente suaves, se puede demostrar que:
-
-$$
-\mathbb{E}[|R_n|^2]^{1/2} = \mathcal{O}((\Delta t)^{3/2})
-\tag{3.18}
-$$
-
-Este resultado, establecido por Kloeden y Platen [-@kloeden1992numerical, p. 330-332] para SDEs y extendido por Mao [-@mao2007stochastic, p. 166-167] para SDDEs, justifica el orden de convergencia fuerte $\gamma = 1/2$. La intuición es la siguiente: el error local por paso es de orden $\mathcal{O}((\Delta t)^{3/2})$ en norma $L^2$, pero al acumularse sobre $N = T/\Delta t$ pasos independientes, el error global resulta ser de orden:
-
-$$
-\sqrt{N} \cdot \mathcal{O}((\Delta t)^{3/2}) = \sqrt{\frac{T}{\Delta t}} \cdot \mathcal{O}((\Delta t)^{3/2}) = \mathcal{O}((\Delta t)^{1/2})
-$$
-
-Esta propagación del error es característica de los procesos estocásticos y difiere fundamentalmente del caso determinista, donde el error local $\mathcal{O}((\Delta t)^2)$ produce un error global $\mathcal{O}(\Delta t)$ (convergencia de orden 1).
-
-### Implementación computacional
-
-La implementación del esquema de Euler-Maruyama para SDDEs requiere especial atención al manejo del historial pasado. El siguiente algoritmo presenta una implementación eficiente:
-
-::: {.callout-note appearance="minimal" icon=false}
-**Entrada:** $\tau, \Delta t, T, X_0, \{C_n\}_{n=0}^{N-1}, \alpha, \beta, \gamma, \delta, \sigma$.  
-**Salida:** $\{X_n\}_{n=0}^{N}$ aproximación numérica.
-
-1. $N \longleftarrow \frac{T}{\Delta t}$
-2. $k \longleftarrow \frac{\tau}{\Delta t}$
-3. Inicializar vector $X[0..N]$
-4. $X[0..k] \longleftarrow \phi(t_0..t_k)$ *(Historial inicial)*
-5. **Para** $n = k$ **hasta** $N-1$ **hacer:**
-    a. $\Delta W \longleftarrow \sqrt{\Delta t} \cdot \mathcal{N}(0, 1)$
-    b. $\mu \longleftarrow \alpha + \beta \cdot X[n] + \gamma \cdot X[n-k] + \delta^T C[n]$
-    c. $X[n+1] \longleftarrow X[n] + \mu \cdot \Delta t + \sigma \cdot X[n] \Delta W$
-6. **Retornar** $\{X_n\}_{n=0}^{N}$
+::: {#thm-existencia-modelo-gcc}
+### Existencia y unicidad de la solución fuerte del modelo fenológico
+Supóngase que el vector de forzantes climáticas $\mathbf{C}(t)$ es una función acotada y Borel-medible sobre $[0, T]$, es decir, $\sup_{0 \le t \le T} \|\mathbf{C}(t)\|_2 \le M_C < \infty$. Entonces, para cualquier condición inicial histórica continua $\phi \in C([-\tau, 0]; \mathbb{R}^+)$, existe una única solución fuerte global $\{X(t)\}_{t \in [-\tau, T]}$ en el espacio $\mathcal{M}^2([-\tau, T]; \mathbb{R})$ que satisface la @eq-sdde y la condición inicial @eq-condicion-inicial-sdde.
 :::
 
-La complejidad computacional del algoritmo es $\mathcal{O}(N)$, lo que lo hace eficiente incluso para simulaciones con horizontes temporales largos [@andersson2017strong].
+::: {.proof}
+Por el Teorema 5.2.1 de @mao2007stochastic (establecido en el Capítulo 1), basta verificar que los coeficientes dados en la @eq-coeficientes-sdde satisfacen la condición de Lipschitz uniforme y la condición de crecimiento lineal respecto a las variables de estado $(x, y)$.
 
-### Consideraciones prácticas para $\Delta t = 1$ día
+1. **Condición de Lipschitz global:** Para cualesquiera $x_1, x_2, y_1, y_2 \in \mathbb{R}$ y todo $t \in [0, T]$, utilizando la desigualdad elemental $(a + b)^2 \le 2(a^2 + b^2)$, se tiene que:
+   $$
+   \begin{aligned}
+   |\mu(t, x_1, y_1) - \mu(t, x_2, y_2)|^2 + |g(t, x_1, y_1) - g(t, x_2, y_2)|^2 &= |\beta(x_1 - x_2) + \gamma(y_1 - y_2)|^2 + |\sigma(x_1 - x_2)|^2 \\
+   &\le (2\beta^2 + \sigma^2)|x_1 - x_2|^2 + 2\gamma^2|y_1 - y_2|^2 \\
+   &\le K_L \left( |x_1 - x_2|^2 + |y_1 - y_2|^2 \right),
+   \end{aligned}
+   $$ {#eq-prueba-lipschitz}
+   donde $K_L = \max(2\beta^2 + \sigma^2, 2\gamma^2) > 0$ es una constante independiente de $t$.
 
-En nuestra aplicación específica, el paso temporal de discretización es $\Delta t = 1$ día, correspondiente a la frecuencia de muestreo de los datos PhenoCam. Esta elección tiene implicaciones importantes:
+2. **Condición de crecimiento lineal:** Dado que $\|\mathbf{C}(t)\|_2 \le M_C$ en $[0, T]$, por la desigualdad de Cauchy-Schwarz se cumple $|\alpha + \boldsymbol{\delta}^T \mathbf{C}(t)| \le |\alpha| + \|\boldsymbol{\delta}\|_2 M_C := M_0 < \infty$. Aplicando la desigualdad $(a + b + c)^2 \le 3(a^2 + b^2 + c^2)$, obtenemos:
+   $$
+   \begin{aligned}
+   |\mu(t, x, y)|^2 + |g(t, x, y)|^2 &\le 3M_0^2 + (3\beta^2 + \sigma^2)|x|^2 + 3\gamma^2|y|^2 \\
+   &\le K_C \left( 1 + |x|^2 + |y|^2 \right),
+   \end{aligned}
+   $$ {#eq-prueba-crecimiento}
+   donde $K_C = \max(3M_0^2, 3\beta^2 + \sigma^2, 3\gamma^2) > 0$. Al satisfacerse globalmente ambas desigualdades, el método de aproximaciones sucesivas de Picard converge en media cuadrática hacia una única solución fuerte continua casi seguramente en $[0, T]$ [@mao2007stochastic].
+:::
 
-1. **Magnitud del error numérico**: Con $\Delta t = 1$, el error de truncamiento local puede ser significativo comparado con aplicaciones donde $\Delta t < 1$. Sin embargo, dado que los datos observados también tienen una resolución diaria, el error numérico se vuelve comparable al error de observación [@richardson2018tracking].
+En lo que respecta a la **preservación del dominio biológico**, dado que $X(t)$ representa una proporción cromática acotada en el intervalo $(0, 1)$, en regímenes de crecimiento vegetativo donde la deriva neta externa e histórica es no negativa ($\alpha + \gamma X(t - \tau) + \boldsymbol{\delta}^T \mathbf{C}(t) \ge 0$) y el historial inicial satisface $\phi(t) > 0$ para todo $t \in [-\tau, 0]$, la aplicación de la fórmula de variación de constantes por el método de los pasos (Sección 5.3 de @mao2007stochastic) garantiza que la solución $X(t)$ permanece estrictamente positiva ($X(t) > 0$) casi seguramente. Más aún, en las series empíricas analizadas en esta tesis (provenientes de la estación experimental de Röbäcksdalen en Umeå, Suecia), el índice $X(t)$ evoluciona dentro de una banda estrecha alejada de la frontera cero ($X(t) \in [0.3093, 0.3571]$), con un coeficiente de variación inferior al $4\%$. Como se demostrará en las Secciones [-@sec-formulacion-regresion] y [-@sec-identificabilidad-estimacion], esta baja variabilidad relativa del estado conlleva que el término de difusión multiplicativo $\sigma_{\text{SDDE}} X(t) \, dW(t)$ pueda aproximarse de manera altamente precisa mediante una difusión aditiva efectiva con volatilidad constante $\sigma \approx \sigma_{\text{SDDE}} \bar{X}$, tal como sugieren @rupsys2008stochastic y @shoji1998estimation.
 
-2. **Aproximación del incremento de Wiener**: Para $\Delta t = 1$, tenemos $\Delta W_n \sim \mathcal{N}(0, 1)$, lo que simplifica la generación de números aleatorios en la simulación.
-
-3. **Interpretación de parámetros**: Los parámetros estimados ($\alpha$, $\beta$, $\gamma$, $\boldsymbol{\delta}$, $\sigma$) están en escala diaria y deben interpretarse como tasas de cambio por día, no como tasas instantáneas [@dietze2017ecological].
-
-4. **Consistencia dimensional**: Con $\Delta t = 1$, las ecuaciones (3.9) y (3.10) se simplifican al omitir explícitamente el factor $\Delta t$, lo que facilita la interpretación y la estimación de parámetros.
-
-## Formulación Estadística como Modelo de Regresión
-
-### Motivación y contexto estadístico
-
-La discretización del modelo SDDE mediante el esquema de Euler-Maruyama, presentada en la sección 3.2, proporciona una aproximación numérica que facilita la transición desde un marco teórico continuo a un problema de inferencia estadística discreta. Esta formulación permite estimar los parámetros del modelo utilizando técnicas estándar de regresión lineal, lo cual es computacionalmente eficiente y estadísticamente bien fundamentado para el pronóstico de ecosistemas [@dietze2017ecological].
-
-El enfoque de regresión lineal para modelos estocásticos discretizados ha sido ampliamente utilizado en finanzas, ecología y ciencias ambientales, donde la combinación de dinámica determinista y ruido estocástico es inherente a los sistemas naturales [@kloeden1992numerical].
-
-### Modelo de regresión lineal derivado del SDDE
-
-Partiendo del esquema de Euler-Maruyama para nuestro modelo SDDE específico (ecuación 3.9), y considerando un paso temporal $\Delta t = 1$ día, podemos reorganizar la ecuación para expresar el cambio en el estado como una función lineal de las variables explicativas:
-
-$$
-\Delta X_n = \alpha + \beta X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
-\tag{3.19}
-$$
-
-donde:
-- $\Delta X_n = X_{n+1} - X_n$ es el cambio observado en el índice GCC entre el día $n$ y $n+1$,
-- $X_n$ es el valor del GCC en el día $n$,
-- $X_{n-k}$ es el valor del GCC en el día $n-k$, donde $k = \tau$ representa el número de días de retraso,
-- $\text{Rad}_n$, $\text{Temp}_n$, $\text{Prec}_n$ son las variables climáticas observadas en el día $n$,
-- $\epsilon_n = \sigma X_n \Delta W_n$ es el término de error estocástico.
-
-Esta formulación constituye un **modelo de regresión lineal múltiple** donde la variable dependiente es $\Delta X_n$ y las variables independientes son $X_n$, $X_{n-k}$, y las tres variables climáticas.
-
-### Notación matricial y vector de parámetros
-
-En notación matricial compacta, el modelo (3.19) se expresa como:
+Finalmente, la evolución de la trayectoria media esperada del índice de verdor se obtiene integrando la @eq-sdde entre $0$ y $t$:
 
 $$
-\mathbf{Y} = \mathbf{X} \boldsymbol{\theta} + \boldsymbol{\epsilon}
-\tag{3.20}
-$$
+X(t) = X(0) + \int_0^t \left[ \alpha + \beta X(s) + \gamma X(s-\tau) + \boldsymbol{\delta}^T \mathbf{C}(s) \right] ds + \int_0^t \sigma X(s) \, dW(s).
+$$ {#eq-sdde-forma-integral}
 
-donde:
-
-- $\mathbf{Y} \in \mathbb{R}^N$ es el vector de observaciones de la variable dependiente ($\Delta X_n$),
-
-- $\mathbf{X} \in \mathbb{R}^{N \times p}$ es la matriz de diseño con $p = 6$ columnas,
-
-- $\boldsymbol{\theta} \in \mathbb{R}^p$ es el vector de parámetros desconocidos,
-
-- $\boldsymbol{\epsilon} \in \mathbb{R}^N$ es el vector de errores aleatorios.
-
-La matriz de diseño $\mathbf{X}$ tiene la siguiente estructura:
+Tomando el valor esperado $\mathbb{E}[\cdot]$ en ambos miembros de la @eq-sdde-forma-integral y utilizando la propiedad de martingala de media nula de la integral estocástica de Itô ($\mathbb{E}\left[\int_0^t \sigma X(s)\,dW(s)\right] = 0$, garantizada porque $X \in \mathcal{M}^2([0, T]; \mathbb{R})$), se deduce por el teorema de Fubini que la esperanza matemática $m(t) = \mathbb{E}[X(t)]$ satisface la ecuación diferencial funcional determinista [@mohammed1984stochastic]:
 
 $$
-\mathbf{X} = 
-\begin{bmatrix}
-1 & X_1 & X_{1-k} & \text{Rad}_1 & \text{Temp}_1 & \text{Prec}_1 \\
-1 & X_2 & X_{2-k} & \text{Rad}_2 & \text{Temp}_2 & \text{Prec}_2 \\
-\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
-1 & X_N & X_{N-k} & \text{Rad}_N & \text{Temp}_N & \text{Prec}_N
-\end{bmatrix}
-\tag{3.21}
-$$
+\frac{d}{dt}\mathbb{E}[X(t)] = \alpha + \beta \mathbb{E}[X(t)] + \gamma \mathbb{E}[X(t-\tau)] + \boldsymbol{\delta}^T \mathbb{E}[\mathbf{C}(t)], \quad t \ge 0.
+$$ {#eq-momento-primer-orden}
 
-y el vector de parámetros es:
+La @eq-momento-primer-orden demuestra una propiedad fundamental para la validación mediante simulación de Monte Carlo: el promedio poblacional de un ensamble infinito de trayectorias estocásticas reproduce exactamente la solución de la ecuación diferencial con retraso (DDE) determinista subyacente.
 
-$$
-\boldsymbol{\theta} = 
-\begin{bmatrix}
-\alpha & \beta & \gamma & \delta_1 & \delta_2 & \delta_3
-\end{bmatrix}^T
-\tag{3.22}
-$$
+---
 
-### Relación estructural con modelos AR(p)
+## Discretización Numérica y Propiedades del Esquema {#sec-discretizacion-numerica}
 
-El modelo de regresión (3.19) puede reinterpretarse como un modelo autorregresivo con estructura dispersa. Reorganizando la ecuación (3.19):
+### Esquema de Euler-Maruyama para el modelo fenológico
+
+Debido a que la presencia del término retardado $X(t-\tau)$ y de las series climáticas empíricas $\mathbf{C}(t)$ impide obtener una solución analítica elemental cerrada para la @eq-sdde sobre horizontes arbitrarios, es necesario recurrir a métodos de integración numérica en tiempo discreto [@kloeden1992numerical; @mao2007stochastic]. Siguiendo la extensión de @mao2007stochastic (Sección 5.5) para ecuaciones diferenciales estocásticas funcionales, aplicamos el **esquema de Euler-Maruyama** sobre una partición temporal uniforme.
+
+Sea $[0, T]$ el horizonte de observación de un periodo fenológico continuo y sea $\Delta t > 0$ el paso de discretización temporal, elegido de tal forma que el retraso fisiológico $\tau$ sea un múltiplo entero del paso de malla, definiendo el índice de rezago discreto $k = \tau / \Delta t \in \mathbb{N}$ y el número total de pasos $N = T / \Delta t \in \mathbb{N}$. Esto define la malla temporal uniforme $t_n = n \Delta t$ para $n = -k, -k+1, \dots, 0, 1, \dots, N$. Denotando por $X_n \approx X(t_n)$ la aproximación numérica del índice $\text{GCC}$ en el nodo $t_n$ y por $\mathbf{C}_n = \mathbf{C}(t_n) = [\text{Rad}_n, \text{Temp}_n, \text{Prec}_n]^T$ el vector de forzantes climáticas evaluado en el extremo izquierdo del subintervalo $[t_n, t_{n+1}]$, el esquema de Euler-Maruyama para la @eq-sdde se define recursivamente como:
 
 $$
-X_{n+1} = \alpha + (1 + \beta) X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
-\tag{3.23}
-$$
-
-Comparando con un modelo AR(p) general:
-
-$$
-X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n
-\tag{3.24}
-$$
-
-podemos establecer la siguiente correspondencia estructural:
-
-$$
-\phi_i = 
 \begin{cases}
-1 + \beta & \text{si } i = 1 \\
-\gamma & \text{si } i = k \\
-0 & \text{en otro caso}
+X_n = \phi(t_n), & n = -k, -k+1, \dots, 0, \\
+X_{n+1} = X_n + \left[ \alpha + \beta X_n + \gamma X_{n-k} + \boldsymbol{\delta}^T \mathbf{C}_n \right] \Delta t + g(X_n) \, \Delta W_n, & n = 0, 1, \dots, N-1,
 \end{cases}
-\tag{3.25}
-$$
+$$ {#eq-esquema-em-general}
 
-Esta relación demuestra que nuestro modelo SDDE discretizado es equivalente a un **modelo AR(p) con restricciones estructurales**, donde solo dos coeficientes autorregresivos son no nulos: el correspondiente al rezago inmediato ($i=1$) y el correspondiente al retraso biológico ($i=k=\tau$). Esta estructura dispersa reduce drásticamente la dimensionalidad del problema de $p+1$ parámetros a solo 6 parámetros, imponiendo una hipótesis biológicamente significativa sobre la memoria temporal del sistema [@cuddington2013process].
+donde $\Delta W_n = W(t_{n+1}) - W(t_n) \sim \mathcal{N}(0, \Delta t)$ representa el incremento browniano independiente sobre $[t_n, t_{n+1}]$, el cual puede generarse numéricamente mediante $\Delta W_n = \sqrt{\Delta t}\, Z_n$ con $Z_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, 1)$, y donde $g(X_n) = \sigma_{\text{SDDE}} X_n$ en el caso multiplicativo o $g(X_n) = \sigma$ en la formulación aditiva homocedástica.
 
-### Supuestos estadísticos del modelo
+### Análisis de convergencia fuerte, débil y error de truncamiento
 
-Para que los estimadores de mínimos cuadrados ordinarios (OLS, Ordinary Least Squares) tengan propiedades óptimas, se requieren los siguientes supuestos clásicos del modelo lineal [@greene2018econometric]:
+Como se fundamentó en el Capítulo 1 a partir de la teoría de @kloeden1992numerical y @mao2007stochastic, la fidelidad numérica del esquema @eq-esquema-em-general se evalúa mediante la convergencia fuerte (aproximación trayectoria a trayectoria, esencial para simular escenarios fenológicos realistas) y la convergencia débil (aproximación de los momentos estadísticos y cuantiles de la distribución).
 
-- Supuesto 1: Linealidad en parámetros
-El modelo es lineal en los parámetros $\boldsymbol{\theta}$, lo cual se satisface por construcción.
-
-- Supuesto 2: Rango completo de la matriz de diseño
-La matriz $\mathbf{X}$ tiene rango completo ($\text{rank}(\mathbf{X}) = p$), lo que garantiza que $\mathbf{X}^T\mathbf{X}$ sea invertible. Este supuesto requiere que no exista multicolinealidad perfecta entre las variables explicativas.
-
-- Supuesto 3: Esperanza condicional nula
-$$
-\mathbb{E}[\epsilon_n | \mathbf{X}] = 0
-\tag{3.26}
-$$
-Este supuesto implica que los errores no están correlacionados con las variables explicativas, lo cual es crucial para que los estimadores resulten insesgados.
-
-- Supuesto 4: Homocedasticidad y no autocorrelación
-$$
-\text{Var}(\boldsymbol{\epsilon} | \mathbf{X}) = \sigma^2 \mathbf{I}_N
-\tag{3.27}
-$$
-donde $\mathbf{I}_N$ es la matriz identidad de dimensión $N$. Este supuesto implica que los errores tienen varianza constante y no están autocorrelacionados.
-
-- Supuesto 5: Normalidad de los errores (para inferencia exacta)
-$$
-\boldsymbol{\epsilon} | \mathbf{X} \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_N)
-\tag{3.28}
-$$
-Este supuesto es necesario para realizar pruebas de hipótesis y construir intervalos de confianza exactos, aunque no es requerido para la consistencia de los estimadores.
-
-### Estimación de parámetros por mínimos cuadrados ordinarios
-
-Bajo los supuestos anteriores, el estimador de mínimos cuadrados ordinarios (OLS) de $\boldsymbol{\theta}$ se define como:
+Definamos el **residuo o error de truncamiento local** $R_n$ en el $n$-ésimo paso como la discrepancia entre el incremento exacto de la solución continua $X(t_{n+1}) - X(t_n)$ partiendo de la historia verdadera en $t_n$ y el incremento de un paso calculado por el esquema de Euler-Maruyama:
 
 $$
-\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y}
-\tag{3.29}
-$$
+R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n - \tau))\Delta t - g(t_n, X(t_n))\Delta W_n.
+$$ {#eq-error-truncamiento-local}
 
-Este estimador tiene las siguientes propiedades fundamentales [@greene2018econometric]:
+Desarrollando la solución exacta mediante la expansión estocástica de Itô-Taylor sobre $[t_n, t_{n+1}]$ [@kloeden1992numerical, pp. 330-332], el término dominante no capturado por el esquema de Euler-Maruyama en presencia de ruido multiplicativo corresponde a la integral estocástica doble $\sigma^2 X(t_n) \int_{t_n}^{t_{n+1}} \int_{t_n}^s dW(u)\,dW(s) = \frac{1}{2}\sigma^2 X(t_n)\left((\Delta W_n)^2 - \Delta t\right)$, cuya norma en media cuadrática es de orden $\mathcal{O}(\Delta t)$. Por su parte, en la aproximación con ruido aditivo constante ($g(t, x) = \sigma$), la derivada espacial del coeficiente de difusión se anula idénticamente ($\frac{\partial g}{\partial x} = 0$), provocando que el término correctivo de segundo orden de Milstein desaparezca exactamente y que el esquema de Euler-Maruyama coincida con el esquema de Milstein [@kloeden1992numerical; @milstein1995numerical].
 
-- Los estimadores son insesgados, esto es, $\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}$
-
-- **Consistencia**: $\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}$ cuando $N \to \infty$
-
-- **Eficiencia**: Entre todos los estimadores lineales insesgados, $\hat{\boldsymbol{\theta}}$ tiene la menor varianza (teorema de Gauss-Markov)
-
-La matriz de varianza-covarianza del estimador es:
+En general, bajo las condiciones de Lipschitz y crecimiento lineal demostradas en el @thm-existencia-modelo-gcc, @mao2007stochastic (Teorema 5.5.4, pp. 166-168) demuestra que la interpolación continua $Y^{\Delta t}(t)$ del esquema de Euler-Maruyama para SDDEs verifica la cota de error global fuerte en norma $\mathcal{L}^2$:
 
 $$
-\text{Var}(\hat{\boldsymbol{\theta}}) = \sigma^2 (\mathbf{X}^T \mathbf{X})^{-1}
-\tag{3.30}
+\left( \mathbb{E}\left[ \sup_{0 \le t \le T} |X(t) - Y^{\Delta t}(t)|^2 \right] \right)^{1/2} \le C_1 (\Delta t)^{1/2},
+$$ {#eq-orden-fuerte-cap3}
+
+lo que garantiza un **orden de convergencia fuerte $\gamma = 1/2$**. Paralelamente, para toda función de prueba suficientemente suave $f \in C_P^4(\mathbb{R}; \mathbb{R})$, el error en la aproximación de los momentos estadísticos satisface la cota de **convergencia débil de orden $\beta = 1.0$** [@kloeden1992numerical; @milstein1995numerical]:
+
 $$
+\left| \mathbb{E}[f(X(T))] - \mathbb{E}[f(X_N)] \right| \le C_2 (\Delta t)^{1.0}.
+$$ {#eq-orden-debil-cap3}
 
-donde $\sigma^2$ se estima mediante:
+Esta propiedad de convergencia débil de primer orden respalda directamente el cálculo de la esperanza empírica $\hat{\mu}_t = \frac{1}{M}\sum_{m=1}^M X_t^{(m)}$ y de las bandas de predicción intercuantílicas al $95\%$ obtenidas mediante simulación de Monte Carlo en este estudio.
+
+### Consideraciones prácticas para el paso unitario $\Delta t = 1\text{ día}$
+
+En el estudio empírico de series fenológicas derivadas de la red PhenoCam y forzantes meteorológicas ERA5, la frecuencia de muestreo observacional fija de manera natural el paso de discretización en $\Delta t = 1\text{ día}$ [@richardson2018tracking]. La adopción de $\Delta t = 1$ introduce cuatro simplificaciones e implicaciones metodológicas fundamentales que se reflejan directamente en la implementación computacional del cuaderno de trabajo (`Tesis.ipynb`):
+
+1. **Correspondencia directa entre tiempo continuo y rezago discreto:** Al ser $\Delta t = 1\text{ día}$, el índice de rezago discreto coincide numéricamente con el tiempo de retraso fisiológico en días ($k = \tau / 1 = \tau \in \mathbb{N}$), permitiendo indexar directamente el estado retardado como $X_{t - \tau}$.
+2. **Estandarización de los incrementos brownianos:** Para $\Delta t = 1$, la distribución del incremento del proceso de Wiener se reduce a una normal estándar, $\Delta W_t \sim \mathcal{N}(0, 1)$, por lo que la perturbación estocástica diaria $\epsilon_t = \sigma \Delta W_t$ sigue directamente una distribución gaussiana centrada $\mathcal{N}(0, \sigma^2)$.
+3. **Interpretación como tasas de cambio diarias:** Los parámetros estimados ($\alpha, \beta, \gamma, \boldsymbol{\delta}, \sigma$) quedan expresados de forma natural en escala diaria ($\text{días}^{-1}$), representando el aporte neto de cada proceso biofísico al cambio diario del índice de verdor $\Delta X_t = X_{t+1} - X_t$ [@dietze2017ecological].
+4. **Equilibrio entre error de discretización y error de observación:** Aunque desde el punto de vista estrictamente numérico un paso $\Delta t = 1$ no es infinitesimal, en el pronóstico ecológico con datos diarios el error de truncamiento de Euler-Maruyama queda subsumido dentro de la varianza residual observacional del sensor óptico [@dietze2017ecological; @shoji1998estimation], evitando la introducción de artefactos por sub-muestreo o interpolación sintética intra-diaria.
+
+::: {.callout-note}
+### Nota sobre Reproducibilidad Computacional
+Siguiendo los estándares de presentación editorial académica, se omite la transcripción literal de bloques extensos de código de programación dentro del cuerpo del capítulo. La implementación completa en lenguaje Python (utilizando las bibliotecas científicas `numpy`, `pandas`, `statsmodels` y `scipy.stats`) se encuentra documentada y ejecutada en el cuaderno computacional `Tesis.ipynb` del repositorio del proyecto. A lo largo de las siguientes secciones se detallan matemáticamente las estructuras matriciales y los algoritmos exactos ejecutados por las funciones modulares `construir_dataset_sdde`, `ajustar_ols_sdde` y `simular_euler_maruyama_mc`.
+:::
+
+---
+
+## Formulación Estadística como Modelo de Regresión {#sec-formulacion-regresion}
+
+### Motivación y transición a la inferencia en tiempo discreto
+
+Uno de los mayores desafíos en la aplicación práctica de ecuaciones diferenciales estocásticas con retraso en ecología cuantitativa radica en el problema inverso: cómo estimar de manera consistente y computacionalmente eficiente el vector de parámetros desconocidos a partir de series temporales discretas y finitas [@rupsys2008stochastic; @dietze2017ecological]. La discretización de Euler-Maruyama desarrollada en la @sec-discretizacion-numerica proporciona el puente analítico exacto para transformar la SDDE en tiempo continuo (@eq-sdde) en un **modelo lineal estadístico en diferencias finitas** condicionado a la historia observada del proceso.
+
+Esta reformulación estadística ofrece ventajas decisivas frente a métodos de verosimilitud simulada o filtrado no lineal: permite obtener soluciones analíticas cerradas para los estimadores de los parámetros de deriva, facilita la cuantificación exacta de la incertidumbre paramétrica mediante errores estándar e intervalos de confianza, y habilita el uso de pruebas formales de hipótesis para contrastar la significancia biológica de la memoria fenológica ($\gamma$) y de las sensibilidades climáticas ($\boldsymbol{\delta}$) [@greene2018econometric; @montgomery2021introduction].
+
+### Deducción del modelo de regresión lineal múltiple derivado de la SDDE
+
+Partiendo del esquema de Euler-Maruyama (@eq-esquema-em-general) evaluado en el paso temporal diario $\Delta t = 1\text{ día}$ (donde $k = \tau$), definimos el operador de diferencia finita hacia adelante (*forward difference*) en el día $t$ como el incremento diario observado en el índice de verdor:
 
 $$
-\hat{\sigma}^2 = \frac{1}{N - p} \sum_{n=1}^N \hat{\epsilon}_n^2 = \frac{\|\mathbf{Y} - \mathbf{X} \hat{\boldsymbol{\theta}}\|^2}{N - p}
-\tag{3.31}
+\Delta X_t := X_{t+1} - X_t.
+$$ {#eq-diferencia-adelante}
+
+Despejando $\Delta X_t$ en la @eq-esquema-em-general y expandiendo el producto interno $\boldsymbol{\delta}^T \mathbf{C}_t$ en términos de las tres variables meteorológicas diarias de ERA5, se obtiene la ecuación estructural de regresión del modelo SDDE:
+
 $$
+\Delta X_t = \alpha + \beta X_t + \gamma X_{t-\tau} + \delta_1 \text{Rad}_t + \delta_2 \text{Temp}_t + \delta_3 \text{Prec}_t + \epsilon_t,
+$$ {#eq-regresion-sdde}
 
-### Identificabilidad del modelo
+donde los componentes del modelo estadístico para cada instante discreto $t$ se definen como:
 
-La **identificabilidad** de un modelo estadístico se refiere a la capacidad de estimar de manera única sus parámetros a partir de los datos observados [@miao2011identifiability]. Para nuestro modelo, la identificabilidad depende de dos factores principales:
+* $\Delta X_t = X_{t+1} - X_t$: Variable dependiente o respuesta (columna `dX` en la función `construir_dataset_sdde`), que mide el cambio neto diario en el índice $\text{GCC}$ entre el día $t$ y el día $t+1$.
+* $X_t$: Primera variable explicativa endógena (columna `X_t`), correspondiente al estado actual del verdor `ROI_00_GCC_MEAN` en el día $t$.
+* $X_{t-\tau}$: Segunda variable explicativa endógena (columna `X_t_tau`), obtenida mediante el operador de desplazamiento temporal hacia atrás $L^\tau X_t = X_{t-\tau}$ (`.shift(tau)`), que representa el estado del verdor exactamente $\tau$ días antes.
+* $\text{Rad}_t, \text{Temp}_t, \text{Prec}_t$: Variables explicativas exógenas (columnas `Rad`, `Temp`, `Prec`), correspondientes a la radiación solar diaria (`GHI_Solar_Daily`), temperatura media del aire (`Air_Temp`) y precipitación total (`Total_Prec`) observadas en el día $t$.
+* $\epsilon_t$: Término de perturbación o error aleatorio en el día $t$, que representa la innovación estocástica acumulada sobre el intervalo $[t, t+1]$.
 
-1. Identificabilidad estructural. El modelo es estructuralmente identificable si la parametrización es única, es decir, si diferentes valores de $\boldsymbol{\theta}$ producen distribuciones de probabilidad diferentes para los datos observados. En nuestro caso, la linealidad del modelo y la independencia funcional de las variables explicativas garantizan la identificabilidad estructural.
+#### Alineación temporal y tamaño muestral efectivo
 
-2. Identificabilidad práctica. La identificabilidad práctica depende de la calidad y cantidad de los datos observados. Específicamente, se requiere que:
+Un aspecto matemático crucial en la implementación de la @eq-regresion-sdde sobre un periodo continuo de $N$ observaciones diarias indexadas en $t \in \{0, 1, \dots, N-1\}$ es la determinación del dominio muestral válido donde todas las variables están simultáneamente definidas:
 
-  - La matriz $\mathbf{X}^T \mathbf{X}$ sea no singular (rango completo)
-  
-  - Las variables climáticas no estén perfectamente colineales con los términos de retraso
-  
-  - Exista suficiente variabilidad en los datos para distinguir los efectos individuales de cada parámetro
+1. **Pérdida inicial por condición histórica ($t < \tau$):** Para los primeros $\tau$ días del periodo ($t = 0, 1, \dots, \tau - 1$), el término retardado $X_{t-\tau}$ requiere observaciones anteriores al inicio del segmento continuo ($t - \tau < 0$), las cuales no están disponibles sin cruzar la brecha invernal. Estos primeros $\tau$ registros constituyen el historial inicial empírico $\mathcal{H}_0 = \{X_0, X_1, \dots, X_\tau\}$.
+2. **Pérdida final por diferencia hacia adelante ($t = N - 1$):** En el último día registrado del periodo ($t = N - 1$), el cálculo del incremento futuro $\Delta X_{N-1} = X_N - X_{N-1}$ requiere el estado $X_N$, que cae fuera del horizonte observado.
 
-En la práctica, la identificabilidad se evalúa mediante el **factor de inflación de varianza (VIF)** y el **número de condición** de la matriz $\mathbf{X}^T \mathbf{X}$. Un número de condición elevado (> 1000) indica problemas de identificabilidad práctica debido a multicolinealidad [@belsley1980regression].
+Por consiguiente, para un retraso dado $\tau$, el conjunto de índices temporales válidos para la estimación abarca desde $t = \tau$ hasta $t = N - 2$, produciendo un **tamaño muestral efectivo** de:
 
-### Incorporación de variables exógenas climáticas
+$$
+n_{\text{ef}}(\tau) = N - \tau - 1
+$$ {#eq-muestra-efectiva}
 
-La inclusión de variables climáticas exógenas en el modelo responde a dos objetivos fundamentales:
+transiciones diarias completas. Más aún, como se implementa en la función `construir_dataset_sdde(df_periodo, tau, tau_min_corte)` del cuaderno computacional, cuando se desea comparar rigurosamente el ajuste de una familia de modelos candidatos con diferentes retrasos $\tau \in \mathcal{T} = \{\tau_{\min}, \dots, \tau_{\max}\}$, evaluar cada modelo sobre un tamaño muestral distinto $n_{\text{ef}}(\tau)$ distorsionaría las métricas de verosimilitud. Para garantizar que todos los modelos compitan exactamente sobre las mismas observaciones históricas, se introduce el parámetro de truncamiento inicial $t_0 = \tau_{\max}$ (`tau_min_corte`), fijando un dominio muestral común $t \in \{\tau_{\max}, \tau_{\max}+1, \dots, N-2\}$ de longitud constante $n_{\text{común}} = N - \tau_{\max} - 1$.
 
-1. **Control de factores de confusión**: Las variables climáticas pueden estar correlacionadas tanto con el estado actual del sistema como con su estado pasado, por lo que su inclusión evita sesgos en la estimación de los coeficientes de retroalimentación $\beta$ y $\gamma$.
+### Notación matricial en el espacio muestral
 
-2. **Mejora de la capacidad predictiva**: Las variables climáticas contienen información adicional sobre los forzantes ambientales que afectan directamente el crecimiento vegetal, lo que mejora la precisión de las predicciones del modelo.
+Sea $n = n_{\text{ef}}(\tau) = N - \tau - 1$ (o bien $n = n_{\text{común}}$ bajo recorte común) el número de transiciones válidas en un periodo fenológico continuo, y sea $p = 6$ el número total de parámetros lineales de deriva. El sistema de $n$ ecuaciones definido por la @eq-regresion-sdde para $t = \tau, \tau + 1, \dots, N - 2$ se representa de manera compacta en notación matricial como:
 
-La especificación funcional lineal adoptada para las variables climáticas asume que sus efectos son aditivos y constantes en el tiempo. Esta suposición puede ser relajada en extensiones futuras del modelo mediante la inclusión de términos no lineales o interacciones [@hastie2009elements].
+$$
+\mathbf{Y} = \mathbf{X} \boldsymbol{\theta} + \boldsymbol{\epsilon},
+$$ {#eq-modelo-matricial}
 
-### Diagnóstico de supuestos y validación del modelo
+donde cada vector y matriz pertenece a los siguientes espacios euclídeos:
 
-La validez de las inferencias estadísticas basadas en el modelo de regresión depende de la verificación de los supuestos establecidos en la sección 3.3.5. Los principales métodos de diagnóstico incluyen:
+$$
+\mathbf{Y} = \begin{bmatrix} \Delta X_\tau \\ \Delta X_{\tau+1} \\ \vdots \\ \Delta X_{N-2} \end{bmatrix} \in \mathbb{R}^{n \times 1}, \qquad
+\mathbf{X} = \begin{bmatrix}
+1 & X_\tau & X_0 & \text{Rad}_\tau & \text{Temp}_\tau & \text{Prec}_\tau \\
+1 & X_{\tau+1} & X_1 & \text{Rad}_{\tau+1} & \text{Temp}_{\tau+1} & \text{Prec}_{\tau+1} \\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & X_{N-2} & X_{N-2-\tau} & \text{Rad}_{N-2} & \text{Temp}_{N-2} & \text{Prec}_{N-2}
+\end{bmatrix} \in \mathbb{R}^{n \times 6},
+$$ {#eq-matrices-y-x}
 
-- **Gráfico de residuos vs valores ajustados**: Para detectar heterocedasticidad y no linealidad
+y los vectores de parámetros estructurales $\boldsymbol{\theta}$ y de errores estocásticos $\boldsymbol{\epsilon}$ vienen dados por:
 
-- **Test de Durbin-Watson**: Para detectar autocorrelación serial en los residuos
+$$
+\boldsymbol{\theta} = \begin{bmatrix} \alpha \\ \beta \\ \gamma \\ \delta_1 \\ \delta_2 \\ \delta_3 \end{bmatrix} \in \mathbb{R}^{6 \times 1}, \qquad
+\boldsymbol{\epsilon} = \begin{bmatrix} \epsilon_\tau \\ \epsilon_{\tau+1} \\ \vdots \\ \epsilon_{N-2} \end{bmatrix} \in \mathbb{R}^{n \times 1}.
+$$ {#eq-vectores-theta-epsilon}
 
-- **Test de Breusch-Pagan**: Para detectar heterocedasticidad
+Denotando por $\mathbf{x}_t^T = [1, X_t, X_{t-\tau}, \text{Rad}_t, \text{Temp}_t, \text{Prec}_t] \in \mathbb{R}^{1 \times 6}$ el vector fila de regresores en el día $t$, cada observación satisface la forma escalar $\Delta X_t = \mathbf{x}_t^T \boldsymbol{\theta} + \epsilon_t$.
 
-- **QQ-plot de residuos**: Para evaluar la normalidad de los errores
+### Relación estructural con procesos autorregresivos $\text{AR}(p)$ y $\text{ARX}(p)$
 
-- **Análisis de influencia**: Para identificar observaciones atípicas que puedan afectar desproporcionadamente los resultados
+La formulación regresiva de la @eq-regresion-sdde permite establecer una conexión teórica directa entre las ecuaciones diferenciales estocásticas con retraso y la teoría clásica de series de tiempo de Box-Jenkins [@hamilton1994time]. Sustituyendo la definición $\Delta X_t = X_{t+1} - X_t$ en la @eq-regresion-sdde y despejando el estado futuro $X_{t+1}$, obtenemos la ecuación en diferencias estocástica en niveles:
 
-Estos diagnósticos son esenciales para garantizar la robustez de las conclusiones derivadas del modelo y para identificar posibles violaciones de los supuestos que requieran modificaciones en la especificación del modelo [@fox2015applied].
+$$
+X_{t+1} = \alpha + (1 + \beta) X_t + \gamma X_{t-\tau} + \delta_1 \text{Rad}_t + \delta_2 \text{Temp}_t + \delta_3 \text{Prec}_t + \epsilon_t.
+$$ {#eq-sdde-niveles}
 
+Por otro lado, un modelo autorregresivo general de orden $p$ con variables exógenas, denotado como $\text{ARX}(p)$, o su contraparte puramente autorregresiva $\text{AR}(p)$ cuando se omiten las covariables externas, expresa el estado $X_{t+1}$ como una combinación lineal completa de todos los $p$ estados precedentes:
 
-## Identificabilidad y Estimación de Parámetros
+$$
+X_{t+1} = c + \sum_{j=1}^{p} \phi_j X_{t+1-j} + \boldsymbol{\psi}^T \mathbf{C}_t + \varepsilon_t.
+$$ {#eq-arp-completo}
 
-### Marco teórico de identificabilidad
+Si elegimos el orden autorregresivo de modo que abarque hasta el horizonte de memoria fisiológica $\tau$ (esto es, $p = \tau + 1$ rezagos, desde $X_t$ hasta $X_{t-\tau}$), la comparación término a término entre la @eq-sdde-niveles y la @eq-arp-completo revela que el modelo SDDE discretizado es isomorfo a un proceso autorregresivo de orden $p = \tau + 1$ sujeto a las siguientes **restricciones estructurales de dispersión** (*sparsity constraints*):
 
-La **identificabilidad** constituye una propiedad fundamental en la inferencia estadística, ya que garantiza que los parámetros de un modelo puedan ser estimados de manera única a partir de los datos observados [@miao2011identifiability]. En el contexto de modelos estocásticos discretizados como el nuestro, la identificabilidad se descompone en dos componentes complementarios: **identificabilidad estructural** e **identificabilidad práctica**.
+$$
+c = \alpha, \qquad \boldsymbol{\psi} = \boldsymbol{\delta}, \qquad
+\phi_j = \begin{cases}
+1 + \beta, & \text{si } j = 1 \quad (\text{asociado al estado inmediato } X_t), \\
+0, & \text{si } j \in \{2, 3, \dots, \tau\} \quad (\text{rezagos intermedios nulos}), \\
+\gamma, & \text{si } j = \tau + 1 \quad (\text{asociado al estado retardado } X_{t-\tau}).
+\end{cases}
+$$ {#eq-restricciones-arp}
 
-La identificabilidad estructural se refiere a la unicidad de la parametrización del modelo desde una perspectiva puramente matemática, independientemente de los datos disponibles. Por otro lado, la identificabilidad práctica depende de la calidad, cantidad y estructura de los datos observados, y determina si es posible estimar los parámetros con precisión finita [@bellman1970structural].
+Utilizando el operador de rezago $L$ (tal que $L^k X_t = X_{t-k}$), la dinámica endógena de la @eq-sdde-niveles se escribe como $\Phi_{\text{SDDE}}(L) X_{t+1} = \alpha + \boldsymbol{\delta}^T \mathbf{C}_t + \epsilon_t$, donde el **polinomio característico autorregresivo** del modelo SDDE es un trinomio disperso de grado $\tau + 1$:
+
+$$
+\Phi_{\text{SDDE}}(z) = 1 - (1 + \beta)z - \gamma z^{\tau + 1}.
+$$ {#eq-polinomio-caracteristico}
+
+Esta correspondencia estructural tiene tres implicaciones teóricas y prácticas de primer orden para esta tesis [@cuddington2013process; @hamilton1994time]:
+
+1. **Condición de estabilidad dinámica y estacionariedad asintótica:** El proceso discreto generado por la @eq-sdde-niveles es dinámicamente estable (sus trayectorias no divergen exponencialmente) si y solo si todas las raíces complejas $z \in \mathbb{C}$ del polinomio característico $\Phi_{\text{SDDE}}(z) = 0$ se ubican estrictamente fuera del círculo unitario ($|z| > 1$). Una condición suficiente de estabilidad de tipo dominante es que $|1 + \beta| + |\gamma| < 1$, lo cual exige que la tasa de retroalimentación instantánea sea negativa ($\beta \in (-2, 0)$) y domine en magnitud a la retroalimentación retardada ($|\gamma| < |\beta|$ cuando $\beta \in (-1, 0)$).
+2. **Principio de parsimonia frente a la maldición de la dimensionalidad:** Un modelo $\text{AR}(\tau)$ sin restricciones requiere estimar $\tau + 1$ parámetros (por ejemplo, para $\tau = 22\text{ días}$, requiere estimar $23$ parámetros), agotando rápidamente los grados de libertad en segmentos fenológicos cortos y provocando sobreajuste (*overfitting*). Por el contrario, el modelo SDDE mantiene una complejidad fija de exactamente $6$ parámetros independientemente de cuán largo sea el retraso biológico $\tau$, penalizando drásticamente menos en criterios como el $\text{AIC}$ y el $\text{BIC}$.
+3. **Eliminación de colinealidad entre rezagos adyacentes:** En una serie suave como el índice $\text{GCC}$, los estados consecutivos $X_t, X_{t-1}, X_{t-2}, \dots$ presentan una correlación serial cercana a la unidad, haciendo que la matriz de diseño de un $\text{AR}(\tau)$ completo esté severamente mal condicionada. Al retener únicamente $X_t$ y $X_{t-\tau}$ (separados por $\tau$ días), la estructura de la SDDE mitiga la multicolinealidad autorregresiva y preserva la interpretabilidad biofísica de $\beta$ y $\gamma$ [@cuddington2013process].
+
+### Supuestos estadísticos del modelo de regresión dinámico
+
+Dado que la matriz de diseño $\mathbf{X}$ definida en la @eq-matrices-y-x contiene variables de estado rezagadas ($X_t$ y $X_{t-\tau}$), los regresores no son estrictamente deterministas ni independientes de realizaciones pasadas del ruido, sino procesos estocásticos predecibles respecto a la historia del sistema. Por tanto, el marco de inferencia adecuado es la versión dinámica para series de tiempo de los **supuestos de Gauss-Markov condicionales a la filtración** $\mathcal{F}_t = \sigma(X_s, \mathbf{C}_s : s \le t)$ [@hamilton1994time; @greene2018econometric]:
+
+1. **Linealidad en los parámetros:** Para un retraso fisiológico fijo $\tau \in \mathbb{N}$, el incremento diario $\Delta X_t$ es una función afín del vector de parámetros $\boldsymbol{\theta} \in \mathbb{R}^6$, dada por $\Delta X_t = \mathbf{x}_t^T \boldsymbol{\theta} + \epsilon_t$.
+2. **Adaptabilidad y exogeneidad condicional (Propiedad de diferencia de martingala):** El vector de regresores $\mathbf{x}_t$ es $\mathcal{F}_t$-medible, mientras que la innovación $\epsilon_t = \sigma \Delta W_t = \sigma (W(t+1) - W(t))$ depende del incremento browniano futuro sobre $[t, t+1]$, el cual es estocásticamente independiente de $\mathcal{F}_t$. En consecuencia, la esperanza condicional del error dada toda la historia del proceso hasta el tiempo $t$ es idénticamente nula:
+   $$
+   \mathbb{E}[\epsilon_t \mid \mathcal{F}_t] = \mathbb{E}[\epsilon_t \mid \mathbf{x}_t, \mathbf{x}_{t-1}, \dots] = 0, \quad \forall t \ge \tau.
+   $$ {#eq-exogeneidad-martingala}
+   Por la ley de las expectativas iteradas, esto implica que $\mathbb{E}[\epsilon_t] = 0$ y que el error actual es ortogonal a todos los regresores contemporáneos y pasados: $\text{Cov}(\mathbf{x}_t, \epsilon_t) = \mathbb{E}[\mathbf{x}_t \epsilon_t] = \mathbf{0}$. *(Nota: Debe observarse que en series de tiempo con regresores rezagados se cumple exogeneidad contemporánea o predeterminación, pero no exogeneidad estricta respecto a estados futuros, ya que $\text{Cov}(X_{t+1}, \epsilon_t) \neq 0$).*
+3. **Homocedasticidad condicional y aproximación de baja variabilidad relativa:** En la formulación continua con ruido multiplicativo (@eq-sdde), la varianza condicional del incremento discretizado es $\text{Var}(\epsilon_t \mid \mathcal{F}_t) = \sigma_{\text{SDDE}}^2 X_t^2 \Delta t$. Sin embargo, siguiendo el criterio de linealización local y aproximación homocedástica de @shoji1998estimation y @rupsys2008stochastic, cuando el proceso positivo $X_t$ fluctúa alrededor de un nivel medio $\bar{X}$ con una desviación estándar relativa muy pequeña ($\text{CV}(X) = \frac{\text{SD}(X)}{\bar{X}} \ll 1$; en nuestros datos de PhenoCam, $X_t \in [0.309, 0.357]$ con $\text{CV}(X) \approx 0.013 / 0.338 \approx 3.8\%$), el término cuadrático $X_t^2$ es cuasi-constante ($X_t^2 \approx \bar{X}^2$). Bajo este régimen, la varianza condicional del error puede tratarse como constante (homocedástica):
+   $$
+   \text{Var}(\epsilon_t \mid \mathcal{F}_t) = \sigma^2, \quad \forall t \ge \tau,
+   $$ {#eq-homocedasticidad}
+   donde $\sigma^2 \approx \sigma_{\text{SDDE}}^2 \bar{X}^2 \Delta t$ denota la varianza del ruido aditivo efectivo implementada en el cuaderno computacional. La validez empírica de este supuesto de homocedasticidad se verifica formalmente en cada periodo mediante la prueba de Breusch-Pagan (Sección [-@sec-diagnostico-validacion]).
+4. **Ausencia de autocorrelación serial (Increments independientes):** Dado que el movimiento browniano posee incrementos independientes sobre intervalos disjuntos $[t, t+1)$ y $[s, s+1)$ para $t \neq s$, la secuencia de errores $\{\epsilon_t\}$ constituye un proceso de diferencias de martingala no correlacionado serialmente:
+   $$
+   \text{Cov}(\epsilon_t, \epsilon_s \mid \mathcal{F}_{\max(t,s)}) = \mathbb{E}[\epsilon_t \epsilon_s] = 0, \quad \forall t \neq s.
+   $$ {#eq-no-autocorrelacion}
+   En forma matricial, los supuestos (@eq-homocedasticidad) y (@eq-no-autocorrelacion) implican una matriz de varianza-covarianza esférica $\text{Var}(\boldsymbol{\epsilon}) = \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^T] = \sigma^2 \mathbf{I}_n$.
+5. **Normalidad de las perturbaciones:** Como consecuencia directa de la gaussianidad de los incrementos del proceso de Wiener, los errores de transición están normalmente distribuidos:
+   $$
+   \epsilon_t \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, \sigma^2) \quad \Longleftrightarrow \quad \boldsymbol{\epsilon} \sim \mathcal{N}_n(\mathbf{0}, \sigma^2 \mathbf{I}_n).
+   $$ {#eq-normalidad-errores}
+6. **Rango completo de la matriz de diseño:** Con probabilidad uno, las columnas de la matriz de diseño $\mathbf{X} \in \mathbb{R}^{n \times 6}$ son linealmente independientes para $n > 6$, es decir, $\text{rank}(\mathbf{X}) = 6$.
+
+---
+
+## Identificabilidad y Estimación de Parámetros {#sec-identificabilidad-estimacion}
+
+### Marco teórico de la identificabilidad paramétrica
+
+Antes de proceder al cálculo numérico de los estimadores, es indispensable responder una cuestión teórica previa: ¿es posible recuperar de forma única los parámetros biológicos y climáticos del modelo SDDE a partir de las trayectorias observadas? En la teoría de inferencia estadística y de sistemas dinámicos, esta propiedad se denomina **identificabilidad** [@bellman1970structural; @miao2011identifiability; @andersson2017strong].
+
+::: {#def-identificabilidad}
+### Identificabilidad estadística y estructural
+Sea $\mathcal{P} = \{\mathbb{P}_{\boldsymbol{\psi}} : \boldsymbol{\psi} \in \Psi \subseteq \mathbb{R}^d\}$ una familia parametrizada de distribuciones de probabilidad conjuntas para las variables observables de un sistema dinámico sobre un espacio paramétrico $\Psi$.
+
+1. Se dice que el vector de parámetros $\boldsymbol{\psi}$ es **globalmente identificable** (en sentido estructural) si la aplicación $\boldsymbol{\psi} \mapsto \mathbb{P}_{\boldsymbol{\psi}}$ es inyectiva sobre $\Psi$; esto es, para cualesquiera $\boldsymbol{\psi}_1, \boldsymbol{\psi}_2 \in \Psi$:
+   $$
+   \mathbb{P}_{\boldsymbol{\psi}_1} = \mathbb{P}_{\boldsymbol{\psi}_2} \quad \text{casi seguramente} \quad \Longrightarrow \quad \boldsymbol{\psi}_1 = \boldsymbol{\psi}_2.
+   $$ {#eq-def-identificabilidad}
+2. Se dice que $\boldsymbol{\psi}$ es **localmente identificable** en un punto $\boldsymbol{\psi}_0 \in \Psi$ si existe una vecindad abierta $U \subset \Psi$ de $\boldsymbol{\psi}_0$ dentro de la cual la condición (@eq-def-identificabilidad) se satisface.
+:::
+
+Siguiendo a @miao2011identifiability y @bellman1970structural, en modelos biológicos derivados de ecuaciones diferenciales el estudio de la identificabilidad se divide en dos niveles complementarios:
+
+* **Identificabilidad estructural (*a priori*):** Analiza si la estructura algebraica y funcional de las ecuaciones del modelo permite determinar unívocamente los parámetros bajo el supuesto ideal de datos libres de colinealidad degenerada, independientemente del tamaño muestral.
+* **Identificabilidad práctica (*a posteriori*):** Evalúa si, dado un conjunto finito y ruidoso de observaciones reales $\{X_t, \mathbf{C}_t\}_{t=0}^{N-1}$, la matriz de información contiene suficiente excitación dinámica para estimar los parámetros con varianza finita y estabilidad numérica aceptable.
 
 ### Identificabilidad estructural del modelo SDDE
 
-Consideremos el modelo de regresión lineal derivado del SDDE (ecuación 3.19):
+En nuestro modelo fenológico discretizado (@eq-regresion-sdde), el vector completo de parámetros desconocidos es $\boldsymbol{\psi} = (\boldsymbol{\theta}^T, \sigma^2, \tau)^T \in \mathbb{R}^6 \times \mathbb{R}^+ \times \mathbb{N}$. El análisis estructural revela una diferencia fundamental entre el subvector lineal-gaussiano $(\boldsymbol{\theta}, \sigma^2)$ y el parámetro de retraso temporal $\tau$.
+
+::: {#prp-identificabilidad-estructural}
+### Identificabilidad estructural condicional del modelo SDDE discretizado
+Considérese el modelo de regresión dinámico derivado de la SDDE (@eq-modelo-matricial) bajo los supuestos de Gauss-Markov de la @sec-formulacion-regresion. Para cualquier valor fijo del retraso temporal $\tau \in \mathbb{N}$ tal que la matriz de segundos momentos poblacionales $\boldsymbol{\Sigma}_{xx}(\tau) := \mathbb{E}[\mathbf{x}_t \mathbf{x}_t^T] \in \mathbb{R}^{6 \times 6}$ sea definida positiva, el vector de parámetros de deriva $\boldsymbol{\theta} = [\alpha, \beta, \gamma, \delta_1, \delta_2, \delta_3]^T$ y la varianza del ruido $\sigma^2 > 0$ son global y estructuralmente identificables de forma única.
+:::
+
+::: {.proof}
+Fijado $\tau \in \mathbb{N}$, bajo los supuestos de exogeneidad condicional (@eq-exogeneidad-martingala), homocedasticidad (@eq-homocedasticidad) y normalidad (@eq-normalidad-errores), la distribución de probabilidad condicional de la variable respuesta $\Delta X_t$ dado el vector de estado e historia $\mathbf{x}_t$ es gaussiana:
 
 $$
-\Delta X_n = \alpha + \beta X_n + \gamma X_{n-k} + \delta_1 \text{Rad}_n + \delta_2 \text{Temp}_n + \delta_3 \text{Prec}_n + \epsilon_n
-\tag{3.32}
-$$
+\Delta X_t \mid \mathcal{F}_t \sim \mathcal{N}\left( \mathbf{x}_t^T \boldsymbol{\theta}, \, \sigma^2 \right).
+$$ {#eq-dist-condicional}
 
-El modelo es **estructuralmente identificable** si la aplicación $\boldsymbol{\theta} \mapsto \mathbb{P}_{\boldsymbol{\theta}}$ es inyectiva, donde $\mathbb{P}_{\boldsymbol{\theta}}$ denota la distribución de probabilidad de los datos bajo el parámetro $\boldsymbol{\theta}$ [@miao2011identifiability].
-
-**Teorema 3.4** (Identificabilidad estructural). *El modelo (3.32) es estructuralmente identificable si y solo si las funciones $X_n$, $X_{n-k}$, $\text{Rad}_n$, $\text{Temp}_n$, y $\text{Prec}_n$ son linealmente independientes en el espacio de funciones generadas por el proceso estocástico*.
-
-*Demostración*. La linealidad del modelo implica que si existen dos vectores de parámetros $\boldsymbol{\theta}_1 \neq \boldsymbol{\theta}_2$ tales que $\mathbb{P}_{\boldsymbol{\theta}_1} = \mathbb{P}_{\boldsymbol{\theta}_2}$, entonces:
+Supóngase que existen dos parametrizaciones $(\boldsymbol{\theta}_1, \sigma_1^2)$ y $(\boldsymbol{\theta}_2, \sigma_2^2)$ que inducen exactamente la misma distribución de probabilidad condicional para todo $t$. Dado que una distribución normal queda unívocamente determinada por su media y su varianza, la igualdad distribucional exige que, casi seguramente:
 
 $$
-(\boldsymbol{\theta}_1 - \boldsymbol{\theta}_2)^T \mathbf{x}_n = 0 \quad \text{casi seguramente para todo } n
-\tag{3.33}
-$$
+\mathbb{E}_{\boldsymbol{\theta}_1}[\Delta X_t \mid \mathcal{F}_t] = \mathbb{E}_{\boldsymbol{\theta}_2}[\Delta X_t \mid \mathcal{F}_t] \implies \mathbf{x}_t^T \boldsymbol{\theta}_1 = \mathbf{x}_t^T \boldsymbol{\theta}_2 \implies \mathbf{x}_t^T (\boldsymbol{\theta}_1 - \boldsymbol{\theta}_2) = 0,
+$$ {#eq-igualdad-medias}
 
-donde $\mathbf{x}_n = [1, X_n, X_{n-k}, \text{Rad}_n, \text{Temp}_n, \text{Prec}_n]^T$. Esto ocurre si y solo si las componentes de $\mathbf{x}_n$ son linealmente dependientes, lo cual contradice la hipótesis del teorema. ∎
-
-En la práctica, la independencia lineal se satisface siempre que:
-
-1. Las variables climáticas no son funciones deterministas del estado del sistema ($X_n$ o $X_{n-k}$)
-
-2. El retraso $\tau$ es tal que $X_n$ y $X_{n-\tau}$ no son perfectamente correlacionados
-
-3. Existe suficiente variabilidad en los datos para distinguir los efectos individuales
-
-### Identificabilidad práctica y condiciones de rango
-
-La identificabilidad práctica se evalúa mediante el **rango de la matriz de información de Fisher** o, equivalentemente, el **rango de la matriz de diseño** $\mathbf{X}$ [@greene2018econometric].
-
-**Definición 3.2** (Condición de rango completo). *El modelo es prácticamente identificable si la matriz $\mathbf{X}^T \mathbf{X}$ es no singular, es decir, si $\text{rank}(\mathbf{X}) = p = 6$*.
-
-Esta condición es equivalente a requerir que el **determinante de Gram** sea no nulo:
+y simultáneamente para los segundos momentos centrados:
 
 $$
-\det(\mathbf{X}^T \mathbf{X}) > 0
-\tag{3.34}
-$$
+\text{Var}_{(\boldsymbol{\theta}_1, \sigma_1^2)}(\Delta X_t \mid \mathcal{F}_t) = \text{Var}_{(\boldsymbol{\theta}_2, \sigma_2^2)}(\Delta X_t \mid \mathcal{F}_t) \implies \sigma_1^2 = \sigma_2^2.
+$$ {#eq-igualdad-varianzas}
 
-En términos geométricos, esto significa que los vectores columna de $\mathbf{X}$ son linealmente independientes en $\mathbb{R}^N$.
+Premultiplicando la @eq-igualdad-medias por $\mathbf{x}_t$ y tomando esperanza matemática incondicional en ambos lados se obtiene $\mathbb{E}[\mathbf{x}_t \mathbf{x}_t^T](\boldsymbol{\theta}_1 - \boldsymbol{\theta}_2) = \boldsymbol{\Sigma}_{xx}(\tau)(\boldsymbol{\theta}_1 - \boldsymbol{\theta}_2) = \mathbf{0}$. Como por hipótesis $\boldsymbol{\Sigma}_{xx}(\tau)$ es definida positiva (y por ende invertible), el núcleo de $\boldsymbol{\Sigma}_{xx}(\tau)$ es trivial, lo que implica necesariamente que $\boldsymbol{\theta}_1 - \boldsymbol{\theta}_2 = \mathbf{0}$, es decir, $\boldsymbol{\theta}_1 = \boldsymbol{\theta}_2$.
+:::
 
-**Proposición 3.1** (Condiciones suficientes para identificabilidad práctica). *El modelo (3.32) es prácticamente identificable si:*
+#### No identificabilidad lineal de $\tau$ y degeneración en equilibrio
 
-1. *$N > p$ (más observaciones que parámetros)*
-2. *No existe multicolinealidad perfecta entre las variables explicativas*
-3. *Las variables climáticas presentan variabilidad suficiente y no están perfectamente correlacionadas con los términos de estado*
+Es importante destacar dos casos límite estructurales que guían nuestra metodología en el Capítulo 4:
 
-La violación de estas condiciones conduce a problemas de **multicolinealidad**, que se manifiestan en varianzas infladas de los estimadores y dificultades numéricas en la inversión de $\mathbf{X}^T \mathbf{X}$ [@belsley1980regression].
+1. **Degeneración cuando $\gamma = 0$ o en estado estacionario constante:** Si el coeficiente de memoria fisiológica fuese nulo ($\gamma = 0$), el parámetro de retraso $\tau$ desaparece de la función de verosimilitud y deja de ser identificable. De igual modo, si el índice de verdor permaneciera estático a lo largo del tiempo ($X_t \equiv X^*$, por ejemplo, durante la dormancia invernal), las columnas $1$, $X_t$ y $X_{t-\tau}$ serían colineales, haciendo singular la matriz $\boldsymbol{\Sigma}_{xx}(\tau)$. Esto justifica biológicamente y matemáticamente restringir la estimación a periodos fenológicos con actividad dinámica vegetativa.
+2. **Separación por perfilación para $\tau$:** Dado que el retraso $\tau$ no actúa como un multiplicador lineal sino como un operador de indexación sobre la columna $X_{t-\tau}$ de la matriz $\mathbf{X}(\tau)$, $\tau$ no puede despejarse mediante un sistema lineal de ecuaciones normales. En su lugar, la @prp-identificabilidad-estructural justifica el uso de **verosimilitud perfilada** (*profile likelihood*): se resuelve analíticamente $\hat{\boldsymbol{\theta}}(\tau)$ y $\hat{\sigma}^2(\tau)$ para cada $\tau$ candidato en una malla discreta biológicamente admisible $\mathcal{T} = \{3, 4, \dots, 23\}\text{ días}$, y se identifica el retraso óptimo $\tau^*$ que optimiza la función objetivo perfilada (criterio de información de Akaike o $R^2$ ajustada sobre muestra común).
 
-### Estimación por mínimos cuadrados ordinarios (OLS)
+### Identificabilidad práctica, condiciones de rango y condicionamiento numérico
 
-Bajo las condiciones de identificabilidad establecidas, el estimador de mínimos cuadrados ordinarios (OLS) se define como la solución al problema de optimización:
-
-$$
-\hat{\boldsymbol{\theta}} = \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^p} \|\mathbf{Y} - \mathbf{X} \boldsymbol{\theta}\|^2
-\tag{3.35}
-$$
-
-La solución analítica a este problema viene dada por la ecuación normal:
+En una muestra finita de tamaño $n = N - \tau - 1$, la condición poblacional $\boldsymbol{\Sigma}_{xx}(\tau) \succ 0$ de la @prp-identificabilidad-estructural se traduce en la **condición de rango completo** de la matriz de diseño muestral $\mathbf{X} \in \mathbb{R}^{n \times 6}$:
 
 $$
-\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y}
-\tag{3.36}
-$$
+\text{rank}(\mathbf{X}) = 6 \quad \Longleftrightarrow \quad \det\left(\mathbf{X}^T \mathbf{X}\right) > 0,
+$$ {#eq-condicion-rango}
 
-Este estimador posee propiedades óptimas bajo los supuestos del modelo lineal clásico:
+donde la matriz de Gram $\mathbf{X}^T \mathbf{X} \in \mathbb{R}^{6 \times 6}$ es simétrica y definida positiva. Aunque en datos continuos con fluctuaciones reales el determinante $\det(\mathbf{X}^T \mathbf{X})$ es casi seguramente distinto de cero, la **identificabilidad práctica** puede verse comprometida por dos factores numéricos que deben diagnosticarse cuidadosamente [@belsley1980regression]:
 
-- **Insesgadez**: $\mathbb{E}[\hat{\boldsymbol{\theta}}] = \boldsymbol{\theta}$
+1. **Colinealidad aproximada entre regresores climáticos y fenológicos:** Durante el ciclo estacional boreal en Umeå, la radiación solar ($\text{Rad}_t$) y la temperatura del aire ($\text{Temp}_t$) exhiben una correlación positiva moderada-alta ($r = 0.637$ en nuestra matriz de correlación global), y ambas se correlacionan con el nivel del índice de verdor $X_t$ ($r = 0.681$ entre $\text{GCC}$ y $\text{Temp}_t$). Asimismo, para retrasos muy cortos ($\tau \in \{1, 2\}$), el estado actual $X_t$ y el estado retardado $X_{t-\tau}$ son fuertemente colineales, razón por la cual la malla de búsqueda en el cuaderno computacional inicia en $\tau_{\min} = 3\text{ días}$.
+2. **Disparidad en las órdenes de magnitud dimensionales:** En la matriz de diseño $\mathbf{X}$, la temperatura en Kelvin es del orden de $\mathcal{O}(10^2)$ ($\text{Temp}_t \approx 290\text{ K}$), la radiación solar es del orden de $\mathcal{O}(10^2)$ ($\text{Rad}_t \approx 200\text{ W/m}^2$), el índice $\text{GCC}$ es del orden de $\mathcal{O}(10^{-1})$ ($X_t \approx 0.34$), mientras que la precipitación en metros del reanálisis ERA5 es del orden de $\mathcal{O}(10^{-3})$ ($\text{Prec}_t \approx 0.0018\text{ m}$). Esta diferencia de hasta cinco órdenes de magnitud entre columnas implica que los coeficientes estimados $\hat{\delta}_j$ tengan escalas inversamente proporcionales (por ejemplo, $\hat{\delta}_1 \sim \mathcal{O}(10^{-6})$ frente a $\hat{\delta}_3 \sim \mathcal{O}(10^{-1})$).
 
-- **Consistencia**: $\hat{\boldsymbol{\theta}} \xrightarrow{p} \boldsymbol{\theta}$ cuando $N \to \infty$
+Para cuantificar formalmente la estabilidad numérica y el grado de multicolinealidad en la identificabilidad práctica, se definen dos métricas diagnósticas [@belsley1980regression; @montgomery2021introduction]:
 
-- **Eficiencia**: $\text{Var}(\hat{\boldsymbol{\theta}}) \leq \text{Var}(\tilde{\boldsymbol{\theta}})$ para cualquier otro estimador lineal insesgado $\tilde{\boldsymbol{\theta}}$ (teorema de Gauss-Markov)
+* **Número de condición ($\kappa$):** Sea $\lambda_{\max}$ y $\lambda_{\min}$ el mayor y el menor valor propio (*eigenvalue*) de la matriz $\mathbf{X}^T \mathbf{X}$ (o de su versión con columnas estandarizadas a longitud unitaria). El número de condición espectral se define como:
+  $$
+  \kappa(\mathbf{X}) = \sqrt{\frac{\lambda_{\max}(\mathbf{X}^T \mathbf{X})}{\lambda_{\min}(\mathbf{X}^T \mathbf{X})}} = \frac{\varsigma_{\max}(\mathbf{X})}{\varsigma_{\min}(\mathbf{X})},
+  $$ {#eq-numero-condicion}
+  donde $\varsigma_{\max}$ y $\varsigma_{\min}$ son los valores singulares extremos de $\mathbf{X}$. Valores de $\kappa(\mathbf{X}) < 30$ en la matriz estandarizada indican ausencia de colinealidad severa. En caso de requerirse reducir el número de condición de la matriz sin estandarizar, una práctica recomendada es reescalar $\text{Prec}_t$ de metros a milímetros ($\text{Prec}_t^{(\text{mm})} = 10^3 \text{Prec}_t^{(\text{m})}$), lo cual divide automáticamente a $\hat{\delta}_3$ y su error estándar entre $10^3$ sin alterar en absoluto los estadísticos $t$, los $p$-valores, las predicciones $\Delta \hat{X}_t$ ni el $R^2$ del modelo (invarianza por transformación lineal de escala).
+* **Factor de Inflación de la Varianza ($\text{VIF}$):** Para cada regresor no constante $j \in \{1, \dots, 5\}$, el factor de inflación de la varianza mide cuánto se incrementa la varianza del estimador $\hat{\theta}_j$ debido a la dependencia lineal con los demás regresores:
+  $$
+  \text{VIF}_j = \frac{1}{1 - R_j^2},
+  $$ {#eq-vif}
+  donde $R_j^2$ es el coeficiente de determinación obtenido al regresar la $j$-ésima variable explicativa sobre las cuatro variables restantes. En la literatura econométrica y ecológica, valores de $\text{VIF}_j < 5$ (o el umbral conservador $\text{VIF}_j < 10$) confirman que la identificabilidad práctica no está degradada por multicolinealidad [@montgomery2021introduction; @fox2015applied].
 
-La matriz de varianza-covarianza del estimador es:
+### Estimación de parámetros por Mínimos Cuadrados Ordinarios (OLS) y Máxima Verosimilitud
 
-$$
-\text{Var}(\hat{\boldsymbol{\theta}}) = \sigma^2 (\mathbf{X}^T \mathbf{X})^{-1}
-\tag{3.37}
-$$
-
-donde $\sigma^2 = \text{Var}(\epsilon_n)$ es la varianza del error.
-
-### Estimación de la varianza del error
-
-La varianza del error $\sigma^2$ se estima mediante el estimador insesgado:
-
-$$
-\hat{\sigma}^2 = \frac{1}{N - p} \sum_{n=1}^N \hat{\epsilon}_n^2 = \frac{\|\mathbf{Y} - \mathbf{X} \hat{\boldsymbol{\theta}}\|^2}{N - p}
-\tag{3.38}
-$$
-
-donde $\hat{\epsilon}_n = Y_n - \mathbf{x}_n^T \hat{\boldsymbol{\theta}}$ son los residuos estimados.
-
-Este estimador es insesgado bajo el supuesto de homocedasticidad y tiene la propiedad de que $(N - p) \hat{\sigma}^2 / \sigma^2 \sim \chi^2_{N - p}$ bajo normalidad de los errores [@casella2002statistical].
-
-### Relación con la intensidad del ruido estocástico
-
-En el contexto del modelo SDDE original, la varianza del error $\sigma^2$ está relacionada con la intensidad del ruido estocástico $\sigma_{\text{SDDE}}$ del proceso continuo. Recordando que el término de error en la discretización es $\epsilon_n = \sigma_{\text{SDDE}} X_n \Delta W_n$, y que $\Delta W_n \sim \mathcal{N}(0, \Delta t)$, tenemos:
+Una vez garantizada la condición de rango completo (@eq-condicion-rango) para un retraso fijo $\tau$, el vector de parámetros de deriva $\boldsymbol{\theta} = [\alpha, \beta, \gamma, \delta_1, \delta_2, \delta_3]^T$ se estima mediante el método de **Mínimos Cuadrados Ordinarios** (OLS, *Ordinary Least Squares*). El criterio OLS consiste en encontrar el vector $\hat{\boldsymbol{\theta}}_{\text{OLS}} \in \mathbb{R}^6$ que minimiza la suma de los cuadrados de los residuos ($RSS$, *Residual Sum of Squares*), definida por la función objetivo cuadrática:
 
 $$
-\text{Var}(\epsilon_n | X_n) = \sigma_{\text{SDDE}}^2 X_n^2 \Delta t
-\tag{3.39}
-$$
+S(\boldsymbol{\theta}) = \sum_{t=\tau}^{N-2} \left( \Delta X_t - \mathbf{x}_t^T \boldsymbol{\theta} \right)^2 = \|\mathbf{Y} - \mathbf{X}\boldsymbol{\theta}\|_2^2 = \mathbf{Y}^T \mathbf{Y} - 2\boldsymbol{\theta}^T \mathbf{X}^T \mathbf{Y} + \boldsymbol{\theta}^T \mathbf{X}^T \mathbf{X} \boldsymbol{\theta}.
+$$ {#eq-funcion-objetivo-ols}
 
-Sin embargo, en nuestra formulación de regresión asumimos homocedasticidad ($\text{Var}(\epsilon_n) = \sigma^2$), lo cual constituye una aproximación válida cuando la variabilidad relativa de $X_n$ es pequeña o cuando se trabaja con tasas de crecimiento relativas en lugar de absolutas [@shoji1998estimation].
-
-Para recuperar una estimación de la intensidad del ruido del proceso continuo, podemos utilizar:
+Calculando el gradiente respecto a $\boldsymbol{\theta}$ e igualándolo al vector nulo:
 
 $$
-\hat{\sigma}_{\text{SDDE}} = \sqrt{\frac{\hat{\sigma}^2}{\frac{1}{N} \sum_{n=1}^N X_n^2 \Delta t}}
-\tag{3.40}
-$$
+\nabla_{\boldsymbol{\theta}} S(\boldsymbol{\theta}) = -2\mathbf{X}^T \mathbf{Y} + 2\mathbf{X}^T \mathbf{X} \boldsymbol{\theta} = \mathbf{0} \quad \Longleftrightarrow \quad \left(\mathbf{X}^T \mathbf{X}\right) \hat{\boldsymbol{\theta}}_{\text{OLS}} = \mathbf{X}^T \mathbf{Y},
+$$ {#eq-ecuaciones-normales}
 
-Esta estimación es consistente bajo condiciones regulares y permite interpretar el parámetro $\sigma_{\text{SDDE}}$ en términos del modelo continuo original.
-
-### Diagnóstico de identificabilidad práctica
-
-La identificabilidad práctica se diagnostica mediante métricas numéricas que cuantifican el grado de multicolinealidad en la matriz de diseño:
-
-#### Factor de inflación de varianza (VIF)
-
-Para cada variable explicativa $j$, el VIF se define como:
+y dado que la matriz hessiana $\nabla^2_{\boldsymbol{\theta}} S(\boldsymbol{\theta}) = 2\mathbf{X}^T \mathbf{X}$ es simétrica y definida positiva, el sistema de ecuaciones normales (@eq-ecuaciones-normales) admite un único mínimo global dado analíticamente por el estimador:
 
 $$
-\text{VIF}_j = \frac{1}{1 - R_j^2}
-\tag{3.41}
-$$
+\hat{\boldsymbol{\theta}}_{\text{OLS}} = \left(\mathbf{X}^T \mathbf{X}\right)^{-1} \mathbf{X}^T \mathbf{Y}.
+$$ {#eq-estimador-ols}
 
-donde $R_j^2$ es el coeficiente de determinación obtenido al regresar la variable $j$ contra todas las demás variables explicativas. Esta métrica cuantifica cuánto se incrementa la varianza de un coeficiente estimado debido a la correlación lineal entre los predictores. En la práctica, valores de $\text{VIF}_j > 10$ se consideran un indicador de multicolinealidad severa, lo que compromete la precisión y estabilidad de las estimaciones del modelo [@montgomery2021introduction].
+En la implementación computacional del cuaderno `Tesis.ipynb` (Sección 4.4 y función `ajustar_ols_sdde`), este estimador se calcula evitando la inversión matricial explícita (que es numéricamente menos estable) mediante dos vías equivalentes que arrojan resultados idénticos hasta precisión de máquina:
+1. Resolviendo directamente el sistema lineal simétrico definido positivo $(\mathbf{X}^T \mathbf{X})\hat{\boldsymbol{\theta}} = \mathbf{X}^T \mathbf{Y}$ mediante eliminación gaussiana con pivoteo parcial en `numpy.linalg.solve(X.T @ X, X.T @ Y)`.
+2. Utilizando la descomposición ortogonal-triangular $\mathbf{X} = \mathbf{Q}\mathbf{R}$ o descomposición en valores singulares (SVD) implementada en `statsmodels.api.OLS(Y, X).fit()`, la cual transforma el sistema normal en el sistema triangular superior bien condicionado $\mathbf{R}\hat{\boldsymbol{\theta}} = \mathbf{Q}^T \mathbf{Y}$ [@greene2018econometric].
 
-#### Número de condición
+#### Equivalencia con el estimador de Máxima Verosimilitud Condicional (CMLE)
 
-El número de condición de la matriz de diseño, evaluado a través de $\mathbf{X}^T \mathbf{X}$, se define como:
-
-$$
-\kappa(\mathbf{X}^T \mathbf{X}) = \sqrt{\frac{\lambda_{\max}}{\lambda_{\min}}}
-\tag{3.42}
-$$
-
-donde $\lambda_{\max}$ y $\lambda_{\min}$ representan los autovalores máximo y mínimo de la matriz, respectivamente. Este índice mide la sensibilidad geométrica y numérica de las estimaciones ante pequeños cambios en los datos. Siguiendo los criterios analíticos establecidos por [@belsley1980regression] y respaldados en la literatura estadística moderna [@montgomery2021introduction], los umbrales de diagnóstico son:
-
-- $\kappa < 10$: Poca o nula multicolinealidad.
-
-- $10 \leq \kappa < 30$: Multicolinealidad moderada.
-
-- $\kappa \geq 30$: Multicolinealidad severa (alta inestabilidad computacional).
-
-En conjunto, el análisis de VIF y el número de condición son esenciales para evaluar la fiabilidad de las estimaciones de los parámetros empíricos. Detectar valores críticos en ambos diagnósticos justifica la necesidad de reformular el modelo, eliminar variables redundantes o aplicar técnicas de regularización para asegurar su identificabilidad práctica.
-
-## Diagnóstico Estadístico y Validación del Modelo
-
-### Marco teórico del diagnóstico de regresión
-
-El diagnóstico estadístico constituye una etapa fundamental en el análisis de modelos de regresión lineal, ya que permite verificar la validez de los supuestos subyacentes y evaluar la calidad del ajuste [@fox2015applied]. En el contexto de modelos derivados de ecuaciones diferenciales estocásticas con retraso (SDDE) discretizadas, el diagnóstico adquiere una relevancia adicional: cualquier violación de los supuestos puede comprometer no solo la inferencia estadística, sino también la interpretación biológica y fenomenológica de los parámetros estimados [@greene2018econometric].
-
-Los supuestos clásicos del modelo lineal —linealidad, independencia, homocedasticidad y normalidad— deben ser verificados sistemáticamente para garantizar la robustez de las conclusiones y la estabilidad numérica de la matriz de diseño.
-
-### Supuestos del modelo y sus implicaciones
-
-#### Supuesto de linealidad
-El modelo asume que la relación entre la tasa de cambio del índice de verdor ($\Delta X_n$) y las covariables explicativas (estados previos y forzantes climáticas) es estrictamente lineal en los parámetros. La violación de este supuesto suele manifestarse mediante patrones sistemáticos en los residuos frente a los valores ajustados, sugiriendo la necesidad de incorporar interacciones o términos polinomiales.
-
-#### Supuesto de independencia
-Se asume que los errores aleatorios $\epsilon_n$ son independientes entre sí, lo cual implica la ausencia de autocorrelación serial. En el análisis de series temporales fenológicas, este supuesto es particularmente crítico; la dependencia temporal residual no modelada puede subestimar las varianzas de los estimadores y sesgar las pruebas de significancia [@hamilton1994time].
-
-#### Supuesto de homocedasticidad
-La varianza de los errores debe permanecer constante a lo largo del periodo de observación, es decir, $\text{Var}(\epsilon_n) = \sigma^2$ para todo $n$. La presencia de heterocedasticidad invalida los errores estándar convencionales de OLS, requiriendo el uso de estimadores de covarianza robustos [@white1980heteroskedasticity].
-
-#### Supuesto de normalidad
-Aunque el teorema del límite central garantiza la consistencia asintótica de los estimadores sin requerir normalidad estricta, que los errores sigan una distribución gaussiana ($\epsilon_n \sim \mathcal{N}(0, \sigma^2)$) es una condición necesaria para realizar inferencia exacta en muestras finitas (pruebas $t$, $F$ e intervalos de confianza) [@casella2002statistical].
-
-### Métodos de diagnóstico gráfico
-
-El análisis de los residuos estimados $\hat{\epsilon}_n = Y_n - \mathbf{x}_n^T \hat{\boldsymbol{\theta}}$ conforma la base visual empírica del diagnóstico. Las dos herramientas gráficas principales son:
-
-- **Gráfico de residuos vs. valores ajustados**: Permite identificar desviaciones de la linealidad (patrones curvilíneos), heterocedasticidad (forma de embudo o dispersión variable) y observaciones atípicas extremas.
-
-- **Gráfico de probabilidad normal (QQ-plot)**: Compara los cuantiles empíricos de los residuos estandarizados contra los cuantiles teóricos de una distribución normal estándar. Las colas pesadas o desviaciones sistemáticas de la línea de identidad ($45^\circ$) evidencian violaciones al supuesto de normalidad [@wilks2019statistical].
-
-### Pruebas estadísticas formales
-
-Para complementar el análisis gráfico, se emplean contrastes de hipótesis rigurosos:
-
-#### Test de Durbin-Watson para autocorrelación
-Evalúa la hipótesis nula de ausencia de autocorrelación serial de primer orden en los residuos:
+Bajo el supuesto de normalidad de los incrementos brownianos (@eq-normalidad-errores), el estimador OLS (@eq-estimador-ols) posee una justificación aún más profunda desde la teoría de procesos estocásticos. Dada la condición inicial histórica $\mathcal{H}_0 = \{X_0, \dots, X_\tau\}$, la densidad conjunta de la trayectoria observada $\{X_{\tau+1}, \dots, X_{N-1}\}$ se factoriza por la regla de la cadena como el producto de las densidades gaussianas de transición a un paso:
 
 $$
-d = \frac{\sum_{n=2}^N (\hat{\epsilon}_n - \hat{\epsilon}_{n-1})^2}{\sum_{n=1}^N \hat{\epsilon}_n^2}
-\tag{3.43}
-$$
+L(\boldsymbol{\theta}, \sigma^2 \mid \mathcal{H}_0) = \prod_{t=\tau}^{N-2} p(X_{t+1} \mid \mathcal{F}_t; \boldsymbol{\theta}, \sigma^2) = \left(2\pi \sigma^2\right)^{-n/2} \exp\left( -\frac{1}{2\sigma^2} \sum_{t=\tau}^{N-2} \left( \Delta X_t - \mathbf{x}_t^T \boldsymbol{\theta} \right)^2 \right).
+$$ {#eq-verosimilitud-condicional}
 
-Bajo la hipótesis nula, el estadístico ronda un valor de $d \approx 2$. Valores significativamente menores a 2 indican autocorrelación positiva (común en series de tiempo ecológicas), mientras que valores mayores a 2 sugieren autocorrelación negativa [@durbin1950testing].
-
-#### Test de Breusch-Pagan para heterocedasticidad
-Este contraste modela la varianza residual en función de las variables explicativas mediante una regresión auxiliar:
+Tomando el logaritmo natural de la @eq-verosimilitud-condicional, se obtiene la función de **log-verosimilitud condicional** $\ell(\boldsymbol{\theta}, \sigma^2)$:
 
 $$
-\hat{\epsilon}_n^2 = \alpha_0 + \sum_{j=1}^p \alpha_j x_{nj} + u_n
-\tag{3.44}
-$$
+\ell(\boldsymbol{\theta}, \sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln(\sigma^2) - \frac{1}{2\sigma^2} \|\mathbf{Y} - \mathbf{X}\boldsymbol{\theta}\|_2^2.
+$$ {#eq-log-verosimilitud}
 
-La hipótesis nula de homocedasticidad se rechaza si el estadístico de prueba $LM = N \cdot R^2_{\text{aux}}$ excede el valor crítico de la distribución $\chi^2_{p-1}$ [@breusch1979simple].
+Para cualquier $\sigma^2 > 0$, maximizar $\ell(\boldsymbol{\theta}, \sigma^2)$ respecto a $\boldsymbol{\theta}$ es exactamente equivalente a minimizar la suma de cuadrados $\|\mathbf{Y} - \mathbf{X}\boldsymbol{\theta}\|_2^2$, de donde se concluye que el estimador de Mínimos Cuadrados Ordinarios coincide exactamente con el estimador de Máxima Verosimilitud Condicional ($\hat{\boldsymbol{\theta}}_{\text{OLS}} = \hat{\boldsymbol{\theta}}_{\text{CMLE}}$) [@hamilton1994time; @casella2002statistical].
 
-#### Test de Jarque-Bera para normalidad
-Cuantifica las desviaciones de la normalidad basándose en los momentos de tercer y cuarto orden (asimetría $S$ y curtosis $K$) de los residuos empíricos:
+#### Propiedades estadísticas finitas, asintóticas e inferencia sobre los parámetros
 
-$$
-JB = N \left( \frac{S^2}{6} + \frac{(K-3)^2}{24} \right) \sim \chi^2_2
-\tag{3.45}
-$$
-
-Valores estadísticamente significativos de $JB$ conllevan al rechazo de la hipótesis de normalidad [@jarque1980efficient].
-
-### Diagnóstico de multicolinealidad
-
-Como se estableció en la sección de identificabilidad teórica, la existencia de correlaciones altas entre las covariables climáticas y los rezagos autorregresivos infla las varianzas de los estimadores, dificultando la separación de los efectos biológicos individuales.
-
-La evaluación práctica de este fenómeno se realiza utilizando el **Factor de Inflación de Varianza (VIF)** y el **Número de Condición** ($\kappa$), cuyas definiciones formales se detallan en las ecuaciones (3.41) y (3.42) de la Sección 3.4. Siguiendo la literatura estadística moderna [@montgomery2021introduction], se aplican los umbrales críticos previamente justificados ($\text{VIF}_j > 10$ y $\kappa \geq 30$) para identificar problemas severos que ameriten la eliminación de forzantes redundantes o la aplicación de técnicas de regularización (como regresión Ridge) para estabilizar la matriz $\mathbf{X}^T\mathbf{X}$.
-
-### Criterios de información para selección de modelos
-
-La parsimonia es un principio rector en el modelado estocástico. Los criterios de información permiten comparar modelos con diferentes estructuras de rezago y combinaciones de forzantes climáticas, introduciendo una penalización matemática por la complejidad para evitar el sobreajuste [@akaike1974new].
-
-#### Criterio de Información de Akaike (AIC)
-Fundamentado en la teoría de la información, el AIC estima la pérdida relativa de información al aproximar la realidad con el modelo ajustado:
+Sustituyendo $\mathbf{Y} = \mathbf{X}\boldsymbol{\theta} + \boldsymbol{\epsilon}$ en la @eq-estimador-ols, obtenemos la representación de error de estimación:
 
 $$
-\text{AIC} = 2p - 2\ln(\hat{L})
-\tag{3.46}
-$$
+\hat{\boldsymbol{\theta}}_{\text{OLS}} - \boldsymbol{\theta} = \left(\mathbf{X}^T \mathbf{X}\right)^{-1} \mathbf{X}^T \boldsymbol{\epsilon} = \left( \frac{1}{n}\sum_{t=\tau}^{N-2} \mathbf{x}_t \mathbf{x}_t^T \right)^{-1} \left( \frac{1}{n}\sum_{t=\tau}^{N-2} \mathbf{x}_t \epsilon_t \right).
+$$ {#eq-error-estimacion-ols}
 
-donde $p$ es el número total de parámetros y $\hat{L}$ es la verosimilitud máxima. Para modelos gaussianos de mínimos cuadrados, asumiendo varianza constante, se expresa operativamente como:
+En modelos de series de tiempo donde $\mathbf{X}$ incluye rezagos de la variable dependiente ($X_t$ y $X_{t-\tau}$), aunque $\mathbb{E}[\mathbf{x}_t \epsilon_t] = \mathbf{0}$ por la propiedad de diferencia de martingala (@eq-exogeneidad-martingala), la matriz inversa $(\mathbf{X}^T\mathbf{X})^{-1}$ contiene estados futuros correlacionados con errores pasados. No obstante, por el Teorema del Límite Central para diferencias de martingala ergódicas y el Lema de Slutsky [@hamilton1994time, Cap. 7 y Cap. 8], cuando el tamaño muestral efectivo $n \to \infty$:
 
-$$
-\text{AIC} = N \ln\left(\frac{\text{RSS}}{N}\right) + 2p
-\tag{3.47}
-$$
+1. **Consistencia débil y fuerte:** $\frac{1}{n}\mathbf{X}^T \mathbf{X} \xrightarrow{p} \boldsymbol{\Sigma}_{xx}(\tau)$ y $\frac{1}{n}\mathbf{X}^T \boldsymbol{\epsilon} \xrightarrow{p} \mathbf{0}$, por lo que $\hat{\boldsymbol{\theta}}_{\text{OLS}} \xrightarrow{p} \boldsymbol{\theta}$.
+2. **Normalidad asintótica y matriz de varianza-covarianza:** La distribución muestral del estimador converge en distribución hacia una normal multivariante:
+   $$
+   \sqrt{n}\left(\hat{\boldsymbol{\theta}}_{\text{OLS}} - \boldsymbol{\theta}\right) \xrightarrow{d} \mathcal{N}_6\left( \mathbf{0}, \, \sigma^2 \boldsymbol{\Sigma}_{xx}(\tau)^{-1} \right) \quad \Longrightarrow \quad \widehat{\text{Var}}\left(\hat{\boldsymbol{\theta}}_{\text{OLS}}\right) = \hat{\sigma}_{\text{OLS}}^2 \left(\mathbf{X}^T \mathbf{X}\right)^{-1}.
+   $$ {#eq-covarianza-ols}
 
-donde $\text{RSS} = \|\mathbf{Y} - \mathbf{X}\hat{\boldsymbol{\theta}}\|^2$ es la suma de cuadrados residuales.
-
-#### Criterio de Información Bayesiano (BIC)
-El BIC introduce una penalización logarítmica más estricta en función del tamaño muestral $N$, favoreciendo modelos más simples en conjuntos de datos grandes:
+El **error estándar** de cada parámetro individual $\hat{\theta}_j$ (reportado mediante `modelo_sm.bse` en la Tabla de Inferencia del cuaderno computacional) viene dado por la raíz cuadrada del $j$-ésimo elemento diagonal de la matriz de covarianza estimada:
 
 $$
-\text{BIC} = p \ln(N) - 2\ln(\hat{L})
-\tag{3.48}
-$$
+\text{SE}(\hat{\theta}_j) = \sqrt{ \hat{\sigma}_{\text{OLS}}^2 \left[ \left(\mathbf{X}^T \mathbf{X}\right)^{-1} \right]_{jj} }, \quad j \in \{1, \dots, 6\}.
+$$ {#eq-error-estandar}
+
+Para contrastar la hipótesis nula de nulidad de efecto individual $H_0: \theta_j = 0$ frente a la alternativa bilateral $H_1: \theta_j \neq 0$ (por ejemplo, para evaluar si la memoria fisiológica $\gamma$ o una sensibilidad climática $\delta_i$ son estadísticamente significativas), se utiliza el estadístico $t$ de Student con $n - p = n - 6$ grados de libertad (`modelo_sm.pvalues`):
 
 $$
-\text{BIC} = N \ln\left(\frac{\text{RSS}}{N}\right) + p \ln(N)
-\tag{3.49}
+t_j = \frac{\hat{\theta}_j}{\text{SE}(\hat{\theta}_j)} \underset{H_0}{\sim} t_{n-6},
+$$ {#eq-estadistico-t}
+
+y su correspondiente intervalo de confianza al nivel $100(1 - \alpha_{\text{sig}})\%$ se construye como $\hat{\theta}_j \pm t_{n-6, \, 1-\alpha_{\text{sig}}/2} \, \text{SE}(\hat{\theta}_j)$.
+
+### Estimación de la varianza del error y relación con la intensidad del ruido estocástico
+
+Una vez estimado el vector de deriva $\hat{\boldsymbol{\theta}}_{\text{OLS}}$, el vector de incrementos predichos es $\widehat{\mathbf{Y}} = \mathbf{X}\hat{\boldsymbol{\theta}}_{\text{OLS}} = \mathbf{H}\mathbf{Y}$, donde $\mathbf{H} = \mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T$ es la matriz de proyección ortogonal (*hat matrix*) de rango $p = 6$. El vector de **residuos estimados** (`modelo_sm.resid`) se define como:
+
 $$
+\hat{\boldsymbol{\epsilon}} = \mathbf{Y} - \widehat{\mathbf{Y}} = (\mathbf{I}_n - \mathbf{H})\mathbf{Y} = (\mathbf{I}_n - \mathbf{H})\boldsymbol{\epsilon},
+$$ {#eq-residuos-ols}
 
-El BIC es asintóticamente consistente, asegurando la selección del modelo verdadero con probabilidad aproximándose a $1$ conforme $N \to \infty$, siempre que este se encuentre entre las formulaciones candidatas [@schwarz1978estimating].
+cuya suma de cuadrados es $\text{RSS} = \hat{\boldsymbol{\epsilon}}^T \hat{\boldsymbol{\epsilon}} = \sum_{t=\tau}^{N-2} \hat{\epsilon}_t^2$. En la Sección 4.5 del cuaderno computacional (`Tesis.ipynb`), se calculan y contrastan dos estimadores puntuales para la intensidad del ruido estocástico diario $\sigma$:
 
-### Validación del modelo mediante comparación con *benchmarks*
+1. **Estimador OLS corregido por grados de libertad ($\hat{\sigma}_{\text{OLS}}$):** Dado que la matriz idempotente $\mathbf{I}_n - \mathbf{H}$ tiene traza $\text{tr}(\mathbf{I}_n - \mathbf{H}) = n - p = n - 6$, la esperanza de la suma de cuadrados de los residuos es $\mathbb{E}[\text{RSS}] = \sigma^2 \text{tr}(\mathbf{I}_n - \mathbf{H}) = (n - 6)\sigma^2$. Por tanto, el estimador insesgado de la varianza es $\hat{\sigma}_{\text{OLS}}^2 = \frac{\text{RSS}}{n - 6}$, de donde se obtiene el estimador de la intensidad del ruido (`sigma_ols`):
+   $$
+   \hat{\sigma}_{\text{OLS}} = \sqrt{ \frac{1}{n - 6} \sum_{t=\tau}^{N-2} \hat{\epsilon}_t^2 }.
+   $$ {#eq-sigma-ols}
+2. **Estimador de Máxima Verosimilitud ($\hat{\sigma}_{\text{MLE}}$):** Derivando la función de log-verosimilitud (@eq-log-verosimilitud) respecto a $\sigma^2$ y evaluando en $\hat{\boldsymbol{\theta}}_{\text{OLS}}$, se obtiene $\frac{\partial \ell}{\partial (\sigma^2)} = -\frac{n}{2\sigma^2} + \frac{\text{RSS}}{2\sigma^4} = 0$, cuya raíz cuadrada corresponde a la desviación estándar muestral directa de los residuos (`sigma_mle = np.std(residuos)`):
+   $$
+   \hat{\sigma}_{\text{MLE}} = \sqrt{ \frac{1}{n} \sum_{t=\tau}^{N-2} \hat{\epsilon}_t^2 } = \sqrt{\frac{n - 6}{n}} \, \hat{\sigma}_{\text{OLS}}.
+   $$ {#eq-sigma-mle}
 
-La fase final de validación del modelo biológico SDDE se efectúa mediante una comparación estructurada contra *benchmarks* puramente estadísticos (como modelos ARMA/AR($p$) genéricos). Esta comparación se ejecuta bajo tres ejes fundamentales:
+Se observa que $\hat{\sigma}_{\text{OLS}}$ y $\hat{\sigma}_{\text{MLE}}$ son asintóticamente equivalentes cuando $n \to \infty$, mientras que en muestras pequeñas o moderadas (como el Periodo 4 con $n = 60$), $\hat{\sigma}_{\text{OLS}}$ corrige el ligero sesgo a la baja producido por el ajuste de los $k = 6$ parámetros [@casella2002statistical].
 
-1. **Ajuste penalizado**: Se evalúa la superioridad algorítmica si la diferencia en los criterios es sustancial ($\Delta \text{AIC} \leq -2$ o $\Delta \text{BIC} \leq -2$) a favor del SDDE [@burnham2002model].
+#### Recuperación del coeficiente de difusión continuo $\sigma_{\text{SDDE}}$
 
-2. **Capacidad predictiva (*Out-of-sample*)**: Se contrasta el Error Cuadrático Medio (RMSE) y el Pseudo-$R^2$ iterando predicciones sobre un conjunto de datos de validación cruzada no visto durante el entrenamiento.
+Finalmente, para vincular la intensidad del ruido aditivo estimado $\hat{\sigma}$ (@eq-sigma-ols y @eq-sigma-mle) con el parámetro de volatilidad relativa $\sigma_{\text{SDDE}}$ de la formulación multiplicativa en tiempo continuo (@eq-sdde), recordamos que el término de error discretizado bajo difusión proporcional al estado es $\epsilon_t = \sigma_{\text{SDDE}} X_t \Delta W_t$, cuya varianza condicional es $\text{Var}(\epsilon_t \mid X_t) = \sigma_{\text{SDDE}}^2 X_t^2 \Delta t$. Tomando la esperanza muestral en ambos miembros (o maximizando la log-verosimilitud ponderada por $X_t^2 \Delta t$), se obtienen las relaciones de conversión directa entre ambas representaciones [@shoji1998estimation]:
 
-3. **Interpretabilidad biológica**: A diferencia de la naturaleza de "caja negra" de los polinomios autorregresivos profundos, la parametrización dispersa del SDDE (Ecuación 3.25) se justifica porque ofrece una traducción directa a la dinámica fisiológica de la vegetación (tasas de crecimiento, memoria de fotoasimilados y sensibilidad ambiental empírica) [@cuddington2013process].
+$$
+\hat{\sigma}_{\text{SDDE}}^{\text{(OLS)}} = \sqrt{ \frac{\hat{\sigma}_{\text{OLS}}^2}{\frac{1}{n}\sum_{t=\tau}^{N-2} X_t^2 \Delta t} }, \qquad \hat{\sigma}_{\text{SDDE}}^{\text{(MLE)}} = \sqrt{ \frac{1}{n \Delta t} \sum_{t=\tau}^{N-2} \frac{\hat{\epsilon}_t^2}{X_t^2} }.
+$$ {#eq-conversion-sigma-sdde}
+
+---
+
+## Diagnóstico Estadístico y Validación del Modelo {#sec-diagnostico-validacion}
+
+### Marco teórico del diagnóstico de residuos en modelos SDDE
+
+La estimación numérica de $\hat{\boldsymbol{\theta}}_{\text{OLS}}$ y $\hat{\sigma}$ no garantiza por sí sola que el modelo propuesto sea estadísticamente válido. En una ecuación diferencial estocástica discretizada, el análisis de los residuos $\hat{\epsilon}_t = \Delta X_t - \Delta \hat{X}_t$ cumple un propósito doble: desde la perspectiva econométrica, verifica el cumplimiento de los supuestos que sustentan la validez de los $p$-valores e intervalos de confianza [@fox2015applied; @greene2018econometric]; desde la perspectiva física y biológica, contrasta si las fluctuaciones no explicadas por la deriva determinista se comportan efectivamente como incrementos de un proceso de Wiener [@sarkka2019applied].
+
+La @tbl-implicaciones-supuestos resume las consecuencias teóricas y prácticas de la eventual violación de cada supuesto sobre el modelo fenológico.
+
+| Supuesto sobre $\epsilon_t = \sigma \Delta W_t$ | Propiedad Teórica del Proceso de Wiener | Consecuencia de su Violación en el Modelo SDDE | Prueba Diagnóstica Implementada |
+|:---|:---|:---|:---|
+| **Normalidad** ($\epsilon_t \sim \mathcal{N}(0, \sigma^2)$) | Los incrementos brownianos son gaussianos | Presencia de saltos abruptos o eventos extremos; invalida pruebas $t$ exactas en muestras pequeñas | Shapiro-Wilk ($W$) y Jarque-Bera ($JB$) |
+| **Homocedasticidad** ($\text{Var}(\epsilon_t) = \sigma^2$) | La intensidad del ruido es invariante en el periodo | La volatilidad cambia con el estado o el clima; los errores estándar OLS son sesgados | Multiplicadores de Lagrange de Breusch-Pagan ($LM_{\text{BP}}$) |
+| **No autocorrelación** ($\mathbb{E}[\epsilon_t \epsilon_s] = 0$) | Incrementos independientes sobre intervalos disjuntos | Dinámica de memoria no capturada por el retraso $\tau$; estimadores OLS de parámetros rezagados inconsistentes | Durbin-Watson ($DW$) y Ljung-Box ($Q_{\text{LB}}(10)$) |
+
+: Supuestos teóricos de los incrementos estocásticos, implicaciones de su violación y pruebas formales de diagnóstico. {#tbl-implicaciones-supuestos}
+
+### Métodos de diagnóstico visual
+
+En el flujo de trabajo computacional del cuaderno `Tesis.ipynb` (Sección 4.5, Figura 4.3), se construye un panel de diagnóstico visual en tres subgráficos complementarios para inspeccionar empíricamente el comportamiento de los residuos $\hat{\epsilon}_t$:
+
+1. **Histograma empírico superpuesto con la densidad gaussiana teórica:** Se grafica la distribución de densidad empírica de los residuos $\hat{\epsilon}_t$ y se superpone la función de densidad de probabilidad normal teórica $f(\epsilon) = \frac{1}{\sqrt{2\pi}\hat{\sigma}}\exp\left(-\frac{\epsilon^2}{2\hat{\sigma}^2}\right)$. Permite detectar visualmente asimetrías o colas pesadas (leptocurtosis) ocasionadas por días con cambios meteorológicos bruscos o nubosidad residual en las imágenes de PhenoCam.
+2. **Gráfico cuantil-cuantil normal (*Q-Q Plot*):**generado mediante `scipy.stats.probplot(residuos, dist="norm")`, contrasta los cuantiles ordenados de los residuos muestrales $\hat{\epsilon}_{(1)} \le \dots \le \hat{\epsilon}_{(n)}$ frente a los cuantiles teóricos de la distribución normal estándar $\Phi^{-1}\left(\frac{i - 0.375}{n + 0.25}\right)$. La alineación de los puntos sobre la recta de referencia ideal confirma la gaussianidad de las innovaciones brownianas.
+3. **Gráfico de dispersión de residuos frente a incrementos predichos ($\hat{\epsilon}_t$ vs. $\Delta \hat{X}_t$):** Permite verificar simultáneamente el supuesto de linealidad de la función de deriva (dispersión simétrica alrededor de la recta horizontal $\hat{\epsilon} = 0$ sin patrones parabólicos) y el supuesto de homocedasticidad (dispersión vertical uniforme sin estructura de cono o embudo).
+
+### Pruebas estadísticas formales de especificación
+
+Para complementar el análisis visual con criterios de decisión objetivos al nivel de significancia $\alpha_{\text{sig}} = 0.05$, se aplican cinco pruebas estadísticas formales sobre el vector de residuos $\hat{\boldsymbol{\epsilon}} \in \mathbb{R}^n$:
+
+#### 1. Prueba de normalidad de Shapiro-Wilk
+
+Especialmente potente en muestras pequeñas y moderadas ($n \le 250$, como ocurre en cada uno de los cuatro periodos fenológicos segmentados), la prueba de @shapiro1965analysis (`scipy.stats.shapiro`) contrasta la hipótesis nula $H_0: \epsilon_t \sim \mathcal{N}(0, \sigma^2)$ mediante el estadístico de correlación de estadísticos de orden:
+
+$$
+W = \frac{\left( \sum_{i=1}^n a_i \hat{\epsilon}_{(i)} \right)^2}{\sum_{t=1}^n \left(\hat{\epsilon}_t - \bar{\epsilon}\right)^2},
+$$ {#eq-shapiro-wilk}
+
+donde $\hat{\epsilon}_{(1)} \le \hat{\epsilon}_{(2)} \le \dots \le \hat{\epsilon}_{(n)}$ son los residuos ordenados de menor a mayor y $\mathbf{a} = (a_1, \dots, a_n)^T = \frac{\mathbf{m}^T \mathbf{V}^{-1}}{\|\mathbf{m}^T \mathbf{V}^{-1}\|_2}$ son pesos óptimos derivados del vector de medias $\mathbf{m}$ y la matriz de covarianza $\mathbf{V}$ de los estadísticos de orden de una normal estándar. Valores de $W$ cercanos a $1$ ($p\text{-valor} > 0.05$) indican que no se rechaza la normalidad.
+
+#### 2. Prueba de normalidad asintótica de Jarque-Bera
+
+Basada en los momentos de tercer y cuarto orden, la prueba de @jarque1980efficient (`statsmodels.stats.stattools.jarque_bera`) evalúa si la asimetría muestral ($\hat{S}$) y la curtosis muestral ($\hat{K}$) de los residuos coinciden con los valores teóricos de una distribución normal ($S = 0$ y $K = 3$):
+
+$$
+JB = \frac{n}{6} \left[ \hat{S}^2 + \frac{(\hat{K} - 3)^2}{4} \right] \underset{H_0}{\stackrel{d}{\longrightarrow}} \chi^2_2, \qquad \text{donde} \quad \hat{S} = \frac{\frac{1}{n}\sum_{t=1}^n \hat{\epsilon}_t^3}{\left(\frac{1}{n}\sum_{t=1}^n \hat{\epsilon}_t^2\right)^{3/2}}, \quad \hat{K} = \frac{\frac{1}{n}\sum_{t=1}^n \hat{\epsilon}_t^4}{\left(\frac{1}{n}\sum_{t=1}^n \hat{\epsilon}_t^2\right)^2}.
+$$ {#eq-jarque-bera}
+
+#### 3. Prueba de homocedasticidad de Breusch-Pagan
+
+Para contrastar la hipótesis nula de varianza constante $H_0: \text{Var}(\epsilon_t \mid \mathbf{x}_t) = \sigma^2$ frente a la alternativa de heterocedasticidad dependiente de los regresores (incluyendo la dependencia respecto al nivel de verdor $X_t$ y las variables climáticas), se emplea la prueba de multiplicadores de Lagrange de @breusch1979simple (`statsmodels.stats.diagnostic.het_breuschpagan`). El procedimiento ajusta una regresión auxiliar de los residuos al cuadrado $\hat{\epsilon}_t^2$ sobre la matriz de diseño $\mathbf{X}$:
+
+$$
+\hat{\epsilon}_t^2 = \zeta_0 + \zeta_1 X_t + \zeta_2 X_{t-\tau} + \zeta_3 \text{Rad}_t + \zeta_4 \text{Temp}_t + \zeta_5 \text{Prec}_t + u_t,
+$$ {#eq-regresion-auxiliar-bp}
+
+y calcula el estadístico de prueba a partir del coeficiente de determinación auxiliar $R_{\hat{\epsilon}^2}^2$:
+
+$$
+LM_{\text{BP}} = n R_{\hat{\epsilon}^2}^2 \underset{H_0}{\stackrel{d}{\longrightarrow}} \chi^2_{p-1} = \chi^2_5.
+$$ {#eq-breusch-pagan}
+
+Si el $p\text{-valor}$ asociado a $LM_{\text{BP}}$ es mayor que $0.05$, no se rechaza la hipótesis de homocedasticidad, lo cual valida empíricamente la aproximación de ruido aditivo constante utilizada sobre los segmentos fenológicos.
+
+#### 4. Estadístico de Durbin-Watson y prueba de Ljung-Box
+
+Para verificar que los residuos carecen de estructura de correlación temporal remanente ($H_0: \rho_k = \text{Corr}(\epsilon_t, \epsilon_{t-k}) = 0$), se evalúan dos estadísticos complementarios:
+
+* **Estadístico de Durbin-Watson ($DW$):** Evalúa la autocorrelación de primer orden ($\epsilon_t = \rho_1 \epsilon_{t-1} + \nu_t$) mediante la razón cuadrática de @durbin1950testing (`durbin_watson`):
+  $$
+  DW = \frac{\sum_{t=2}^n \left(\hat{\epsilon}_t - \hat{\epsilon}_{t-1}\right)^2}{\sum_{t=1}^n \hat{\epsilon}_t^2} \approx 2(1 - \hat{\rho}_1),
+  $$ {#eq-durbin-watson}
+  cuyo valor ideal bajo independencia serial es $DW \approx 2.0$.
+* **Prueba portmanteau de Ljung-Box ($Q_{\text{LB}}$):** Dado que en modelos con variables dependientes rezagadas el estadístico $DW$ puede presentar sesgo hacia $2$ y solo detecta dependencia de orden $1$, se aplica adicionalmente la prueba conjunta de @ljung1978measure (`acorr_ljungbox`) hasta el horizonte de rezago $m = 10\text{ días}$ para contrastar $H_0: \rho_1 = \rho_2 = \dots = \rho_m = 0$:
+  $$
+  Q_{\text{LB}}(m) = n(n + 2) \sum_{j=1}^m \frac{\hat{\rho}_j^2}{n - j} \underset{H_0}{\stackrel{d}{\longrightarrow}} \chi^2_m, \qquad \text{donde} \quad \hat{\rho}_j = \frac{\sum_{t=j+1}^n \hat{\epsilon}_t \hat{\epsilon}_{t-j}}{\sum_{t=1}^n \hat{\epsilon}_t^2}.
+  $$ {#eq-ljung-box}
+
+### Criterios de información y selección óptima del retraso $\tau^*$
+
+La bondad de ajuste global de la regresión sobre los incrementos $\Delta X_t$ se cuantifica mediante el coeficiente de determinación $R^2$ y el **coeficiente de determinación ajustado** ($R^2_{\text{adj}}$), el cual penaliza la inclusión de parámetros adicionales:
+
+$$
+R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}, \qquad R^2_{\text{adj}} = 1 - \left( \frac{n - 1}{n - p} \right)(1 - R^2),
+$$ {#eq-r2-ajustada}
+
+donde $\text{TSS} = \sum_{t=1}^n (\Delta X_t - \overline{\Delta X})^2$ es la suma total de cuadrados de los incrementos diarios.
+
+Para seleccionar el retraso fisiológico óptimo $\tau^* \in \mathcal{T}$ y comparar modelos no anidados con distinto número de parámetros (como el modelo SDDE frente a modelos autorregresivos $\text{AR}(\tau)$), se utilizan el **Criterio de Información de Akaike** ($\text{AIC}$, fundamentado en la minimización de la divergencia de Kullback-Leibler esperada) [@akaike1974new; @burnham2002model] y el **Criterio de Información Bayesiano de Schwarz** ($\text{BIC}$, consistente asintóticamente) [@schwarz1978estimating], evaluados estrictamente sobre la **muestra común** de tamaño constante $n_{\text{común}} = N - \tau_{\max} - 1$:
+
+$$
+\text{AIC}(\tau) = -2\ell\left(\hat{\boldsymbol{\theta}}(\tau), \hat{\sigma}_{\text{MLE}}^2(\tau)\right) + 2p = n_{\text{común}}\ln(2\pi) + n_{\text{común}}\ln\left(\frac{\text{RSS}(\tau)}{n_{\text{común}}}\right) + n_{\text{común}} + 2p,
+$$ {#eq-criterio-aic}
+
+$$
+\text{BIC}(\tau) = -2\ell\left(\hat{\boldsymbol{\theta}}(\tau), \hat{\sigma}_{\text{MLE}}^2(\tau)\right) + p\ln(n_{\text{común}}).
+$$ {#eq-criterio-bic}
+
+Dado que sobre la muestra común tanto $n_{\text{común}}$ como el número de parámetros del modelo SDDE ($p = 6$) permanecen constantes al variar $\tau \in \mathcal{T}$, la minimización de $\text{AIC}(\tau)$ y $\text{BIC}(\tau)$ coincide exactamente con la maximización de la verosimilitud perfilada y con la maximización de $R^2_{\text{adj}}(\tau)$:
+
+$$
+\tau^* = \underset{\tau \in \mathcal{T}}{\arg\min} \, \text{AIC}(\tau) = \underset{\tau \in \mathcal{T}}{\arg\max} \, R^2_{\text{adj}}(\tau).
+$$ {#eq-seleccion-tau-optimo}
+
+### Protocolos de validación del modelo
+
+Finalmente, la capacidad descriptiva, predictiva y probabilística del modelo SDDE formulado en este capítulo se somete a cuatro protocolos complementarios de validación rigurosa (cuya implementación algorítmica y resultados empíricos se desarrollan en los Capítulos 4 y 5):
+
+1. **Comparación frente a *benchmarks* autorregresivos $\text{AR}(\tau)$:** Para cada retraso representativo $\tau$, se contrasta el desempeño del modelo mecanicista SDDE ($p_{\text{SDDE}} = 6$ parámetros) frente a un modelo estadístico puro $\text{AR}(\tau)$ de orden completo ($p_{\text{AR}} = \tau + 1$ parámetros autorregresivos, ajustado mediante `statsmodels.tsa.ar_model.AutoReg`). Siguiendo la regla de decisión de @burnham2002model, una diferencia $\Delta \text{AIC} = \text{AIC}_{\text{SDDE}} - \text{AIC}_{\text{AR}(\tau)} < -2$ (y análogamente para $\Delta \text{BIC}$) constituye evidencia empírica sustancial a favor de la estructura dispersa con forzamiento climático de la SDDE.
+2. **Validación cruzada temporal de ventana expansiva (*Forward Chaining*):** Dado que las observaciones de una serie fenológica poseen ordenamiento causal estricto respecto a la filtración $\mathcal{F}_t$, una validación cruzada aleatoria violaría el principio de no anticipación. Por ello, se implementa un esquema secuencial *out-of-sample* donde, para cada instante de prueba $t \ge t_{\text{ini}}$, el modelo se re-estima utilizando únicamente el subconjunto pasado $\{0, \dots, t\}$ y se proyecta un ensamble de Monte Carlo a un paso adelante $\hat{X}_{t+1 \mid t}$.
+3. **Validación cruzada interanual *Leave-One-Dataset-Out* (LODO):** Aprovechando la segmentación de la serie multianual en $K = 4$ periodos continuos independientes ($P_1, P_2, P_3, P_4$), en cada iteración $k \in \{1, 2, 3, 4\}$ se entrena el modelo concatenando las matrices de diseño de tres periodos ($\bigcup_{j \neq k} P_j$) para obtener el estimador global fuera de muestra $\hat{\boldsymbol{\theta}}_{(-k)}$, y se evalúa su capacidad de generalización sobre el periodo completo retenido $P_k$.
+4. **Simulación de trayectorias por Monte Carlo y métricas de precisión puntual y probabilística:** Tanto en la validación temporal como en la simulación de trayectorias completas desde la condición inicial $\mathcal{H}_0$ (`simular_euler_maruyama_mc` con $M = 10\,000$ realizaciones), el desempeño predictivo puntual se cuantifica mediante la Raíz del Error Cuadrático Medio ($\text{RMSE}$) y el Error Absoluto Medio ($\text{MAE}$):
+   $$
+   \text{RMSE} = \sqrt{ \frac{1}{N_{\text{eval}}} \sum_{t \in \mathcal{I}_{\text{eval}}} \left( X_t^{\text{obs}} - \hat{\mu}_t \right)^2 }, \qquad \text{MAE} = \frac{1}{N_{\text{eval}}} \sum_{t \in \mathcal{I}_{\text{eval}}} \left| X_t^{\text{obs}} - \hat{\mu}_t \right|,
+   $$ {#eq-metricas-rmse-mae}
+   donde $\hat{\mu}_t = \frac{1}{M}\sum_{m=1}^M X_t^{(m)}$ es la esperanza empírica de Monte Carlo, mientras que la **calibración probabilística** de la difusión estocástica se evalúa mediante la **Probabilidad de Cobertura Empírica al $95\%$** ($\text{PICP}_{95\%}$):
+   $$
+   \text{PICP}_{95\%} = \frac{100}{N_{\text{eval}}} \sum_{t \in \mathcal{I}_{\text{eval}}} \mathbb{I}\left( Q_{0.025}\left(X_t^{(1:M)}\right) \le X_t^{\text{obs}} \le Q_{0.975}\left(X_t^{(1:M)}\right) \right),
+   $$ {#eq-cobertura-empirica}
+   donde $\mathbb{I}(\cdot)$ denota la función indicadora y $[Q_{0.025}, Q_{0.975}]$ corresponden a los percentiles empíricos $2.5\%$ y $97.5\%$ del ensamble simulado en el día $t$.

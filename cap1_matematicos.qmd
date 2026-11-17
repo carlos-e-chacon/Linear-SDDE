@@ -393,7 +393,7 @@ $${#eq-cota-picard}
 
 donde $C$ y $M = 2\bar{K}(T - t_0 + 4)$ son constantes positivas independientes de $n$. La convergencia super-exponencial de la serie $\sum_{n=1}^\infty \frac{[M(T-t_0)]^n}{n!} < \infty$ garantiza, vía el lema de Borel-Cantelli y la completitud de $\mathcal{M}^2([t_0 - \tau, T]; \mathbb{R}^d)$, que $\{X^n(t)\}$ es una sucesión de Cauchy que converge uniforme y cuadráticamente en media hacia un proceso continuo y adaptado $X(t)$, el cual verifica la ecuación integral @eq-sdde-integral.
 
-### Relajación de condiciones para SDDEs con retraso discreto
+### Condiciones debilitadas para SDDEs con retraso discreto
 
 Para el caso específico de la SDDE con retraso discreto (@eq-sdde-constante), una aplicación directa del @thm-existencia-unicidad-sfde exigiría que las funciones $F(x, y, t)$ y $G(x, y, t)$ fuesen globalmente Lipschitz continuas tanto en el estado presente $x = X(t)$ como en el estado retardado $y = X(t - \tau)$:
 
