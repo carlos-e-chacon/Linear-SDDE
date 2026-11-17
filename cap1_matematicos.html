@@ -393,7 +393,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cap3_modelo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modelo SDDE en tiempo continuo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Formulación del Modelo Matemático y Estadístico</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -456,7 +456,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#definición-rigurosa-de-solución-para-ecuaciones-funcionales" id="toc-definición-rigurosa-de-solución-para-ecuaciones-funcionales" class="nav-link" data-scroll-target="#definición-rigurosa-de-solución-para-ecuaciones-funcionales"><span class="header-section-number">1.4.1</span> Definición rigurosa de solución para ecuaciones funcionales</a></li>
   <li><a href="#teorema-fundamental-de-existencia-y-unicidad-bajo-condiciones-globales" id="toc-teorema-fundamental-de-existencia-y-unicidad-bajo-condiciones-globales" class="nav-link" data-scroll-target="#teorema-fundamental-de-existencia-y-unicidad-bajo-condiciones-globales"><span class="header-section-number">1.4.2</span> Teorema fundamental de existencia y unicidad bajo condiciones globales</a></li>
-  <li><a href="#relajación-de-condiciones-para-sddes-con-retraso-discreto" id="toc-relajación-de-condiciones-para-sddes-con-retraso-discreto" class="nav-link" data-scroll-target="#relajación-de-condiciones-para-sddes-con-retraso-discreto"><span class="header-section-number">1.4.3</span> Relajación de condiciones para SDDEs con retraso discreto</a></li>
+  <li><a href="#condiciones-debilitadas-para-sddes-con-retraso-discreto" id="toc-condiciones-debilitadas-para-sddes-con-retraso-discreto" class="nav-link" data-scroll-target="#condiciones-debilitadas-para-sddes-con-retraso-discreto"><span class="header-section-number">1.4.3</span> Condiciones debilitadas para SDDEs con retraso discreto</a></li>
   </ul></li>
   <li><a href="#sec-euler-maruyama" id="toc-sec-euler-maruyama" class="nav-link" data-scroll-target="#sec-euler-maruyama"><span class="header-section-number">1.5</span> Métodos de discretización: Euler-Maruyama</a>
   <ul class="collapse">
@@ -766,8 +766,8 @@ X(t) = \xi(0) + \int_{t_0}^t f(X_s, s)ds + \int_{t_0}^t g(X_s, s)dW(s),\quad \te
 <p>donde <span class="math inline">\(C\)</span> y <span class="math inline">\(M = 2\bar{K}(T - t_0 + 4)\)</span> son constantes positivas independientes de <span class="math inline">\(n\)</span>. La convergencia super-exponencial de la serie <span class="math inline">\(\sum_{n=1}^\infty \frac{[M(T-t_0)]^n}{n!} &lt; \infty\)</span> garantiza, vía el lema de Borel-Cantelli y la completitud de <span class="math inline">\(\mathcal{M}^2([t_0 - \tau, T]; \mathbb{R}^d)\)</span>, que <span class="math inline">\(\{X^n(t)\}\)</span> es una sucesión de Cauchy que converge uniforme y cuadráticamente en media hacia un proceso continuo y adaptado <span class="math inline">\(X(t)\)</span>, el cual verifica la ecuación integral <a href="#eq-sdde-integral" class="quarto-xref">Ecuación&nbsp;<span>1.15</span></a>.</p>
 </section>
 </section>
-<section id="relajación-de-condiciones-para-sddes-con-retraso-discreto" class="level3" data-number="1.4.3">
-<h3 data-number="1.4.3" class="anchored" data-anchor-id="relajación-de-condiciones-para-sddes-con-retraso-discreto"><span class="header-section-number">1.4.3</span> Relajación de condiciones para SDDEs con retraso discreto</h3>
+<section id="condiciones-debilitadas-para-sddes-con-retraso-discreto" class="level3" data-number="1.4.3">
+<h3 data-number="1.4.3" class="anchored" data-anchor-id="condiciones-debilitadas-para-sddes-con-retraso-discreto"><span class="header-section-number">1.4.3</span> Condiciones debilitadas para SDDEs con retraso discreto</h3>
 <p>Para el caso específico de la SDDE con retraso discreto (<a href="#eq-sdde-constante" class="quarto-xref">Ecuación&nbsp;<span>1.14</span></a>), una aplicación directa del <a href="#thm-existencia-unicidad-sfde" class="quarto-xref">Teorema&nbsp;<span>1.2</span></a> exigiría que las funciones <span class="math inline">\(F(x, y, t)\)</span> y <span class="math inline">\(G(x, y, t)\)</span> fuesen globalmente Lipschitz continuas tanto en el estado presente <span class="math inline">\(x = X(t)\)</span> como en el estado retardado <span class="math inline">\(y = X(t - \tau)\)</span>:</p>
 <p><span id="eq-lipschitz-ambas"><span class="math display">\[|F(x, y, t) - F(\bar{x}, \bar{y}, t)|^2 \vee |G(x, y, t) - G(\bar{x}, \bar{y}, t)|^2 \le \bar{K}\left(|x - \bar{x}|^2 + |y - \bar{y}|^2\right).
 \tag{1.30}\]</span></span></p>
