@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -80,11 +100,42 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="Introducción – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta property="og:description" content="">
 <meta property="og:site_name" content="Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
 <meta name="twitter:title" content="Introducción – Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -392,7 +443,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#objetivos" id="toc-objetivos" class="nav-link active" data-scroll-target="#objetivos">Objetivos</a></li>
+  <li><a href="#objetivos" id="toc-objetivos" class="nav-link active" data-scroll-target="#objetivos">Objetivos</a>
+  <ul class="collapse">
+  <li><a href="#objetivo-general" id="toc-objetivo-general" class="nav-link" data-scroll-target="#objetivo-general">Objetivo General</a></li>
+  <li><a href="#objetivos-específicos" id="toc-objetivos-específicos" class="nav-link" data-scroll-target="#objetivos-específicos">Objetivos Específicos</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/introduccion.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/introduccion.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -419,10 +474,108 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>La fenología vegetal —el estudio de la recurrencia temporal de las fases del ciclo de vida de las plantas, tales como la brotación, la expansión foliar, la maduración fotosintética y la senescencia— constituye uno de los termómetros biológicos más precisos para cuantificar el impacto del cambio climático sobre los ecosistemas terrestres <span class="citation" data-cites="cleland2007shifting menzel2006phenology">(<a href="bibliografia.html#ref-cleland2007shifting" role="doc-biblioref">Cleland et&nbsp;al., 2007</a>; <a href="bibliografia.html#ref-menzel2006phenology" role="doc-biblioref">Menzel &amp; Sparks, 2006</a>)</span>. En agroecosistemas y biomas situados en latitudes medias y boreales, la dinámica estacional del dosel vegetal no solo determina la productividad primaria neta, sino que modula de forma directa los intercambios superficiales de carbono, agua y energía con la atmósfera <span class="citation" data-cites="richardson2018tracking buitenwerf2021phenological">(<a href="bibliografia.html#ref-buitenwerf2021phenological" role="doc-biblioref">Buitenwerf et&nbsp;al., 2021</a>; <a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>)</span>. En años recientes, el desarrollo de redes de monitoreo óptico cercano a la superficie, destacadamente la infraestructura internacional PhenoCam, ha transformado la ecología cuantitativa al proporcionar series temporales continuas de resolución diaria a través del Índice de Verdor Cromático (<span class="math inline">\(\text{GCC}\)</span>, <em>Green Chromatic Coordinate</em>), el cual cuantifica de forma adimensional y no destructiva la proporción de reflectancia verde del dosel como un proxy directo de la biomasa foliar activa y el contenido de clorofila <span class="citation" data-cites="richardson2018tracking seyednasrollah2019convergence">(<a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>; <a href="bibliografia.html#ref-seyednasrollah2019convergence" role="doc-biblioref">Seyednasrollah et&nbsp;al., 2019</a>)</span>.</p>
+<p>A pesar de esta disponibilidad sin precedentes de registros radiométricos de alta frecuencia, la modelación matemática de la dinámica diaria del verdor vegetal presenta limitaciones estructurales profundas cuando se aborda desde los paradigmas clásicos. Tradicionalmente, los modelos de crecimiento biológico basados en ecuaciones diferenciales ordinarias (EDO) deterministas parten de dos supuestos simplificadores que se rompen en sistemas ecológicos reales: el principio de causalidad instantánea y la ausencia de incertidumbre dinámica <span class="citation" data-cites="mao2007stochastic dietze2017ecological">(<a href="bibliografia.html#ref-dietze2017ecological" role="doc-biblioref">Dietze, 2017</a>; <a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. El principio de causalidad instantánea asume que la tasa de cambio de la biomasa en el instante <span class="math inline">\(t\)</span> queda completamente determinada por el estado presente del cultivo <span class="math inline">\(X(t)\)</span> y por las condiciones meteorológicas contemporáneas. Sin embargo, como postuló originalmente <span class="citation" data-cites="hutchinson1948">Hutchinson (<a href="bibliografia.html#ref-hutchinson1948" role="doc-biblioref">1948</a>)</span> y formalizaron <span class="citation" data-cites="ogle2015quantifying">Ogle et&nbsp;al. (<a href="bibliografia.html#ref-ogle2015quantifying" role="doc-biblioref">2015</a>)</span> bajo el concepto de <em>memoria ecológica</em>, la fisiología vegetal opera intrínsecamente con retardos temporales finitos. Los carbohidratos no estructurales sintetizados durante episodios favorables de radiación y temperatura no se transforman de manera instantánea en tejido foliar nuevo; requieren almacenarse transitoriamente como almidón plastidial, movilizarse a través del sistema vascular del floema desde los órganos fuente hacia los meristemos sumidero, e integrarse en procesos de división celular, elongación por turgencia y biosíntesis de clorofila <span class="citation" data-cites="taiz2022plant thomas2014stay">(<a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>; <a href="bibliografia.html#ref-thomas2014stay" role="doc-biblioref">Thomas &amp; Ougham, 2014</a>)</span>. Esta cadena de procesos biofísicos introduce un retraso fisiológico característico <span class="math inline">\(\tau &gt; 0\)</span> (del orden de días a semanas), provocando que la evolución actual del sistema dependa explícitamente de su estado pasado <span class="math inline">\(X(t-\tau)\)</span> y rompiendo la propiedad de Markov puntual en <span class="math inline">\(\mathbb{R}^d\)</span>, la cual solo puede recuperarse elevando el sistema a un espacio de fases funcional infinito-dimensional <span class="math inline">\(C([-\tau, 0]; \mathbb{R})\)</span> <span class="citation" data-cites="mohammed1984stochastic mao2007stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>; <a href="bibliografia.html#ref-mohammed1984stochastic" role="doc-biblioref">Mohammed, 1984</a>)</span>.</p>
+<p>De manera simultánea, un cultivo agrícola en condiciones de campo no evoluciona como un sistema determinista cerrado, sino como un sistema abierto sometido a forzamientos meteorológicos externos —principalmente radiación solar, temperatura del aire y precipitación— y a fluctuaciones ambientales de alta frecuencia <span class="citation" data-cites="monteith1977climate porter1999temperatures">(<a href="bibliografia.html#ref-monteith1977climate" role="doc-biblioref">Monteith &amp; Moss, 1977</a>; <a href="bibliografia.html#ref-porter1999temperatures" role="doc-biblioref">Porter &amp; Gawith, 1999</a>)</span>. La turbulencia microclimática sub-diaria, la heterogeneidad edáfica, las perturbaciones bióticas menores y el ruido radiométrico inherente a la geometría de iluminación solar generan variaciones estocásticas continuas que no pueden ser capturadas por una trayectoria determinista rígida <span class="citation" data-cites="wilkinson2018stochastic sarkka2019applied">(<a href="bibliografia.html#ref-sarkka2019applied" role="doc-biblioref">Särkkä &amp; Solin, 2019</a>; <a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>. Por otra parte, cuando la literatura aplicada intenta eludir la formulación diferencial continua recurriendo a modelos estadísticos puramente empíricos en tiempo discreto —como los procesos autorregresivos clásicos <span class="math inline">\(\text{AR}(p)\)</span> de orden completo—, emerge la maldición de la dimensionalidad: para capturar una memoria biológica de dos a tres semanas (<span class="math inline">\(\tau \in [12, 23]\)</span> días) a resolución diaria, un modelo <span class="math inline">\(\text{AR}(\tau)\)</span> no restringido exige estimar <span class="math inline">\(\tau + 1\)</span> parámetros autorregresivos simultáneos. Dado que el índice <span class="math inline">\(\text{GCC}\)</span> presenta una elevada persistencia entre días consecutivos (<span class="math inline">\(X_t, X_{t-1}, \dots, X_{t-\tau}\)</span>), la matriz de diseño resultante sufre de multicolinealidad severa, pérdida drástica de grados de libertad, sobreajuste (<em>overfitting</em>) y carencia de interpretación mecanicista <span class="citation" data-cites="cuddington2013process hamilton1994time">(<a href="bibliografia.html#ref-cuddington2013process" role="doc-biblioref">Cuddington et&nbsp;al., 2013</a>; <a href="bibliografia.html#ref-hamilton1994time" role="doc-biblioref">Hamilton, 1994</a>)</span>.</p>
+<p>Adicionalmente, el monitoreo óptico en latitudes boreales —como ocurre en la estación experimental de Röbäcksdalen en Umeå, Suecia (<span class="math inline">\(63.81^\circ\text{N}\)</span>)— impone un reto metodológico adicional: la alternancia entre la ventana vegetativa activa (primavera a otoño) y el invierno subártico (caracterizado por cobertura nivosa, congelación y ángulos solares cenitales extremos) genera interrupciones prolongadas de varios meses en las series de observación <span class="citation" data-cites="jensen2020phenological richardson2018tracking">(<a href="bibliografia.html#ref-jensen2020phenological" role="doc-biblioref">Jensen et&nbsp;al., 2020</a>; <a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>)</span>. Aplicar técnicas convencionales de interpolación lineal o por <em>splines</em> a través de meses de dormancia invernal introduce trayectorias sintéticas carentes de sentido biológico, corrompe la varianza de las diferencias finitas <span class="math inline">\(\Delta X_t = X_{t+1} - X_t\)</span> y desfasa el operador de retardo <span class="math inline">\(L^\tau X_t = X_{t-\tau}\)</span> al cruzar fronteras interanuales <span class="citation" data-cites="dietze2017ecological">(<a href="bibliografia.html#ref-dietze2017ecological" role="doc-biblioref">Dietze, 2017</a>)</span>.</p>
+<p>Con el propósito de resolver de manera integral estas problemáticas teóricas, estadísticas y computacionales, la presente tesis formula, analiza matemáticamente, discretiza y valida empíricamente un modelo basado en una <strong>Ecuación Diferencial Estocástica con Retraso (SDDE) lineal no autónoma</strong> para describir la dinámica diaria del índice fenológico <span class="math inline">\(\text{GCC}\)</span>. Tomando como antecedente la ecuación estocástica autónoma con retroalimentación retardada propuesta por <span class="citation" data-cites="rupsys2008stochastic">Rupšys (<a href="bibliografia.html#ref-rupsys2008stochastic" role="doc-biblioref">2008</a>)</span>, este trabajo extiende la función de deriva incorporando el acoplamiento lineal con tres forzantes climáticos diarios provenientes del reanálisis global ERA5 del Centro Europeo de Previsiones Meteorológicas a Plazo Medio (ECMWF): radiación solar global horizontal (<span class="math inline">\(\text{Rad}_t\)</span>), temperatura media del aire a <span class="math inline">\(2\text{ m}\)</span> (<span class="math inline">\(\text{Temp}_t\)</span>) y precipitación total acumulada (<span class="math inline">\(\text{Prec}_t\)</span>) <span class="citation" data-cites="hersbach2020era5">(<a href="bibliografia.html#ref-hersbach2020era5" role="doc-biblioref">Hersbach et&nbsp;al., 2020</a>)</span>.</p>
+<p>El desarrollo metodológico de la investigación demuestra que la aplicación del esquema numérico de Euler-Maruyama a paso diario fijo (<span class="math inline">\(\Delta t = 1\text{ día}\)</span>) tiende un puente analítico exacto entre el cálculo estocástico de Itô en tiempo continuo y la inferencia econométrica en tiempo discreto <span class="citation" data-cites="kloeden1992numerical mao2007stochastic">(<a href="bibliografia.html#ref-kloeden1992numerical" role="doc-biblioref">Kloeden &amp; Platen, 1992</a>; <a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>)</span>. Específicamente, se demuestra que la SDDE discretizada es matemáticamente isomorfa a un proceso autorregresivo con variables exógenas <span class="math inline">\(\text{ARX}(\tau+1)\)</span> sujeto a restricciones estructurales de dispersión (<em>sparsity constraints</em>), donde todos los coeficientes intermedios entre el estado inmediato <span class="math inline">\(X_t\)</span> y el estado retardado <span class="math inline">\(X_{t-\tau}\)</span> se restringen idénticamente a cero. Esta propiedad reduce el espacio paramétrico a una dimensión constante de exactamente <span class="math inline">\(p = 6\)</span> parámetros de deriva (<span class="math inline">\(\alpha, \beta, \gamma, \delta_1, \delta_2, \delta_3\)</span>) más la intensidad de difusión (<span class="math inline">\(\sigma\)</span>), independientemente de la magnitud del retraso fisiológico <span class="math inline">\(\tau\)</span>. A partir de la baja variabilidad relativa del estado fenológico (<span class="math inline">\(CV &lt; 4.2\%\)</span>), se fundamenta y valida empíricamente la aproximación de difusión aditiva homocedástica <span class="citation" data-cites="shoji1998estimation">(<a href="bibliografia.html#ref-shoji1998estimation" role="doc-biblioref">Shoji &amp; Ozaki, 1998</a>)</span>, permitiendo obtener estimadores analíticos cerrados por Mínimos Cuadrados Ordinarios (OLS) y Máxima Verosimilitud Condicional (CMLE), identificar el retraso óptimo <span class="math inline">\(\tau^*\)</span> mediante verosimilitud perfilada sobre muestra común y evaluar la calibración probabilística del sistema mediante simulaciones vectorizadas de Monte Carlo (<span class="math inline">\(M = 10\,000\)</span> realizaciones).</p>
+<p>Para cumplir con su cometido, el documento se organiza en tres partes integradas por seis capítulos:</p>
+<ul>
+<li><strong>Parte I: Marco Teórico.</strong> El <strong>Capítulo 1</strong> establece los fundamentos matemáticos del cálculo estocástico de Itô, la formulación de ecuaciones diferenciales estocásticas funcionales y con retraso discreto en el espacio de Banach <span class="math inline">\(C([-\tau, 0]; \mathbb{R}^d)\)</span>, los teoremas de existencia y unicidad de soluciones fuertes, la discretización numérica de Euler-Maruyama con sus órdenes de convergencia fuerte y débil, y su vinculación estructural con los modelos autorregresivos <span class="math inline">\(\text{AR}(p)\)</span>. El <strong>Capítulo 2</strong> expone de forma sintética los fundamentos ecofisiológicos de la fenología vegetal en latitudes boreales, los mecanismos de autorregulación del dosel, las bases biofísicas del retraso temporal <span class="math inline">\(\tau\)</span> por translocación de fotoasimilados, la naturaleza radiométrica del índice <span class="math inline">\(\text{GCC}\)</span> en la red PhenoCam y la influencia de las variables climáticas de ERA5.</li>
+<li><strong>Parte II: Modelación y Metodología.</strong> El <strong>Capítulo 3</strong> desarrolla la formulación del modelo SDDE fenológico en tiempo continuo, demuestra la existencia y unicidad de su solución global y deduce la ecuación diferencial con retraso determinista que gobierna su trayectoria esperada <span class="math inline">\(\mathbb{E}[X(t)]\)</span>; asimismo, deduce el modelo de regresión lineal múltiple dinámico derivado de su discretización, demuestra su identificabilidad estructural condicional para <span class="math inline">\(\tau\)</span> fijo y establece las pruebas formales de especificación sobre los residuos. El <strong>Capítulo 4</strong> detalla el protocolo computacional reproducible implementado en Python (<code>Tesis.ipynb</code>): la depuración de los registros de Röbäcksdalen (2022–2025, <span class="math inline">\(N = 572\)</span> días únicos), el algoritmo formal de segmentación temporal automática en <span class="math inline">\(K = 4\)</span> periodos continuos libres de brechas invernales, la estimación matricial por OLS individual y agrupada (<em>Pooled OLS</em>), la estimación de la intensidad del ruido <span class="math inline">\(\sigma\)</span>, el algoritmo de búsqueda en malla (<em>Grid Search</em>) bajo truncamiento de muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\text{ días}\)</span>) y el motor vectorizado de simulación de Monte Carlo.</li>
+<li><strong>Parte III: Resultados y Conclusiones.</strong> El <strong>Capítulo 5</strong> presenta y discute los hallazgos empíricos del estudio: la caracterización estadística descriptiva y correlacional por periodo, las estimaciones paramétricas y la verificación diagnóstica de los supuestos gaussianos y de homocedasticidad, los perfiles de identificación del retraso fisiológico óptimo <span class="math inline">\(\tau^*\)</span>, la superioridad cuantitativa del modelo <span class="math inline">\(\text{SDDE}(\tau)\)</span> frente a benchmarks <span class="math inline">\(\text{AR}(\tau)\)</span>, la validación predictiva fuera de muestra mediante <em>Forward Chaining</em> y <em>Leave-One-Dataset-Out</em> (LODO), el análisis de sensibilidad climática y de memoria biológica (<span class="math inline">\(\pm 10\%\)</span>), y una discusión crítica de las limitaciones estructurales del modelo junto con sus extensiones matemáticas formales. Finalmente, el <strong>Capítulo 6</strong> sintetiza las conclusiones generales de la tesis, destaca sus contribuciones metodológicas y delinea las perspectivas de investigación futura.</li>
+</ul>
 <section id="objetivos" class="level1 unnumbered">
 <h1 class="unnumbered">Objetivos</h1>
+<section id="objetivo-general" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="objetivo-general">Objetivo General</h2>
+<p>Formular, estimar y validar probabilísticamente un modelo matemático basado en una Ecuación Diferencial Estocástica con Retraso (SDDE) lineal no autónoma que describa la dinámica fenológica diaria de la vegetación a través del índice de verdor cromático (<span class="math inline">\(\text{GCC}\)</span>), integrando mecanismos endógenos de autorregulación instantánea, memoria fisiológica retardada, forzamientos climáticos exógenos y fluctuaciones ambientales aleatorias.</p>
+</section>
+<section id="objetivos-específicos" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="objetivos-específicos">Objetivos Específicos</h2>
+<ol type="1">
+<li><strong>Establecer y analizar matemáticamente el modelo SDDE en tiempo continuo</strong> para la evolución del índice fenológico <span class="math inline">\(\text{GCC}\)</span>, verificando analíticamente las condiciones globales de continuidad de Lipschitz y crecimiento lineal que garantizan la existencia y unicidad de su solución fuerte, así como la ecuación diferencial con retraso determinista que gobierna su esperanza matemática <span class="math inline">\(\mathbb{E}[X(t)]\)</span>.</li>
+<li><strong>Deducir la representación en tiempo discreto del modelo fenológico</strong> mediante el esquema numérico de Euler-Maruyama con paso diario (<span class="math inline">\(\Delta t = 1\text{ día}\)</span>), demostrando su equivalencia estructural con un modelo autorregresivo con variables exógenas <span class="math inline">\(\text{ARX}(\tau+1)\)</span> disperso de dimensión paramétrica fija (<span class="math inline">\(p = 6\)</span>) y probando su identificabilidad estructural condicional.</li>
+<li><strong>Diseñar e implementar un algoritmo de preprocesamiento y segmentación temporal automática</strong> que integre las series observacionales diarias de la red PhenoCam (estación Röbäcksdalen, Suecia, 2022–2025) con los forzamientos meteorológicos del reanálisis ERA5 (radiación solar, temperatura del aire y precipitación), aislando rigurosamente las discontinuidades invernales en periodos continuos sin recurrir a interpolación sintética.</li>
+<li><strong>Estimar los parámetros biofísicos de deriva (<span class="math inline">\(\alpha, \beta, \gamma, \delta_1, \delta_2, \delta_3\)</span>) y la intensidad del ruido estocástico (<span class="math inline">\(\sigma\)</span>)</strong> en cada periodo continuo mediante Mínimos Cuadrados Ordinarios (OLS) y Máxima Verosimilitud Condicional, verificando empíricamente los supuestos del proceso de Wiener discretizado a través de pruebas formales de normalidad (Shapiro-Wilk y Jarque-Bera), homocedasticidad (Breusch-Pagan) e independencia serial (Durbin-Watson y Ljung-Box).</li>
+<li><strong>Identificar el retraso fisiológico óptimo (<span class="math inline">\(\tau^*\)</span>) y evaluar la parsimonia del modelo</strong>, implementando un protocolo de búsqueda exhaustiva por malla sobre <span class="math inline">\(\tau \in [3, 23]\text{ días}\)</span> bajo estandarización de muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\text{ días}\)</span>) y contrastando cuantitativamente su desempeño frente a modelos autorregresivos clásicos <span class="math inline">\(\text{AR}(\tau)\)</span> mediante los criterios de información de Akaike (AIC) y Bayesiano (BIC).</li>
+<li><strong>Validar la capacidad predictiva, la calibración de incertidumbre y la sensibilidad climática del sistema</strong> mediante simulaciones vectorizadas de Monte Carlo (<span class="math inline">\(M = 10\,000\)</span> realizaciones), aplicando esquemas de validación cruzada temporal a un paso (<em>Forward Chaining</em>), validación interanual <em>Leave-One-Dataset-Out</em> (LODO) y análisis de sensibilidad paramétrica (<span class="math inline">\(\pm 10\%\)</span>) con Números Aleatorios Comunes.</li>
+</ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-buitenwerf2021phenological" class="csl-entry" role="listitem">
+Buitenwerf, R., Eklundh, L., &amp; Olsson, L. (2021). Phenological shifts in Swedish vegetation linked to climate change. <em>Global Change Biology</em>, <em>27</em>(15), 3634-3646. <a href="https://doi.org/10.1111/gcb.15680">https://doi.org/10.1111/gcb.15680</a>
+</div>
+<div id="ref-cleland2007shifting" class="csl-entry" role="listitem">
+Cleland, E. E., Chuine, I., &amp; Walther, G.-R. (2007). Shifting plant phenology in response to global change. <em>Trends in Ecology &amp; Evolution</em>, <em>22</em>(7), 357-365. <a href="https://doi.org/10.1016/j.tree.2007.04.003">https://doi.org/10.1016/j.tree.2007.04.003</a>
+</div>
+<div id="ref-cuddington2013process" class="csl-entry" role="listitem">
+Cuddington, K., Fortin, M.-J., Gerber, L. R., Hastings, A., Liebhold, A., O’Connor, M., &amp; Ray, C. (2013). Process-based models are required to manage ecological systems in a changing world. <em>Ecosphere</em>, <em>4</em>(2), 1-12. <a href="https://doi.org/10.1890/ES12-00178.1">https://doi.org/10.1890/ES12-00178.1</a>
+</div>
+<div id="ref-dietze2017ecological" class="csl-entry" role="listitem">
+Dietze, M. C. (2017). <em>Ecological Forecasting</em>. Princeton University Press.
+</div>
+<div id="ref-hamilton1994time" class="csl-entry" role="listitem">
+Hamilton, J. D. (1994). <em>Time Series Analysis</em>. Princeton University Press.
+</div>
+<div id="ref-hersbach2020era5" class="csl-entry" role="listitem">
+Hersbach, H., Bell, B., Berrisford, P., Hirahara, S., Horányi, A., Muñoz-Sabater, J., Nicolas, J., Peubey, C., Radu, R., Schepers, D., et&nbsp;al. (2020). The <span>ERA5</span> global reanalysis. <em>Quarterly Journal of the Royal Meteorological Society</em>, <em>146</em>(730), 1999-2049. <a href="https://doi.org/10.1002/qj.3803">https://doi.org/10.1002/qj.3803</a>
+</div>
+<div id="ref-hutchinson1948" class="csl-entry" role="listitem">
+Hutchinson, G. E. (1948). CIRCULAR CAUSAL SYSTEMS IN ECOLOGY. <em>Annals of the New York Academy of Sciences</em>, <em>50</em>(4), 221-246. https://doi.org/<a href="https://doi.org/10.1111/j.1749-6632.1948.tb39854.x">https://doi.org/10.1111/j.1749-6632.1948.tb39854.x</a>
+</div>
+<div id="ref-jensen2020phenological" class="csl-entry" role="listitem">
+Jensen, A. M., Eklundh, L., &amp; Ueyama, M. (2020). Phenological responses of Scandinavian vegetation to climate change. <em>Agricultural and Forest Meteorology</em>, <em>291</em>, 108063. <a href="https://doi.org/10.1016/j.agrformet.2020.108063">https://doi.org/10.1016/j.agrformet.2020.108063</a>
+</div>
+<div id="ref-kloeden1992numerical" class="csl-entry" role="listitem">
+Kloeden, P. E., &amp; Platen, E. (1992). <em>Numerical Solution of Stochastic Differential Equations</em> (Vol. 23). Springer-Verlag. <a href="https://doi.org/10.1007/978-3-662-12616-5">https://doi.org/10.1007/978-3-662-12616-5</a>
+</div>
+<div id="ref-mao2007stochastic" class="csl-entry" role="listitem">
+Mao, X. (2007). <em>Stochastic Differential Equations and Applications</em> (2.ª ed.). Horwood Publishing.
+</div>
+<div id="ref-menzel2006phenology" class="csl-entry" role="listitem">
+Menzel, A., &amp; Sparks, T. H. (Eds.). (2006). <em>Phenology: An Integrative Environmental Science</em> (2.ª ed.). Springer. <a href="https://doi.org/10.1007/1-4020-4440-9">https://doi.org/10.1007/1-4020-4440-9</a>
+</div>
+<div id="ref-mohammed1984stochastic" class="csl-entry" role="listitem">
+Mohammed, S.-E. A. (1984). <em>Stochastic Functional Differential Equations</em> (Vol. 99). Longman Scientific &amp; Technical.
+</div>
+<div id="ref-monteith1977climate" class="csl-entry" role="listitem">
+Monteith, J. L., &amp; Moss, C. J. (1977). Climate and the efficiency of crop production in Britain. <em>Philosophical Transactions of the Royal Society B: Biological Sciences</em>, <em>281</em>(980), 277-294. <a href="https://doi.org/10.1098/rstb.1977.0140">https://doi.org/10.1098/rstb.1977.0140</a>
+</div>
+<div id="ref-ogle2015quantifying" class="csl-entry" role="listitem">
+Ogle, K., Barber, J. J., Barron-Gafford, G. A., Bentley, L. P., Cable, J. M., Huxman, T. E., Loik, M. E., &amp; Tissue, D. T. (2015). Quantifying ecological memory in plant and ecosystem processes. <em>Ecology Letters</em>, <em>18</em>(3), 221-235. <a href="https://doi.org/10.1111/ele.12399">https://doi.org/10.1111/ele.12399</a>
+</div>
+<div id="ref-porter1999temperatures" class="csl-entry" role="listitem">
+Porter, J. R., &amp; Gawith, M. (1999). Temperatures and the growth and development of wheat: A review. <em>European Journal of Agronomy</em>, <em>10</em>(1), 23-36. <a href="https://doi.org/10.1016/S1161-0301(98)00047-1">https://doi.org/10.1016/S1161-0301(98)00047-1</a>
+</div>
+<div id="ref-richardson2018tracking" class="csl-entry" role="listitem">
+Richardson, A. D., Hufkens, K., Milliman, T., Aubrecht, D. M., Furze, M. E., Seyednasrollah, B., et&nbsp;al. (2018). Tracking vegetation phenology across diverse biomes using version 2.0 of the PhenoCam dataset. <em>Scientific Data</em>, <em>6</em>(1), 222. <a href="https://doi.org/10.1038/s41597-018-0164-4">https://doi.org/10.1038/s41597-018-0164-4</a>
+</div>
+<div id="ref-rupsys2008stochastic" class="csl-entry" role="listitem">
+Rupšys, P. (2008). Stochastic Growth Models with Time-Delayed Feedback. <em>Information Technology and Control</em>, <em>37</em>(4), 397-404.
+</div>
+<div id="ref-sarkka2019applied" class="csl-entry" role="listitem">
+Särkkä, S., &amp; Solin, A. (2019). <em>Applied Stochastic Differential Equations</em>. Cambridge University Press. <a href="https://doi.org/10.1017/9781108186735">https://doi.org/10.1017/9781108186735</a>
+</div>
+<div id="ref-seyednasrollah2019convergence" class="csl-entry" role="listitem">
+Seyednasrollah, B., Hufkens, K., Milliman, T., Friedl, M. A., &amp; Richardson, A. D. (2019). Convergence across biomes in the sensitivity of vegetation greenness to temperature. <em>Environmental Research Letters</em>, <em>14</em>(6), 064010. <a href="https://doi.org/10.1088/1748-9326/ab1b7f">https://doi.org/10.1088/1748-9326/ab1b7f</a>
+</div>
+<div id="ref-shoji1998estimation" class="csl-entry" role="listitem">
+Shoji, I., &amp; Ozaki, T. (1998). Estimation for nonlinear stochastic differential equations by a local linearization method. <em>Stochastic Analysis and Applications</em>, <em>16</em>(4), 733-752. <a href="https://doi.org/10.1080/07362999808809559">https://doi.org/10.1080/07362999808809559</a>
+</div>
+<div id="ref-taiz2022plant" class="csl-entry" role="listitem">
+Taiz, L., Zeiger, E., Møller, I. M., &amp; Murphy, A. (2022). <em>Plant Physiology and Development</em> (7th ed.). Oxford University Press.
+</div>
+<div id="ref-thomas2014stay" class="csl-entry" role="listitem">
+Thomas, H., &amp; Ougham, H. (2014). The stay-green trait. <em>Journal of Experimental Botany</em>, <em>65</em>(14), 3889-3900. <a href="https://doi.org/10.1093/jxb/eru033">https://doi.org/10.1093/jxb/eru033</a>
+</div>
+<div id="ref-wilkinson2018stochastic" class="csl-entry" role="listitem">
+Wilkinson, D. J. (2018). <em>Stochastic Modelling for Systems Biology</em> (3rd ed.). CRC Press.
+</div>
+</div>
+</section>
 </section>
 
 </main> <!-- /main -->

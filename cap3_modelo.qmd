@@ -153,44 +153,37 @@ La @eq-momento-primer-orden demuestra una propiedad fundamental para la validaci
 
 ### Esquema de Euler-Maruyama para el modelo fenológico
 
-Debido a que la presencia del término retardado $X(t-\tau)$ y de las series climáticas empíricas $\mathbf{C}(t)$ impide obtener una solución analítica elemental cerrada para la @eq-sdde sobre horizontes arbitrarios, es necesario recurrir a métodos de integración numérica en tiempo discreto [@kloeden1992numerical; @mao2007stochastic]. Siguiendo la extensión de @mao2007stochastic (Sección 5.5) para ecuaciones diferenciales estocásticas funcionales, aplicamos el **esquema de Euler-Maruyama** sobre una partición temporal uniforme.
+Debido a la presencia del término retardado $X(t-\tau)$ y de las series climáticas empíricas $\mathbf{C}(t)$, la solución de la @eq-sdde sobre horizontes temporales arbitrarios requiere métodos de integración numérica. En este trabajo se emplea el esquema de Euler-Maruyama, cuya fundamentación teórica, condiciones de aplicación y propiedades de convergencia se desarrollaron en la @sec-euler-maruyama del Capítulo 1.
 
-Sea $[0, T]$ el horizonte de observación de un periodo fenológico continuo y sea $\Delta t > 0$ el paso de discretización temporal, elegido de tal forma que el retraso fisiológico $\tau$ sea un múltiplo entero del paso de malla, definiendo el índice de rezago discreto $k = \tau / \Delta t \in \mathbb{N}$ y el número total de pasos $N = T / \Delta t \in \mathbb{N}$. Esto define la malla temporal uniforme $t_n = n \Delta t$ para $n = -k, -k+1, \dots, 0, 1, \dots, N$. Denotando por $X_n \approx X(t_n)$ la aproximación numérica del índice $\text{GCC}$ en el nodo $t_n$ y por $\mathbf{C}_n = \mathbf{C}(t_n) = [\text{Rad}_n, \text{Temp}_n, \text{Prec}_n]^T$ el vector de forzantes climáticas evaluado en el extremo izquierdo del subintervalo $[t_n, t_{n+1}]$, el esquema de Euler-Maruyama para la @eq-sdde se define recursivamente como:
+Sea $[0,T]$ el horizonte de observación de un periodo fenológico y $\Delta t>0$ el paso de discretización temporal. Se considera que el retraso fisiológico $\tau$ y el horizonte $T$ son múltiplos enteros de dicho paso, de modo que $k=\tau/\Delta t\in\mathbb{N}$ y $N=T/\Delta t\in\mathbb{N}$. Esto induce la malla uniforme $t_n=n\Delta t$, para $n=-k,-k+1,\ldots,N$. Denotando por $X_n\approx X(t_n)$ la aproximación numérica del índice GCC y por $\mathbf{C}_n=\mathbf{C}(t_n)=[\text{Rad}_n,\text{Temp}_n,\text{Prec}_n]^T$ el vector de variables climáticas, la discretización de la @eq-sdde queda definida recursivamente por:
 
 $$
 \begin{cases}
-X_n = \phi(t_n), & n = -k, -k+1, \dots, 0, \\
-X_{n+1} = X_n + \left[ \alpha + \beta X_n + \gamma X_{n-k} + \boldsymbol{\delta}^T \mathbf{C}_n \right] \Delta t + g(X_n) \, \Delta W_n, & n = 0, 1, \dots, N-1,
+X_n=\phi(t_n), & n=-k,-k+1,\ldots,0,\\
+X_{n+1}=X_n+
+\left[
+\alpha+\beta X_n+\gamma X_{n-k}
++\boldsymbol{\delta}^{T}\mathbf{C}_n
+\right]\Delta t
++g(X_n)\Delta W_n,
+& n=0,1,\ldots,N-1.
 \end{cases}
 $$ {#eq-esquema-em-general}
 
-donde $\Delta W_n = W(t_{n+1}) - W(t_n) \sim \mathcal{N}(0, \Delta t)$ representa el incremento browniano independiente sobre $[t_n, t_{n+1}]$, el cual puede generarse numéricamente mediante $\Delta W_n = \sqrt{\Delta t}\, Z_n$ con $Z_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, 1)$, y donde $g(X_n) = \sigma_{\text{SDDE}} X_n$ en el caso multiplicativo o $g(X_n) = \sigma$ en la formulación aditiva homocedástica.
+Aquí, $\Delta W_n=W(t_{n+1})-W(t_n)$ representa el incremento independiente del movimiento browniano en cada subintervalo, generado mediante $\Delta W_n=\sqrt{\Delta t},Z_n$, donde $Z_n\stackrel{\text{i.i.d.}}{\sim}\mathcal{N}(0,1)$. El coeficiente de difusión se especifica según la estructura de ruido considerada: $g(X_n)=\sigma_{\text{SDDE}}X_n$ para ruido multiplicativo o $g(X_n)=\sigma$ para ruido aditivo homocedástico.
 
-### Análisis de convergencia fuerte, débil y error de truncamiento
 
-Como se fundamentó en el Capítulo 1 a partir de la teoría de @kloeden1992numerical y @mao2007stochastic, la fidelidad numérica del esquema @eq-esquema-em-general se evalúa mediante la convergencia fuerte (aproximación trayectoria a trayectoria, esencial para simular escenarios fenológicos realistas) y la convergencia débil (aproximación de los momentos estadísticos y cuantiles de la distribución).
+### Convergencia numérica y control del error
 
-Definamos el **residuo o error de truncamiento local** $R_n$ en el $n$-ésimo paso como la discrepancia entre el incremento exacto de la solución continua $X(t_{n+1}) - X(t_n)$ partiendo de la historia verdadera en $t_n$ y el incremento de un paso calculado por el esquema de Euler-Maruyama:
+La validez de la aproximación numérica depende de las condiciones de regularidad de los coeficientes y del comportamiento del historial inicial. Como se estableció en la @sec-euler-maruyama del Capítulo 1, bajo las condiciones de Lipschitz uniforme, crecimiento lineal y regularidad del historial requeridas por el teorema de convergencia de Euler-Maruyama para SDDEs de @mao2007stochastic (Teorema 5.5.5), la aproximación continua converge a la solución exacta en sentido fuerte con orden $\gamma=1/2$. Asimismo, bajo condiciones adicionales de regularidad espacial, se obtiene convergencia débil de orden $\beta=1$. Estos resultados proporcionan el fundamento teórico para emplear el esquema en la simulación de trayectorias fenológicas y en la aproximación de sus propiedades estadísticas.
 
-$$
-R_n = X(t_{n+1}) - X(t_n) - \mu(t_n, X(t_n), X(t_n - \tau))\Delta t - g(t_n, X(t_n))\Delta W_n.
-$$ {#eq-error-truncamiento-local}
-
-Desarrollando la solución exacta mediante la expansión estocástica de Itô-Taylor sobre $[t_n, t_{n+1}]$ [@kloeden1992numerical, pp. 330-332], el término dominante no capturado por el esquema de Euler-Maruyama en presencia de ruido multiplicativo corresponde a la integral estocástica doble $\sigma^2 X(t_n) \int_{t_n}^{t_{n+1}} \int_{t_n}^s dW(u)\,dW(s) = \frac{1}{2}\sigma^2 X(t_n)\left((\Delta W_n)^2 - \Delta t\right)$, cuya norma en media cuadrática es de orden $\mathcal{O}(\Delta t)$. Por su parte, en la aproximación con ruido aditivo constante ($g(t, x) = \sigma$), la derivada espacial del coeficiente de difusión se anula idénticamente ($\frac{\partial g}{\partial x} = 0$), provocando que el término correctivo de segundo orden de Milstein desaparezca exactamente y que el esquema de Euler-Maruyama coincida con el esquema de Milstein [@kloeden1992numerical; @milstein1995numerical].
-
-En general, bajo las condiciones de Lipschitz y crecimiento lineal demostradas en el @thm-existencia-modelo-gcc, @mao2007stochastic (Teorema 5.5.4, pp. 166-168) demuestra que la interpolación continua $Y^{\Delta t}(t)$ del esquema de Euler-Maruyama para SDDEs verifica la cota de error global fuerte en norma $\mathcal{L}^2$:
+En particular, la convergencia fuerte permite controlar el error entre las trayectorias aproximadas y la solución exacta, mientras que la convergencia débil respalda la estimación de cantidades distribucionales mediante simulaciones de Monte Carlo. Por consiguiente, la esperanza empírica
 
 $$
-\left( \mathbb{E}\left[ \sup_{0 \le t \le T} |X(t) - Y^{\Delta t}(t)|^2 \right] \right)^{1/2} \le C_1 (\Delta t)^{1/2},
-$$ {#eq-orden-fuerte-cap3}
-
-lo que garantiza un **orden de convergencia fuerte $\gamma = 1/2$**. Paralelamente, para toda función de prueba suficientemente suave $f \in C_P^4(\mathbb{R}; \mathbb{R})$, el error en la aproximación de los momentos estadísticos satisface la cota de **convergencia débil de orden $\beta = 1.0$** [@kloeden1992numerical; @milstein1995numerical]:
-
+\widehat{\mu}t=\frac{1}{M}\sum{m=1}^{M}X_t^{(m)}
 $$
-\left| \mathbb{E}[f(X(T))] - \mathbb{E}[f(X_N)] \right| \le C_2 (\Delta t)^{1.0}.
-$$ {#eq-orden-debil-cap3}
 
-Esta propiedad de convergencia débil de primer orden respalda directamente el cálculo de la esperanza empírica $\hat{\mu}_t = \frac{1}{M}\sum_{m=1}^M X_t^{(m)}$ y de las bandas de predicción intercuantílicas al $95\%$ obtenidas mediante simulación de Monte Carlo en este estudio.
+y las bandas de predicción intercuantílicas del $95%$ se interpretan como aproximaciones numéricas de las correspondientes propiedades estadísticas del modelo. La precisión de estas estimaciones depende tanto del paso temporal $\Delta t$ como del número de trayectorias simuladas $M$.
 
 ### Consideraciones prácticas para el paso unitario $\Delta t = 1\text{ día}$
 
@@ -200,11 +193,6 @@ En el estudio empírico de series fenológicas derivadas de la red PhenoCam y fo
 2. **Estandarización de los incrementos brownianos:** Para $\Delta t = 1$, la distribución del incremento del proceso de Wiener se reduce a una normal estándar, $\Delta W_t \sim \mathcal{N}(0, 1)$, por lo que la perturbación estocástica diaria $\epsilon_t = \sigma \Delta W_t$ sigue directamente una distribución gaussiana centrada $\mathcal{N}(0, \sigma^2)$.
 3. **Interpretación como tasas de cambio diarias:** Los parámetros estimados ($\alpha, \beta, \gamma, \boldsymbol{\delta}, \sigma$) quedan expresados de forma natural en escala diaria ($\text{días}^{-1}$), representando el aporte neto de cada proceso biofísico al cambio diario del índice de verdor $\Delta X_t = X_{t+1} - X_t$ [@dietze2017ecological].
 4. **Equilibrio entre error de discretización y error de observación:** Aunque desde el punto de vista estrictamente numérico un paso $\Delta t = 1$ no es infinitesimal, en el pronóstico ecológico con datos diarios el error de truncamiento de Euler-Maruyama queda subsumido dentro de la varianza residual observacional del sensor óptico [@dietze2017ecological; @shoji1998estimation], evitando la introducción de artefactos por sub-muestreo o interpolación sintética intra-diaria.
-
-::: {.callout-note}
-### Nota sobre Reproducibilidad Computacional
-Siguiendo los estándares de presentación editorial académica, se omite la transcripción literal de bloques extensos de código de programación dentro del cuerpo del capítulo. La implementación completa en lenguaje Python (utilizando las bibliotecas científicas `numpy`, `pandas`, `statsmodels` y `scipy.stats`) se encuentra documentada y ejecutada en el cuaderno computacional `Tesis.ipynb` del repositorio del proyecto. A lo largo de las siguientes secciones se detallan matemáticamente las estructuras matriciales y los algoritmos exactos ejecutados por las funciones modulares `construir_dataset_sdde`, `ajustar_ols_sdde` y `simular_euler_maruyama_mc`.
-:::
 
 ---
 
@@ -418,20 +406,8 @@ $$ {#eq-condicion-rango}
 donde la matriz de Gram $\mathbf{X}^T \mathbf{X} \in \mathbb{R}^{6 \times 6}$ es simétrica y definida positiva. Aunque en datos continuos con fluctuaciones reales el determinante $\det(\mathbf{X}^T \mathbf{X})$ es casi seguramente distinto de cero, la **identificabilidad práctica** puede verse comprometida por dos factores numéricos que deben diagnosticarse cuidadosamente [@belsley1980regression]:
 
 1. **Colinealidad aproximada entre regresores climáticos y fenológicos:** Durante el ciclo estacional boreal en Umeå, la radiación solar ($\text{Rad}_t$) y la temperatura del aire ($\text{Temp}_t$) exhiben una correlación positiva moderada-alta ($r = 0.637$ en nuestra matriz de correlación global), y ambas se correlacionan con el nivel del índice de verdor $X_t$ ($r = 0.681$ entre $\text{GCC}$ y $\text{Temp}_t$). Asimismo, para retrasos muy cortos ($\tau \in \{1, 2\}$), el estado actual $X_t$ y el estado retardado $X_{t-\tau}$ son fuertemente colineales, razón por la cual la malla de búsqueda en el cuaderno computacional inicia en $\tau_{\min} = 3\text{ días}$.
+
 2. **Disparidad en las órdenes de magnitud dimensionales:** En la matriz de diseño $\mathbf{X}$, la temperatura en Kelvin es del orden de $\mathcal{O}(10^2)$ ($\text{Temp}_t \approx 290\text{ K}$), la radiación solar es del orden de $\mathcal{O}(10^2)$ ($\text{Rad}_t \approx 200\text{ W/m}^2$), el índice $\text{GCC}$ es del orden de $\mathcal{O}(10^{-1})$ ($X_t \approx 0.34$), mientras que la precipitación en metros del reanálisis ERA5 es del orden de $\mathcal{O}(10^{-3})$ ($\text{Prec}_t \approx 0.0018\text{ m}$). Esta diferencia de hasta cinco órdenes de magnitud entre columnas implica que los coeficientes estimados $\hat{\delta}_j$ tengan escalas inversamente proporcionales (por ejemplo, $\hat{\delta}_1 \sim \mathcal{O}(10^{-6})$ frente a $\hat{\delta}_3 \sim \mathcal{O}(10^{-1})$).
-
-Para cuantificar formalmente la estabilidad numérica y el grado de multicolinealidad en la identificabilidad práctica, se definen dos métricas diagnósticas [@belsley1980regression; @montgomery2021introduction]:
-
-* **Número de condición ($\kappa$):** Sea $\lambda_{\max}$ y $\lambda_{\min}$ el mayor y el menor valor propio (*eigenvalue*) de la matriz $\mathbf{X}^T \mathbf{X}$ (o de su versión con columnas estandarizadas a longitud unitaria). El número de condición espectral se define como:
-  $$
-  \kappa(\mathbf{X}) = \sqrt{\frac{\lambda_{\max}(\mathbf{X}^T \mathbf{X})}{\lambda_{\min}(\mathbf{X}^T \mathbf{X})}} = \frac{\varsigma_{\max}(\mathbf{X})}{\varsigma_{\min}(\mathbf{X})},
-  $$ {#eq-numero-condicion}
-  donde $\varsigma_{\max}$ y $\varsigma_{\min}$ son los valores singulares extremos de $\mathbf{X}$. Valores de $\kappa(\mathbf{X}) < 30$ en la matriz estandarizada indican ausencia de colinealidad severa. En caso de requerirse reducir el número de condición de la matriz sin estandarizar, una práctica recomendada es reescalar $\text{Prec}_t$ de metros a milímetros ($\text{Prec}_t^{(\text{mm})} = 10^3 \text{Prec}_t^{(\text{m})}$), lo cual divide automáticamente a $\hat{\delta}_3$ y su error estándar entre $10^3$ sin alterar en absoluto los estadísticos $t$, los $p$-valores, las predicciones $\Delta \hat{X}_t$ ni el $R^2$ del modelo (invarianza por transformación lineal de escala).
-* **Factor de Inflación de la Varianza ($\text{VIF}$):** Para cada regresor no constante $j \in \{1, \dots, 5\}$, el factor de inflación de la varianza mide cuánto se incrementa la varianza del estimador $\hat{\theta}_j$ debido a la dependencia lineal con los demás regresores:
-  $$
-  \text{VIF}_j = \frac{1}{1 - R_j^2},
-  $$ {#eq-vif}
-  donde $R_j^2$ es el coeficiente de determinación obtenido al regresar la $j$-ésima variable explicativa sobre las cuatro variables restantes. En la literatura econométrica y ecológica, valores de $\text{VIF}_j < 5$ (o el umbral conservador $\text{VIF}_j < 10$) confirman que la identificabilidad práctica no está degradada por multicolinealidad [@montgomery2021introduction; @fox2015applied].
 
 ### Estimación de parámetros por Mínimos Cuadrados Ordinarios (OLS) y Máxima Verosimilitud
 
