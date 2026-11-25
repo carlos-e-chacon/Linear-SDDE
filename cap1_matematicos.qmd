@@ -1,8 +1,8 @@
 # Fundamentos Matemáticos {#sec-fundamentos-matematicos}
 
-El modelado de sistemas dinámicos complejos en las ciencias biológicas y ambientales suele partir del supuesto determinista de que las tasas de cambio del sistema son completamente conocidas. Sin embargo, en escenarios reales, los procesos fisiológicos y ecológicos están sujetos de manera inherente tanto a fluctuaciones ambientales aleatorias como a efectos de memoria temporal derivados de estados pasados. El presente capítulo establece el marco probabilístico, analítico y numérico indispensable para formular, analizar y discretizar ecuaciones diferenciales estocásticas con retraso (SDDE, por sus siglas en inglés), así como su vinculación estructural con los modelos autorregresivos en tiempo discreto.
+El modelado de sistemas dinámicos complejos en las ciencias biológicas y ambientales suele partir del supuesto determinista de que las tasas de cambio del sistema son completamente conocidas. Sin embargo, en escenarios reales, los procesos fisiológicos y ecológicos están sujetos de manera inherente tanto a fluctuaciones ambientales aleatorias como a efectos de memoria temporal derivados de estados pasados. El presente capítulo establece el marco probabilístico, analítico y numérico indispensable para formular, analizar y discretizar Ecuaciones Diferenciales Estocásticas con Retraso (SDDE, por sus siglas en inglés), así como su vinculación estructural con los modelos autorregresivos en tiempo discreto.
 
-## Procesos estocásticos y movimiento browniano {#sec-procesos-mb}
+## Procesos estocásticos y Movimiento Browniano {#sec-procesos-mb}
 
 Para formalizar matemáticamente la evolución temporal de un sistema sujeto a incertidumbre, es necesario definir la estructura probabilística sobre la cual evolucionan las trayectorias del proceso.
 
@@ -49,15 +49,13 @@ Para representar matemáticamente las fluctuaciones continuas de alta frecuencia
 
 ::: {#def-movimiento-browniano}
 
-### Movimiento browniano estándar (Proceso de Wiener)
+### Movimiento Browniano estándar (Proceso de Wiener)
 
 Sea $(\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \ge 0}, \mathbb{P})$ un espacio de probabilidad filtrado. Un proceso estocástico a tiempo continuo real-valuado $\{W(t)\}_{t \ge 0}$, continuo y $\{\mathcal{F}_t\}$-adaptado, es un **movimiento browniano estándar unidimensional** si cumple con las siguientes propiedades [@mao2007stochastic]:
 
 1. **Condición inicial nula:** $W(0) = 0$ casi seguramente ($\mathbb{P}\{W(0) = 0\} = 1$).
 
-
 2. **Incrementos normales y estacionarios:** Para cualesquiera instantes $0 \le s < t < \infty$, el incremento $W(t) - W(s)$ sigue una distribución normal con media cero y varianza $t - s$, es decir, $W(t) - W(s) \sim \mathcal{N}(0, t - s)$.
-
 
 3. **Incrementos independientes:** Para todo $0 \le s < t < \infty$, el incremento $W(t) - W(s)$ es estocásticamente independiente de la $\sigma$-álgebra pasada $\mathcal{F}_s$. En consecuencia, para cualquier partición finita $0 \le t_0 < t_1 < \dots < t_k < \infty$, los incrementos $W(t_i) - W(t_{i-1})$ ($1 \le i \le k$) son variables aleatorias mutuamente independientes.
 
@@ -70,9 +68,8 @@ El movimiento browniano posee propiedades analíticas y de regularidad de trayec
 
 * **Invarianza de escala y simetría:** El proceso $\{-W(t)\}_{t \ge 0}$ es un movimiento browniano respecto a $\{\mathcal{F}_t\}$, y para toda constante $c > 0$, el proceso reescalado $X(t) = c^{-1/2}W(ct)$ constituye también un movimiento browniano respecto a la filtración $\{\mathcal{F}_{ct}\}$.
 
----
 
-## Ecuaciones diferenciales estocásticas (SDE) {#sec-sde}
+## Ecuaciones Diferenciales Estocásticas {#sec-sde}
 
 En el modelado de crecimiento biológico o poblacional, una ecuación diferencial ordinaria (EDO) clásica de la forma $\frac{dN(t)}{dt} = a(t)N(t)$ presupone que la tasa relativa de crecimiento $a(t)$ es determinista. Si dicha tasa se ve perturbada por fluctuaciones ambientales aleatorias de la forma $a(t) = r(t) + \sigma(t)\text{``ruido''}$, donde el término de ruido blanco $\dot{W}(t)$ se interpreta formalmente como la derivada temporal del movimiento browniano ($dW(t) = \dot{W}(t)dt$), el sistema adquiere la representación integral [@mao2007stochastic]:
 
@@ -80,7 +77,7 @@ $$
 N(t) = N_0 + \int_0^t r(s)N(s)ds + \int_0^t \sigma(s)N(s)dW(s).
 $${#eq-motivacion-sde}
 
-Dado que las trayectorias del movimiento browniano $W(t)$ no son diferenciables en ningún punto ni poseen variación acotada, la segunda integral en la @eq-motivacion-sde no puede definirse en el sentido ordinario de Riemann-Stieltjes ni de Lebesgue-Stieltjes. Para superar esta limitación, Kiyosi Itô introdujo en 1949 la integral estocástica que lleva su nombre, explotando la propiedad de martingala e isometría en $L^2$ del proceso de Wiener.
+Dado que las trayectorias del Movimiento Browniano $W(t)$ no son diferenciables en ningún punto ni poseen variación acotada, la segunda integral en la @eq-motivacion-sde no puede definirse en el sentido ordinario de Riemann-Stieltjes ni de Lebesgue-Stieltjes. Para superar esta limitación, Kiyosi Itô introdujo en 1949 la integral estocástica que lleva su nombre, explotando la propiedad de martingala e isometría en $L^2$ del proceso de Wiener.
 
 Denotemos por $\mathcal{L}^1(\mathbb{R}_+; \mathbb{R}^d)$ la familia de todos los procesos medibles y $\{\mathcal{F}_t\}$-adaptados $f = \{f(t)\}_{t \ge 0}$ tales que $\int_0^T \vert{}f(t)\vert{}dt < \infty$ c.s. para todo $T > 0$, y por $\mathcal{L}^2(\mathbb{R}_+; \mathbb{R}^{d \times m})$ la familia de procesos matriciales adaptados $g = \{g(t)\}_{t \ge 0}$ tales que $\int_0^T \vert{}g(t)\vert{}^2 dt < \infty$ c.s. para todo $T > 0$. Asimismo, definimos el espacio $\mathcal{M}^2([t_0, T]; \mathbb{R}^d)$ como el subconjunto de procesos en $\mathcal{L}^2([t_0, T]; \mathbb{R}^d)$ que satisfacen $\mathbb{E}\int_{t_0}^T \vert{}g(t)\vert{}^2 dt < \infty$.
 
@@ -136,15 +133,15 @@ Un proceso estocástico $\{X(t)\}_{t_0 \le t \le T}$ valuado en $\mathbb{R}^d$ s
 Asimismo, se dice que la solución es **única** (en el sentido de indistinguibilidad o unicidad por trayectorias) si para cualquier otra solución $\{\tilde{X}(t)\}$ se cumple que $\mathbb{P}\{X(t) = \tilde{X}(t) \text{ para todo } t_0 \le t \le T\} = 1$.
 :::
 
----
 
-## Ecuaciones diferenciales estocásticas con retraso (SDDE) {#sec-sdde}
+
+## Ecuaciones Diferenciales Estocásticas con Retraso (SDDE) {#sec-sdde}
 
 ### Motivación y ruptura del principio de causalidad instantánea
 
 En numerosas aplicaciones clásicas se asume que el sistema bajo estudio está gobernado por un principio de causalidad instantánea (o propiedad de Markov en $\mathbb{R}^d$), según el cual el estado futuro del sistema queda determinado exclusivamente por su estado presente y es independiente de los estados pasados [@mao2007stochastic]. Sin embargo, bajo un análisis más riguroso, este supuesto suele constituir únicamente una primera aproximación: en sistemas biológicos, ecológicos y físicos reales, la tasa de cambio actual depende intrínsecamente de la historia pasada del sistema [@mohammed1984stochastic; @ogle2015quantifying].
 
-Históricamente, las ecuaciones diferenciales con dependencia del pasado surgieron en el modelado determinista a través de los trabajos pioneros de @volterra1928theorie y @volterra1931theorie sobre dinámicas depredador-presa con efectos hereditarios, la ecuación en diferencias-diferenciales de Lord Cherwell, y el modelo de crecimiento poblacional con memoria distribuida de @dunkel1968single. Al incorporar simultáneamente la memoria histórica del sistema y las perturbaciones estocásticas ambientales, se arriba a la teoría de las **ecuaciones diferenciales estocásticas funcionales** (SFDE, *Stochastic Functional Differential Equations*) y su caso particular de mayor relevancia práctica: las **ecuaciones diferenciales estocásticas con retraso** (SDDE, *Stochastic Differential Delay Equations*) [@mao2007stochastic; @mohammed1984stochastic].
+Históricamente, las ecuaciones diferenciales con dependencia del pasado surgieron en el modelado determinista a través de los trabajos pioneros de @volterra1928theorie y @volterra1931theorie sobre dinámicas depredador-presa con efectos hereditarios, la ecuación en diferencias-diferenciales de Lord Cherwell, y el modelo de crecimiento poblacional con memoria distribuida de @dunkel1968single. Al incorporar simultáneamente la memoria histórica del sistema y las perturbaciones estocásticas ambientales, se arriba a la teoría de las **ecuaciones diferenciales estocásticas funcionales** (SFDE, *Stochastic Functional Differential Equations*) y su caso particular de mayor relevancia práctica: las **Ecuaciones Diferenciales Estocásticas con Retraso** (SDDE, *Stochastic Differential Delay Equations*) [@mao2007stochastic; @mohammed1984stochastic].
 
 ### Espacio de fases funcional infinito-dimensional
 
@@ -191,7 +188,7 @@ La distinción estructural fundamental entre una SDE clásica y una SDDE radica 
 
 ### Formulación de SDDEs con retraso discreto y método de los pasos
 
-Dentro de la familia de las SFDEs, las **ecuaciones diferenciales estocásticas con retraso discreto** (SDDEs) se obtienen cuando la dependencia funcional sobre el pasado se concentra en uno o varios retardos puntuales [@mao2007stochastic]. Sea $\delta: [t_0, T] \to [0, \tau]$ una función de retraso Borel-medible. Definiendo los funcionales $f(\varphi, t) = F(\varphi(0), \varphi(-\delta(t)), t)$ y $g(\varphi, t) = G(\varphi(0), \varphi(-\delta(t)), t)$ para funciones medibles $F: \mathbb{R}^d \times \mathbb{R}^d \times [t_0, T] \to \mathbb{R}^d$ y $G: \mathbb{R}^d \times \mathbb{R}^d \times [t_0, T] \to \mathbb{R}^{d \times m}$, se obtiene la SDDE con retraso dependiente del tiempo:
+Dentro de la familia de las SFDEs, las **Ecuaciones Diferenciales Estocásticas con Retraso Discreto** (SDDEs) se obtienen cuando la dependencia funcional sobre el pasado se concentra en uno o varios retardos puntuales [@mao2007stochastic]. Sea $\delta: [t_0, T] \to [0, \tau]$ una función de retraso Borel-medible. Definiendo los funcionales $f(\varphi, t) = F(\varphi(0), \varphi(-\delta(t)), t)$ y $g(\varphi, t) = G(\varphi(0), \varphi(-\delta(t)), t)$ para funciones medibles $F: \mathbb{R}^d \times \mathbb{R}^d \times [t_0, T] \to \mathbb{R}^d$ y $G: \mathbb{R}^d \times \mathbb{R}^d \times [t_0, T] \to \mathbb{R}^{d \times m}$, se obtiene la SDDE con retraso dependiente del tiempo:
 
 $$
 dX(t) = F(X(t), X(t - \delta(t)), t)dt + G(X(t), X(t - \delta(t)), t)dW(t), \quad t \in [t_0, T].
@@ -210,9 +207,9 @@ $${#eq-sdde-integral}
 
 sujeta al historial inicial $X(t_0 + \theta) = \xi(\theta)$ para $\theta \in [-\tau, 0]$.
 
-A diferencia de las ecuaciones diferenciales estocásticas (SDEs) lineales sin retraso, las ecuaciones diferenciales estocásticas con retraso (SDDEs) no admiten, en general, una representación analítica global mediante una única exponencial estocástica, debido a la dependencia temporal introducida por el término retardado $X(t-\tau)$. Sin embargo, como demuestra @mao2007stochastic, es posible construir su solución de manera recursiva mediante el **método de los pasos** (*method of steps*). La idea fundamental consiste en dividir el horizonte temporal en subintervalos consecutivos de longitud $\tau$. En el primer intervalo, $[t_0,t_0+\tau]$, el argumento retardado $t-\tau$ pertenece al intervalo histórico $[t_0-\tau,t_0]$, por lo que $X(t-\tau)$ es una función conocida y puede tratarse como un término externo. De esta manera, la SDDE se transforma en una SDE lineal sin retraso, cuya solución puede obtenerse mediante la fórmula de variación de constantes estocástica. Una vez determinada la trayectoria en este primer intervalo, dicha solución pasa a formar parte de la información conocida para resolver el siguiente subintervalo, $[t_0+\tau,t_0+2\tau]$. El procedimiento se repite sucesivamente, utilizando en cada etapa la solución del intervalo anterior como término retardado conocido y la condición final del paso previo como condición inicial del siguiente. Así, mediante una construcción inductiva sobre los intervalos $[t_0+j\tau,t_0+(j+1)\tau]$, con $j=0,1,2,\ldots$, se obtiene una solución que cubre todo el horizonte temporal considerado. No obstante, aunque este procedimiento establece una construcción analítica rigurosa de la solución, la complejidad de las integrales estocásticas acumuladas dificulta su tratamiento explícito conforme aumenta el número de pasos. Por esta razón, en aplicaciones científicas y estadísticas resulta conveniente complementar este enfoque con el análisis de momentos y los métodos de discretización numérica.
+A diferencia de las Ecuaciones Diferenciales Estocásticas (SDEs) lineales sin retraso, las Ecuaciones Diferenciales Estocásticas con Retraso (SDDEs) no admiten, en general, una representación analítica global mediante una única exponencial estocástica, debido a la dependencia temporal introducida por el término retardado $X(t-\tau)$. Sin embargo, como demuestra @mao2007stochastic, es posible construir su solución de manera recursiva mediante el **método de los pasos** (*method of steps*). La idea fundamental consiste en dividir el horizonte temporal en subintervalos consecutivos de longitud $\tau$. En el primer intervalo, $[t_0,t_0+\tau]$, el argumento retardado $t-\tau$ pertenece al intervalo histórico $[t_0-\tau,t_0]$, por lo que $X(t-\tau)$ es una función conocida y puede tratarse como un término externo. De esta manera, la SDDE se transforma en una SDE lineal sin retraso, cuya solución puede obtenerse mediante la fórmula de variación de constantes estocástica. Una vez determinada la trayectoria en este primer intervalo, dicha solución pasa a formar parte de la información conocida para resolver el siguiente subintervalo, $[t_0+\tau,t_0+2\tau]$. El procedimiento se repite sucesivamente, utilizando en cada etapa la solución del intervalo anterior como término retardado conocido y la condición final del paso previo como condición inicial del siguiente. Así, mediante una construcción inductiva sobre los intervalos $[t_0+j\tau,t_0+(j+1)\tau]$, con $j=0,1,2,\ldots$, se obtiene una solución que cubre todo el horizonte temporal considerado. No obstante, aunque este procedimiento establece una construcción analítica rigurosa de la solución, la complejidad de las integrales estocásticas acumuladas dificulta su tratamiento explícito conforme aumenta el número de pasos. Por esta razón, en aplicaciones científicas y estadísticas resulta conveniente complementar este enfoque con el análisis de momentos y los métodos de discretización numérica.
 
----
+
 
 ## Existencia y unicidad de soluciones {#sec-existencia-unicidad}
 
@@ -263,7 +260,7 @@ $$|f(\varphi, t)|^2 \vee |g(\varphi, t)|^2 \le K\left(1 + \|\varphi\|^2\right).
 $$ {#eq-crecimiento-lineal-funcional}
 
 
-Entonces, dado cualquier historial inicial $\xi \in L^2_{\mathcal{F}_{t_0}}([-\tau, 0]; \mathbb{R}^d)$, existe una única solución global $X(t)$ para el problema de valor inicial (@eq-sfde-general)–(@-condicion-inicial-funcional) en $[t_0 - \tau, T]$. Además, dicha solución pertenece al espacio $\mathcal{M}^2([t_0 - \tau, T]; \mathbb{R}^d)$ y satisface la cota de segundo momento en norma del supremo:
+Entonces, dado cualquier historial inicial $\xi \in L^2_{\mathcal{F}_{t_0}}([-\tau, 0]; \mathbb{R}^d)$, existe una única solución global $X(t)$ para el problema de valor inicial (@eq-sfde-general)–(@eq-condicion-inicial-funcional) en $[t_0 - \tau, T]$. Además, dicha solución pertenece al espacio $\mathcal{M}^2([t_0 - \tau, T]; \mathbb{R}^d)$ y satisface la cota de segundo momento en norma del supremo:
 
 $$\mathbb{E}\left( \sup_{t_0 - \tau \le t \le T} |X(t)|^2 \right) \le \left(1 + 4\mathbb{E}\|\xi\|^2\right) e^{3K(T - t_0)(T - t_0 + 4)}.
 $$ {#eq-cota-l2-sfde}
@@ -315,9 +312,8 @@ Entonces, dado cualquier historial inicial $\xi \in L^2_{\mathcal{F}_{t_0}}([-\t
 
 La justificación de este teorema radica en que, sobre el primer subintervalo $[t_0, t_0 + \tau]$, la SDDE se escribe como $dX(t) = F(X(t), \xi(t - t_0 - \tau), t)dt + G(X(t), \xi(t - t_0 - \tau), t)dW(t)$ con $X(t_0) = \xi(0)$. Esta es una SDE ordinaria sin retraso que posee solución única bajo crecimiento lineal y continuidad de Lipschitz local exclusivamente en $x$. Una vez conocida de manera única $X(t)$ en $[t_0, t_0 + \tau]$, el argumento se repite inductivamente en $[t_0 + \tau, t_0 + 2\tau]$, $[t_0 + 2\tau, t_0 + 3\tau]$, hasta cubrir todo el intervalo $[t_0 - \tau, T]$. Más aún, en el caso particular donde los coeficientes dependen únicamente del estado retardado ($dX(t) = F(X(t-\tau), t)dt + G(X(t-\tau), t)dW(t)$), ni siquiera se requiere la condición de Lipschitz local, bastando únicamente la condición de crecimiento lineal para que las integrales estocásticas sucesivas estén bien definidas.
 
-En el contexto específico del modelo fenológico lineal estudiado en esta tesis, donde la deriva es afín respecto a $X(t)$ y $X(t-\tau)$, $\mu(t, x, y) = \alpha + \beta x + \gamma y + \delta^T \mathbf{C}(t)$, con covariables climáticas acotadas en $[0, T]$, y la difusión es lineal o aditiva, las condiciones globales (@eq-lipschitz-ambas) y (@eq-crecimiento-lineal-sdde) se satisfacen de forma trivial, garantizando la existencia y unicidad de una solución fuerte global en todo el dominio temporal $t \ge 0$.
+En el contexto específico del modelo fenológico lineal estudiado en esta tesis, donde la deriva es afín respecto a $X(t)$ y $X(t-\tau)$, $\mu(t, x, y) = \alpha + \beta x + \gamma y + \delta^\top C(t)$, con covariables climáticas acotadas en $[0, T]$, y la difusión es lineal multiplicativa, $g(t, x, y) = \sigma x$, las condiciones globales (Ecuación 1.18) y (Ecuación 1.20) se satisfacen de forma inmediata, garantizando la existencia y unicidad de una solución fuerte global en todo el dominio temporal $t \ge 0$. 
 
----
 
 ## Métodos de discretización: Euler-Maruyama {#sec-euler-maruyama}
 
@@ -345,15 +341,15 @@ $$ {#eq-euler-maruyama-sdde}
 donde $X_n \approx X(t_n)$ denota la aproximación numérica en el nodo $t_n$, y los incrementos brownianos $\Delta W_n = W(t_{n+1}) - W(t_n) = \sqrt{\Delta t}\, Z_n$ están generados por una sucesión de variables aleatorias normales estándar independientes e idénticamente distribuidas $Z_n \sim \mathcal{N}(0, I_m)$.
 
 
-### Convergencia fuerte, convergencia débil y propagación del error
+### Convergencia fuerte, convergencia débil y contraste entre Euler-Maruyama y Milstein
 
-En el análisis numérico estocástico se distinguen dos nociones primordiales de convergencia cuando $\Delta t \to 0$: la **convergencia fuerte**, que mide la cercanía trayectoria a trayectoria entre la aproximación numérica y la solución exacta acopladas al mismo movimiento browniano (indispensable para simular trayectorias realistas), y la **convergencia débil**, que mide la precisión en la aproximación de los momentos y distribuciones de probabilidad [@kloeden1992numerical; @milstein1995numerical].
+En el análisis numérico estocástico se distinguen dos nociones primordiales de convergencia cuando $\Delta t \to 0$: la convergencia fuerte, que mide la cercanía trayectoria a trayectoria entre la aproximación numérica y la solución exacta acopladas al mismo movimiento browniano (indispensable para simular realizaciones realistas), y la convergencia débil, que evalúa la precisión en la aproximación de los momentos y distribuciones de probabilidad [@kloeden1992numerical; @milstein1995numerical].
 
 ::: {#def-convergencia-fuerte-debil}
 
 ### Órdenes de convergencia fuerte y débil
 
-Sea $\{X(t)\}_{t \in [0, T]}$ la solución exacta de una SDDE y $\{X_n\}_{0 \le n \le N}$ su aproximación numérica con paso $\Delta t = T/N$:
+Sea $\{X(t)\}_{t \in [0, T]}$ la solución exacta de una SDDE y $\{X_n\}_{0 \le n \le N}$ su aproximación numérica con paso $\Delta t = T / N$:
 
 1. Se dice que el esquema numérico converge en **sentido fuerte con orden $\gamma > 0$** si existe una constante $C > 0$, independiente de $\Delta t$, tal que [@kloeden1992numerical]:
 
@@ -395,12 +391,46 @@ lo que implica que el método de Euler-Maruyama posee **orden de convergencia fu
 2. Si adicionalmente los coeficientes poseen regularidad espacial suficiente ($C_P^4$), el esquema de Euler-Maruyama alcanza un **orden de convergencia débil $\beta = 1.0$** [@milstein1995numerical; @kloeden1992numerical].
 :::
 
-La reducción del orden de convergencia fuerte a $\gamma = 1/2$ (en contraste con el orden $\gamma = 1.0$ del método de Euler determinista) responde a la naturaleza de la variación cuadrática browniana: dado que $(\mathbb{E}[(\Delta W_n)^2])^{1/2} = (\Delta t)^{1/2}$, el error de truncamiento local por paso al omitir las integrales estocásticas dobles de la expansión de Itô-Taylor es de orden $(\mathbb{E}[|R_n|^2])^{1/2} = \mathcal{O}((\Delta t)^{3/2})$ [@kloeden1992numerical]. Al acumularse a lo largo de $N = T/\Delta t$ subintervalos temporales independientes, el error global escala como:
+La reducción del orden de convergencia fuerte a $\gamma = 1/2$ (en contraste con el orden $\gamma = 1.0$ del método de Euler determinista) responde directamente a la variación cuadrática del movimiento browniano cuando la difusión depende del estado ($\partial G / \partial x \neq 0$). Al aplicar la expansión de Itô-Taylor sobre el subintervalo $[t_n, t_{n+1}]$ en un proceso escalar con difusión dependiente del estado $G(X(t), X(t-\tau), t)$, el término principal omitido por el esquema de Euler-Maruyama involucra la integral estocástica iterada doble:
 
-$$\sqrt{N} \cdot \mathcal{O}\left((\Delta t)^{3/2}\right) = \sqrt{\frac{T}{\Delta t}} \cdot \mathcal{O}\left((\Delta t)^{3/2}\right) = \mathcal{O}\left((\Delta t)^{1/2}\right).
-$$ {#eq-propagacion-error}
+$$
+\begin{aligned}
+R_n^{(1)} & = G(X_n, X_{n-k}, t_n)\frac{\partial G}{\partial x}(X_n, X_{n-k}, t_n)\int_{t_n}^{t_{n+1}}\!\!\int_{t_n}^{s} dW(u)\,dW(s)\\ 
+&= \frac{1}{2} G\frac{\partial G}{\partial x}\left[(\Delta W_n)^2 - \Delta t\right].
+\end{aligned}
+$$
 
-Cabe destacar que cuando el coeficiente de difusión es multiplicativo ($\frac{\partial \sigma}{\partial x} \ne 0$), como ocurre en el Movimiento Browniano Geométrico $dX(t) = \mu X(t)dt + \sigma X(t)dW(t)$, el método de Milstein incorpora el término corrector cuadrático $\frac{1}{2}\sigma \frac{\partial \sigma}{\partial x}\left[(\Delta W_n)^2 - \Delta t\right]$ para recuperar un orden de convergencia fuerte $\gamma = 1.0$ [@kloeden1992numerical; @milstein1995numerical]. Sin embargo, en modelos estocásticos con **ruido aditivo** (donde la volatilidad $\sigma$ es constante e independiente del estado $X(t)$, por lo que $\frac{\partial \sigma}{\partial x} = 0$), dicho término corrector se anula idénticamente y el esquema de Euler-Maruyama coincide algebraicamente con el esquema de Milstein sin requerir derivadas espaciales adicionales.
+Dado que $\mathbb{E}[(\Delta W_n)^2 - \Delta t \mid \mathcal{F}_{t_n}] = 0$ y $\operatorname{Var}\!\left((\Delta W_n)^2 - \Delta t \mid \mathcal{F}_{t_n}\right) = 2(\Delta t)^2$, el error de truncamiento local en norma cuadrática media por paso es de orden $(\mathbb{E}[|R_n^{(1)}|^2])^{1/2} = \mathcal{O}(\Delta t)$. Como dichos residuos conforman una secuencia de diferencias de martingala no correlacionadas a lo largo de los $N = T/\Delta t$ pasos, sus varianzas se acumulan aditivamente y el error fuerte global escala como:
+
+$$
+\sqrt{N}\cdot \mathcal{O}(\Delta t) = \sqrt{\frac{T}{\Delta t}}\cdot \mathcal{O}(\Delta t) = \mathcal{O}\!\left((\Delta t)^{1/2}\right).
+$$
+
+Para eliminar este término dominante en ecuaciones con ruido multiplicativo ($\partial G / \partial x \neq 0$), el esquema de Milstein incorpora explícitamente la corrección cuadrática de Itô-Taylor en la recurrencia numérica [@kloeden1992numerical; @milstein1995numerical].
+
+$$
+\begin{aligned}
+X_{n+1} & = X_n + F(X_n, X_{n-k}, t_n)\Delta t + G(X_n, X_{n-k}, t_n)\Delta W_n\\ 
+& + \frac{1}{2}G(X_n, X_{n-k}, t_n)\frac{\partial G}{\partial x}(X_n, X_{n-k}, t_n)\left[(\Delta W_n)^2 - \Delta t\right].
+\end{aligned}
+$$
+
+En el caso particular de difusión lineal multiplicativa que gobierna el modelo fenológico de esta tesis, $G(x, y, t) = \sigma x$ (donde $\partial G / \partial x = \sigma \neq 0$), el esquema de Euler-Maruyama y el esquema de Milstein no coinciden algebraicamente; la actualización de Milstein adopta la forma explícita:
+
+$$
+\begin{aligned}
+X_{n+1} & = X_n + F(X_n, X_{n-k}, t_n)\Delta t + \sigma X_n \Delta W_n\\ 
+& + \frac{1}{2}\sigma^2 X_n \left[(\Delta W_n)^2 - \Delta t\right].
+\end{aligned}
+$$
+
+Al incluir el término $\frac{1}{2}\sigma^2 X_n[(\Delta W_n)^2 - \Delta t]$, los términos remanentes omitidos de la expansión de Itô-Taylor tienen norma cuadrática media local de orden $\mathcal{O}((\Delta t)^{3/2})$, por lo que su acumulación sobre $N = T/\Delta t$ pasos produce un error global $\sqrt{T/\Delta t}\cdot\mathcal{O}((\Delta t)^{3/2}) = \mathcal{O}(\Delta t)$, elevando el orden de convergencia fuerte a $\gamma = 1.0$ [@kloeden1992numerical; @milstein1995numerical].
+
+Conviene destacar dos propiedades estructurales decisivas para la inferencia y la simulación en los capítulos subsecuentes:
+
+1. Invarianza de la esperanza condicional a un paso y orden débil común: Debido a que $\mathbb{E}\!\left[\frac{1}{2}\sigma^2 X_n((\Delta W_n)^2 - \Delta t) \mid \mathcal{F}_{t_n}\right] = 0$, la corrección de Milstein posee media condicional nula; por consiguiente, ambos esquemas comparten exactamente el mismo orden de convergencia débil ($r_w = 1.0$) para aproximar esperanzas y funcionales distribucionales.
+
+2. Escala del término corrector en regímenes de baja volatilidad: Mientras que el término difusivo de primer orden escala como $\sigma X_n \sqrt{\Delta t}$, el término corrector de Milstein escala cuadráticamente en la volatilidad como $\frac{1}{2}\sigma^2 X_n \Delta t$. En aplicaciones biológicas con intensidad de ruido pequeña ($\sigma \ll 1$), la razón relativa entre ambas contribuciones es de orden $\mathcal{O}(\sigma \sqrt{\Delta t})$. 
 
 
 ## Modelos de series de tiempo: AR(p) y su relación con SDE {#sec-arp-sde}
@@ -409,27 +439,27 @@ Existe un puente teórico directo entre la formulación en tiempo continuo media
 
 ### Modelos autorregresivos AR(p) y equivalencia estructural con SDDEs
 
-En el análisis de series de tiempo univariadas, un **modelo autorregresivo de orden $p$**, denotado por $\text{AR}(p)$, explica el valor futuro de una variable como una combinación lineal afín de sus $p$ observaciones inmediatamente anteriores más una perturbación aleatoria:
+En el análisis de series de tiempo univariadas, un modelo autorregresivo de orden $p$, denotado por $\text{AR}(p)$, explica el valor futuro de una variable como una combinación lineal afín de sus $p$ observaciones inmediatamente anteriores más una perturbación aleatoria homocedástica:
 
 $$
 X_{n+1} = c + \sum_{i=1}^p \phi_i X_{n+1-i} + \varepsilon_n, \quad \varepsilon_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, \sigma_\varepsilon^2),
 $$ {#eq-arp-general}
 
-donde $c \in \mathbb{R}$ es el intercepto, $\phi_1, \dots, \phi_p \in \mathbb{R}$ son los coeficientes autorregresivos asociados a los rezagos $1, \dots, p$, y $\varepsilon_n$ representa el término de error de ruido blanco.
+donde $c \in \mathbb{R}$ es el intercepto, $\phi_1, \dots, \phi_p \in \mathbb{R}$ son los coeficientes autorregresivos asociados a los rezagos $1, \dots, p$, y $\varepsilon_n$ representa el término de error de ruido blanco gaussiano.
 
-Consideremos ahora la discretización de Euler-Maruyama (con paso unitario $\Delta t = 1$ o reescalando los parámetros por $\Delta t$) de una SDDE lineal con retraso constante $\tau = k\Delta t$ y vector de forzamiento exógeno $\mathbf{C}_n$:
+Consideremos ahora la discretización de Euler-Maruyama (con paso $\Delta t > 0$ y retraso entero $k = \tau / \Delta t$) de una SDDE lineal no autónoma con retraso constante $\tau > 0$, vector de forzamiento exógeno $C_n$ y ruido multiplicativo $G(X_n) = \sigma X_n$:
 
 $$
-X_{n+1} = X_n + \left(\alpha + \beta X_n + \gamma X_{n-k} + \delta^T \mathbf{C}_n\right)\Delta t + \sigma_n \Delta W_n.
+X_{n+1} = X_n + \left(\alpha + \beta X_n + \gamma X_{n-k} + \delta^\top C_n\right)\Delta t + \sigma X_n \Delta W_n.
 $$ {#eq-sdde-discretizada-ar}
 
-Agrupando los términos dependientes del estado de la serie y redefiniendo los parámetros discretos ($\tilde{\alpha} = \alpha\Delta t$, $\tilde{\beta} = \beta\Delta t$, $\tilde{\gamma} = \gamma\Delta t$, $\tilde{\delta} = \delta\Delta t$ y $\epsilon_n = \sigma_n \Delta W_n$), la @eq-sdde-discretizada-ar se reescribe en forma regresiva como:
+Agrupando los términos dependientes del estado de la serie y redefiniendo los parámetros discretos ($\tilde{\alpha} = \alpha\Delta t$, $\tilde{\beta} = \beta\Delta t$, $\tilde{\gamma} = \gamma\Delta t$, $\tilde{\delta} = \delta\Delta t$ y $\epsilon_n = \sigma X_n \Delta W_n$), la @eq-sdde-discretizada-ar se reescribe en forma autorregresiva como:
 
 $$
 X_{n+1} = \tilde{\alpha} + (1 + \tilde{\beta})X_n + \tilde{\gamma}X_{n-k} + \tilde{\delta}^T \mathbf{C}_n + \epsilon_n.
 $$ {#eq-sdde-regresion}
 
-Al contrastar la @eq-sdde-regresion (en su parte endógena) con el modelo $\text{AR}(p)$ general (@eq-arp-general) de orden máximo $p = k + 1$ (o indexado sobre el horizonte de rezago biológico $\tau$), se establece la siguiente correspondencia estructural exacta:
+Al contrastar componente endógena de la @eq-sdde-regresion con el modelo $\text{AR}(p)$ general (@eq-arp-general) de orden máximo $p = k + 1$ (o indexado sobre el horizonte de rezago biológico $\tau$), se establece la siguiente correspondencia estructural exacta:
 
 $$
 \phi_i = \begin{cases} 
@@ -439,8 +469,19 @@ $$
 \end{cases}
 $$ {#eq-correspondencia-arp}
 
-Esta equivalencia demuestra un resultado fundamental para la modelación estadística de sistemas biológicos [@cuddington2013process; @dietze2017ecological] :
+Esta correspondencia establece tres resultados estructurales fundamentales para la modelación e inferencia estadística de sistemas biológicos con ruido multiplicativo [@cuddington2013process; @dietze2017ecological]:
 
-1. **Estructura autorregresiva dispersa (*sparse AR*):** El modelo SDDE discretizado es matemáticamente equivalente a un modelo $\text{AR}(p)$ (o $\text{ARX}(p)$ al incluir las covariables climáticas exógenas) sujeto a **restricciones estructurales de dispersión**, en el cual todos los coeficientes intermedios entre el estado inmediato y el retraso fisiológico $\tau$ se restringen idénticamente a cero.
+1. **Estructura autorregresiva dispersa (*sparse ARX*):** El modelo SDDE discretizado es matemáticamente equivalente a un modelo $\text{AR}(p)$ (o $\text{ARX}(p)$ al incluir las covariables climáticas exógenas) sujeto a **restricciones estructurales de dispersión**, en el cual todos los coeficientes intermedios entre el estado inmediato $X_n$ y el estado retardado $X_{n-k}$ se restringen idénticamente a cero.
 
 2. **Principio de parsimonia y reducción de dimensionalidad:** Mientras que un modelo $\text{AR}(\tau)$ empírico no restringido exige estimar $\tau + 1$ parámetros autorregresivos (lo cual induce sobreajuste, multicolinealidad severa entre rezagos consecutivos y pérdida de grados de libertad cuando el retraso biológico $\tau$ es de varias semanas o días), la formulación derivada de la SDDE reduce drásticamente la dimensión del espacio paramétrico a un número fijo y reducido de parámetros con interpretación mecanicista directa: la tasa de autorregulación instantánea ($\beta$), la sensibilidad a la memoria fisiológica retardada ($\gamma$) y la respuesta a los forzamientos ambientales ($\delta$) [@cuddington2013process; @dietze2017ecological].
+
+3. **Heterocedasticidad condicional multiplicativa y transformación homocedástica**: A diferencia del modelo $\text{AR}(p)$ clásico con innovaciones homocedásticas (@eq-arp-general), el término de error $\epsilon_n = \sigma X_n \Delta W_n$ de la @eq-sdde-regresion es condicionalmente heterocedástico. Puesto que el estado actual $X_n$ es $\mathcal{F}_{t_n}$-medible y el incremento browniano futuro $\Delta W_n \sim \mathcal{N}(0, \Delta t)$ es independiente de $\mathcal{F}_{t_n}$, se verifica:
+$$\mathbb{E}\!\left[\epsilon_n \mid \mathcal{F}_{t_n}\right] = 0, \qquad \operatorname{Var}\!\left(\epsilon_n \mid \mathcal{F}_{t_n}\right) = \sigma^2 X_n^2 \Delta t.
+$$
+
+En consecuencia, la estimación por Mínimos Cuadrados Ordinarios (OLS) deja de coincidir con la máxima verosimilitud condicional y pierde eficiencia estadística. Sin embargo, para procesos estrictamente positivos ($X_n > 0$ c.s.), dividir la perturbación $\epsilon_n$ entre el nivel de estado $X_n$ induce de manera exacta las innovaciones estandarizadas (o ponderadas):
+$$
+z_n := \frac{\epsilon_n}{X_n} = \sigma \Delta W_n \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, \sigma^2 \Delta t),
+$$
+
+las cuales recuperan exactamente la homocedasticidad condicional ($\operatorname{Var}(z_n \mid \mathcal{F}_{t_n}) = \sigma^2 \Delta t$), la normalidad y la independencia serial. Esta propiedad fundamenta el uso de Mínimos Cuadrados Ponderados (WLS) con pesos $w_n = X_n^{-2}$ así como la ejecución de las pruebas diagnósticas sobre las innovaciones estandarizadas $\hat{z}_n$.

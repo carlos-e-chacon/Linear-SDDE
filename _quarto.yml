@@ -9,12 +9,11 @@ csl: apa.csl
 number-sections: true
 
 book:
-  title: "Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación"
+  title: "Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático"
   author: "Carlos Eduardo Chacón Rodríguez"
   date: "2026-11-10"
   reader-mode: true
   favicon: figuras/unach.png
-  cover-image: figuras/unach.png
   
   # Estructura actualizada al nuevo índice
   chapters:

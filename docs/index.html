@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Carlos Eduardo Chacón Rodríguez">
+<meta name="author" content="Dr.&nbsp;Yofre Hernán García Gómez">
 
-<title>Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</title>
+<title>Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -110,14 +112,12 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta property="og:title" content="Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático">
 <meta property="og:description" content="">
-<meta property="og:image" content="figuras/unach.png">
-<meta property="og:site_name" content="Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
-<meta name="twitter:title" content="Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación">
+<meta property="og:site_name" content="Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático">
+<meta name="twitter:title" content="Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático">
 <meta name="twitter:description" content="">
-<meta name="twitter:image" content="figuras/unach.png">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
@@ -307,10 +307,10 @@ window.Quarto = {
       <img src="./figuras/unach.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</a> 
+      <a href="./">Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/carlos-e-chacon/Linear-SDDE" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
-    <a href="./Modelo-Estocástico-con-Retraso-para-la-Dinámica-Fenológica-de-Vegetación.pdf" title="Descargar PDF" class="quarto-navigation-tool px-1" aria-label="Descargar PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="./Modelación,-Estimación-y-Validación-de-la-Dinámica-Fenológica-mediante-una-Ecuación-Diferencial-Estocástica-con-Retraso-y-Forzamiento-Climático.pdf" title="Descargar PDF" class="quarto-navigation-tool px-1" aria-label="Descargar PDF"><i class="bi bi-file-pdf"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
@@ -435,20 +435,35 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación</h1>
+<h1 class="title">Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático</h1>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Autores/as</div>
+  <div class="quarto-title-meta-heading">Afiliación</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Carlos Eduardo Chacón Rodríguez <a href="mailto:carlos.chacon78@unach.mx" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Universidad Autónoma de Chiapas
+          </p>
+      </div>
+    <div class="quarto-title-meta-contents">
+    <p class="author">Dr.&nbsp;Yofre Hernán García Gómez <a href="mailto:yofre.garcia@unach.mx" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Universidad Autónoma de Chiapas
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Autor/a</div>
-    <div class="quarto-title-meta-contents">
-             <p>Carlos Eduardo Chacón Rodríguez </p>
-          </div>
-  </div>
-    
+      
     <div>
     <div class="quarto-title-meta-heading">Fecha de publicación</div>
     <div class="quarto-title-meta-contents">
@@ -464,9 +479,8 @@ window.Quarto = {
 </header>
 
 
-
 <section id="resumen" class="level1 unnumbered">
-<h1 class="unnumbered">Resumen</h1><p><img src="figuras/unach.png" title="Modelo Estocástico con Retraso para la Dinámica Fenológica de Vegetación" class="quarto-cover-image nolightbox img-fluid"></p>
+<h1 class="unnumbered">Resumen</h1>
 <p>La dinámica fenológica de la vegetación constituye uno de los indicadores biológicos más sensibles frente a la variabilidad climática y regula los flujos de carbono, agua y energía entre la superficie terrestre y la atmósfera. Sin embargo, su modelación matemática a escala diaria enfrenta dos desafíos fundamentales que violan los supuestos de las ecuaciones diferenciales ordinarias deterministas: la existencia de una memoria fisiológica derivada del almacenamiento y translocación vascular de fotoasimilados desde estados pasados, y la presencia inherente de perturbaciones estocásticas microclimáticas y radiométricas de alta frecuencia. En esta tesis se formula, discretiza, estima y valida probabilísticamente un modelo basado en una Ecuación Diferencial Estocástica con Retraso (SDDE, por sus siglas en inglés) lineal no autónoma en tiempo continuo para describir la evolución del índice de verdor cromático (<span class="math inline">\(\text{GCC}\)</span>, <em>Green Chromatic Coordinate</em>), acoplando un término endógeno de autorregulación instantánea (<span class="math inline">\(\beta X(t)\)</span>), un término de retroalimentación retardada (<span class="math inline">\(\gamma X(t-\tau)\)</span>) con retraso discreto <span class="math inline">\(\tau &gt; 0\)</span>, un vector de forzamiento climático exógeno (<span class="math inline">\(\delta^T C(t)\)</span>, integrado por radiación solar global horizontal, temperatura del aire a <span class="math inline">\(2\text{ m}\)</span> y precipitación total diaria) y una perturbación de difusión browniana.</p>
 <p>En el plano teórico, se demuestra que el modelo satisface las condiciones globales de continuidad de Lipschitz y crecimiento lineal, garantizando la existencia y unicidad de una solución fuerte en el espacio <span class="math inline">\(\mathcal{M}^2([-\tau, T]; \mathbb{R})\)</span>, y que su esperanza matemática <span class="math inline">\(\mathbb{E}[X(t)]\)</span> obedece una ecuación diferencial con retraso (DDE) determinista. Mediante el esquema numérico de Euler-Maruyama con paso unitario <span class="math inline">\(\Delta t = 1\text{ día}\)</span> (orden de convergencia fuerte <span class="math inline">\(1/2\)</span> y débil <span class="math inline">\(1.0\)</span>), se demuestra que la SDDE discretizada es estructuralmente isomorfa a un modelo autorregresivo con variables exógenas <span class="math inline">\(\text{ARX}(\tau+1)\)</span> sujeto a restricciones de dispersión (<em>sparsity</em>), reduciendo la complejidad paramétrica de <span class="math inline">\(\tau+1\)</span> rezagos colineales a una dimensión fija de <span class="math inline">\(p = 6\)</span> parámetros con interpretación biofísica directa. Para la validación empírica, se procesaron las series diarias de la red PhenoCam en la estación experimental boreal de Röbäcksdalen (Umeå, Suecia; <span class="math inline">\(63.81^\circ\text{N}\)</span>) acopladas con el reanálisis climático ERA5 durante el periodo 2022–2025 (<span class="math inline">\(N = 572\)</span> días válidos). Se desarrolló un algoritmo de segmentación temporal automática que aísla las brechas de dormancia invernal sin interpolación sintética, particionando el registro en <span class="math inline">\(K = 4\)</span> periodos continuos de actividad vegetativa.</p>
 <p>La estimación por Mínimos Cuadrados Ordinarios (equivalente a Máxima Verosimilitud Condicional bajo innovaciones gaussianas) reveló una autorregulación instantánea invariablemente negativa (<span class="math inline">\(\hat{\beta} \in [-0.2385, -0.0229]\text{ días}^{-1}\)</span>) en los cuatro periodos, confirmando un proceso estacionario con reversión a la media, así como una memoria fisiológica positiva consistente (<span class="math inline">\(\hat{\gamma} \in [+0.0567, +0.0584]\text{ días}^{-1}\)</span>) en los ciclos vegetativos completos. La intensidad del ruido estocástico diario mostró una notable estabilidad interanual (<span class="math inline">\(\hat{\sigma}_{\text{OLS}} \approx 2.38 \times 10^{-3}\text{ días}^{-1/2}\)</span>), y la prueba de Breusch-Pagan confirmó el cumplimiento universal del supuesto de homocedasticidad (<span class="math inline">\(p &gt; 0.05\)</span> en todos los periodos). Mediante búsqueda exhaustiva por verosimilitud perfilada bajo un protocolo estricto de muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\text{ días}\)</span>), se identificó una ventana de consenso para el retraso fisiológico óptimo de <span class="math inline">\(\tau^* \in [12, 16]\text{ días}\)</span> (<span class="math inline">\(\tau^* = 16\text{ días}\)</span> en el ciclo anual completo de 2024 y <span class="math inline">\(\tau^* = 12\text{ días}\)</span> en primavera temprana), concordante con la escala biológica de translocación floemática y expansión foliar. La comparación competitiva demostró que el modelo <span class="math inline">\(\text{SDDE}(\tau)\)</span> supera sustancialmente a los modelos autorregresivos <span class="math inline">\(\text{AR}(\tau)\)</span> no restringidos en todos los horizontes evaluados (<span class="math inline">\(\Delta\text{AIC}\)</span> desde <span class="math inline">\(-30.94\)</span> hasta <span class="math inline">\(-170.11\)</span>). Finalmente, la validación mediante ensambles vectorizados de Monte Carlo (<span class="math inline">\(M = 10\,000\)</span> trayectorias) arrojó en validación secuencial a un paso (<em>Forward Chaining</em>) un error fuera de muestra de <span class="math inline">\(\text{RMSE} = 0.002656\)</span> (<span class="math inline">\(&lt;0.58\%\)</span> de error relativo) y una cobertura empírica del intervalo de predicción al <span class="math inline">\(95\%\)</span> de <span class="math inline">\(\text{PICP}_{95\%} = 94.71\%\)</span>, mientras que la validación cruzada interanual <em>Leave-One-Dataset-Out</em> (LODO) alcanzó un <span class="math inline">\(\text{RMSE}_{\text{1-Paso}}\)</span> promedio de <span class="math inline">\(0.002434\)</span> y coberturas de trayectoria completa del <span class="math inline">\(100\%\)</span> en regímenes de crecimiento. El análisis de sensibilidad dinámica (<span class="math inline">\(\pm 10\%\)</span>) demostró que la trayectoria fenológica esperada es <span class="math inline">\(25\)</span> veces más sensible al forzamiento térmico (<span class="math inline">\(\hat{\delta}_2\)</span>, <span class="math inline">\(\pm 3.37\%\)</span>) que al radiativo (<span class="math inline">\(\hat{\delta}_1\)</span>, <span class="math inline">\(\pm 0.135\%\)</span>), y que la retroalimentación disipativa del dosel acota asintóticamente la incertidumbre de largo plazo.</p>

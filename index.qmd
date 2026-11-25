@@ -7,7 +7,8 @@ author:
   - name: Dr. Yofre Hernán García Gómez
     email: yofre.garcia@unach.mx
     affiliation: Universidad Autónoma de Chiapas
-    roles: Director de tesis
+    role: Director de tesis
+    corresponding: true
 number-sections: true
 ---
 
