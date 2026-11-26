@@ -118,7 +118,7 @@ format:
     fig-format: pdf                # Gráficos vectoriales de alta definición en LaTeX
     link-citations: true
     colorlinks: true
-    linkcolor: black               # Enlaces internos sobrios para impresión
+    linkcolor: blue               # Enlaces internos sobrios para impresión
     citecolor: blue
     urlcolor: blue
 
