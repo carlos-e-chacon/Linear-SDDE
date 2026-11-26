@@ -61,10 +61,12 @@ div.csl-indent {
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bd6ec10ea55a00b39f633ed526018651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-908ca231ea2d9c8c1a9b84ba114543e3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark-eca70b9ee43566ceee71405b32d074b7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-908ca231ea2d9c8c1a9b84ba114543e3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -139,7 +141,7 @@ window.Quarto = {
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -281,8 +283,10 @@ window.Quarto = {
         changeGiscusTheme();
       }
     };
-    const authorPrefersDark = true;
+    const authorPrefersDark = false;
     const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
     // Dark / light mode switch
     window.quartoToggleColorScheme = () => {
@@ -469,8 +473,8 @@ window.Quarto = {
   <li><a href="#marco-teórico-de-la-identificabilidad-paramétrica" id="toc-marco-teórico-de-la-identificabilidad-paramétrica" class="nav-link" data-scroll-target="#marco-teórico-de-la-identificabilidad-paramétrica"><span class="header-section-number">3.4.1</span> Marco teórico de la identificabilidad paramétrica</a></li>
   <li><a href="#identificabilidad-estructural-del-modelo-sdde" id="toc-identificabilidad-estructural-del-modelo-sdde" class="nav-link" data-scroll-target="#identificabilidad-estructural-del-modelo-sdde"><span class="header-section-number">3.4.2</span> Identificabilidad estructural del modelo SDDE</a></li>
   <li><a href="#identificabilidad-práctica-condiciones-de-rango-y-condicionamiento-numérico" id="toc-identificabilidad-práctica-condiciones-de-rango-y-condicionamiento-numérico" class="nav-link" data-scroll-target="#identificabilidad-práctica-condiciones-de-rango-y-condicionamiento-numérico"><span class="header-section-number">3.4.3</span> Identificabilidad práctica, condiciones de rango y condicionamiento numérico</a></li>
-  <li><a href="#estimación-de-parámetros-por-mínimos-cuadrados-ponderados-wls-y-máxima-verosimilitud-condicional-cmle" id="toc-estimación-de-parámetros-por-mínimos-cuadrados-ponderados-wls-y-máxima-verosimilitud-condicional-cmle" class="nav-link" data-scroll-target="#estimación-de-parámetros-por-mínimos-cuadrados-ponderados-wls-y-máxima-verosimilitud-condicional-cmle"><span class="header-section-number">3.4.4</span> Estimación de parámetros por Mínimos Cuadrados Ponderados (WLS) y Máxima Verosimilitud Condicional (CMLE)</a></li>
-  <li><a href="#estimación-directa-del-coeficiente-de-difusión-multiplicativo-sigma" id="toc-estimación-directa-del-coeficiente-de-difusión-multiplicativo-sigma" class="nav-link" data-scroll-target="#estimación-directa-del-coeficiente-de-difusión-multiplicativo-sigma"><span class="header-section-number">3.4.5</span> Estimación directa del coeficiente de difusión multiplicativo <span class="math inline">\(\sigma\)</span></a></li>
+  <li><a href="#sec-estimacion-wls-cmle" id="toc-sec-estimacion-wls-cmle" class="nav-link" data-scroll-target="#sec-estimacion-wls-cmle"><span class="header-section-number">3.4.4</span> Estimación de parámetros por Mínimos Cuadrados Ponderados (WLS) y Máxima Verosimilitud Condicional (CMLE)</a></li>
+  <li><a href="#sec-estimacion-sigma" id="toc-sec-estimacion-sigma" class="nav-link" data-scroll-target="#sec-estimacion-sigma"><span class="header-section-number">3.4.5</span> Estimación directa del coeficiente de difusión <span class="math inline">\(\sigma\)</span></a></li>
   </ul></li>
   <li><a href="#sec-diagnostico-validacion" id="toc-sec-diagnostico-validacion" class="nav-link" data-scroll-target="#sec-diagnostico-validacion"><span class="header-section-number">3.5</span> Diagnóstico Estadístico y Validación del Modelo</a>
   <ul class="collapse">
@@ -944,8 +948,8 @@ c = \alpha, \qquad \boldsymbol{\psi} = \boldsymbol{\delta}, \qquad
 <li><strong>Disparidad en los órdenes de magnitud dimensionales:</strong> En la matriz de diseño <span class="math inline">\(\mathbf{X}\)</span>, la temperatura en Kelvin es del orden de <span class="math inline">\(\mathcal{O}(10^2)\)</span> (<span class="math inline">\(\mathrm{Temp}_t \approx 280\,\text{K}\)</span>), la radiación solar es del orden de <span class="math inline">\(\mathcal{O}(10^2)\)</span> (<span class="math inline">\(\mathrm{Rad}_t \approx 140\,\text{W/m}^2\)</span>), el índice GCC es del orden de <span class="math inline">\(\mathcal{O}(10^{-1})\)</span> (<span class="math inline">\(X_t \approx 0.34\)</span>), mientras que la precipitación diaria en metros del reanálisis ERA5 es del orden de <span class="math inline">\(\mathcal{O}(10^{-3})\)</span> (<span class="math inline">\(\mathrm{Prec}_t \approx 0.0028\,\text{m}\)</span>). Esta diferencia de hasta cinco órdenes de magnitud entre columnas implica que los coeficientes estimados <span class="math inline">\(\hat{\delta}_j\)</span> presenten escalas inversamente proporcionales (<span class="math inline">\(\hat{\delta}_1 \sim \mathcal{O}(10^{-5})\)</span>, <span class="math inline">\(\hat{\delta}_2 \sim \mathcal{O}(10^{-4})\)</span> frente a <span class="math inline">\(\hat{\delta}_3 \sim \mathcal{O}(10^{-1})\)</span>), haciendo imprescindible emplear factorizaciones matriciales ortogonales de doble precisión.</li>
 </ol>
 </section>
-<section id="estimación-de-parámetros-por-mínimos-cuadrados-ponderados-wls-y-máxima-verosimilitud-condicional-cmle" class="level3" data-number="3.4.4">
-<h3 data-number="3.4.4" class="anchored" data-anchor-id="estimación-de-parámetros-por-mínimos-cuadrados-ponderados-wls-y-máxima-verosimilitud-condicional-cmle"><span class="header-section-number">3.4.4</span> Estimación de parámetros por Mínimos Cuadrados Ponderados (WLS) y Máxima Verosimilitud Condicional (CMLE)</h3>
+<section id="sec-estimacion-wls-cmle" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="sec-estimacion-wls-cmle"><span class="header-section-number">3.4.4</span> Estimación de parámetros por Mínimos Cuadrados Ponderados (WLS) y Máxima Verosimilitud Condicional (CMLE)</h3>
 <p>Una vez garantizada la condición de rango completo ponderado (<a href="#eq-rango-completo-wls" class="quarto-xref">Ecuación&nbsp;<span>3.34</span></a>) para un retraso fijo <span class="math inline">\(\tau\)</span>, la presencia de la heterocedasticidad condicional conocida <span class="math inline">\(\operatorname{Var}(\epsilon_t \mid \mathcal{F}_t) = \sigma^2 X_t^2\)</span> implica que el estimador de Mínimos Cuadrados Ordinarios (OLS) deja de ser eficiente y conduce a errores estándar sesgados. El estimador óptimo bajo la estructura multiplicativa de la Ecuación 3.2 es el estimador de <strong>Mínimos Cuadrados Ponderados (WLS, <em>Weighted Least Squares</em>)</strong>, también denominado estimador de Mínimos Cuadrados Generalizados (GLS) con matriz de pesos diagonal <span class="math inline">\(\mathbf{W} = \operatorname{diag}(X_\tau^{-2}, \dots, X_{N-2}^{-2})\)</span> (Greene, 2018).</p>
 <p>El criterio WLS consiste en encontrar el vector <span class="math inline">\(\hat{\boldsymbol{\theta}}_{\text{WLS}} \in \mathbb{R}^6\)</span> que minimiza la suma ponderada de cuadrados de los residuos (<span class="math inline">\(RSS_W\)</span>), equivalente a la suma de cuadrados de las innovaciones estandarizadas <span class="math inline">\(z_t(\boldsymbol{\theta}) = (\Delta X_t - \mathbf{x}_t^\top \boldsymbol{\theta}) / X_t\)</span>:</p>
 <p><span id="eq-funcion-objetivo-wls"><span class="math display">\[
@@ -1009,8 +1013,8 @@ t_j = \frac{\hat{\theta}_j}{\mathrm{SE}(\hat{\theta}_j)} \underset{H_0}{\sim} t_
 <p>y el intervalo de confianza al nivel <span class="math inline">\(100(1 - \alpha_{\text{sig}})\%\)</span> se construye como <span class="math inline">\(\hat{\theta}_j \pm t_{n-6,\,1-\alpha_{\text{sig}}/2}\,\mathrm{SE}(\hat{\theta}_j)\)</span>.</p>
 </section>
 </section>
-<section id="estimación-directa-del-coeficiente-de-difusión-multiplicativo-sigma" class="level3" data-number="3.4.5">
-<h3 data-number="3.4.5" class="anchored" data-anchor-id="estimación-directa-del-coeficiente-de-difusión-multiplicativo-sigma"><span class="header-section-number">3.4.5</span> Estimación directa del coeficiente de difusión multiplicativo <span class="math inline">\(\sigma\)</span></h3>
+<section id="sec-estimacion-sigma" class="level3" data-number="3.4.5">
+<h3 data-number="3.4.5" class="anchored" data-anchor-id="sec-estimacion-sigma"><span class="header-section-number">3.4.5</span> Estimación directa del coeficiente de difusión <span class="math inline">\(\sigma\)</span></h3>
 <p>Una vez obtenido el estimador de deriva <span class="math inline">\(\hat{\boldsymbol{\theta}}_{\text{WLS}}\)</span>, el vector de incrementos diarios predichos es <span class="math inline">\(\hat{\mathbf{Y}} = \mathbf{X}\hat{\boldsymbol{\theta}}_{\text{WLS}}\)</span>, y el vector de <strong>residuos brutos</strong> (en escala de <span class="math inline">\(\Delta X_t\)</span>) se define como <span class="math inline">\(\hat{\boldsymbol{\epsilon}} = \mathbf{Y} - \hat{\mathbf{Y}}\)</span>. Sin embargo, debido a la estructura multiplicativa <span class="math inline">\(\epsilon_t = \sigma X_t \Delta W_t\)</span>, la varianza de <span class="math inline">\(\hat{\epsilon}_t\)</span> depende del nivel <span class="math inline">\(X_t\)</span>. Para estimar directamente el coeficiente de difusión continuo <span class="math inline">\(\sigma\)</span> (en <span class="math inline">\(\text{días}^{-1/2}\)</span>) sin etapas intermedias de reconversión, se opera sobre el vector de <strong>innovaciones estandarizadas (o residuos ponderados)</strong> (<code>modelo.wresid</code> en <code>statsmodels.WLS</code>):</p>
 <p><span id="eq-residuos-ponderados"><span class="math display">\[
 \hat{\mathbf{z}} := \mathbf{W}^{1/2}\hat{\boldsymbol{\epsilon}} = \mathbf{W}^{1/2}(\mathbf{Y} - \mathbf{X}\hat{\boldsymbol{\theta}}_{\text{WLS}}), \qquad \text{con componentes } \hat{z}_t = \frac{\hat{\epsilon}_t}{X_t} = \frac{\Delta X_t - \mathbf{x}_t^\top \hat{\boldsymbol{\theta}}_{\text{WLS}}}{X_t}.
@@ -1109,14 +1113,14 @@ W = \frac{\left(\sum_{i=1}^{n} a_i \hat{z}_{(i)}\right)^2}{\sum_{t=1}^{n} (\hat{
 </section>
 <section id="prueba-de-normalidad-asintótica-de-jarque-bera" class="level4" data-number="3.5.3.2">
 <h4 data-number="3.5.3.2" class="anchored" data-anchor-id="prueba-de-normalidad-asintótica-de-jarque-bera"><span class="header-section-number">3.5.3.2</span> Prueba de normalidad asintótica de Jarque-Bera</h4>
-<p>La prueba de <span class="citation" data-cites="jarque1980tests">(<a href="bibliografia.html#ref-jarque1980tests" role="doc-biblioref"><strong>jarque1980tests?</strong></a>)</span> evalúa conjuntamente si la asimetría muestral (<span class="math inline">\(\hat{S}\)</span>) y la curtosis muestral (<span class="math inline">\(\hat{K}\)</span>) de <span class="math inline">\(\hat{z}_t\)</span> concuerdan con los valores teóricos gaussianos (<span class="math inline">\(S = 0\)</span>, <span class="math inline">\(K = 3\)</span>):</p>
+<p>La prueba de <span class="citation" data-cites="jarque1980tests">Jarque &amp; Bera (<a href="bibliografia.html#ref-jarque1980tests" role="doc-biblioref">1980</a>)</span> evalúa conjuntamente si la asimetría muestral (<span class="math inline">\(\hat{S}\)</span>) y la curtosis muestral (<span class="math inline">\(\hat{K}\)</span>) de <span class="math inline">\(\hat{z}_t\)</span> concuerdan con los valores teóricos gaussianos (<span class="math inline">\(S = 0\)</span>, <span class="math inline">\(K = 3\)</span>):</p>
 <p><span id="eq-jarque-bera"><span class="math display">\[
 JB = \frac{n}{6}\left[\hat{S}^2 + \frac{(\hat{K} - 3)^2}{4}\right] \xrightarrow[H_0]{d} \chi_2^2, \qquad \hat{S} = \frac{\frac{1}{n}\sum_{t=1}^{n}(\hat{z}_t - \bar{\hat{z}})^3}{\left[\frac{1}{n}\sum_{t=1}^{n}(\hat{z}_t - \bar{\hat{z}})^2\right]^{3/2}}, \qquad \hat{K} = \frac{\frac{1}{n}\sum_{t=1}^{n}(\hat{z}_t - \bar{\hat{z}})^4}{\left[\frac{1}{n}\sum_{t=1}^{n}(\hat{z}_t - \bar{\hat{z}})^2\right]^2}.
 \tag{3.51}\]</span></span></p>
 </section>
 <section id="prueba-de-homocedasticidad-residual-de-breusch-pagan" class="level4" data-number="3.5.3.3">
 <h4 data-number="3.5.3.3" class="anchored" data-anchor-id="prueba-de-homocedasticidad-residual-de-breusch-pagan"><span class="header-section-number">3.5.3.3</span> Prueba de homocedasticidad residual de Breusch-Pagan</h4>
-<p>Para verificar si la transformación multiplicativa <span class="math inline">\(z_t = \epsilon_t / X_t\)</span> elimina totalmente la heterocedasticidad condicional (<span class="math inline">\(H_0: \operatorname{Var}(z_t \mid \mathbf{x}_t) = \sigma^2\)</span>) frente a la alternativa de heterocedasticidad residual dependiente de los regresores, se aplica la prueba de <span class="citation" data-cites="breusch1979diagnostic">(<a href="bibliografia.html#ref-breusch1979diagnostic" role="doc-biblioref"><strong>breusch1979diagnostic?</strong></a>)</span> ajustando la regresión auxiliar de las innovaciones cuadráticas <span class="math inline">\(\hat{z}_t^2\)</span> sobre la matriz de diseño <span class="math inline">\(\mathbf{X}\)</span>:</p>
+<p>Para verificar si la transformación multiplicativa <span class="math inline">\(z_t = \epsilon_t / X_t\)</span> elimina totalmente la heterocedasticidad condicional (<span class="math inline">\(H_0: \operatorname{Var}(z_t \mid \mathbf{x}_t) = \sigma^2\)</span>) frente a la alternativa de heterocedasticidad residual dependiente de los regresores, se aplica la prueba de <span class="citation" data-cites="breusch1979diagnostic">Breusch &amp; Pagan (<a href="bibliografia.html#ref-breusch1979diagnostic" role="doc-biblioref">1979</a>)</span> ajustando la regresión auxiliar de las innovaciones cuadráticas <span class="math inline">\(\hat{z}_t^2\)</span> sobre la matriz de diseño <span class="math inline">\(\mathbf{X}\)</span>:</p>
 <p><span id="eq-breusch-pagan-aux"><span class="math display">\[
 \hat{z}_t^2 = \zeta_0 + \zeta_1 X_t + \zeta_2 X_{t-\tau} + \zeta_3 \mathrm{Rad}_t + \zeta_4 \mathrm{Temp}_t + \zeta_5 \mathrm{Prec}_t + u_t,
 \tag{3.52}\]</span></span></p>
@@ -1130,10 +1134,10 @@ LM_{\text{BP}} = n R_{\hat{z}^2}^2 \xrightarrow[H_0]{d} \chi_{p-1}^2 = \chi_5^2.
 <h4 data-number="3.5.3.4" class="anchored" data-anchor-id="estadístico-de-durbin-watson-y-prueba-de-ljung-box"><span class="header-section-number">3.5.3.4</span> Estadístico de Durbin-Watson y prueba de Ljung-Box</h4>
 <p>Para contrastar la ausencia de autocorrelación temporal remanente (<span class="math inline">\(H_0: \rho_k = \operatorname{Corr}(z_t, z_{t-k}) = 0\)</span>) sobre las innovaciones estandarizadas, se calculan:</p>
 <ul>
-<li><strong>Estadístico de Durbin-Watson (<span class="math inline">\(DW\)</span>):</strong> Evalúa la autocorrelación de primer orden (<span class="math inline">\(z_t = \rho_1 z_{t-1} + \nu_t\)</span>) mediante <span class="citation" data-cites="durbin1950tests">(<a href="bibliografia.html#ref-durbin1950tests" role="doc-biblioref"><strong>durbin1950tests?</strong></a>)</span>: <span id="eq-durbin-watson"><span class="math display">\[
+<li><strong>Estadístico de Durbin-Watson (<span class="math inline">\(DW\)</span>):</strong> Evalúa la autocorrelación de primer orden (<span class="math inline">\(z_t = \rho_1 z_{t-1} + \nu_t\)</span>) mediante <span class="citation" data-cites="durbin1950tests">Durbin &amp; Watson (<a href="bibliografia.html#ref-durbin1950tests" role="doc-biblioref">1950</a>)</span>: <span id="eq-durbin-watson"><span class="math display">\[
 DW = \frac{\sum_{t=2}^{n} (\hat{z}_t - \hat{z}_{t-1})^2}{\sum_{t=1}^{n} \hat{z}_t^2} \approx 2(1 - \hat{\rho}_1),
 \tag{3.54}\]</span></span> cuyo valor de referencia bajo independencia serial es <span class="math inline">\(DW \approx 2.0\)</span>.</li>
-<li><strong>Prueba <em>portmanteau</em> de Ljung-Box (<span class="math inline">\(Q_{\text{LB}}\)</span>):</strong> Dado que en modelos con variables endógenas rezagadas <span class="math inline">\(DW\)</span> puede resultar sesgado hacia 2 y solo evalúa el primer rezago, se aplica adicionalmente la prueba conjunta de <span class="citation" data-cites="ljung1978testing">(<a href="bibliografia.html#ref-ljung1978testing" role="doc-biblioref"><strong>ljung1978testing?</strong></a>)</span> hasta el horizonte <span class="math inline">\(m = 10\)</span> días para contrastar <span class="math inline">\(H_0: \rho_1 = \rho_2 = \dots = \rho_m = 0\)</span>: <span id="eq-ljung-box"><span class="math display">\[
+<li><strong>Prueba <em>portmanteau</em> de Ljung-Box (<span class="math inline">\(Q_{\text{LB}}\)</span>):</strong> Dado que en modelos con variables endógenas rezagadas <span class="math inline">\(DW\)</span> puede resultar sesgado hacia 2 y solo evalúa el primer rezago, se aplica adicionalmente la prueba conjunta de <span class="citation" data-cites="ljung1978testing">Ljung &amp; Box (<a href="bibliografia.html#ref-ljung1978testing" role="doc-biblioref">1978</a>)</span> hasta el horizonte <span class="math inline">\(m = 10\)</span> días para contrastar <span class="math inline">\(H_0: \rho_1 = \rho_2 = \dots = \rho_m = 0\)</span>: <span id="eq-ljung-box"><span class="math display">\[
 Q_{\text{LB}}(m) = n(n+2)\sum_{j=1}^{m}\frac{\hat{\rho}_j^2}{n - j} \xrightarrow[H_0]{d} \chi_m^2, \qquad \hat{\rho}_j = \frac{\sum_{t=j+1}^{n}\hat{z}_t \hat{z}_{t-j}}{\sum_{t=1}^{n}\hat{z}_t^2}.
 \tag{3.55}\]</span></span></li>
 </ul>
@@ -1192,6 +1196,9 @@ Bellman, R. (1970). <em>Introduction to the Mathematical Theory of Control Proce
 <div id="ref-belsley1980regression" class="csl-entry" role="listitem">
 Belsley, D. A., Kuh, E., &amp; Welsch, R. E. (1980). <em>Regression Diagnostics: Identifying Influential Data and Sources of Collinearity</em>. John Wiley &amp; Sons.
 </div>
+<div id="ref-breusch1979diagnostic" class="csl-entry" role="listitem">
+Breusch, T. S., &amp; Pagan, A. R. (1979). A Simple Test for Heteroscedasticity and Random Coefficient Variation. <em>Econometrica</em>, <em>47</em>(5), 1287-1294. <a href="https://doi.org/10.2307/1911963">https://doi.org/10.2307/1911963</a>
+</div>
 <div id="ref-burnham2002model" class="csl-entry" role="listitem">
 Burnham, K. P., &amp; Anderson, D. R. (2002). <em>Model Selection and Multimodel Inference: A Practical Information-Theoretic Approach</em> (2nd ed.). Springer.
 </div>
@@ -1204,6 +1211,9 @@ Cuddington, K., Fortin, M.-J., Gerber, L. R., Hastings, A., Liebhold, A., O’Co
 <div id="ref-dietze2017ecological" class="csl-entry" role="listitem">
 Dietze, M. C. (2017). <em>Ecological Forecasting</em>. Princeton University Press.
 </div>
+<div id="ref-durbin1950tests" class="csl-entry" role="listitem">
+Durbin, J., &amp; Watson, G. S. (1950). Testing for Serial Correlation in Least Squares Regression: I. <em>Biometrika</em>, <em>37</em>(3/4), 409-428. <a href="https://doi.org/10.2307/2332391">https://doi.org/10.2307/2332391</a>
+</div>
 <div id="ref-fox2015applied" class="csl-entry" role="listitem">
 Fox, J. (2015). <em>Applied Regression Analysis and Generalized Linear Models</em> (3rd ed.). SAGE Publications.
 </div>
@@ -1215,6 +1225,12 @@ Hamilton, J. D. (1994). <em>Time Series Analysis</em>. Princeton University Pres
 </div>
 <div id="ref-hersbach2020era5" class="csl-entry" role="listitem">
 Hersbach, H., Bell, B., Berrisford, P., Hirahara, S., Horányi, A., Muñoz-Sabater, J., Nicolas, J., Peubey, C., Radu, R., Schepers, D., et&nbsp;al. (2020). The <span>ERA5</span> global reanalysis. <em>Quarterly Journal of the Royal Meteorological Society</em>, <em>146</em>(730), 1999-2049. <a href="https://doi.org/10.1002/qj.3803">https://doi.org/10.1002/qj.3803</a>
+</div>
+<div id="ref-jarque1980tests" class="csl-entry" role="listitem">
+Jarque, C. M., &amp; Bera, A. K. (1980). Efficient tests for normality, homoscedasticity and serial independence of regression residuals. <em>Economics Letters</em>, <em>6</em>(3), 255-259. <a href="https://doi.org/10.1016/0165-1765(80)90024-5">https://doi.org/10.1016/0165-1765(80)90024-5</a>
+</div>
+<div id="ref-ljung1978testing" class="csl-entry" role="listitem">
+Ljung, G. M., &amp; Box, G. E. P. (1978). Testing for Lack of Fit in Time Series Models. <em>Biometrika</em>, <em>65</em>(2), 297-303. <a href="https://doi.org/10.2307/2335207">https://doi.org/10.2307/2335207</a>
 </div>
 <div id="ref-mao2007stochastic" class="csl-entry" role="listitem">
 Mao, X. (2007). <em>Stochastic Differential Equations and Applications</em> (2.ª ed.). Horwood Publishing.

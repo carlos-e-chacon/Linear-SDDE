@@ -61,10 +61,12 @@ div.csl-indent {
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bd6ec10ea55a00b39f633ed526018651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-908ca231ea2d9c8c1a9b84ba114543e3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark-eca70b9ee43566ceee71405b32d074b7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-908ca231ea2d9c8c1a9b84ba114543e3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -141,7 +143,7 @@ window.Quarto = {
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -283,8 +285,10 @@ window.Quarto = {
         changeGiscusTheme();
       }
     };
-    const authorPrefersDark = true;
+    const authorPrefersDark = false;
     const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
     // Dark / light mode switch
     window.quartoToggleColorScheme = () => {
@@ -1806,7 +1810,7 @@ dX(t) = \left[ \alpha_{S(t)} + \beta_{S(t)} X(t) + \gamma_{S(t)} X(t-\tau) + \bo
 </section>
 <section id="no-normalidad-residual-colas-pesadas-leptocurtosis-y-perturbaciones-con-saltos" class="level3" data-number="5.8.3">
 <h3 data-number="5.8.3" class="anchored" data-anchor-id="no-normalidad-residual-colas-pesadas-leptocurtosis-y-perturbaciones-con-saltos"><span class="header-section-number">5.8.3</span> No normalidad residual, colas pesadas (leptocurtosis) y perturbaciones con saltos</h3>
-<p>Aunque la prueba de Breusch-Pagan confirmó el cumplimiento universal de la homocedasticidad (<span class="math inline">\(p &gt; 0.05\)</span> en los cuatro periodos), las pruebas de Shapiro-Wilk y Jarque-Bera rechazaron la hipótesis de normalidad exacta de los residuos en los Periodos 1, 2 y 3 (<span class="math inline">\(p &lt; 0.01\)</span>, <a href="#tbl-diagnostico-residuos" class="quarto-xref">Tabla&nbsp;<span>5.4</span></a>), mientras que en el Periodo 4 la normalidad se cumplió satisfactoriamente (<span class="math inline">\(p_{\text{SW}} = 0.122, p_{\text{JB}} = 0.416\)</span>). Como se aprecia en el histograma y en el gráfico Q-Q del Periodo 3 (<a href="cap4_metodologia.html#fig-diagnostico-residuos" class="quarto-xref">Figura&nbsp;<span>4.3</span></a>), la desviación respecto a la normal no se debe a asimetría (la distribución es perfectamente centrada y simétrica en torno a cero), sino a <strong>leptocurtosis (colas pesadas)</strong>: la gran mayoría de los días presentan variaciones minúsculas bien descritas por una campana gaussiana estrecha, pero existen entre <span class="math inline">\(5\)</span> y <span class="math inline">\(10\)</span> días aislados por temporada con residuos extremos (<span class="math inline">\(|\hat{\epsilon}_t| &gt; 3\hat{\sigma} \approx 0.0075\)</span>).</p>
+<p>Aunque la prueba de Breusch-Pagan confirmó el cumplimiento universal de la homocedasticidad (<span class="math inline">\(p &gt; 0.05\)</span> en los cuatro periodos), las pruebas de Shapiro-Wilk y Jarque-Bera rechazaron la hipótesis de normalidad exacta de los residuos en los Periodos 1, 2 y 3 (<span class="math inline">\(p &lt; 0.01\)</span>, <a href="#tbl-diagnostico-residuos" class="quarto-xref">Tabla&nbsp;<span>5.4</span></a>), mientras que en el Periodo 4 la normalidad se cumplió satisfactoriamente (<span class="math inline">\(p_{\text{SW}} = 0.122, p_{\text{JB}} = 0.416\)</span>). Como se aprecia en el histograma y en el gráfico Q-Q del Periodo 3 (<span class="quarto-unresolved-ref">?fig-diagnostico-residuos</span>), la desviación respecto a la normal no se debe a asimetría (la distribución es perfectamente centrada y simétrica en torno a cero), sino a <strong>leptocurtosis (colas pesadas)</strong>: la gran mayoría de los días presentan variaciones minúsculas bien descritas por una campana gaussiana estrecha, pero existen entre <span class="math inline">\(5\)</span> y <span class="math inline">\(10\)</span> días aislados por temporada con residuos extremos (<span class="math inline">\(|\hat{\epsilon}_t| &gt; 3\hat{\sigma} \approx 0.0075\)</span>).</p>
 <p>En el sistema real de PhenoCam en Röbäcksdalen, estos valores atípicos puntuales tienen dos orígenes físicos conocidos <span class="citation" data-cites="richardson2018tracking seyednasrollah2019convergence">(<a href="bibliografia.html#ref-richardson2018tracking" role="doc-biblioref">Richardson et&nbsp;al., 2018</a>; <a href="bibliografia.html#ref-seyednasrollah2019convergence" role="doc-biblioref">Seyednasrollah et&nbsp;al., 2019</a>)</span>:</p>
 <ul>
 <li><p><strong>Artefactos ópticos sub-diarios:</strong> Días con tormentas intensas, niebla densa, escarcha matutina fugaz o sombras proyectadas que alteran transitoriamente la reflectancia RGB en una fecha puntual y se corrigen al día siguiente (lo cual genera además la autocorrelación negativa de primer orden responsable de que el estadístico de Durbin-Watson sea ligeramente superior a <span class="math inline">\(2.0\)</span>, <span class="math inline">\(DW \in [2.20, 2.83]\)</span>).</p></li>
