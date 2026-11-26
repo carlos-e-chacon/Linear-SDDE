@@ -57,3 +57,22 @@ p {
 ul, ol {
     text-align: justify;
 }
+
+/* ==========================================
+   CÓDIGO EN LÍNEA (INLINE CODE)
+   ========================================== */
+
+code:not(pre code) {
+  background-color: #f1f3f5 !important;
+  color: #8b286d !important;
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-size: 0.90em;
+  font-weight: 500;
+}
+
+/* Modo oscuro */
+.quarto-dark code:not(pre code) {
+  background-color: #343a40 !important;
+  color: #e6a8ff !important;
+}

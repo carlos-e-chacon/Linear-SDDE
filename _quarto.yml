@@ -71,8 +71,11 @@ crossref:
 format:
   html:
     theme:
+      light: flatly
       dark: darkly
-      light: cosmo
+    syntax-highlighting:
+      light: github
+      dark: dracula
     toc: true
     toc-depth: 3
     number-sections: true

@@ -61,10 +61,12 @@ div.csl-indent {
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bd6ec10ea55a00b39f633ed526018651.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-908ca231ea2d9c8c1a9b84ba114543e3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark-eca70b9ee43566ceee71405b32d074b7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-908ca231ea2d9c8c1a9b84ba114543e3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -139,7 +141,7 @@ window.Quarto = {
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -281,8 +283,10 @@ window.Quarto = {
         changeGiscusTheme();
       }
     };
-    const authorPrefersDark = true;
+    const authorPrefersDark = false;
     const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
     // Dark / light mode switch
     window.quartoToggleColorScheme = () => {
@@ -523,11 +527,11 @@ window.Quarto = {
 <li><p><strong>Temperatura del aire a 2 metros (<span class="math inline">\(\text{Temp}(t)\)</span>, en <span class="math inline">\(\text{K}\)</span>):</strong> Regula la cinética bioquímica de las enzimas fotosintéticas —particularmente la actividad carboxilasa de la RuBisCO— y la fluidez de las membranas celulares <span class="citation" data-cites="porter1999temperatures taiz2022plant">(<a href="bibliografia.html#ref-porter1999temperatures" role="doc-biblioref">Porter &amp; Gawith, 1999</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>. Dentro del rango fisiológico tolerable del cultivo, el incremento térmico acelera las tasas metabólicas y el desarrollo fenológico <span class="citation" data-cites="seyednasrollah2019convergence">(<a href="bibliografia.html#ref-seyednasrollah2019convergence" role="doc-biblioref">Seyednasrollah et&nbsp;al., 2019</a>)</span>; sin embargo, excursiones hacia temperaturas extremas bajas o altas inducen inhibición enzimática, cierre estomático y estrés oxidativo <span class="citation" data-cites="porter1999temperatures hatfield2015temperature">(<a href="bibliografia.html#ref-hatfield2015temperature" role="doc-biblioref">Hatfield &amp; Prueger, 2015</a>; <a href="bibliografia.html#ref-porter1999temperatures" role="doc-biblioref">Porter &amp; Gawith, 1999</a>)</span>.</p></li>
 <li><p><strong>Precipitación total diaria (<span class="math inline">\(\text{Prec}(t)\)</span>, en <span class="math inline">\(\text{m}\)</span>, conforme a la convención del Sistema Internacional de ERA5):</strong> Determina el reabastecimiento de humedad edáfica indispensable para sostener el potencial hídrico de la planta, el transporte xilemático de nutrientes minerales y la presión de turgencia celular que impulsa mecánicamente la expansión de las hojas <span class="citation" data-cites="taiz2022plant ogle2015quantifying">(<a href="bibliografia.html#ref-ogle2015quantifying" role="doc-biblioref">Ogle et&nbsp;al., 2015</a>; <a href="bibliografia.html#ref-taiz2022plant" role="doc-biblioref">Taiz et&nbsp;al., 2022</a>)</span>. A escala diaria, no obstante, eventos intensos de precipitación pueden asociarse de forma simultánea con cobertura nubosa densa (reducción de radiación directa) o saturación hídrica del suelo, generando respuestas diferenciadas según el régimen estacional del cultivo.</p></li>
 </ul>
-<p>Finalmente, más allá de la tendencia media explicada por los promedios diarios contenidos en el vector <span class="math inline">\(C(t)\)</span>, un agroecosistema en condiciones de campo experimenta continuamente fluctuaciones microclimáticas subdiarias (ráfagas de viento, variaciones rápidas en el déficit de presión de vapor, nubosidad intermitente), heterogeneidad edáfica, perturbaciones bióticas menores y ruido radiométrico asociado a la geometría de iluminación del dosel. Siguiendo la distinción propuesta por Rupšys (2006) entre perturbaciones aleatorias intensivas (aditivas, de amplitud constante) y extensivas (multiplicativas, dependientes del estado), en este trabajo dicho ruido ambiental de alta frecuencia se modela mediante el término de difusión multiplicativa <span class="math inline">\(\sigma X(t)\,dW(t)\)</span> <span class="citation" data-cites="rupsys2008stochastic mao2007stochastic wilkinson2018stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>; <a href="bibliografia.html#ref-rupsys2008stochastic" role="doc-biblioref">Rupšys, 2008</a>; <a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>.</p>
+<p>Finalmente, más allá de la tendencia media explicada por los promedios diarios contenidos en el vector <span class="math inline">\(C(t)\)</span>, un agroecosistema en condiciones de campo experimenta continuamente fluctuaciones microclimáticas subdiarias (ráfagas de viento, variaciones rápidas en el déficit de presión de vapor, nubosidad intermitente), heterogeneidad edáfica, perturbaciones bióticas menores y ruido radiométrico asociado a la geometría de iluminación del dosel. Siguiendo la distinción propuesta por Rupšys (2006) entre perturbaciones aleatorias intensivas (aditivas, de amplitud constante) y extensivas (multiplicativas, dependientes del estado), en este trabajo dicho ruido ambiental de alta frecuencia se modela mediante el término de difusión multiplicativa <span class="math inline">\(\sigma X(t)\,dW(t)\)</span> <span class="citation" data-cites="rupsys2006stochastic mao2007stochastic wilkinson2018stochastic">(<a href="bibliografia.html#ref-mao2007stochastic" role="doc-biblioref">Mao, 2007</a>; <a href="bibliografia.html#ref-rupsys2006stochastic" role="doc-biblioref">Rupšys, 2006</a>; <a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>.</p>
 <p>La adopción de un ruido multiplicativo proporcional al estado <span class="math inline">\(X(t)\)</span> responde a dos fundamentos biofísicos y matemáticos complementarios:</p>
 <ol type="1">
 <li><p><strong>Escalamiento extensivo con la biomasa foliar activa:</strong> Las perturbaciones microclimáticas, fisiológicas y ópticas no inciden como una adición uniforme independiente de la cobertura vegetal, sino que actúan proporcionalmente sobre el área foliar verde expuesta y sobre la población de tejidos fotosintéticamente activos. Un dosel desarrollado con elevado verdor (<span class="math inline">\(X(t)\)</span> alto) intercepta una mayor magnitud absoluta de flujos turbulentos, variaciones de reflectancia y fluctuaciones metabólicas que una cobertura incipiente o en transición invernal, de modo que el parámetro <span class="math inline">\(\sigma\)</span> adquiere una interpretación biológica natural como la intensidad relativa (o porcentual) de la volatilidad ambiental diaria.</p></li>
-<li><p><strong>Coherencia con el dominio positivo del estado biológico:</strong> Al atenuar proporcionalmente la amplitud de las fluctuaciones estocásticas conforme <span class="math inline">\(X(t)\)</span> disminuye, la difusión multiplicativa <span class="math inline">\(\sigma X(t)\,dW(t)\)</span> respeta la naturaleza estrictamente positiva de la biomasa y de la coordenada cromática verde (<span class="math inline">\(X(t) &gt; 0\)</span>), evitando las incursiones artificiales hacia valores negativos que pueden producirse bajo ruido aditivo constante <span class="citation" data-cites="rupsys2008stochastic wilkinson2018stochastic">(<a href="bibliografia.html#ref-rupsys2008stochastic" role="doc-biblioref">Rupšys, 2008</a>; <a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>.</p></li>
+<li><p><strong>Coherencia con el dominio positivo del estado biológico:</strong> Al atenuar proporcionalmente la amplitud de las fluctuaciones estocásticas conforme <span class="math inline">\(X(t)\)</span> disminuye, la difusión multiplicativa <span class="math inline">\(\sigma X(t)\,dW(t)\)</span> respeta la naturaleza estrictamente positiva de la biomasa y de la coordenada cromática verde (<span class="math inline">\(X(t) &gt; 0\)</span>), evitando las incursiones artificiales hacia valores negativos que pueden producirse bajo ruido aditivo constante <span class="citation" data-cites="rupsys2006stochastic wilkinson2018stochastic">(<a href="bibliografia.html#ref-rupsys2006stochastic" role="doc-biblioref">Rupšys, 2006</a>; <a href="bibliografia.html#ref-wilkinson2018stochastic" role="doc-biblioref">Wilkinson, 2018</a>)</span>.</p></li>
 </ol>
 
 
@@ -571,8 +575,8 @@ Porter, J. R., &amp; Gawith, M. (1999). Temperatures and the growth and developm
 <div id="ref-richardson2018tracking" class="csl-entry" role="listitem">
 Richardson, A. D., Hufkens, K., Milliman, T., Aubrecht, D. M., Furze, M. E., Seyednasrollah, B., et&nbsp;al. (2018). Tracking vegetation phenology across diverse biomes using version 2.0 of the PhenoCam dataset. <em>Scientific Data</em>, <em>6</em>(1), 222. <a href="https://doi.org/10.1038/s41597-018-0164-4">https://doi.org/10.1038/s41597-018-0164-4</a>
 </div>
-<div id="ref-rupsys2008stochastic" class="csl-entry" role="listitem">
-Rupšys, P. (2008). Stochastic Growth Models with Time-Delayed Feedback. <em>Information Technology and Control</em>, <em>37</em>(4), 397-404.
+<div id="ref-rupsys2006stochastic" class="csl-entry" role="listitem">
+Rupšys, P. (2006). Estimation of Parameters for the Stochastic Linear Delay Growth Law Through the L1 Distance Procedure. <em>Lietuvos Matematikos Rinkinys</em>, <em>46</em>(spec. nr.), 397-404.
 </div>
 <div id="ref-searle2004induction" class="csl-entry" role="listitem">
 Searle, I. R., &amp; Coupland, G. (2004). Induction of flowering by seasonal cues in Arabidopsis. <em>The Plant Cell</em>, <em>16</em>(Suppl), S1-S12. <a href="https://doi.org/10.1105/tpc.017673">https://doi.org/10.1105/tpc.017673</a>

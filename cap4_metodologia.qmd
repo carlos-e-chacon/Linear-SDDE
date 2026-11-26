@@ -1,27 +1,27 @@
 # Metodología de Estimación {#sec-metodologia-estimacion}
 
-Para garantizar la validez empírica y la capacidad predictiva del modelo fenológico basado en la Ecuación Diferencial Estocástica con Retraso (SDDE) formulada en el Capítulo 3 (@sec-formulacion-modelo), es indispensable establecer un protocolo riguroso de procesamiento de datos, calibración paramétrica y simulación estocástica. Un modelo dinámico cuyos parámetros de deriva o intensidad de difusión se asignasen de forma arbitraria produciría trayectorias desconectadas de la fisiología real del dosel vegetal [@dietze2017ecological]. En consecuencia, el presente capítulo detalla la metodología computacional y estadística desarrollada para integrar las series observacionales de la red PhenoCam y del reanálisis climático ERA5, segmentar el dominio temporal en regímenes continuos libres de discontinuidades invernales, estimar el vector de parámetros estructurales $\boldsymbol{\theta}$ y la intensidad del ruido $\sigma$, identificar el retraso fisiológico óptimo $\tau^*$ bajo condiciones de muestra común y validar probabilísticamente el sistema mediante simulación de Monte Carlo.
+Para garantizar la validez empírica y la capacidad predictiva del modelo fenológico basado en la Ecuación Diferencial Estocástica con Retraso (SDDE) con ruido multiplicativo formulada en el Capítulo 3, es indispensable establecer un protocolo riguroso de procesamiento de datos, calibración paramétrica y simulación estocástica. Un modelo dinámico cuyos parámetros de deriva o intensidad de difusión se asignasen de forma arbitraria produciría trayectorias desconectadas de la fisiología real del dosel vegetal [@dietze2017ecological]. En consecuencia, el presente capítulo detalla la metodología computacional y estadística desarrollada para integrar las series observacionales de la red PhenoCam y del reanálisis climático ERA5, segmentar el dominio temporal en regímenes continuos libres de discontinuidades invernales, estimar el vector de parámetros estructurales $\boldsymbol{\theta}$ y la intensidad del ruido multiplicativo $\sigma$ mediante Mínimos Cuadrados Ponderados (equivalentes a Máxima Verosimilitud Condicional), auditar los supuestos estocásticos sobre las innovaciones estandarizadas $\hat{z}_t = \hat{\epsilon}_t / X_t$, identificar el retraso fisiológico óptimo $\tau^*$ bajo condiciones estrictas de muestra común y validar probabilísticamente el sistema mediante simulaciones multiplicativas de Monte Carlo (incluyendo la verificación numérica entre Euler-Maruyama y Milstein).
 
 ::: {.callout-note}
-### Nota sobre Reproducibilidad Computacional
-Con el propósito de preservar una estructura editorial limpia y centrada en el desarrollo metodológico, se omite la inclusión de bloques extensos de código fuente en el texto. La totalidad de los algoritmos de limpieza, segmentación automática, regresión matricial, pruebas diagnósticas y simulación estocástica de Monte Carlo se encuentran implementados en lenguaje Python dentro del cuaderno computacional reproducible `Tesis.ipynb` del repositorio del proyecto.
+## Nota sobre Reproducibilidad Computacional
+
+Con el propósito de preservar una estructura editorial limpia y centrada en el desarrollo metodológico, se omite la inclusión de bloques extensos de código fuente en el texto. La totalidad de los algoritmos de limpieza, segmentación automática, regresión ponderada matricial (WLS/CMLE), verificación exacta de la log-verosimilitud heterocedástica, pruebas diagnósticas sobre innovaciones estandarizadas y simulación estocástica vectorizada de Monte Carlo se encuentran implementados en lenguaje Python dentro del cuaderno computacional reproducible del repositorio del proyecto (`Tesis.ipynb`).
 :::
 
-## Descripción de los datos y fuentes {#sec-descripcion-datos}
+## Descripción de los datos y fuentes {#sec-datos-fuentes}
 
-El conjunto de datos empleado para la calibración y validación del modelo SDDE (@eq-sdde) integra dos fuentes de información científica con resolución temporal diaria ($\Delta t=1$ día). La primera corresponde a los registros fenológicos de la estación experimental agrícola de **Röbäcksdalen**, ubicada en Umeå, provincia de Västerbotten, Suecia, en las coordenadas geográficas $63.806642^\circ\text{N}$ de latitud y $20.229243^\circ\text{E}$ de longitud. Se utiliza la serie diaria `ROI_00_GCC_MEAN` de la red PhenoCam, cuyo registro comprende el periodo del 13 de junio de 2022 al 5 de mayo de 2025 [@richardson2018tracking; @seyednasrollah2019convergence]. La segunda fuente corresponde al reanálisis climático **ERA5** del Centro Europeo de Previsiones Meteorológicas a Plazo Medio (ECMWF), del cual se obtuvieron las series históricas diarias de radiación solar (`GHI_Solar_Daily`), temperatura del aire a 2 m (`Air_Temp`) y precipitación total (`Total_Prec`), agregadas a escala regional europea NUTS-2, correspondientes al registro `S19790101_E20260131` con resolución temporal `01d` [@hersbach2020era5]. Ambas fuentes se integran temporalmente para construir la variable de estado fenológica $X(t)$ y el vector de forzantes climáticas $\mathbf{C}(t)$ definido en la @eq-vector-clima, manteniendo una frecuencia de observación compatible con el paso de discretización empleado en el esquema de Euler-Maruyama de la @sec-discretizacion-numerica.
+El conjunto de datos empleado para la calibración y validación del modelo SDDE multiplicativo (@eq-sdde) integra dos fuentes de información científica con resolución temporal diaria ($\Delta t = 1$ día). La primera corresponde a los registros fenológicos de la estación experimental agrícola de **Röbäcksdalen**, ubicada en Umeå, provincia de Västerbotten, Suecia, en las coordenadas geográficas $63.806642^\circ\,\text{N}$ de latitud y $20.229243^\circ\,\text{E}$ de longitud. Se utiliza la serie diaria `ROI_00_GCC_MEAN` de la red PhenoCam, cuyo registro comprende el periodo del 13 de junio de 2022 al 5 de mayo de 2025 [@richardson2018tracking; @seyednasrollah2019convergence].
 
-## Preprocesamiento y manejo de datos faltantes {#sec-preprocesamiento-datos}
+La segunda fuente corresponde al reanálisis climático global ERA5 del Centro Europeo de Previsiones Meteorológicas a Plazo Medio (ECMWF), del cual se extrajeron las series históricas diarias de radiación solar global horizontal (`GHI_Solar_Daily`), temperatura del aire a 2 m (`Air_Temp`) y precipitación total acumulada (`Total_Prec`), agregadas a escala regional europea NUTS-2 correspondientes a la región **`SE33` (*Övre Norrland*, norte de Suecia, que engloba a Västerbotten y Umeå)** dentro del registro `S19790101_E20260131` con resolución temporal diaria (`01d`) [@hersbach2020era5]. Ambas fuentes se sincronizan temporalmente para construir la variable de estado fenológica $X(t)$ y el vector de forzantes climáticas $C(t)$ definido en la Ecuación 3.4, manteniendo una frecuencia de observación compatible con el paso unitario $\Delta t = 1$ día del esquema de Euler-Maruyama de la @sec-discretizacion-numerica.
 
-Antes de construir las matrices de diseño del modelo regresivo (@eq-matrices-y-x), los archivos brutos fenológicos y meteorológicos se someten a un flujo estandarizado de limpieza, depuración cronológica y control de calidad estructurado en cuatro etapas secuenciales:
+## Preprocesamiento y manejo de datos faltantes {#sec-preprocesamiento}
 
-1. **Estandarización cronológica y eliminación de registros duplicados:** El archivo bruto de PhenoCam (`Tesis_data.csv`) contiene inicialmente $1\,144$ filas y $21$ columnas debido a la presencia de entradas duplicadas en la marca temporal (`TIMESTAMP`). En una primera fase, el campo `TIMESTAMP` se transforma al estándar de fecha ISO-8601 (`datetime64`) y se aplica un filtro de unicidad cronológica que retiene exclusivamente la primera observación válida por día calendario (`drop_duplicates(subset=['TIMESTAMP'], keep='first')`). Este procedimiento depura exactamente la mitad redundante del archivo, consolidando una serie limpia de $M_{\text{uniq}} = 572$ días únicos observados entre el `2022-06-13` y el `2025-05-05`.
+Antes de construir las matrices de diseño y pesos del modelo regresivo heterocedástico (@sec-formulacion-regresion), los archivos brutos fenológicos y meteorológicos se someten a un flujo estandarizado de limpieza, depuración cronológica y control de calidad estructurado en cuatro etapas secuenciales:
 
-2. **Verificación de integridad intra-diaria:** Sobre las $572$ fechas únicas resultantes, se verifica la completitud matricial de los canales ópticos y de las series climáticas de ERA5 (tras omitir las $52$ líneas iniciales de encabezado técnico de metadatos en los archivos del ECMWF), confirmándose la ausencia total de valores nulos o celdas vacías ($0$ valores `NaN`) dentro de los días registrados.
-
-3. **Preservación de las escalas físicas y precisión numérica:** A diferencia de aproximaciones heurísticas que aplican filtros de medias móviles o reescalamientos arbitrarios previos al ajuste —los cuales introducen autocorrelación artificial de medias móviles en los residuos $\epsilon_t$ y distorsionan la estructura browniana del ruido—, en este protocolo se conservan los valores diarios observados en sus unidades físicas originales del Sistema Internacional ($\text{W/m}^2$, $\text{K}$ y $\text{m}$). La disparidad de órdenes de magnitud entre columnas se resuelve numéricamente mediante aritmética de punto flotante de doble precisión (`float64`, precisión de máquina $\varepsilon_{\text{mach}} \approx 2.22 \times 10^{-16}$) y factorización matricial ortogonal-triangular ($\text{QR}$).
-
-4. **Tratamiento riguroso de brechas estacionales sin interpolación sintética:** Si bien entre el 13 de junio de 2022 y el 5 de mayo de 2025 transcurren $1\,058$ días calendario, la serie limpia cuenta con $572$ días registrados debido a la existencia de tres interrupciones prolongadas (de $112$ a $246$ días de duración) correspondientes a los periodos invernales boreales. En lugar de aplicar interpolación lineal o por *splines* cúbicos a través de varios meses de inactividad invernal —práctica que fabricaría datos sintéticos carentes de significado fisiológico y sesgaría severamente los estimadores de deriva y difusión [@dietze2017ecological]—, las brechas temporales se aíslan de manera exacta mediante el algoritmo de segmentación en periodos continuos que se desarrolla a continuación.
+1. **Estandarización cronológica y eliminación de registros duplicados:** El archivo bruto de PhenoCam contiene inicialmente $1\,144$ filas y $21$ columnas debido a la presencia de entradas duplicadas en la marca temporal (`TIMESTAMP`). El campo `TIMESTAMP` se convierte al estándar ISO-8601 (`datetime64`) y se aplica un filtro de unicidad cronológica que retiene exclusivamente la primera observación válida por día calendario (`drop_duplicates(subset=['TIMESTAMP'], keep='first')`). Este procedimiento depura exactamente la mitad redundante del archivo, consolidando una serie limpia de $M_{\text{uniq}} = 572$ días únicos observados entre el 2022-06-13 y el 2025-05-05.
+2. **Verificación de integridad intradiaria y consistencia física:** Sobre las $572$ fechas únicas resultantes, se verifica la completitud matricial de los canales ópticos y de las series climáticas de ERA5 para la región `SE33` (tras omitir las $52$ líneas iniciales de metadatos en los archivos del ECMWF), confirmándose la ausencia total de valores nulos (`0` valores `NaN`) dentro de los días registrados. Asimismo, se verifica la positividad estricta del estado fenológico ($X_t > 0$ en el 100 % de las observaciones, requisito indispensable para los pesos $w_t = X_t^{-2}$ y el término jacobiano $-\sum \ln X_t$) y se corrigen los residuos numéricos negativos de punto flotante ($\sim -10^{-17}$) presentes en días sin lluvia de la serie ERA5 de precipitación mediante truncamiento inferior exacto en cero ($\mathrm{Prec}_t \leftarrow \max(\mathrm{Prec}_t, 0)$).
+3. **Preservación de las escalas físicas y precisión numérica:** A diferencia de aproximaciones heurísticas que aplican filtros de medias móviles o suavizamientos previos al ajuste —los cuales introducen autocorrelación artificial en las innovaciones $z_t = \epsilon_t / X_t$ y distorsionan la estructura browniana del ruido—, en este protocolo se conservan los valores diarios observados en sus unidades físicas originales del Sistema Internacional ($\text{W/m}^2$, $\text{K}$ y $\text{m}$). La disparidad de órdenes de magnitud entre columnas se gestiona mediante aritmética de doble precisión (`float64`, precisión de máquina $\varepsilon_{\text{mach}} \approx 2.22 \times 10^{-16}$) y factorización matricial SVD/QR dentro del estimador WLS.
+4. **Tratamiento riguroso de brechas estacionales sin interpolación sintética:** Si bien entre el 13 de junio de 2022 y el 5 de mayo de 2025 transcurren $1\,058$ días calendario, la serie limpia cuenta con $572$ días registrados debido a tres interrupciones invernales prolongadas (de $112$ a $246$ días de duración). En lugar de aplicar interpolación lineal o por *splines* cúbicos a través de meses de dormancia invernal (práctica que generaría trayectorias sintéticas carentes de significado fisiológico y sesgaría severamente los estimadores de deriva y difusión según @dietze2017ecological), las brechas temporales se aíslan de manera exacta mediante el algoritmo de segmentación en periodos continuos descrito en la Sección 4.3.
 
 ## Segmentación en periodos continuos {#sec-segmentacion-periodos}
 
@@ -34,20 +34,26 @@ La dinámica fenológica en la estación experimental de Röbäcksdalen ($63.81^
 
 Modelar la serie multianual completa ($2022\text{--}2025$) como una única trayectoria continua ignoraría estas rupturas de régimen estacional, violando el supuesto de continuidad de las trayectorias del proceso estocástico $\{X(t)\}$ y forzando al modelo a interpretar el salto entre el otoño de un año y la primavera del año siguiente como una transición diaria [@dietze2017ecological].
 
-### Justificación matemática y estadística en ecuaciones con retraso
+### Justificación matemática y estadística en Ecuaciones con Retraso {#sec-justificacion-matematica-seg}
 
-Desde la perspectiva formal de la discretización de Euler-Maruyama (@sec-discretizacion-numerica) y del modelo de regresión derivado (@sec-formulacion-regresion), la continuidad estricta de paso diario ($\Delta t = 1\text{ día}$) constituye una condición necesaria para la validez de los dos operadores temporales que definen la ecuación estructural (@eq-regresion-sdde):
+Desde la perspectiva formal de la discretización de Euler-Maruyama multiplicativa (@sec-discretizacion-numerica) y del modelo de regresión dinámico heterocedástico derivado (@sec-formulacion-regresion), la continuidad estricta de paso diario ($\Delta t = 1$ día) constituye una condición necesaria para la validez de los operadores temporales y de la estructura de varianza en la ecuación estructural:
 
 $$
-\Delta X_t = X_{t+1} - X_t = \alpha + \beta X_t + \gamma X_{t-\tau} + \boldsymbol{\delta}^T \mathbf{C}_t + \epsilon_t.
-$$ {#eq-recordatorio-regresion-cap4}
+\Delta X_t = X_{t+1} - X_t = \alpha + \beta X_t + \gamma X_{t-\tau} + \boldsymbol{\delta}^\top C_t + \epsilon_t, \qquad \epsilon_t = \sigma X_t \Delta W_t.
+$$ {#eq-estructural-cap4}
 
-Supóngase que en el índice observacional ordenado $\{t_i\}_{i=1}^{M_{\text{uniq}}}$ existe una discontinuidad temporal entre dos registros consecutivos del archivo tal que $t_{i} - t_{i-1} = \Delta t_i > 1\text{ día}$:
+Supóngase que en el índice observacional ordenado $\{t_i\}_{i=1}^{M_{\text{uniq}}}$ existe una discontinuidad temporal entre dos registros consecutivos del archivo tal que $t_i - t_{i-1} = \Delta t_i > 1$ día:
 
-* **Invalidez de la derivada discreta hacia adelante ($\Delta X_t$):** Si no se segmenta la serie en el punto de discontinuidad, el incremento calculado en el borde de la brecha sería $X(t_{i-1} + \Delta t_i) - X(t_{i-1})$, el cual acumula la deriva de $\Delta t_i$ días y posee una varianza estocástica $\sigma^2 \Delta t_i \gg \sigma^2$, destruyendo la consistencia dimensional (tasas en $\text{días}^{-1}$) y violando flagrantemente el supuesto de homocedasticidad (@eq-homocedasticidad).
-* **Desfase espurio del operador de retardo ($L^\tau X_t = X_{t-\tau}$):** En cualquier dataframe indexado por posición fila, aplicar un desplazamiento de $\tau$ posiciones hacia atrás (`.shift(tau)`) a través de una brecha invernal emparejaría el estado actual de primavera $X(t_i)$ con un estado otoñal del año anterior $X(t_{i-\tau})$, separado en el tiempo real por cientos de días ($t_i - t_{i-\tau} \gg \tau$).
+- **Invalidez de la derivada discreta hacia adelante ($\Delta X_t$) y ruptura de la escala de difusión:** Si no se segmenta la serie en el punto de discontinuidad, el incremento calculado en el borde de la brecha sería $X(t_{i-1} + \Delta t_i) - X(t_{i-1})$, el cual acumula la deriva de $\Delta t_i$ días y posee una varianza condicional multiplicativa 
+$$
+\operatorname{Var}(\epsilon_{t_{i-1}} \mid \mathcal{F}_{t_{i-1}}) = \sigma^2 X_{t_{i-1}}^2 \Delta t_i \gg \sigma^2 X_{t_{i-1}}^2.
+$$
 
-Por consiguiente, la partición del conjunto de datos en segmentos conexos donde $t_i - t_{i-1} \equiv 1\text{ día}$ garantiza que, dentro de cada periodo, la diferencia entre filas adyacentes corresponda exactamente a $24\text{ horas}$ y el rezago de orden $\tau$ corresponda exactamente a $\tau\text{ días}$ calendario.
+Ello destruye la consistencia dimensional (tasas en $\text{días}^{-1}$) y rompe la homocedasticidad de las innovaciones estandarizadas $z_t = \epsilon_t / X_t$, invalidando la matriz de pesos $\mathbf{W} = \operatorname{diag}(X_t^{-2})$.
+
+- **Desfase espurio del operador de retardo ($L^\tau X_t = X_{t-\tau}$):** En cualquier estructura tabular indexada por posición de fila, aplicar un desplazamiento de $\tau$ posiciones hacia atrás (`.shift(tau)`) a través de una brecha invernal emparejaría un estado de primavera $X(t_i)$ con un estado otoñal del año anterior $X(t_{i-\tau})$, separados en el tiempo real por cientos de días ($t_i - t_{i-\tau} \gg \tau$).
+
+Por consiguiente, la partición del conjunto de datos en segmentos conexos donde $t_i - t_{i-1} \equiv 1$ día garantiza que, dentro de cada periodo, la diferencia entre filas adyacentes corresponda exactamente a $24$ horas, el rezago de orden $\tau$ corresponda exactamente a $\tau$ días calendario y los incrementos estandarizados $z_t$ compartan un paso unitario idéntico $\Delta t = 1$ día.
 
 ### Algoritmo formal de segmentación temporal y acoplamiento climático
 
@@ -91,8 +97,14 @@ Una vez aislados los cuatro segmentos fenológicos, se ejecuta el acoplamiento e
 5. Agrupar el dataset por la clave $G_i$ generando las $K = 4$ subseries continuas $\{\mathcal{P}_1, \mathcal{P}_2, \mathcal{P}_3, \mathcal{P}_4\}$.
 6. **Para cada** periodo $p = 1, 2, 3, 4$ **hacer:**
    a. Determinar los límites del intervalo continuo: $t_{\text{ini}}^{(p)} \gets \min(\mathcal{P}_p)$ y $t_{\text{fin}}^{(p)} \gets \max(\mathcal{P}_p)$.
-   b. Extraer por indexación cronológica exacta las rodajas climáticas en $[t_{\text{ini}}^{(p)}, t_{\text{fin}}^{(p)}]$:
-      $$\text{Rad}^{(p)} \gets \mathcal{S}_{\text{Rad}}[t_{\text{ini}}^{(p)} : t_{\text{fin}}^{(p)}], \quad \text{Temp}^{(p)} \gets \mathcal{S}_{\text{Temp}}[t_{\text{ini}}^{(p)} : t_{\text{fin}}^{(p)}], \quad \text{Prec}^{(p)} \gets \mathcal{S}_{\text{Prec}}[t_{\text{ini}}^{(p)} : t_{\text{fin}}^{(p)}].$$
+   b. Extraer por indexación cronológica exacta las rodajas climáticas de la región NUTS-2 `SE33` en $[t_{\text{ini}}^{(p)}, t_{\text{fin}}^{(p)}]$, truncando en cero cualquier residuo numérico negativo en la precipitación:
+$$
+\begin{aligned}
+\mathrm{Rad}^{(p)} & \leftarrow \mathcal{S}_{\mathrm{Rad}}^{\mathrm{SE33}}[t_{\text{ini}}^{(p)} : t_{\text{fin}}^{(p)}], \\
+\mathrm{Temp}^{(p)} & \leftarrow \mathcal{S}_{\mathrm{Temp}}^{\mathrm{SE33}}[t_{\text{ini}}^{(p)} : t_{\text{fin}}^{(p)}],\\
+\mathrm{Prec}^{(p)} & \leftarrow \max\!\left(\mathcal{S}_{\mathrm{Prec}}^{\mathrm{SE33}}[t_{\text{ini}}^{(p)} : t_{\text{fin}}^{(p)}], \, 0\right).
+\end{aligned}
+$$
    c. Ensamblar la estructura matricial completa 
       $$\text{DF}_p = [X_t, \text{Rad}_t, \text{Temp}_t, \text{Prec}_t]_{t \in \mathcal{P}_p}.$$
 7. **Retornar** $\{\text{DF}_1, \text{DF}_2, \text{DF}_3, \text{DF}_4\}$.
@@ -137,308 +149,283 @@ Serie temporal histórica del índice de verdor cromático ($\text{GCC}$) en Rö
 Comparación superpuesta de la dinámica del índice $\text{GCC}$ en los cuatro periodos continuos en función de los días transcurridos desde el inicio de cada segmento ($t - t_{\text{ini}}^{(p)}$).
 :::
 
-## Estimación de parámetros por mínimos cuadrados ordinarios (OLS) {#sec-metodologia-ols}
+## Estimación de parámetros por Mínimos Cuadrados Ponderados (WLS / CMLE) {#sec-estimacion-wls}
 
-### Construcción de las matrices de diseño por periodo
+### Construcción de las matrices de diseño y de pesos por periodo {#sec-construccion-matrices-wls}
 
-Para cada periodo continuo $p \in \{1, 2, 3, 4\}$ de longitud $N_p$ días y dado un retraso fisiológico candidato $\tau \in \mathbb{N}$ (con $\Delta t = 1\text{ día}$), la función modular `construir_dataset_sdde(df_periodo, tau, tau_min_corte)` del cuaderno computacional transforma el dataframe acoplado $\text{DF}_p$ en las estructuras matriciales requeridas por la formulación regresiva (@eq-modelo-matricial).
+Para cada periodo continuo $p \in \{1, 2, 3, 4\}$ de longitud $N_p$ días y dado un retraso fisiológico candidato $\tau \in \mathbb{N}$ (con $\Delta t = 1$ día), la función modular `construir_dataset_sdde(df_periodo, tau, tau_min_corte)` del cuaderno computacional transforma el *dataframe* acoplado $\mathrm{DF}_p$ en las estructuras matriciales requeridas por la formulación regresiva heterocedástica del Capítulo 3.
 
-Específicamente, para cada día $t \in \{\tau_{\text{corte}}, \tau_{\text{corte}} + 1, \dots, N_p - 2\}$, donde $\tau_{\text{corte}} = \tau$ cuando se emplea la muestra completa del periodo o $\tau_{\text{corte}} = \tau_{\max}$ cuando se impone un punto de corte común entre distintos retardos, se construyen:
-1. El vector de incrementos observados hacia adelante $\mathbf{Y}^{(p)} \in \mathbb{R}^{n_p \times 1}$, cuyas entradas son $y_t^{(p)} = \Delta X_t^{(p)} = X_{t+1}^{(p)} - X_t^{(p)}$ (calculado mediante `df_f["X_t"].shift(-1) - df_f["X_t"]`).
-2. La matriz de diseño $\mathbf{X}^{(p)}(\tau) \in \mathbb{R}^{n_p \times 6}$, cuya fila asociada al día $t$ es el vector $\mathbf{x}_t^{(p)T}(\tau) = \left[1, \, X_t^{(p)}, \, X_{t-\tau}^{(p)}, \, \text{Rad}_t^{(p)}, \, \text{Temp}_t^{(p)}, \, \text{Prec}_t^{(p)}\right]$, donde el estado retardado se genera aplicando el operador `df_f["ROI_00_GCC_MEAN"].shift(tau)`.
+Específicamente, para cada día $t \in \{\tau_{\text{corte}}, \tau_{\text{corte}} + 1, \dots, N_p - 2\}$ (donde $\tau_{\text{corte}} = \tau$ cuando se emplea la muestra completa disponible del periodo o $\tau_{\text{corte}} = \tau_{\text{máx}}$ cuando se impone un punto de corte común entre distintos retardos), se construyen tres objetos:
 
-Al descartar los primeros $\tau_{\text{corte}}$ registros (que carecen de estado retardado observado dentro del mismo segmento continuo) y el último registro $t = N_p - 1$ (que carece de incremento futuro $\Delta X_{N_p-1}$), se obtiene una matriz libre de valores faltantes con exactamente $n_p = N_p - \tau_{\text{corte}} - 1$ filas efectivas. Así, para el retraso base de referencia $\tau = 15\text{ días}$, los tamaños muestrales efectivos de estimación son $n_1 = 89$, $n_2 = 130$, $n_3 = 229$ y $n_4 = 60$ transiciones diarias.
+1. El **vector de incrementos diarios observados hacia adelante** $\mathbf{Y}^{(p)} \in \mathbb{R}^{n_p \times 1}$, cuyas entradas son $y_t^{(p)} = \Delta X_t^{(p)} = X_{t+1}^{(p)} - X_t^{(p)}$ (`df_f["X_t"].shift(-1) - df_f["X_t"]`).
+2. La **matriz de diseño** $\mathbf{X}^{(p)}(\tau) \in \mathbb{R}^{n_p \times 6}$, cuya fila asociada al día $t$ es $\mathbf{x}_t^{(p)\top}(\tau) = [1, X_t^{(p)}, X_{t-\tau}^{(p)}, \mathrm{Rad}_t^{(p)}, \mathrm{Temp}_t^{(p)}, \mathrm{Prec}_t^{(p)}]$, donde el estado retardado se genera aplicando `.shift(tau)` estrictamente dentro del segmento $p$.
+3. La **matriz diagonal de pesos óptimos de Gauss-Markov / CMLE** $\mathbf{W}^{(p)} \in \mathbb{R}^{n_p \times n_p}$, determinada por la inversa del cuadrado del estado actual observado:
+$$
+\mathbf{W}^{(p)} = \operatorname{diag}\!\left(w_{\tau_{\text{corte}}}^{(p)}, \dots, w_{N_p - 2}^{(p)}\right), \qquad w_t^{(p)} = \frac{1}{\left(X_t^{(p)}\right)^2}.
+$$ {#eq-matriz-pesos-periodo}
 
-### Implementación computacional del estimador OLS
+Al descartar los primeros $\tau_{\text{corte}}$ registros (que carecen de estado retardado observado dentro del mismo segmento) y el último registro $t = N_p - 1$ (que carece de incremento futuro $\Delta X_{N_p - 1}$), se obtiene una matriz libre de valores faltantes con exactamente $n_p = N_p - \tau_{\text{corte}} - 1$ transiciones diarias efectivas. Para el retraso operativo de referencia $\tau = 15$ días, los tamaños muestrales efectivos son $n_1 = 89$, $n_2 = 130$, $n_3 = 229$ y $n_4 = 60$.
 
-Una vez ensamblados $\mathbf{Y}^{(p)}$ y $\mathbf{X}^{(p)}$ para cada periodo $p$, el vector de parámetros específicos del periodo $\hat{\boldsymbol{\theta}}^{(p)} = \left[\hat{\alpha}^{(p)}, \hat{\beta}^{(p)}, \hat{\gamma}^{(p)}, \hat{\delta}_1^{(p)}, \hat{\delta}_2^{(p)}, \hat{\delta}_3^{(p)}\right]^T \in \mathbb{R}^6$ se calcula resolviendo el sistema de ecuaciones normales deducido en la @sec-identificabilidad-estimacion:
+### Implementación computacional del estimador WLS / CMLE {#sec-implementacion-wls}
+
+Una vez ensamblados $\mathbf{Y}^{(p)}$, $\mathbf{X}^{(p)}$ y $\mathbf{W}^{(p)}$ para cada periodo $p$, el vector de parámetros de deriva $\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)} = [\hat{\alpha}^{(p)}, \hat{\beta}^{(p)}, \hat{\gamma}^{(p)}, \hat{\delta}_1^{(p)}, \hat{\delta}_2^{(p)}, \hat{\delta}_3^{(p)}]^\top \in \mathbb{R}^6$ (equivalente al estimador de Máxima Verosimilitud Condicional $\hat{\boldsymbol{\theta}}_{\text{CMLE}}^{(p)}$ deducido en la @sec-estimacion-wls-cmle) se obtiene resolviendo el sistema de ecuaciones normales ponderadas:
 
 $$
-\left( \mathbf{X}^{(p)T} \mathbf{X}^{(p)} \right) \hat{\boldsymbol{\theta}}^{(p)} = \mathbf{X}^{(p)T} \mathbf{Y}^{(p)}.
-$$ {#eq-sistema-normal-periodo}
+\left(\mathbf{X}^{(p)\top}\mathbf{W}^{(p)}\mathbf{X}^{(p)}\right)\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)} = \mathbf{X}^{(p)\top}\mathbf{W}^{(p)}\mathbf{Y}^{(p)}.
+$$ {#eq-ecuaciones-normales-cap4}
 
-En el cuaderno computacional (Sección 4.4), la resolución numérica de la @eq-sistema-normal-periodo se ejecuta mediante un esquema de verificación cruzada:
-* Por un lado, se resuelve directamente el sistema lineal simétrico mediante el solucionador algebraico `np.linalg.solve(X_periodo.T @ X_periodo, X_periodo.T @ Y_periodo)`.
-* Simultáneamente, la función `ajustar_ols_sdde(df_m)` ajusta el objeto estadístico `sm.OLS(Y, X).fit()` de la librería `statsmodels`, el cual emplea factorización $\text{QR}$/$\text{SVD}$ para extraer además del vector $\hat{\boldsymbol{\theta}}^{(p)}$, los errores estándar $\text{SE}(\hat{\theta}_j^{(p)})$, los estadísticos $t_j^{(p)}$, los $p$-valores bilaterales, los residuos $\hat{\boldsymbol{\epsilon}}^{(p)} = \mathbf{Y}^{(p)} - \mathbf{X}^{(p)}\hat{\boldsymbol{\theta}}^{(p)}$ y las métricas de información ($\text{AIC}$, $\text{BIC}$, $R^2$ y $R^2_{\text{adj}}$).
+En el cuaderno computacional, la resolución numérica de la @eq-ecuaciones-normales-cap4 se audita mediante una verificación cruzada algebraica:
 
-::: {.callout-tip icon="false"}
-### Algoritmo 4.2: Estimación OLS Modular por Periodo Continuo
-* **Entrada:** Lista de dataframes continuos $\{\text{DF}_1, \dots, \text{DF}_K\}$, retraso temporal $\tau \in \mathbb{N}$, corte opcional $\tau_{\text{corte}}$.
-* **Salida:** Vectores estimados $\{\hat{\boldsymbol{\theta}}^{(p)}\}_{p=1}^K$, matrices de covarianza y vectores de residuos $\{\hat{\boldsymbol{\epsilon}}^{(p)}\}_{p=1}^K$.
+- Por un lado, se resuelve explícitamente el sistema lineal ponderado simétrico definido positivo $(\mathbf{X}^{(p)\top}\mathbf{W}^{(p)}\mathbf{X}^{(p)})\hat{\boldsymbol{\theta}} = \mathbf{X}^{(p)\top}\mathbf{W}^{(p)}\mathbf{Y}^{(p)}$ utilizando el solucionador directo `numpy.linalg.solve`.
+- Simultáneamente, la función `ajustar_wls_sdde(df_m)` ajusta el modelo `sm.WLS(Y, X, weights=1.0 / (X_t**2)).fit()` de la librería `statsmodels`, el cual opera mediante descomposición ortogonal SVD/QR sobre las variables blanqueadas $\tilde{\mathbf{X}}^{(p)} = (\mathbf{W}^{(p)})^{1/2}\mathbf{X}^{(p)}$ y $\tilde{\mathbf{Y}}^{(p)} = (\mathbf{W}^{(p)})^{1/2}\mathbf{Y}^{(p)}$ para extraer $\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}$, los errores estándar $\mathrm{SE}(\hat{\theta}_j^{(p)})$, los estadísticos $t_j^{(p)}$, los $p$-valores bilaterales, los residuos brutos $\hat{\boldsymbol{\epsilon}}^{(p)} = \mathbf{Y}^{(p)} - \mathbf{X}^{(p)}\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}$, las innovaciones estandarizadas $\hat{\mathbf{z}}^{(p)} = (\mathbf{W}^{(p)})^{1/2}\hat{\boldsymbol{\epsilon}}^{(p)}$ (`modelo.wresid`) y las métricas de verosimilitud exacta (`llf`, `aic`, `bic`, $R^2_{\text{WLS}}$ y $R^2_{\text{adj, WLS}}$).
+
+::: {.callout-tip appearance="simple"}
+## Algoritmo 4.2: Estimación WLS / CMLE Modular por Periodo Continuo
+
+- **Entrada:** Lista de *dataframes* continuos $\{\mathrm{DF}_1, \dots, \mathrm{DF}_K\}$, retraso temporal $\tau \in \mathbb{N}$, corte opcional $\tau_{\text{corte}}$.
+- **Salida:** Vectores estimados $\{\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}\}_{p=1}^K$, errores estándar $\{\mathrm{SE}(\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)})\}_{p=1}^K$, residuos brutos $\{\hat{\boldsymbol{\epsilon}}^{(p)}\}_{p=1}^K$ e innovaciones estandarizadas $\{\hat{\mathbf{z}}^{(p)}\}_{p=1}^K$.
 
 1. **Para cada** periodo $p = 1, \dots, K$ **hacer:**
-   a. Definir el índice de recorte inicial: $c_0 \gets \max(\tau, \tau_{\text{corte}})$ si $\tau_{\text{corte}}$ está definido; en caso contrario, $c_0 \gets \tau$.
-   b. Construir la columna retardada $X_{t-\tau}^{(p)}$ desplazando $X_t^{(p)}$ en $\tau$ posiciones hacia adelante en el índice.
+   a. Definir el índice de recorte inicial: $c_0 \leftarrow \max(\tau, \tau_{\text{corte}})$ si $\tau_{\text{corte}}$ está definido; en caso contrario, $c_0 \leftarrow \tau$.
+   b. Construir la columna retardada $X_{t-\tau}^{(p)}$ desplazando $X_t^{(p)}$ en $\tau$ posiciones hacia adelante en el índice dentro de $\mathrm{DF}_p$.
    c. Construir la variable respuesta $\Delta X_t^{(p)} = X_{t+1}^{(p)} - X_t^{(p)}$.
-   d. Recortar el dataframe al rango de filas válidas $[c_0, N_p - 2]$, obteniendo $n_p = N_p - c_0 - 1$ observaciones completas.
-   e. Formar el vector respuesta $\mathbf{Y}^{(p)} \in \mathbb{R}^{n_p \times 1}$ y la matriz de diseño con intercepto $\mathbf{X}^{(p)} \in \mathbb{R}^{n_p \times 6}$.
-   f. Resolver el sistema normal $\left(\mathbf{X}^{(p)T}\mathbf{X}^{(p)}\right)\hat{\boldsymbol{\theta}}^{(p)} = \mathbf{X}^{(p)T}\mathbf{Y}^{(p)}$.
-   g. Calcular el vector de residuos $\hat{\boldsymbol{\epsilon}}^{(p)} \gets \mathbf{Y}^{(p)} - \mathbf{X}^{(p)}\hat{\boldsymbol{\theta}}^{(p)}$ y los errores estándar $\text{SE}(\hat{\boldsymbol{\theta}}^{(p)})$ mediante la @eq-error-estandar.
-2. **Retornar** $\{\hat{\boldsymbol{\theta}}^{(p)}, \text{SE}(\hat{\boldsymbol{\theta}}^{(p)}), \hat{\boldsymbol{\epsilon}}^{(p)}\}_{p=1}^K$.
+   d. Recortar el *dataframe* al rango de filas válidas $[c_0, N_p - 2]$, obteniendo $n_p = N_p - c_0 - 1$ observaciones completas con $X_t^{(p)} > 0$.
+   e. Formar el vector respuesta $\mathbf{Y}^{(p)} \in \mathbb{R}^{n_p \times 1}$, la matriz de diseño con intercepto $\mathbf{X}^{(p)} \in \mathbb{R}^{n_p \times 6}$ y la matriz diagonal de pesos $\mathbf{W}^{(p)} = \operatorname{diag}\!\left((X_t^{(p)})^{-2}\right) \in \mathbb{R}^{n_p \times n_p}$.
+   f. Resolver el sistema normal ponderado $(\mathbf{X}^{(p)\top}\mathbf{W}^{(p)}\mathbf{X}^{(p)})\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)} = \mathbf{X}^{(p)\top}\mathbf{W}^{(p)}\mathbf{Y}^{(p)}$ (verificando la concordancia entre `sm.WLS` y `np.linalg.solve`).
+   g. Calcular los residuos brutos $\hat{\boldsymbol{\epsilon}}^{(p)} \leftarrow \mathbf{Y}^{(p)} - \mathbf{X}^{(p)}\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}$ y las innovaciones estandarizadas $\hat{\mathbf{z}}^{(p)} \leftarrow (\mathbf{W}^{(p)})^{1/2}\hat{\boldsymbol{\epsilon}}^{(p)}$ (componente a componente, $\hat{z}_t^{(p)} = \hat{\epsilon}_t^{(p)} / X_t^{(p)}$).
+   h. Calcular la volatilidad $\hat{\sigma}_{\text{WLS}}^{(p)}$ y los errores estándar $\mathrm{SE}(\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)})$ a partir de $\widehat{\operatorname{Var}}(\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}) = (\hat{\sigma}_{\text{WLS}}^{(p)})^2 (\mathbf{X}^{(p)\top}\mathbf{W}^{(p)}\mathbf{X}^{(p)})^{-1}$.
+2. **Retornar** $\left\{\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}, \, \mathrm{SE}(\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}), \, \hat{\boldsymbol{\epsilon}}^{(p)}, \, \hat{\mathbf{z}}^{(p)}\right\}_{p=1}^K$.
 :::
 
-### Estimación individual por periodo frente a estimación agrupada (*Pooled OLS*)
+### Estimación individual por periodo frente a estimación agrupada (*Pooled WLS*) {#sec-pooled-wls}
 
-La disponibilidad de $K = 4$ periodos continuos permite implementar dos estrategias complementarias de estimación paramétrica dependiendo del objetivo inferencial:
+La disponibilidad de $K = 4$ periodos continuos permite implementar dos estrategias complementarias de estimación ponderada según el propósito inferencial:
 
-1. **Estimación específica por periodo ($\hat{\boldsymbol{\theta}}^{(p)}$):** Ajusta el modelo de forma independiente sobre cada segmento $\mathcal{P}_p$. Esta estrategia permite capturar la heterogeneidad interanual y estacional de los parámetros biofísicos (por ejemplo, contrastar la intensidad de la autorregulación $\beta$ o de la memoria $\gamma$ entre un periodo primaveral como $P_4$ y un ciclo completo como $P_3$).
-2. **Estimación agrupada o concatenada (*Pooled OLS*, $\hat{\boldsymbol{\theta}}_{\text{pool}}$):** Cuando se requiere estimar un vector de parámetros global para evaluar la capacidad de generalización fuera de muestra —como en el protocolo de validación *Leave-One-Dataset-Out* (LODO) implementado en la Sección 5.5.2 del cuaderno—, se concatenan verticalmente las matrices de diseño y vectores de respuesta de un subconjunto de periodos de entrenamiento $\mathcal{J} \subset \{1, 2, 3, 4\}$.
+1. **Estimación específica por periodo** ($\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}$): Ajusta el modelo WLS/CMLE de manera independiente sobre cada segmento $\mathcal{P}_p$. Esta estrategia permite capturar la heterogeneidad interanual y estacional de los parámetros biofísicos (por ejemplo, contrastar la intensidad de la autorregulación $\beta$ o de la memoria fisiológica $\gamma$ entre la primavera temprana de $P_4$ y el ciclo completo de $P_3$).
+2. **Estimación agrupada o concatenada (*Pooled WLS*, $\hat{\boldsymbol{\theta}}_{\text{pool, WLS}}$):** Cuando se requiere calibrar un vector de parámetros global para auditar la capacidad de generalización fuera de muestra, se combinan las observaciones de un subconjunto de periodos de entrenamiento $J \subset \{1, 2, 3, 4\}$.
 
-Un aspecto metodológico fundamental de nuestra implementación del estimador *pooled* es que **los operadores de diferencia $\Delta X_t$ y de retardo $X_{t-\tau}$ se calculan primero de manera estrictamente interna dentro de cada periodo individual $j \in \mathcal{J}$** (usando `construir_dataset_sdde` por separado), y únicamente después de haber recortado las primeras $\tau$ filas de cada segmento se procede al apilamiento matricial (`pd.concat(dfs_train_k, axis=0, ignore_index=True)`):
-
-$$
-\mathbf{Y}_{\mathcal{J}} = \begin{bmatrix} \mathbf{Y}^{(j_1)} \\ \vdots \\ \mathbf{Y}^{(j_m)} \end{bmatrix} \in \mathbb{R}^{\left(\sum_{j \in \mathcal{J}} n_j\right) \times 1}, \qquad
-\mathbf{X}_{\mathcal{J}} = \begin{bmatrix} \mathbf{X}^{(j_1)} \\ \vdots \\ \mathbf{X}^{(j_m)} \end{bmatrix} \in \mathbb{R}^{\left(\sum_{j \in \mathcal{J}} n_j\right) \times 6}.
-$$ {#eq-matrices-pooled}
-
-El estimador agrupado sobre la colección de periodos $\mathcal{J}$ viene dado entonces por:
+Un aspecto metodológico esencial del estimador *Pooled WLS* es que los operadores de diferencia $\Delta X_t$, de retardo $X_{t-\tau}$ y los pesos individuales $w_t = X_t^{-2}$ se calculan primero de manera estrictamente interna dentro de cada periodo $j \in J$ (invocando `construir_dataset_sdde` por separado). Únicamente después de recortar las fronteras de cada segmento se apilan verticalmente las matrices y se forma la matriz diagonal por bloques de pesos $\mathbf{W}_J$:
 
 $$
-\hat{\boldsymbol{\theta}}_{\text{pool}}(\mathcal{J}) = \left( \mathbf{X}_{\mathcal{J}}^T \mathbf{X}_{\mathcal{J}} \right)^{-1} \mathbf{X}_{\mathcal{J}}^T \mathbf{Y}_{\mathcal{J}} = \left( \sum_{j \in \mathcal{J}} \mathbf{X}^{(j)T} \mathbf{X}^{(j)} \right)^{-1} \left( \sum_{j \in \mathcal{J}} \mathbf{X}^{(j)T} \mathbf{Y}^{(j)} \right).
-$$ {#eq-estimador-pooled}
+\mathbf{Y}_J = \begin{bmatrix} \mathbf{Y}^{(j_1)} \\ \vdots \\ \mathbf{Y}^{(j_m)} \end{bmatrix}, \qquad
+\mathbf{X}_J = \begin{bmatrix} \mathbf{X}^{(j_1)} \\ \vdots \\ \mathbf{X}^{(j_m)} \end{bmatrix}, \qquad
+\mathbf{W}_J = \operatorname{diag}\!\left(\mathbf{W}^{(j_1)}, \dots, \mathbf{W}^{(j_m)}\right),
+$$ {#eq-apilamiento-pooled-wls}
 
-Este diseño en dos etapas garantiza matemáticamente que ninguna fila de $\mathbf{X}_{\mathcal{J}}$ mezcle jamás observaciones pertenecientes a años distintos.
-
-## Estimación de la intensidad del ruido estocástico {#sec-estimacion-ruido}
-
-### Estimadores de la volatilidad en el esquema discretizado: $\hat{\sigma}_{\text{OLS}}$ versus $\hat{\sigma}_{\text{MLE}}$
-
-En la representación discretizada de Euler-Maruyama con paso diario $\Delta t = 1\text{ día}$, las perturbaciones aleatorias $\epsilon_t = \Delta X_t - \mathbf{x}_t^T \boldsymbol{\theta}$ absorben el efecto acumulado de la volatilidad ambiental durante un día. A partir de la secuencia de residuos estimados $\hat{\epsilon}_t = \Delta X_t - \mathbf{x}_t^T \hat{\boldsymbol{\theta}}_{\text{OLS}}$ para $t \in \{1, \dots, n\}$ (donde $n = n_p$ denota el tamaño muestral efectivo del periodo y $k = 6$ es el rango de la matriz de diseño $\mathbf{X}$), se implementan en el cuaderno computacional dos estimadores para cuantificar la desviación estándar del ruido diario $\sigma$:
-
-1. **Estimador insesgado de varianza corregido por grados de libertad ($\hat{\sigma}_{\text{OLS}}$):** Como se demostró en la @sec-identificabilidad-estimacion, dado que el vector de residuos $\hat{\boldsymbol{\epsilon}} = (\mathbf{I}_n - \mathbf{H})\boldsymbol{\epsilon}$ habita en un subespacio lineal de dimensión $n - k = n - 6$, la suma de cuadrados de los residuos $\text{RSS} = \sum_{t=1}^n \hat{\epsilon}_t^2$ tiene esperanza matemática $\mathbb{E}[\text{RSS}] = (n - k)\sigma^2$. Dividiendo entre los $n - k$ grados de libertad residuales se obtiene el estimador (`sigma_ols = np.sqrt(np.sum(residuos**2) / (n_obs - k_params))`):
+obteniéndose el estimador *Pooled WLS* (equivalente a la máxima verosimilitud condicional conjunta bajo independencia entre campañas separadas por el invierno):
 
 $$
-\hat{\sigma}_{\text{OLS}} = \sqrt{ \frac{1}{n - k} \sum_{t=1}^{n} \hat{\epsilon}_t^2 }, \quad \text{con } k = 6.
-$$ {#eq-cap4-sigma-ols}
+\hat{\boldsymbol{\theta}}_{\text{pool, WLS}}(J) = \left(\mathbf{X}_J^\top \mathbf{W}_J \mathbf{X}_J\right)^{-1}\mathbf{X}_J^\top \mathbf{W}_J \mathbf{Y}_J = \left(\sum_{j \in J} \mathbf{X}^{(j)\top}\mathbf{W}^{(j)}\mathbf{X}^{(j)}\right)^{-1}\left(\sum_{j \in J} \mathbf{X}^{(j)\top}\mathbf{W}^{(j)}\mathbf{Y}^{(j)}\right),
+$$ {#eq-estimador-pooled-wls}
 
-2. **Estimador de Máxima Verosimilitud Condicional ($\hat{\sigma}_{\text{MLE}}$):** Al maximizar directamente la función de log-verosimilitud gaussiana condicional (@eq-log-verosimilitud) respecto a $\sigma^2$, el divisor que anula la derivada parcial es el tamaño muestral completo $n$. Dado que la media aritmética de los residuos de una regresión con intercepto es exactamente cero ($\bar{\hat{\epsilon}} = \frac{1}{n}\sum_{t=1}^n \hat{\epsilon}_t = 0$), este estimador coincide con la desviación estándar muestral no corregida de los residuos (`sigma_mle = np.std(residuos)`):
+junto con su difusión multiplicativa agrupada $\hat{\sigma}_{\text{WLS, pool}}(J) = \sqrt{\frac{1}{N_{\text{Train}} - 6}\sum_{j \in J} \|\hat{\mathbf{z}}_{\text{pool}}^{(j)}\|_2^2}$, donde $N_{\text{Train}} = \sum_{j \in J} n_j$. Este diseño en dos etapas garantiza matemáticamente que ninguna fila de $\mathbf{X}_J$ mezcle jamás observaciones pertenecientes a campañas distintas.
 
+## Estimación directa de la intensidad del ruido y verificación de verosimilitud 
+
+### Estimadores directos de la volatilidad multiplicativa: $\hat{\sigma}_{\text{WLS}}$ versus $\hat{\sigma}_{\text{MLE}}$ {#sec-sigma-wls-mle}
+
+En la discretización de Euler-Maruyama con ruido multiplicativo y paso diario $\Delta t = 1$ día, las perturbaciones de transición $\epsilon_t = \sigma X_t \Delta W_t$ poseen varianza condicional proporcional al cuadrado del estado. Al estandarizar los residuos obtenidos del ajuste WLS/CMLE mediante $\hat{z}_t = \hat{\epsilon}_t / X_t$ (`modelo.wresid`), se obtiene directamente una muestra empírica de la innovación homocedástica $\sigma \Delta W_t$, lo cual elimina la necesidad de emplear aproximaciones aditivas o fórmulas de reconversión posteriores.
+
+En la función `extraer_sigmas_multiplicativos(modelo)` del cuaderno computacional se calculan y contrastan los dos estimadores directos de la difusión multiplicativa $\sigma$ (en $\text{días}^{-1/2}$) deducidos en la @sec-estimacion-sigma, para $n = n_p$ transiciones efectivas y $p = 6$ parámetros de deriva:
+
+1. **Estimador WLS insesgado en varianza ($\hat{\sigma}_{\text{WLS}}$):** Corrige por los $n - 6$ grados de libertad residuales del subespacio ortogonal ponderado ($\operatorname{tr}(\mathbf{I}_n - \mathbf{H}_W) = n - 6$) y coincide numéricamente con `np.sqrt(modelo.scale)` en `statsmodels.WLS`:
+   $$
+   \hat{\sigma}_{\text{WLS}} = \sqrt{\frac{1}{n - 6}\sum_{t=1}^{n}\hat{z}_t^2} = \sqrt{\frac{1}{n - 6}\sum_{t=1}^{n}\left(\frac{\hat{\epsilon}_t}{X_t}\right)^2}.
+   $$ {#eq-cap4-sigma-wls}
+2. **Estimador de Máxima Verosimilitud Condicional ($\hat{\sigma}_{\text{MLE}}$):** Maximiza de forma exacta la log-verosimilitud condicional heterocedástica respecto a $\sigma^2$, empleando como divisor el tamaño muestral completo $n$:
 $$
-\hat{\sigma}_{\text{MLE}} = \sqrt{ \frac{1}{n} \sum_{t=1}^{n} \hat{\epsilon}_t^2 }.
+\hat{\sigma}_{\text{MLE}} = \sqrt{\frac{1}{n}\sum_{t=1}^{n}\hat{z}_t^2} = \sqrt{\frac{1}{n}\sum_{t=1}^{n}\left(\frac{\hat{\epsilon}_t}{X_t}\right)^2}.
 $$ {#eq-cap4-sigma-mle}
 
-#### Relación algebraica, factor de corrección en muestras finitas e intervalos de confianza
+#### Relación algebraica y efecto de corrección en muestras finitas
 
-Comparando las Ecuaciones (@eq-cap4-sigma-ols) y (@eq-cap4-sigma-mle), ambos estimadores están vinculados de manera exacta por el factor determinista de grados de libertad:
-
-$$
-\hat{\sigma}_{\text{MLE}} = \sqrt{\frac{n - k}{n}} \, \hat{\sigma}_{\text{OLS}} = \sqrt{1 - \frac{6}{n}} \, \hat{\sigma}_{\text{OLS}}.
-$$ {#eq-factor-correccion-sigma}
-
-Mediante una expansión de Taylor de primer orden, se observa que $\hat{\sigma}_{\text{MLE}} \approx \left(1 - \frac{3}{n}\right)\hat{\sigma}_{\text{OLS}}$, por lo que la discrepancia relativa entre ambos estimadores es de orden $\mathcal{O}(n^{-1})$:
-
-* En periodos extensos como el **Periodo 3** ($n_3 = 229$ para $\tau = 15$), el factor de escala es $\sqrt{223/229} = 0.9868$, produciendo valores prácticamente idénticos ($\hat{\sigma}_{\text{OLS}} = 0.002481$ frente a $\hat{\sigma}_{\text{MLE}} = 0.002448$, una diferencia de apenas $3.3 \times 10^{-5}$ unidades de $\text{GCC}$).
-
-* En segmentos más cortos como el **Periodo 4** ($n_4 = 60$), el factor es $\sqrt{54/60} = 0.9487$ ($\hat{\sigma}_{\text{OLS}} = 0.002095$ frente a $\hat{\sigma}_{\text{MLE}} = 0.001988$), donde la corrección por grados de libertad de $\hat{\sigma}_{\text{OLS}}$ evita subestimar la incertidumbre en un $5.1\%$.
-
-### Recuperación del coeficiente de difusión continuo $\sigma_{\text{SDDE}}$: Método de Momentos versus Verosimilitud Heterocedástica
-
-Como se estableció en la formulación continua de la @eq-sdde inspirada en @rupsys2008stochastic, cuando el término de difusión se especifica de forma multiplicativa proporcional al estado biológico, $g(X(t)) = \sigma_{\text{SDDE}} X(t) \, dW(t)$, el error de discretización de Euler-Maruyama tiene la estructura:
+Ambos estimadores se relacionan de manera exacta mediante el factor determinista de grados de libertad:
 
 $$
-\epsilon_t = \sigma_{\text{SDDE}} X_t \, \Delta W_t, \quad \text{con } \Delta W_t \sim \mathcal{N}(0, \Delta t).
-$$ {#eq-error-multiplicativo}
+\hat{\sigma}_{\text{MLE}} = \sqrt{\frac{n - 6}{n}}\,\hat{\sigma}_{\text{WLS}} \approx \left(1 - \frac{3}{n}\right)\hat{\sigma}_{\text{WLS}},
+$$ {#eq-cap4-relacion-sigmas}
 
-Por consiguiente, la varianza condicional teórica del incremento diario dado el estado actual $X_t$ es proporcional al cuadrado del nivel de verdor:
+cuya discrepancia relativa es de orden $\mathcal{O}(n^{-1})$:
 
-$$
-\text{Var}(\epsilon_t \mid \mathcal{F}_t) = \sigma_{\text{SDDE}}^2 X_t^2 \Delta t.
-$$ {#eq-varianza-condicional-sdde}
+- En periodos extensos como el **Periodo 3** ($n_3 = 229$ para $\tau = 15$ días), el factor de escala es $\sqrt{223/229} = 0.9868$, produciendo estimaciones prácticamente idénticas ($\hat{\sigma}_{\text{WLS}} = 0.007312\,\text{días}^{-1/2}$ frente a $\hat{\sigma}_{\text{MLE}} = 0.007216\,\text{días}^{-1/2}$, una diferencia de apenas $9.6 \times 10^{-5}\,\text{días}^{-1/2}$).
+- En segmentos más cortos como el **Periodo 4** ($n_4 = 60$), el factor se reduce a $\sqrt{54/60} = 0.9487$ ($\hat{\sigma}_{\text{WLS}} = 0.006354\,\text{días}^{-1/2}$ frente a $\hat{\sigma}_{\text{MLE}} = 0.006028\,\text{días}^{-1/2}$), donde la corrección por grados de libertad de $\hat{\sigma}_{\text{WLS}}$ evita subestimar la intensidad de difusión en un $5.1$ %.
 
-Para recuperar el parámetro de volatilidad relativa continua $\sigma_{\text{SDDE}}$ (en unidades $\text{días}^{-1/2}$) a partir de las observaciones discretas, se plantean dos enfoques analíticos complementarios:
+### Verificación exacta de la log-verosimilitud heterocedástica y término jacobiano {#sec-verificacion-jacobiano}
 
-#### Enfoque de igualación de momentos bajo cuasi-homocedasticidad
-
-Siguiendo el argumento de linealización local de @shoji1998estimation y @rupsys2008stochastic, cuando el proceso positivo $X_t$ evoluciona en un rango estrecho alrededor de su media $\bar{X}$ (recordando que en Röbäcksdalen $X_t \in [0.3093, 0.3571]$, por lo que el factor $X_t^2$ varía mínimamente alrededor de $\overline{X^2} \approx 0.115$), la varianza incondicional media de los errores satisface $\mathbb{E}[\text{Var}(\epsilon_t \mid \mathcal{F}_t)] = \sigma_{\text{SDDE}}^2 \mathbb{E}[X_t^2]\Delta t \approx \sigma^2$. Igualando la varianza residual estimada por OLS ($\hat{\sigma}_{\text{OLS}}^2$) con el segundo momento muestral del estado, se deduce el estimador por el método de los momentos:
+Un punto computacional crítico al emplear rutinas de regresión ponderada en la evaluación de criterios de información consiste en verificar que la log-verosimilitud reportada corresponda exactamente a la densidad condicional de la variable observable $\Delta X_t$ (y no únicamente a la de la variable transformada $z_t = \Delta X_t / X_t$). Evaluando la Ecuación 3.4.4 en $(\hat{\boldsymbol{\theta}}_{\text{WLS}}, \hat{\sigma}_{\text{MLE}}^2)$, la log-verosimilitud máxima condicional exacta adopta la forma:
 
 $$
-\hat{\sigma}_{\text{SDDE}}^{\text{(MM)}} = \sqrt{ \frac{\hat{\sigma}_{\text{OLS}}^2}{\frac{1}{n} \sum_{t=1}^{n} X_t^2 \Delta t} } = \frac{\hat{\sigma}_{\text{OLS}}}{\sqrt{\Delta t \, \overline{X^2}}}.
-$$ {#eq-sigma-sdde-momentos}
+\ell_{\text{exacta}} = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\!\left(\hat{\sigma}_{\text{MLE}}^2\right) - \frac{n}{2} - \sum_{t=1}^{n}\ln(X_t),
+$$ {#eq-cap4-llf-exacta}
 
-#### Enfoque de Máxima Verosimilitud bajo estructura heterocedástica
+donde el término $-\sum_{t=1}^{n}\ln(X_t) = \frac{1}{2}\sum_{t=1}^{n}\ln(w_t)$ constituye el **término jacobiano heterocedástico** (estrictamente positivo en nuestros datos, ya que $X_t \in [0.3093, 0.3571] < 1 \implies \ln(X_t) < 0$).
 
-Como alternativa directa que aprovecha explícitamente la dependencia proporcional al estado en la @eq-varianza-condicional-sdde, condicional a $\mathcal{F}_t$ cada innovación sigue la distribución gaussiana heterocedástica $\epsilon_t \mid \mathcal{F}_t \sim \mathcal{N}(0, \sigma_{\text{SDDE}}^2 X_t^2 \Delta t)$. La función de log-verosimilitud condicional para $(\boldsymbol{\theta}, \sigma_{\text{SDDE}})$ toma entonces la forma:
+En el cuaderno computacional, la función `verificar_loglik_wls_exacta(modelo, df_m)` audita automáticamente tres identidades numéricas en los cuatro periodos con tolerancia estricta $< 10^{-9}$:
 
-$$
-\ell_{\text{het}}(\boldsymbol{\theta}, \sigma_{\text{SDDE}}) = -\frac{n}{2}\ln(2\pi) - \frac{1}{2}\sum_{t=1}^{n} \ln\left(\sigma_{\text{SDDE}}^2 X_t^2 \Delta t\right) - \frac{1}{2\sigma_{\text{SDDE}}^2 \Delta t} \sum_{t=1}^{n} \frac{\left(\Delta X_t - \mathbf{x}_t^T \boldsymbol{\theta}\right)^2}{X_t^2}.
-$$ {#eq-loglik-heterocedastica}
+1. Que la log-verosimilitud de `statsmodels.api.WLS` (`modelo.llf`) coincide exactamente con $\ell_{\text{exacta}}$ (@eq-cap4-llf-exacta), confirmando la inclusión automática del jacobiano $-\sum_{t=1}^{n}\ln(X_t)$.
+2. Que los criterios internos `modelo.aic` y `modelo.bic` de `statsmodels` corresponden a $-2\ell_{\text{exacta}} + 2k_{\text{deriva}}$ y $-2\ell_{\text{exacta}} + k_{\text{deriva}}\ln(n)$ con $k_{\text{deriva}} = 6$ parámetros de deriva (suficiente para optimizar $\tau$ dentro de la misma familia SDDE).
+3. Que, al realizar la comparación competitiva entre familias no anidados ($\text{SDDE}(\tau)$ multiplicativa frente a $\text{AR}(\tau)$ homocedástico en la Sección 5.4), ambos criterios se evalúan con el **conteo completo y simétrico de parámetros** incluyendo el parámetro de difusión/varianza:
+   $$
+   \mathrm{AIC}_{\text{CMLE}} = -2\ell_{\text{exacta}} + 2k_{\text{SDDE}}, \qquad
+   \mathrm{BIC}_{\text{CMLE}} = -2\ell_{\text{exacta}} + k_{\text{SDDE}}\ln(n), \qquad k_{\text{SDDE}} = 6 + 1 = 7,
+   $$ {#eq-cap4-aic-bic-k7}
+   contrastado frente a $k_{\text{AR}} = (\tau + 1) + 1 = \tau + 2$ en `AutoReg`.
 
-Derivando la @eq-loglik-heterocedastica respecto a $\sigma_{\text{SDDE}}^2$, igualando a cero y evaluando en los residuos estimados $\hat{\epsilon}_t = \Delta X_t - \mathbf{x}_t^T \hat{\boldsymbol{\theta}}_{\text{OLS}}$:
+### Verificación empírica de los supuestos sobre las innovaciones estandarizadas $\hat{z}_t$ {#sec-verificacion-supuestos-z}
 
-$$
-\frac{\partial \ell_{\text{het}}}{\partial (\sigma_{\text{SDDE}}^2)} = -\frac{n}{2\sigma_{\text{SDDE}}^2} + \frac{1}{2\left(\sigma_{\text{SDDE}}^2\right)^2 \Delta t} \sum_{t=1}^{n} \frac{\hat{\epsilon}_t^2}{X_t^2} = 0,
-$$ {#eq-derivada-loglik-het}
+En la Sección 4.5 del cuaderno computacional, la validez de los supuestos gaussianos, de homocedasticidad residual y de independencia serial se audita sistemáticamente en los cuatro periodos aplicando las cinco pruebas estadísticas formales de la Sección 3.5 directamente sobre las innovaciones estandarizadas $\hat{z}_t = \hat{\epsilon}_t / X_t$: Shapiro-Wilk ($W$) y Jarque-Bera ($JB$) para normalidad, Breusch-Pagan ($LM_{\text{BP}}$ sobre $\hat{z}_t^2$ frente a $\mathbf{X}$) para homocedasticidad residual tras la ponderación multiplicativa, y Durbin-Watson ($DW$) junto con Ljung-Box hasta el rezago $10$ ($Q_{\text{LB}}(10)$) para ausencia de autocorrelación serial.
 
-se obtiene el estimador de máxima verosimilitud ponderado por el estado:
+Complementariamente, como se ilustra en la Figura 4.3 para el Periodo 3 (el segmento continuo de mayor extensión, con $n_3 = 229$ transiciones efectivas para $\tau = 15$ días), se construye un panel de diagnóstico visual tripartito sobre $\hat{z}_t$: **(a)** histograma de densidad empírica superpuesto con la densidad normal teórica $\mathcal{N}(0, \hat{\sigma}_{\text{MLE}}^2)$, **(b)** gráfico cuantil-cuantil (Q-Q Plot) normal para detectar desviaciones en las colas asociadas a perturbaciones extremas o artefactos ópticos, y **(c)** diagrama de dispersión de $\hat{z}_t$ frente a los incrementos predichos $\widehat{\Delta X}_t$ para inspeccionar visualmente la linealidad de la deriva y la estabilidad de la varianza residual tras la ponderación por $1/X_t$.
 
-$$
-\hat{\sigma}_{\text{SDDE}}^{\text{(MLE)}} = \sqrt{ \frac{1}{n \Delta t} \sum_{t=1}^{n} \left( \frac{\hat{\epsilon}_t}{X_t} \right)^2 }.
-$$ {#eq-sigma-sdde-mle}
-
-La @eq-sigma-sdde-mle tiene una interpretación biofísica transparente: mide la raíz del error cuadrático medio de los residuos expresados como proporción relativa del verdor actual ($\hat{\epsilon}_t / X_t$). Cuando la variabilidad relativa del estado es baja ($X_t \approx \bar{X}$), ambos estimadores (@eq-sigma-sdde-momentos y @eq-sigma-sdde-mle) convergen al mismo valor numérico ($\hat{\sigma}_{\text{SDDE}} \approx \hat{\sigma} / \bar{X} \approx 0.00245 / 0.336 \approx 0.0073\text{ días}^{-1/2}$).
-
-### Verificación empírica de los supuestos sobre el ruido estocástico
-
-En la Sección 4.5 del cuaderno computacional (`Tesis.ipynb`), la validez de los supuestos sobre la innovación $\epsilon_t$ se audita sistemáticamente en los cuatro periodos aplicando la batería de pruebas estadísticas formales definidas en la @sec-diagnostico-validacion: Shapiro-Wilk ($W$) y Jarque-Bera ($JB$) para la normalidad, Breusch-Pagan ($LM_{\text{BP}}$) para la homocedasticidad, y Durbin-Watson ($DW$) junto con Ljung-Box hasta el rezago $10$ ($Q_{\text{LB}}(10)$) para la independencia serial.
-
-Asimismo, como se ilustra en la @fig-diagnostico-residuos para el Periodo 3 (el segmento continuo de mayor longitud, con $n_3 = 229$ observaciones efectivas para $\tau = 15$), se genera una inspección gráfica tripartita de los residuos $\hat{\epsilon}_t$: (a) superposición del histograma de densidad empírica contra la campana gaussiana teórica $\mathcal{N}(0, \hat{\sigma}_{\text{MLE}}^2)$, (b) gráfico cuantil-cuantil (*Q-Q Plot*) normal para identificar desviaciones en las colas atribuibles a eventos meteorológicos abruptos, y (c) diagrama de dispersión de los residuos frente a los incrementos predichos $\Delta \hat{X}_t$ para corroborar la ausencia de patrones de heterocedasticidad en forma de cono.
-
-::: {#fig-diagnostico-residuos}
-<!-- ESPACIO PARA INSERTAR LA FIGURA 4.3 EXTRAÍDA DEL NOTEBOOK -->
-<!-- Descomentar la siguiente línea al colocar el archivo de imagen en tu carpeta: -->
-![](figuras/fig_4_3_diagnostico_residuos_p3.png){width=100% fig-align="center"}
-
-Panel de diagnóstico visual de los residuos estimados $\hat{\epsilon}_t$ en el Periodo 3 ($n = 229$, $\tau = 15\text{ días}$): (a) Histograma empírico y curva de densidad normal teórica $\mathcal{N}(0, \hat{\sigma}^2)$; (b) Gráfico Q-Q normal de cuantiles muestrales frente a cuantiles teóricos; (c) Dispersión de residuos frente a valores ajustados ($\Delta \hat{X}_t$) confirmando homocedasticidad.
-:::
+![Panel de diagnóstico visual de las innovaciones estandarizadas $\hat{z}_t = \hat{\epsilon}_t / X_t$ en el Periodo 3 ($n = 229$, $\tau = 15$ días): (a) Histograma empírico y curva de densidad normal teórica $\mathcal{N}(0, \hat{\sigma}_{\text{MLE}}^2)$; (b) Gráfico Q-Q normal de cuantiles muestrales frente a cuantiles teóricos; (c) Dispersión de innovaciones ponderadas frente a incrementos predichos ($\widehat{\Delta X}_t$) para auditar linealidad y homocedasticidad residual.](figuras/fig_4_3_diagnostico_residuos_p3.pdf){#fig-diagnostico-residuos-p3}
 
 ## Selección óptima del retraso temporal ($\tau$) {#sec-seleccion-tau}
 
-### Planteamiento del problema y espacio de búsqueda biológicamente admisible
+### Planteamiento del problema y espacio de búsqueda biológicamente admisible {#sec-espacio-busqueda-tau}
 
-Como se demostró en el análisis de identificabilidad estructural (@sec-identificabilidad-estimacion), el retraso temporal $\tau$ ingresa de manera no lineal en el modelo regresivo (@eq-regresion-sdde) a través del operador de desplazamiento de índice $X_{t-\tau}$, lo que impide obtenerlo mediante diferenciación algebraica directa de la suma de cuadrados. En consecuencia, la identificación del retraso óptimo $\tau^*$ se formula como un problema de **optimización discreta por perfilación de verosimilitud** (*grid search profile likelihood*) sobre una malla finita de retardos candidatos:
-
-$$
-\mathcal{T} = \left\{ \tau_{\min}, \, \tau_{\min} + 1, \, \dots, \, \tau_{\max} \right\} = \left\{ 3, 4, 5, \dots, 23 \right\}\text{ días}.
-$$ {#eq-malla-busqueda-tau}
-
-La delimitación del espacio de búsqueda en $\mathcal{T} = \{3, \dots, 23\}\text{ días}$ responde a dos criterios metodológicos y ecofisiológicos:
-
-1. **Cota inferior ($\tau_{\min} = 3\text{ días}$):** Se excluyen los rezagos inmediatos $\tau \in \{1, 2\}\text{ días}$ tanto para evitar la colinealidad extrema con el estado presente $X_t$ (que degradaría el número de condición de la matriz $\mathbf{X}^T\mathbf{X}$), como porque las fluctuaciones de $24\text{ a }48\text{ horas}$ reflejan persistencia radiométrica y respuestas estomáticas rápidas más que procesos de translocación estructural [@ogle2015quantifying].
-
-2. **Cota superior ($\tau_{\max} = 23\text{ días}$):** Abarca más de tres semanas completas, cubriendo el horizonte fisiológico requerido para la movilización vascular de carbohidratos no estructurales por el floema, la división celular meristemática y la biosíntesis de clorofila en nuevas láminas foliares [@taiz2022plant; @thomas2014stay], sin agotar excesivamente los grados de libertad en el periodo más corto ($P_4$, de $76\text{ días}$).
-
-### Estandarización por muestra común para la comparabilidad estricta de criterios de información
-
-Un error metodológico frecuente en la literatura aplicada al comparar modelos autorregresivos o de ecuaciones con retraso para distintos valores de $\tau \in \mathcal{T}$ consiste en evaluar el Criterio de Información de Akaike ($\text{AIC}$) o el Criterio Bayesiano de Schwarz ($\text{BIC}$) utilizando todos los datos disponibles para cada $\tau$ individual, es decir, sobre un tamaño muestral variable $n_{\text{libre}}(\tau) = N_p - \tau - 1$.
-
-Para comprender por qué dicho proceder invalida la comparación, basta observar la expresión analítica del $\text{AIC}$ en un modelo gaussiano de $k = 6$ parámetros ajustado sobre $n(\tau)$ observaciones:
+Como se demostró en el análisis de identificabilidad estructural (@sec-identificabilidad-estimacion), el retraso temporal $\tau$ ingresa de manera no lineal en el modelo regresivo (@eq-milstein-fenologico) a través del operador de desplazamiento de índice $X_{t-\tau}$, lo que impide determinarlo mediante diferenciación algebraica directa del criterio WLS. En consecuencia, la identificación del retraso óptimo $\tau^*$ se formula como un problema de optimización discreta por perfilación de verosimilitud (*grid search profile likelihood*) sobre la malla finita de retardos candidatos:
 
 $$
-\text{AIC}_{\text{libre}}(\tau) = n(\tau)\left[ \ln(2\pi) + 1 + \ln\left(\hat{\sigma}_{\text{MLE}}^2(\tau)\right) \right] + 2k.
-$$ {#eq-sesgo-aic-libre}
+\mathcal{T} = \{\tau_{\text{mín}}, \tau_{\text{mín}} + 1, \dots, \tau_{\text{máx}}\} = \{3, 4, 5, \dots, 23\} \text{ días}.
+$$ {#eq-malla-tau}
 
-Dado que en nuestros datos fenológicos la varianza residual es del orden de $\hat{\sigma}_{\text{MLE}}^2 \approx 6 \times 10^{-6}$, el término entre corchetes es fuertemente negativo ($\ln(2\pi) + 1 + \ln(6 \times 10^{-6}) \approx -9.18$). Por tanto, en la @eq-sesgo-aic-libre, $\text{AIC}_{\text{libre}}(\tau)$ es directamente proporcional al número de observaciones $n(\tau) = N_p - \tau - 1$: cada vez que $\tau$ disminuye en $1\text{ día}$, el modelo gana una observación adicional y su $\text{AIC}_{\text{libre}}$ disminuye artificialmente en $\approx 9.18$ unidades, independientemente de si ese retraso $\tau$ explica mejor o peor la dinámica biológica. Esto induciría un sesgo trivial que elegiría siempre el menor retraso posible ($\tau = \tau_{\min}$).
+La delimitación del espacio de búsqueda en $\mathcal{T} = \{3, \dots, 23\}$ días responde a dos criterios metodológicos y ecofisiológicos:
 
-Para eliminar por completo este sesgo de tamaño muestral, en la función `construir_dataset_sdde` del cuaderno computacional (Sección 4.6) se implementa el **protocolo de truncamiento por muestra común** fijando el corte inicial de todos los modelos candidatos en el retraso máximo de la malla:
+1. **Cota inferior ($\tau_{\text{mín}} = 3$ días):** Se excluyen los rezagos inmediatos $\tau \in \{1, 2\}$ días tanto para evitar la colinealidad extrema con el estado presente $X_t$ (que deterioraría el número de condición de $\mathbf{X}^\top \mathbf{W} \mathbf{X}$) como porque las fluctuaciones de $24$ a $48$ horas reflejan persistencia radiométrica y respuestas estomáticas rápidas más que procesos de translocación estructural [@ogle2015quantifying].
+2. **Cota superior ($\tau_{\text{máx}} = 23$ días):** Abarca más de tres semanas completas, cubriendo el horizonte fisiológico requerido para la movilización vascular de carbohidratos no estructurales por el floema, la división celular meristemática y la biosíntesis de clorofila en nuevas láminas foliares [@taiz2022plant; @thomas2014stay], sin agotar excesivamente los grados de libertad en el segmento más corto ($P_4$, de $76$ días).
+
+### Estandarización por muestra común para la comparabilidad estricta de criterios de información {#sec-muestra-comun}
+
+Un error metodológico frecuente en la literatura aplicada al comparar modelos autorregresivos o con retraso para distintos valores de $\tau \in \mathcal{T}$ consiste en evaluar el AIC o el BIC utilizando todas las observaciones disponibles para cada $\tau$ individual, esto es, sobre un tamaño muestral variable $n_{\text{libre}}(\tau) = N_p - \tau - 1$.
+
+Bajo la log-verosimilitud condicional heterocedástica exacta (@eq-cap4-llf-exacta), el criterio AIC evaluado sobre muestra libre adopta la expresión:
 
 $$
-\tau_{\text{corte}} = \tau_{\max} = 23\text{ días}.
-$$ {#eq-corte-muestra-comun}
+\mathrm{AIC}_{\text{libre}}(\tau) = n_{\text{libre}}(\tau)\left[\ln(2\pi) + 1 + \ln\!\left(\hat{\sigma}_{\text{MLE}}^2(\tau)\right)\right] + 2\sum_{t=\tau}^{N_p - 2}\ln(X_t) + 2k.
+$$ {#eq-aic-libre-wls}
 
-Bajo la condición (@eq-corte-muestra-comun), para cualquier $\tau \in \{3, 4, \dots, 23\}$, el vector de incrementos evaluados $\mathbf{Y}_{\text{común}}^{(p)}$ abarca exactamente las mismas fechas históricas $t \in \{23, 24, \dots, N_p - 2\}$, manteniendo un **tamaño muestral común estrictamente constante** $n_{\text{común}}^{(p)} = N_p - 24$ para todos los valores de $\tau$ ($n_{\text{común}}^{(1)} = 81$, $n_{\text{común}}^{(2)} = 122$, $n_{\text{común}}^{(3)} = 221$ y $n_{\text{común}}^{(4)} = 52$). Al permanecer fijos tanto $n_{\text{común}}^{(p)}$ como la dimensión paramétrica $k = 6$, la minimización de $\text{AIC}(\tau)$ y de $\text{BIC}(\tau)$ se vuelve matemáticamente equivalente a minimizar la varianza residual $\hat{\sigma}_{\text{MLE}}^2(\tau)$ y a maximizar el coeficiente de determinación ajustado $R^2_{\text{adj}}(\tau)$ sobre las mismas observaciones:
+Dado que en nuestros registros fenológicos la varianza de difusión multiplicativa es del orden de $\hat{\sigma}_{\text{MLE}}^2 \approx 5.2 \times 10^{-5}$ y el estado satisface $X_t \approx 0.34$, cada observación adicional aporta aproximadamente $[\ln(2\pi) + 1 + \ln(5.2 \times 10^{-5})] + 2\ln(0.34) \approx -7.03 - 2.16 \approx -9.19$ unidades al valor de $\mathrm{AIC}_{\text{libre}}(\tau)$. Por consiguiente, cada vez que $\tau$ disminuye en un día, el modelo incorpora una transición adicional y su $\mathrm{AIC}_{\text{libre}}$ desciende artificialmente en alrededor de $9.2$ unidades con independencia de la calidad del ajuste dinámico, lo que sesgaría trivialmente la selección hacia $\tau_{\text{mín}}$.
+
+Para suprimir por completo este sesgo de tamaño muestral, en la función `construir_dataset_sdde` se impone el **protocolo de truncamiento por muestra común**, fijando el corte inicial de todos los modelos candidatos en el retraso máximo de la malla:
 
 $$
-\tau_p^* = \underset{\tau \in \mathcal{T}}{\arg\min} \, \text{AIC}_{\text{común}}^{(p)}(\tau) = \underset{\tau \in \mathcal{T}}{\arg\min} \, \text{BIC}_{\text{común}}^{(p)}(\tau) = \underset{\tau \in \mathcal{T}}{\arg\max} \, R_{\text{adj, común}}^{2\,(p)}(\tau).
-$$ {#eq-equivalencia-optimo-comun}
+\tau_{\text{corte}} = \tau_{\text{máx}} = 23 \text{ días}.
+$$ {#eq-tau-corte}
 
-### Algoritmo de búsqueda exhaustiva por malla (*Grid Search*) y criterios agregados
+Bajo la condición @eq-tau-corte, para todo $\tau \in \{3, 4, \dots, 23\}$ tanto el vector respuesta $\mathbf{Y}_{\text{común}}^{(p)}$ como la matriz de pesos $\mathbf{W}_{\text{común}}^{(p)}$ y la suma jacobiana $2\sum_{t=23}^{N_p - 2}\ln(X_t)$ se evalúan exactamente sobre las mismas fechas históricas $t \in \{23, 24, \dots, N_p - 2\}$, fijando un tamaño muestral común constante $n_{\text{común}}^{(p)} = N_p - 24$ ($n_{\text{común}}^{(1)} = 81$, $n_{\text{común}}^{(2)} = 122$, $n_{\text{común}}^{(3)} = 221$ y $n_{\text{común}}^{(4)} = 52$). Al permanecer invariantes $n_{\text{común}}^{(p)}$, el jacobiano y la dimensión paramétrica $k$, la minimización del AIC y del BIC coincide exactamente con la minimización de $\hat{\sigma}_{\text{MLE}}^2(\tau)$ y la maximización del coeficiente de determinación ponderado ajustado $R^2_{\text{adj, WLS}}(\tau)$:
 
-Además de identificar el retraso óptimo específico $\tau_p^*$ para cada periodo $p \in \{1, 2, 3, 4\}$ mediante la @eq-equivalencia-optimo-comun, el cuaderno computacional evalúa dos criterios globales interanuales agregando el desempeño a través de los cuatro periodos en cada nodo de la malla $\tau \in \mathcal{T}$:
+$$
+\tau_p^* = \arg\min_{\tau \in \mathcal{T}} \mathrm{AIC}_{\text{común}}^{(p)}(\tau) = \arg\min_{\tau \in \mathcal{T}} \mathrm{BIC}_{\text{común}}^{(p)}(\tau) = \arg\max_{\tau \in \mathcal{T}} (R^2)_{\text{adj, WLS, común}}^{(p)}(\tau).
+$$ {#eq-optimo-muestra-comun}
 
-1. **Criterio global de verosimilitud conjunta (Suma de AIC en muestra común):** Asumiendo independencia entre los errores de periodos separados por meses invernales, la log-verosimilitud total es la suma de las log-verosimilitudes de los cuatro segmentos, lo que conduce a minimizar el $\text{AIC}$ total acumulado:
+Este mismo principio de muestra común estricta ($n_{\text{común}} = 81$ en el Periodo 1, evaluado exactamente sobre las mismas fechas objetivo $X_{t+1}$ para $t = 23, \dots, N_1 - 2$) se aplica en la Sección 5.4 al contrastar $\text{SDDE}(\tau)$ frente a modelos autorregresivos $\text{AR}(\tau)$, evitando toda asimetría de grados de libertad entre ambas familias.
 
+### Algoritmo de búsqueda exhaustiva por malla (*Grid Search*) y criterios agregados {#sec-grid-search}
+
+Además de identificar el retraso óptimo específico $\tau_p^*$ para cada periodo $p \in \{1, 2, 3, 4\}$ mediante la @eq-optimo-muestra-comun, se evalúan dos criterios globales interanuales agregando el desempeño a través de los cuatro periodos en cada nodo $\tau \in \mathcal{T}$:
+
+1. **Criterio global de verosimilitud conjunta (Suma de AIC en muestra común):** Bajo independencia condicional entre campañas separadas por la dormancia invernal, la log-verosimilitud conjunta es la suma de las log-verosimilitudes de los cuatro periodos, lo que conduce a minimizar el AIC acumulado:
    $$
-   \tau_{\text{global, AIC}}^* = \underset{\tau \in \mathcal{T}}{\arg\min} \sum_{p=1}^{4} \text{AIC}_{\text{común}}^{(p)}(\tau).
-   $$ {#eq-tau-global-aic}
-
-2. **Criterio global de varianza explicada media (Promedio de $R^2_{\text{adj}}$ en muestra común):** Para otorgar igual ponderación relativa a cada campaña fenológica independientemente de su duración en días, se maximiza la media aritmética del coeficiente de determinación ajustado:
-
+   \tau_{\text{global, AIC}}^* = \arg\min_{\tau \in \mathcal{T}} \sum_{p=1}^{4} \mathrm{AIC}_{\text{común}}^{(p)}(\tau).
+   $$ {#eq-global-aic}
+2. **Criterio global de varianza ponderada explicada media (Promedio de $R^2_{\text{adj, WLS}}$ en muestra común):** Para otorgar idéntica ponderación a cada campaña independientemente de su duración $N_p$, se maximiza la media aritmética del coeficiente de determinación ponderado ajustado:
    $$
-   \tau_{\text{global, } R^2}^* = \underset{\tau \in \mathcal{T}}{\arg\max} \left( \frac{1}{4} \sum_{p=1}^{4} R_{\text{adj, común}}^{2\,(p)}(\tau) \right).
-   $$ {#eq-tau-global-r2}
+   \tau_{\text{global}, R^2}^* = \arg\max_{\tau \in \mathcal{T}} \left(\frac{1}{4}\sum_{p=1}^{4} (R^2)_{\text{adj, WLS, común}}^{(p)}(\tau)\right).
+   $$ {#eq-global-r2}
 
 El flujo completo de selección automatizada de $\tau^*$ se resume en el Algoritmo 4.3.
 
-::: {.callout-tip icon="false"}
-### Algoritmo 4.3: Selección Automatizada del Retraso Óptimo ($\tau^*$) bajo Muestra Común
-* **Entrada:** Dataframes continuos $\{\text{DF}_1, \dots, \text{DF}_4\}$, malla de búsqueda $\mathcal{T} = \{3, 4, \dots, 23\}$.
-* **Salida:** Retrasos óptimos por periodo $\{\tau_p^*\}_{p=1}^4$, retrasos óptimos globales $(\tau_{\text{global, AIC}}^*, \tau_{\text{global, } R^2}^*)$ y perfiles paramétricos.
+::: {.callout-tip appearance="simple"}
+## Algoritmo 4.3: Selección Automatizada del Retraso Óptimo ($\tau^*$) bajo WLS/CMLE en Muestra Común
 
-1. Definir el horizonte de truncamiento común $\tau_{\max} \gets \max(\mathcal{T}) = 23$.
+- **Entrada:** *Dataframes* continuos $\{\mathrm{DF}_1, \dots, \mathrm{DF}_4\}$, malla de búsqueda $\mathcal{T} = \{3, 4, \dots, 23\}$.
+- **Salida:** Retrasos óptimos por periodo $\{\tau_p^*\}_{p=1}^4$, retrasos óptimos globales $(\tau_{\text{global, AIC}}^*, \tau_{\text{global}, R^2}^*)$ y perfiles paramétricos $\hat{\gamma}(\tau)$.
+
+1. Definir el horizonte de truncamiento común $\tau_{\text{máx}} \leftarrow \max(\mathcal{T}) = 23$.
 2. **Para cada** periodo $p = 1, 2, 3, 4$ **hacer:**
    a. **Para cada** candidato $\tau \in \mathcal{T}$ **hacer:**
-      i. Construir el dataset de muestra común $\text{DF}_{m,\text{común}}^{(p)}(\tau)$ fijando `tau_min_corte` $= \tau_{\max} = 23$ (longitud fija $n_{\text{común}}^{(p)} = N_p - 24$).
-      ii. Construir el dataset de muestra completa $\text{DF}_{m,\text{libre}}^{(p)}(\tau)$ con `tau_min_corte` $= \text{None}$ (longitud $n_{\text{libre}}^{(p)} = N_p - \tau - 1$).
-      iii. Ajustar por OLS el modelo sobre muestra común (`mod_comun`) y extraer $\text{AIC}_{\text{común}}^{(p)}(\tau)$, $\text{BIC}_{\text{común}}^{(p)}(\tau)$, $R_{\text{adj, común}}^{2\,(p)}(\tau)$ y $\text{RMSE}_{\text{común}}^{(p)}(\tau)$.
-      iv. Ajustar por OLS el modelo sobre muestra completa (`mod_libre`) y almacenar las trayectorias paramétricas $\hat{\alpha}(\tau), \hat{\beta}(\tau), \hat{\gamma}(\tau), \hat{\boldsymbol{\delta}}(\tau)$ y el $p$-valor de $\hat{\gamma}(\tau)$.
-   b. Identificar el retraso óptimo del periodo: $\tau_p^* \gets \arg\min_{\tau \in \mathcal{T}} \text{AIC}_{\text{común}}^{(p)}(\tau)$.
-3. Calcular para cada $\tau \in \mathcal{T}$ las métricas agregadas interanuales 
-   $$\text{AIC}_{\text{total}}(\tau) = \sum_{p=1}^4 \text{AIC}_{\text{común}}^{(p)}(\tau)\text{ y }\overline{R^2_{\text{adj}}}(\tau) = \frac{1}{4}\sum_{p=1}^4 R_{\text{adj, común}}^{2\,(p)}(\tau).$$
-4. Determinar $\tau_{\text{global, AIC}}^*$ y $\tau_{\text{global, } R^2}^*$ mediante las Ecuaciones (@eq-tau-global-aic) y (@eq-tau-global-r2).
+      i. Construir el conjunto de muestra común $\mathrm{DF}_{m,\text{común}}^{(p)}(\tau)$ fijando `tau_min_corte` $= \tau_{\text{máx}} = 23$ (longitud fija $n_{\text{común}}^{(p)} = N_p - 24$).
+      ii. Construir el conjunto de muestra libre $\mathrm{DF}_{m,\text{libre}}^{(p)}(\tau)$ con `tau_min_corte = None` (longitud $n_{\text{libre}}^{(p)} = N_p - \tau - 1$).
+      iii. Ajustar por WLS/CMLE (`ajustar_wls_sdde`, pesos $w_t = X_t^{-2}$) el modelo sobre muestra común y extraer $\ell_{\text{exacta}}^{(p)}(\tau)$, $\mathrm{AIC}_{\text{común}}^{(p)}(\tau)$, $\mathrm{BIC}_{\text{común}}^{(p)}(\tau)$, $(R^2)_{\text{adj, WLS, común}}^{(p)}(\tau)$ y $\hat{\gamma}_{\text{común}}^{(p)}(\tau)$.
+      iv. Ajustar por WLS/CMLE el modelo sobre muestra libre y almacenar los perfiles completos $\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}(\tau)$ y el $p$-valor asociado a $\hat{\gamma}^{(p)}(\tau)$.
+   b. Identificar el retraso óptimo del periodo: $\tau_p^* \leftarrow \arg\min_{\tau \in \mathcal{T}} \mathrm{AIC}_{\text{común}}^{(p)}(\tau)$.
+3. Calcular para cada $\tau \in \mathcal{T}$ las métricas agregadas interanuales $\mathrm{AIC}_{\text{total}}(\tau) = \sum_{p=1}^{4} \mathrm{AIC}_{\text{común}}^{(p)}(\tau)$ y $\overline{(R^2)_{\text{adj, WLS}}}(\tau) = \frac{1}{4}\sum_{p=1}^{4} (R^2)_{\text{adj, WLS, común}}^{(p)}(\tau)$.
+4. Determinar $\tau_{\text{global, AIC}}^*$ y $\tau_{\text{global}, R^2}^*$ mediante las Ecuaciones @eq-global-aic y @eq-global-r2.
 5. **Retornar** las tablas óptimas y los perfiles de evolución paramétrica en función de $\tau$.
 :::
 
 ## Simulación de Monte Carlo para validación {#sec-simulacion-montecarlo}
 
-### Objetivo de la simulación estocástica por ensambles
+### Objetivo de la simulación estocástica por ensambles {#sec-objetivo-mc}
 
-Dado que la solución de la ecuación diferencial estocástica con retraso (@eq-sdde) es un proceso estocástico continuo $\{X(t, \omega)\}_{t \ge 0}$ definido sobre el espacio de probabilidad $(\Omega, \mathcal{F}, \mathbb{P})$, una única trayectoria empírica observada en campo constituye tan solo una realización particular $\omega \in \Omega$ sujeta a una secuencia irrepetible de perturbaciones microclimáticas diarias [@mao2007stochastic; @wilkinson2018stochastic]. Por ello, no es posible evaluar la calidad probabilística ni la estabilidad dinámica del modelo a partir de una sola simulación determinista.
+Dado que la solución de la ecuación diferencial estocástica con retraso (@eq-sdde) es un proceso estocástico continuo $\{X(t, \omega)\}_{t \ge 0}$ definido sobre el espacio de probabilidad $(\Omega, \mathcal{F}, \mathbb{P})$, una única trayectoria empírica observada en campo constituye tan solo una realización particular $\omega \in \Omega$ sujeta a una secuencia irrepetible de perturbaciones microclimáticas diarias [@mao2007stochastic; @wilkinson2018stochastic]. En consecuencia, no es posible auditar la calibración probabilística ni la estabilidad dinámica del modelo a partir de una sola simulación determinista.
 
-El objetivo de implementar el **método de simulación de Monte Carlo** acoplado al esquema numérico de Euler-Maruyama (@sec-discretizacion-numerica) es triple [@kloeden1992numerical; @giles2008multilevel]:
+La implementación de la simulación de Monte Carlo acoplada a la difusión multiplicativa persigue cuatro objetivos complementarios [@giles2008multilevel; @kloeden1992numerical]:
 
-1. **Reconstrucción de la distribución transitoria del proceso:** Generar un ensamble masivo de $M = 10,000$ realizaciones estocásticas independientes $\left\{X_t^{(m)}\right\}_{m=1}^M$ para aproximar numéricamente la densidad de probabilidad condicional $p(X_t \mid \mathcal{H}_0, \mathbf{C}_{0:t-1})$ en cada día $t$ del horizonte de estudio.
+1. **Reconstrucción de la distribución transitoria del proceso:** Generar un ensamble de $M = 10\,000$ realizaciones estocásticas independientes $\{X_t^{(m)}\}_{m=1}^M$ para aproximar numéricamente la densidad de probabilidad condicional $p(X_t \mid \mathcal{H}_0, C_{0:t-1})$ en cada día $t$ del horizonte de estudio.
+2. **Estimación de momentos, bandas de predicción y auditoría de positividad:** Aproximar con convergencia débil de orden $\mathcal{O}(\Delta t)$ y error de muestreo de orden $\mathcal{O}(M^{-1/2})$ la trayectoria esperada $\mathbb{E}[X_t]$ y los intervalos de predicción al 95 %, verificando explícitamente la preservación de la positividad biológica ($X_t^{(m)} > 0$) en el 100 % de las trayectorias simuladas.
+3. **Verificación numérica Euler-Maruyama frente a Milstein mediante Números Aleatorios Comunes (CRN):** Cuantificar exactamente el impacto del término corrector de segundo orden $\frac{1}{2}\hat{\sigma}^2 X_i^{(m)}[(\Delta W_i^{(m)})^2 - \Delta t]$ propio del ruido multiplicativo acoplando ambos integradores sobre exactamente los mismos incrementos normales estándar $Z_i^{(m)} \sim \mathcal{N}(0, 1)$.
+4. **Aislamiento de sensibilidades climáticas mediante CRN:** Evaluar el desplazamiento dinámico ante perturbaciones controladas ($\pm 10$ %) en los parámetros climáticos fijando idéntica semilla pseudoaleatoria (`semilla = 42`), lo que elimina la varianza de muestreo de Monte Carlo entre escenarios comparados.
 
-2. **Estimación de momentos y bandas de predicción intercuantílicas:** Aproximar con convergencia débil de orden $\mathcal{O}(\Delta t)$ y error estadístico de muestreo de orden $\mathcal{O}(M^{-1/2})$ la esperanza matemática del proceso $\mathbb{E}[X_t]$ y construir intervalos de predicción al $95\%$ que permitan auditar la cobertura empírica sobre los datos reales.
+### Condicionamiento histórico inicial y algoritmo vectorizado multiplicativo {#sec-algoritmo-mc}
 
-3. **Aislamiento de efectos mediante Números Aleatorios Comunes (*Common Random Numbers*, CRN):** Evaluar la sensibilidad de la trayectoria fenológica ante perturbaciones controladas ($\pm 10\%$) en los parámetros climáticos fijando exactamente la misma semilla pseudoaleatoria (`semilla = 42`), lo cual elimina la varianza de muestreo de Monte Carlo entre escenarios comparados.
-
-### Condicionamiento histórico inicial y algoritmo vectorizado de Euler-Maruyama
-
-Sea $\text{DF}_p$ un periodo continuo de $N_p$ días indexados en $t \in \{0, 1, \dots, N_p - 1\}$ y sea $\tau \in \mathbb{N}$ el retraso fisiológico en días. Para inicializar la ecuación en diferencias estocástica sin recurrir a valores ficticios, los primeros $\tau + 1$ días observados del segmento, es decir, los nodos $t \in \{0, 1, \dots, \tau\}$, se fijan de manera exacta como la **condición inicial histórica determinista** $\mathcal{H}_0$ para todas las $M$ réplicas del ensamble:
+Sea $\mathrm{DF}_p$ un periodo continuo de $N_p$ días indexados en $t \in \{0, 1, \dots, N_p - 1\}$ y sea $\tau \in \mathbb{N}$ el retraso fisiológico en días. Para inicializar la ecuación en diferencias estocástica sin recurrir a valores ficticios, los primeros $\tau + 1$ días observados del segmento ($t \in \{0, 1, \dots, \tau\}$) se fijan exactamente como la **condición inicial histórica determinista** $\mathcal{H}_0$ para las $M$ réplicas del ensamble:
 
 $$
-X_t^{(m)} = X_t^{\text{obs}}, \quad \forall t \in \{0, 1, \dots, \tau\}, \quad \forall m \in \{1, 2, \dots, M\}.
-$$ {#eq-inicializacion-mc}
+X_t^{(m)} = X_t^{\text{obs}}, \qquad \forall t \in \{0, 1, \dots, \tau\}, \quad \forall m \in \{1, 2, \dots, M\}.
+$$ {#eq-condicion-inicial-mc}
 
-A partir del día $t = \tau + 1$ hasta el final del periodo $t = N_p - 1$, el estado de cada trayectoria $m \in \{1, \dots, M\}$ evoluciona recursivamente desde el instante inmediato anterior $i = t - 1$ utilizando su propio estado presente simulado $X_i^{(m)}$, su propio estado retardado simulado $\tau$ días atrás $X_{i-\tau}^{(m)}$, las forzantes climáticas históricas observadas en ese día $\mathbf{C}_i = [\text{Rad}_i, \text{Temp}_i, \text{Prec}_i]^T$ y una realización independiente del incremento browniano escalado $\epsilon_i^{(m)} \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, \hat{\sigma}^2)$:
+A partir del día $t = \tau + 1$ hasta $t = N_p - 1$, el estado de cada trayectoria $m \in \{1, \dots, M\}$ evoluciona recursivamente desde el instante previo $i = t - 1$ utilizando su propio estado simulado presente $X_i^{(m)}$, su propio estado simulado retardado $X_{i-\tau}^{(m)}$, las forzantes climáticas históricas observadas $C_i = [\mathrm{Rad}_i, \mathrm{Temp}_i, \mathrm{Prec}_i]^\top$ y un incremento browniano independiente $\Delta W_i^{(m)} = \sqrt{\Delta t}\,Z_i^{(m)}$ con $Z_i^{(m)} \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, 1)$ (para paso diario $\Delta t = 1$):
 
 $$
 \begin{aligned}
-\Delta X_i^{(m)} &= \hat{\alpha} + \hat{\beta} X_i^{(m)} + \hat{\gamma} X_{i-\tau}^{(m)} + \hat{\delta}_1 \text{Rad}_i + \hat{\delta}_2 \text{Temp}_i + \hat{\delta}_3 \text{Prec}_i + \epsilon_i^{(m)}, \\
-X_t^{(m)} &= X_i^{(m)} + \Delta X_i^{(m)}, \qquad t = \tau + 1, \, \tau + 2, \, \dots, \, N_p - 1.
+\mu_i^{(m)} &= \hat{\alpha} + \hat{\beta} X_i^{(m)} + \hat{\gamma} X_{i-\tau}^{(m)} + \hat{\delta}_1 \mathrm{Rad}_i + \hat{\delta}_2 \mathrm{Temp}_i + \hat{\delta}_3 \mathrm{Prec}_i, \\
+X_t^{(m)} &= X_i^{(m)} + \mu_i^{(m)}\Delta t + \hat{\sigma}_{\text{WLS}} X_i^{(m)} \Delta W_i^{(m)} + \mathbb{I}_{\text{Mil}}\,\frac{1}{2}\hat{\sigma}_{\text{WLS}}^2 X_i^{(m)}\left[\left(\Delta W_i^{(m)}\right)^2 - \Delta t\right],
 \end{aligned}
-$$ {#eq-recurrencia-mc}
+$$ {#eq-recurrencia-mc-mult}
 
-En la función `simular_euler_maruyama_mc` del cuaderno computacional (Sección 3.2), la recurrencia (@eq-recurrencia-mc) se ejecuta de forma matricial vectorizada sobre el eje de las $M = 10\,000$ simulaciones simultáneas en `numpy`, empleando el generador moderno de números pseudoaleatorios PCG64 (`np.random.default_rng(semilla)`) para garantizar reproducibilidad exacta.
+donde la indicadora $\mathbb{I}_{\text{Mil}} \in \{0, 1\}$ selecciona el esquema de **Euler-Maruyama** ($\mathbb{I}_{\text{Mil}} = 0$) o el esquema de **Milstein** ($\mathbb{I}_{\text{Mil}} = 1$). En la función `simular_euler_maruyama_mc(..., metodo='euler' | 'milstein')` del cuaderno computacional, la @eq-recurrencia-mc-mult se ejecuta vectorialmente sobre las $M = 10\,000$ réplicas en `numpy` empleando el generador PCG64 (`np.random.default_rng(semilla)`) directamente sobre incrementos estándar $Z_i^{(m)} \sim \mathcal{N}(0, 1)$, garantizando sincronización estricta de Números Aleatorios Comunes entre métodos y escenarios.
 
-::: {.callout-tip icon="false"}
-### Algoritmo 4.4: Simulación Vectorizada de Monte Carlo mediante Euler-Maruyama
-* **Entrada:** Dataframe del periodo $\text{DF}_p$ de longitud $N_p$, parámetros estimados $\hat{\boldsymbol{\theta}} = [\hat{\alpha}, \hat{\beta}, \hat{\gamma}, \hat{\delta}_1, \hat{\delta}_2, \hat{\delta}_3]^T$, intensidad de ruido $\hat{\sigma}$, retraso $\tau$, número de réplicas $M = 10\,000$, semilla entera $s_0$.
-* **Salida:** Matriz de ensamble $\mathbf{X}_{\text{sim}} \in \mathbb{R}^{M \times N_p}$, trayectoria media $\hat{\boldsymbol{\mu}} \in \mathbb{R}^{N_p}$ y bandas cuantílicas $[\mathbf{q}_{0.025}, \mathbf{q}_{0.975}]$.
+::: {.callout-tip appearance="simple"}
+## Algoritmo 4.4: Simulación Vectorizada de Monte Carlo Multiplicativa (Euler-Maruyama / Milstein)
 
-1. Extraer del periodo $\text{DF}_p$ el vector observado $\mathbf{X}^{\text{obs}} \in \mathbb{R}^{N_p}$ y los vectores climáticos $\mathbf{Rad}, \mathbf{Temp}, \mathbf{Prec} \in \mathbb{R}^{N_p}$.
-2. Inicializar la matriz de estados simulados $\mathbf{X}_{\text{sim}} \gets \mathbf{0}_{M \times N_p}$.
+- **Entrada:** *Dataframe* del periodo $\mathrm{DF}_p$ de longitud $N_p$, parámetros WLS estimados $\hat{\boldsymbol{\theta}} = [\hat{\alpha}, \hat{\beta}, \hat{\gamma}, \hat{\delta}_1, \hat{\delta}_2, \hat{\delta}_3]^\top$, difusión multiplicativa $\hat{\sigma}_{\text{WLS}}$, retraso $\tau$, paso $\Delta t = 1$, número de réplicas $M = 10\,000$, semilla entera $s_0$, método $\in \{\text{euler}, \text{milstein}\}$.
+- **Salida:** Matriz de ensamble $\mathbf{X}_{\text{sim}} \in \mathbb{R}^{M \times N_p}$, trayectoria media $\hat{\boldsymbol{\mu}} \in \mathbb{R}^{N_p}$, bandas cuantílicas $[\mathbf{q}_{0.025}, \mathbf{q}_{0.975}]$ y diagnóstico de positividad $(x_{\text{mín}}, n_{\le 0})$.
+
+1. Extraer de $\mathrm{DF}_p$ el vector observado $\mathbf{X}^{\text{obs}} \in \mathbb{R}^{N_p}$ y los vectores climáticos $\mathbf{Rad}, \mathbf{Temp}, \mathbf{Prec} \in \mathbb{R}^{N_p}$.
+2. Inicializar la matriz de estados simulados $\mathbf{X}_{\text{sim}} \leftarrow \mathbf{0}_{M \times N_p}$ en doble precisión (`float64`).
 3. Asignar la condición inicial histórica $\mathcal{H}_0$ a las primeras $\tau + 1$ columnas de todas las réplicas:
-   $$\mathbf{X}_{\text{sim}}[:, \, 0:\tau] \gets \mathbf{X}^{\text{obs}}[0:\tau].$$
-4. Instanciar el generador pseudoaleatorio reproducible: $\text{RNG} \gets \text{default\_rng}(s_0)$.
+   $$\mathbf{X}_{\text{sim}}[:, 0:\tau] \leftarrow \mathbf{X}^{\text{obs}}[0:\tau].$$
+4. Instanciar el generador pseudoaleatorio reproducible: $\mathrm{RNG} \leftarrow \texttt{default\_rng}(s_0)$.
 5. **Para** $t = \tau + 1$ **hasta** $N_p - 1$ **hacer:**
-   a. Definir el índice del paso previo: $i \gets t - 1$.
+   a. Definir el índice del paso previo: $i \leftarrow t - 1$.
    b. Extraer los vectores columna de estado actual y estado retardado ($M \times 1$):
-      $$\mathbf{x}_{\text{act}} \gets \mathbf{X}_{\text{sim}}[:, \, i], \qquad \mathbf{x}_{\text{ret}} \gets \mathbf{X}_{\text{sim}}[:, \, i - \tau].$$
-   c. Generar un vector de $M$ innovaciones gaussianas independientes: 
-      $$\boldsymbol{\epsilon}_i \gets \text{RNG.normal}(0, \hat{\sigma}, M).$$
-   d. Calcular vectorialmente el incremento de Euler-Maruyama para las $M$ trayectorias:
-      $$\Delta \mathbf{x}_{\text{est}} \gets \hat{\alpha} + \hat{\beta}\mathbf{x}_{\text{act}} + \hat{\gamma}\mathbf{x}_{\text{ret}} + \hat{\delta}_1 \text{Rad}[i] + \hat{\delta}_2 \text{Temp}[i] + \hat{\delta}_3 \text{Prec}[i] + \boldsymbol{\epsilon}_i.$$
-   e. Actualizar el estado del ensamble en el día $t$: 
-      $$\mathbf{X}_{\text{sim}}[:, \, t] \gets \mathbf{x}_{\text{act}} + \Delta \mathbf{x}_{\text{est}}.$$
+      $$\mathbf{x}_{\text{act}} \leftarrow \mathbf{X}_{\text{sim}}[:, i], \qquad \mathbf{x}_{\text{ret}} \leftarrow \mathbf{X}_{\text{sim}}[:, i - \tau].$$
+   c. Generar un vector de $M$ incrementos normales estándar independientes y escalar el paso browniano:
+      $$\mathbf{Z}_i \leftarrow \mathrm{RNG}.\texttt{standard\_normal}(M), \qquad \Delta\mathbf{W}_i \leftarrow \sqrt{\Delta t}\,\mathbf{Z}_i.$$
+   d. Calcular vectorialmente la deriva y la difusión multiplicativa (producto elemento a elemento $\odot$):
+      $$\boldsymbol{\mu}_i \leftarrow \hat{\alpha} + \hat{\beta}\mathbf{x}_{\text{act}} + \hat{\gamma}\mathbf{x}_{\text{ret}} + \hat{\delta}_1\mathrm{Rad}[i] + \hat{\delta}_2\mathrm{Temp}[i] + \hat{\delta}_3\mathrm{Prec}[i],$$
+      $$\mathbf{r}_i \leftarrow \hat{\sigma}_{\text{WLS}}\,\left(\mathbf{x}_{\text{act}} \odot \Delta\mathbf{W}_i\right).$$
+   e. **Si** $\text{método} = \text{milstein}$ **entonces** añadir la corrección cuadrática de Itô-Taylor:
+      $$\mathbf{r}_i \leftarrow \mathbf{r}_i + \frac{1}{2}\hat{\sigma}_{\text{WLS}}^2\,\left(\mathbf{x}_{\text{act}} \odot \left(\Delta\mathbf{W}_i^{\odot 2} - \Delta t\right)\right).$$
+   f. Actualizar el estado del ensamble en el día $t$:
+      $$\mathbf{X}_{\text{sim}}[:, t] \leftarrow \mathbf{x}_{\text{act}} + \boldsymbol{\mu}_i\,\Delta t + \mathbf{r}_i.$$
 6. Calcular para cada columna $t \in \{0, \dots, N_p - 1\}$ los estadísticos funcionales del ensamble:
-   $$\hat{\mu}_t \gets \frac{1}{M}\sum_{m=1}^M \mathbf{X}_{\text{sim}}[m, t],$$ 
-   $$q_{0.025, t} \gets \text{Percentil}_{2.5}(\mathbf{X}_{\text{sim}}[:, t]),$$ 
-   $$q_{0.975, t} \gets \text{Percentil}_{97.5}(\mathbf{X}_{\text{sim}}[:, t]).$$
-7. **Retornar** $\mathbf{X}_{\text{sim}}, \hat{\boldsymbol{\mu}}, \mathbf{q}_{0.025}, \mathbf{q}_{0.975}$.
+   $$\hat{\mu}_t \leftarrow \frac{1}{M}\sum_{m=1}^{M}\mathbf{X}_{\text{sim}}[m, t], \qquad q_{0.025, t} \leftarrow \mathrm{Percentil}_{2.5}(\mathbf{X}_{\text{sim}}[:, t]), \qquad q_{0.975, t} \leftarrow \mathrm{Percentil}_{97.5}(\mathbf{X}_{\text{sim}}[:, t]).$$
+7. Auditar la positividad global del ensamble: $x_{\text{mín}} \leftarrow \min(\mathbf{X}_{\text{sim}})$ y $n_{\le 0} \leftarrow \sum_{m, t} \mathbb{I}(\mathbf{X}_{\text{sim}}[m, t] \le 0)$.
+8. **Retornar** $\mathbf{X}_{\text{sim}}, \hat{\boldsymbol{\mu}}, \mathbf{q}_{0.025}, \mathbf{q}_{0.975}, x_{\text{mín}}, n_{\le 0}$.
 :::
 
-### Esquemas de validación probabilística y análisis de sensibilidad basados en Monte Carlo
+### Esquemas de validación probabilística, verificación Milstein y análisis de sensibilidad {#sec-esquemas-validacion-mc}
 
-A partir del motor de simulación descrito en el Algoritmo 4.4, el protocolo de validación del Capítulo 5 articula tres experimentos numéricos complementarios:
+A partir del motor de simulación multiplicativo descrito en el Algoritmo 4.4, el protocolo empírico del Capítulo 5 articula cuatro experimentos numéricos complementarios:
 
-1. **Validación en simulación libre de trayectoria completa (*In-Sample* y *Leave-One-Dataset-Out*):** Fijando únicamente la condición inicial histórica $\mathcal{H}_0$ (primeros $\tau + 1$ días), el sistema evoluciona en lazo cerrado durante los $N_p - \tau - 1$ días restantes sin volver a observar el estado real $X_t^{\text{obs}}$, retroalimentándose de sus propias predicciones pasadas $X_i^{(m)}$ y $X_{i-\tau}^{(m)}$. En el esquema *In-Sample* se emplean los parámetros calibrados en el mismo periodo ($\hat{\boldsymbol{\theta}}^{(p)}$), mientras que en el esquema interanual *Leave-One-Dataset-Out* (LODO) se simula el periodo de prueba $P_k$ empleando el vector agrupado $\hat{\boldsymbol{\theta}}_{\text{pool}}((-k))$ estimado exclusivamente con los tres periodos restantes.
+1. **Validación en simulación libre de trayectoria completa (*In-Sample* y *Leave-One-Dataset-Out*):** Fijando únicamente la condición inicial histórica $\mathcal{H}_0$ (primeros $\tau + 1$ días), el sistema evoluciona en lazo cerrado durante los $N_p - \tau - 1$ días restantes retroalimentándose de sus propios estados simulados $X_i^{(m)}$ y $X_{i-\tau}^{(m)}$ tanto en la deriva como en el término de difusión multiplicativa $\hat{\sigma}_{\text{WLS}} X_i^{(m)} \Delta W_i^{(m)}$. En el esquema *In-Sample* se emplean los parámetros WLS calibrados en el mismo periodo $(\hat{\boldsymbol{\theta}}_{\text{WLS}}^{(p)}, \hat{\sigma}_{\text{WLS}}^{(p)})$, mientras que en el esquema interanual LODO se proyecta el periodo excluido $P_k$ con el estimador agrupado **Pooled WLS** $(\hat{\boldsymbol{\theta}}_{\text{pool, WLS}}^{(-k)}, \hat{\sigma}_{\text{WLS, pool}}^{(-k)})$ entrenado exclusivamente sobre los tres periodos restantes.
+2. **Validación secuencial a un paso con ventana expansiva (*Forward Chaining*):** Respetando estrictamente la causalidad temporal de la filtración $\mathcal{F}_t$, se parte de una ventana inicial de entrenamiento de $t_{\text{ini}} = \tau + 40$ días en el Periodo 3. En cada día $t \ge t_{\text{ini}}$ se reestima el modelo mediante **WLS/CMLE** usando únicamente el pasado $\{0, \dots, t\}$, se generan $M = 10\,000$ realizaciones multiplicativas a un paso $\hat{X}_{t+1 \mid t}^{(m)} = X_t^{\text{obs}} + \mathbf{x}_t^\top \hat{\boldsymbol{\theta}}_{\text{WLS}}^{(0:t)} + \hat{\sigma}_{\text{WLS}}^{(0:t)} X_t^{\text{obs}} \Delta W_t^{(m)}$, y se contrasta la distribución predictiva resultante contra $X_{t+1}^{\text{obs}}$ antes de expandir la ventana al día $t + 1$.
+3. **Verificación numérica Euler-Maruyama frente a Milstein bajo CRN:** Para cada uno de los cuatro periodos continuos ($\tau = 15$ días, $M = 10\,000$, `semilla = 42`), se ejecuta el Algoritmo 4.4 con `metodo='euler'` y con `metodo='milstein'` compartiendo exactamente la misma matriz de innovaciones estándar $Z_i^{(m)}$. Se miden la discrepancia puntual máxima y media trayectoria a trayectoria ($\max |X_{\text{EM}} - X_{\text{Mil}}|$, $\overline{|X_{\text{EM}} - X_{\text{Mil}}|}$), la discrepancia en la media esperada ($\max |\mathbb{E}[X_{\text{EM}}] - \mathbb{E}[X_{\text{Mil}}]|$) y el desplazamiento máximo en los cuantiles extremos $q_{0.025}$ y $q_{0.975}$.
+4. **Análisis de sensibilidad paramétrica mediante perturbación controlada** ($\pm 10$ %): Con el fin de cuantificar el peso relativo de los forzantes energéticos y térmicos sobre la trayectoria esperada del dosel, se perturba porcentualmente la sensibilidad a la radiación solar ($\hat{\delta}_1$) y a la temperatura del aire ($\hat{\delta}_2$):
+$$
+\tilde{\delta}_j(\eta) = (1 + \eta)\hat{\delta}_j, \qquad \eta \in \{-0.10, 0.00, +0.10\}, \quad j \in \{1, 2\},
+$$ {#eq-perturbacion-sensibilidad}
 
-2. **Validación secuencial a un paso con ventana expansiva (*Forward Chaining*):** Para evaluar la precisión de pronóstico a corto plazo respetando estrictamente la causalidad temporal de la filtración $\mathcal{F}_t$, se inicia con una ventana de entrenamiento de $t_{\text{ini}} = \tau + 40\text{ días}$. En cada día $t \ge t_{\text{ini}}$, se re-estima el modelo OLS utilizando únicamente las observaciones pasadas $\{0, \dots, t\}$, se generan $M = 10\,000$ realizaciones de un paso hacia adelante $\hat{X}_{t+1 \mid t}^{(m)}$ partiendo del estado observado en $t$, y se contrasta la distribución predictiva resultante contra el valor real $X_{t+1}^{\text{obs}}$ antes de expandir la ventana al día $t + 1$.
-3. **Análisis de sensibilidad paramétrica mediante perturbación controlada ($\pm 10\%$):** Con el fin de cuantificar el peso relativo de los forzantes energéticos y térmicos sobre la trayectoria esperada del dosel, se aplica el método de perturbación porcentual sobre los coeficientes climáticos estimados de radiación solar ($\hat{\delta}_1$) y temperatura del aire ($\hat{\delta}_2$):
-
-   $$
-   \tilde{\delta}_j(\eta) = (1 + \eta)\hat{\delta}_j, \quad \text{con } \eta \in \{-0.10, \, 0.00, \, +0.10\}, \quad j \in \{1, 2\},
-   $$ {#eq-perturbacion-sensibilidad}
-
-   evaluando tanto perturbaciones univariadas (variando $\delta_1$ o $\delta_2$ individualmente mientras los demás parámetros permanecen constantes *ceteris paribus*) como perturbaciones conjuntas simultáneas ($\delta_1$ y $\delta_2$ al $+10\%$ o al $-10\%$). Al ejecutar el Algoritmo 4.4 bajo la misma semilla pseudoaleatoria en todos los escenarios, la diferencia entre la trayectoria media perturbada y la trayectoria media base, $\Delta \hat{\mu}_t(\eta) = \hat{\mu}_t(\eta) - \hat{\mu}_t(0)$, mide de forma exacta el desplazamiento dinámico inducido en la fenología del cultivo a lo largo de la estación de crecimiento.
+evaluando escenarios individuales y conjuntos simultáneos. Al ejecutar el Algoritmo 4.4 multiplicativo con idéntica semilla pseudoaleatoria en todos los escenarios, la diferencia $\Delta\hat{\mu}_t(\eta) = \hat{\mu}_t(\eta) - \hat{\mu}_t(0)$ aísla exactamente el desplazamiento dinámico inducido en la fenología del cultivo.
