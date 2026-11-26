@@ -428,7 +428,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cap6_conclusiones.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones y Perspectivas</span></span></a>
   </div>
 </li>
       </ul>
@@ -997,31 +997,164 @@ X_t^{(m)} &amp;= X_i^{(m)} + \mu_i^{(m)}\Delta t + \hat{\sigma}_{\text{WLS}} X_i
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Algoritmo 4.4: Simulación Vectorizada de Monte Carlo Multiplicativa (Euler-Maruyama / Milstein)
+Algoritmo 4.4: Simulación Vectorizada de Monte Carlo Multiplicativa
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ul>
-<li><strong>Entrada:</strong> <em>Dataframe</em> del periodo <span class="math inline">\(\mathrm{DF}_p\)</span> de longitud <span class="math inline">\(N_p\)</span>, parámetros WLS estimados <span class="math inline">\(\hat{\boldsymbol{\theta}} = [\hat{\alpha}, \hat{\beta}, \hat{\gamma}, \hat{\delta}_1, \hat{\delta}_2, \hat{\delta}_3]^\top\)</span>, difusión multiplicativa <span class="math inline">\(\hat{\sigma}_{\text{WLS}}\)</span>, retraso <span class="math inline">\(\tau\)</span>, paso <span class="math inline">\(\Delta t = 1\)</span>, número de réplicas <span class="math inline">\(M = 10\,000\)</span>, semilla entera <span class="math inline">\(s_0\)</span>, método <span class="math inline">\(\in \{\text{euler}, \text{milstein}\}\)</span>.</li>
-<li><strong>Salida:</strong> Matriz de ensamble <span class="math inline">\(\mathbf{X}_{\text{sim}} \in \mathbb{R}^{M \times N_p}\)</span>, trayectoria media <span class="math inline">\(\hat{\boldsymbol{\mu}} \in \mathbb{R}^{N_p}\)</span>, bandas cuantílicas <span class="math inline">\([\mathbf{q}_{0.025}, \mathbf{q}_{0.975}]\)</span> y diagnóstico de positividad <span class="math inline">\((x_{\text{mín}}, n_{\le 0})\)</span>.</li>
-</ul>
+<p><em>Euler-Maruyama / Milstein</em></p>
+<p><strong>Entrada:</strong> <em>Dataframe</em> del periodo <span class="math inline">\(\mathrm{DF}_p\)</span> de longitud <span class="math inline">\(N_p\)</span>, parámetros WLS estimados <span class="math inline">\(\hat{\boldsymbol{\theta}} =
+[\hat{\alpha}, \hat{\beta}, \hat{\gamma},
+\hat{\delta}_1, \hat{\delta}_2, \hat{\delta}_3]^\top\)</span>, difusión multiplicativa <span class="math inline">\(\hat{\sigma}_{\text{WLS}}\)</span>, retraso <span class="math inline">\(\tau\)</span>, paso <span class="math inline">\(\Delta t = 1\)</span>, número de réplicas <span class="math inline">\(M = 10\,000\)</span>, semilla entera <span class="math inline">\(s_0\)</span> y método <span class="math inline">\(\in \{\text{euler},\text{milstein}\}\)</span>.</p>
+<p><strong>Salida:</strong> Matriz de ensamble <span class="math inline">\(\mathbf{X}_{\text{sim}} \in \mathbb{R}^{M \times N_p}\)</span>, trayectoria media <span class="math inline">\(\hat{\boldsymbol{\mu}}\)</span>, bandas cuantílicas <span class="math inline">\([\mathbf{q}_{0.025},\mathbf{q}_{0.975}]\)</span> y diagnóstico de positividad <span class="math inline">\((x_{\min},n_{\leq 0})\)</span>.</p>
+<p><strong>Inicialización</strong></p>
 <ol type="1">
-<li>Extraer de <span class="math inline">\(\mathrm{DF}_p\)</span> el vector observado <span class="math inline">\(\mathbf{X}^{\text{obs}} \in \mathbb{R}^{N_p}\)</span> y los vectores climáticos <span class="math inline">\(\mathbf{Rad}, \mathbf{Temp}, \mathbf{Prec} \in \mathbb{R}^{N_p}\)</span>.</li>
-<li>Inicializar la matriz de estados simulados <span class="math inline">\(\mathbf{X}_{\text{sim}} \leftarrow \mathbf{0}_{M \times N_p}\)</span> en doble precisión (<code>float64</code>).</li>
-<li>Asignar la condición inicial histórica <span class="math inline">\(\mathcal{H}_0\)</span> a las primeras <span class="math inline">\(\tau + 1\)</span> columnas de todas las réplicas: <span class="math display">\[\mathbf{X}_{\text{sim}}[:, 0:\tau] \leftarrow \mathbf{X}^{\text{obs}}[0:\tau].\]</span></li>
-<li>Instanciar el generador pseudoaleatorio reproducible: <span class="math inline">\(\mathrm{RNG} \leftarrow \texttt{default\_rng}(s_0)\)</span>.</li>
-<li><strong>Para</strong> <span class="math inline">\(t = \tau + 1\)</span> <strong>hasta</strong> <span class="math inline">\(N_p - 1\)</span> <strong>hacer:</strong>
+<li><p>Extraer de <span class="math inline">\(\mathrm{DF}_p\)</span> el vector observado <span class="math inline">\(\mathbf{X}^{\text{obs}} \in \mathbb{R}^{N_p}\)</span> y los vectores climáticos <span class="math inline">\(\mathbf{Rad},\mathbf{Temp},\mathbf{Prec}
+\in \mathbb{R}^{N_p}\)</span>.</p></li>
+<li><p>Inicializar la matriz de estados simulados <span class="math inline">\(\mathbf{X}_{\text{sim}} \leftarrow
+\mathbf{0}_{M \times N_p}\)</span> en doble precisión (<code>float64</code>).</p></li>
+<li><p>Asignar la condición inicial histórica <span class="math inline">\(\mathcal{H}_0\)</span> a las primeras <span class="math inline">\(\tau+1\)</span> columnas de todas las réplicas:</p>
+<p><span class="math display">\[
+\mathbf{X}_{\text{sim}}[:,0:\tau]
+\leftarrow \mathbf{X}^{\text{obs}}[0:\tau].
+\]</span></p></li>
+<li><p>Instanciar el generador pseudoaleatorio reproducible:</p>
+<p><span class="math display">\[
+\mathrm{RNG} \leftarrow \texttt{default\_rng}(s_0).
+\]</span></p></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Algoritmo 4.4 (continuación): Simulación vectorizada
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Iteración temporal</strong></p>
+<ol start="5" type="1">
+<li><p><strong>Para</strong> <span class="math inline">\(t = \tau+1\)</span> <strong>hasta</strong> <span class="math inline">\(N_p-1\)</span> <strong>hacer:</strong></p>
 <ol type="a">
-<li>Definir el índice del paso previo: <span class="math inline">\(i \leftarrow t - 1\)</span>.</li>
-<li>Extraer los vectores columna de estado actual y estado retardado (<span class="math inline">\(M \times 1\)</span>): <span class="math display">\[\mathbf{x}_{\text{act}} \leftarrow \mathbf{X}_{\text{sim}}[:, i], \qquad \mathbf{x}_{\text{ret}} \leftarrow \mathbf{X}_{\text{sim}}[:, i - \tau].\]</span></li>
-<li>Generar un vector de <span class="math inline">\(M\)</span> incrementos normales estándar independientes y escalar el paso browniano: <span class="math display">\[\mathbf{Z}_i \leftarrow \mathrm{RNG}.\texttt{standard\_normal}(M), \qquad \Delta\mathbf{W}_i \leftarrow \sqrt{\Delta t}\,\mathbf{Z}_i.\]</span></li>
-<li>Calcular vectorialmente la deriva y la difusión multiplicativa (producto elemento a elemento <span class="math inline">\(\odot\)</span>): <span class="math display">\[\boldsymbol{\mu}_i \leftarrow \hat{\alpha} + \hat{\beta}\mathbf{x}_{\text{act}} + \hat{\gamma}\mathbf{x}_{\text{ret}} + \hat{\delta}_1\mathrm{Rad}[i] + \hat{\delta}_2\mathrm{Temp}[i] + \hat{\delta}_3\mathrm{Prec}[i],\]</span> <span class="math display">\[\mathbf{r}_i \leftarrow \hat{\sigma}_{\text{WLS}}\,\left(\mathbf{x}_{\text{act}} \odot \Delta\mathbf{W}_i\right).\]</span></li>
-<li><strong>Si</strong> <span class="math inline">\(\text{método} = \text{milstein}\)</span> <strong>entonces</strong> añadir la corrección cuadrática de Itô-Taylor: <span class="math display">\[\mathbf{r}_i \leftarrow \mathbf{r}_i + \frac{1}{2}\hat{\sigma}_{\text{WLS}}^2\,\left(\mathbf{x}_{\text{act}} \odot \left(\Delta\mathbf{W}_i^{\odot 2} - \Delta t\right)\right).\]</span></li>
-<li>Actualizar el estado del ensamble en el día <span class="math inline">\(t\)</span>: <span class="math display">\[\mathbf{X}_{\text{sim}}[:, t] \leftarrow \mathbf{x}_{\text{act}} + \boldsymbol{\mu}_i\,\Delta t + \mathbf{r}_i.\]</span></li>
-</ol></li>
-<li>Calcular para cada columna <span class="math inline">\(t \in \{0, \dots, N_p - 1\}\)</span> los estadísticos funcionales del ensamble: <span class="math display">\[\hat{\mu}_t \leftarrow \frac{1}{M}\sum_{m=1}^{M}\mathbf{X}_{\text{sim}}[m, t], \qquad q_{0.025, t} \leftarrow \mathrm{Percentil}_{2.5}(\mathbf{X}_{\text{sim}}[:, t]), \qquad q_{0.975, t} \leftarrow \mathrm{Percentil}_{97.5}(\mathbf{X}_{\text{sim}}[:, t]).\]</span></li>
-<li>Auditar la positividad global del ensamble: <span class="math inline">\(x_{\text{mín}} \leftarrow \min(\mathbf{X}_{\text{sim}})\)</span> y <span class="math inline">\(n_{\le 0} \leftarrow \sum_{m, t} \mathbb{I}(\mathbf{X}_{\text{sim}}[m, t] \le 0)\)</span>.</li>
-<li><strong>Retornar</strong> <span class="math inline">\(\mathbf{X}_{\text{sim}}, \hat{\boldsymbol{\mu}}, \mathbf{q}_{0.025}, \mathbf{q}_{0.975}, x_{\text{mín}}, n_{\le 0}\)</span>.</li>
+<li>Definir el índice del paso previo:</li>
+</ol>
+<p><span class="math display">\[
+i \leftarrow t-1.
+\]</span></p>
+<ol start="2" type="a">
+<li>Extraer los vectores columna de estado actual y estado retardado (<span class="math inline">\(M \times 1\)</span>):</li>
+</ol>
+<p><span class="math display">\[
+\mathbf{x}_{\text{act}} \leftarrow
+\mathbf{X}_{\text{sim}}[:,i], \qquad
+\mathbf{x}_{\text{ret}} \leftarrow
+\mathbf{X}_{\text{sim}}[:,i-\tau].
+\]</span></p>
+<ol start="3" type="a">
+<li>Generar un vector de <span class="math inline">\(M\)</span> incrementos normales estándar independientes y escalar el paso browniano:</li>
+</ol>
+<p><span class="math display">\[
+\mathbf{Z}_i \leftarrow
+\mathrm{RNG}.\texttt{standard\_normal}(M),
+\]</span></p>
+<p><span class="math display">\[
+\Delta\mathbf{W}_i \leftarrow
+\sqrt{\Delta t}\,\mathbf{Z}_i.
+\]</span></p>
+<ol start="4" type="a">
+<li>Calcular vectorialmente la deriva y la difusión multiplicativa (producto elemento a elemento <span class="math inline">\(\odot\)</span>):</li>
+</ol>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{\mu}_i \leftarrow {}&amp;
+\hat{\alpha}
++\hat{\beta}\mathbf{x}_{\text{act}}
++\hat{\gamma}\mathbf{x}_{\text{ret}}\\
+&amp;+\hat{\delta}_1\mathrm{Rad}[i]
++\hat{\delta}_2\mathrm{Temp}[i]
++\hat{\delta}_3\mathrm{Prec}[i].
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\mathbf{r}_i \leftarrow
+\hat{\sigma}_{\text{WLS}}
+\left(\mathbf{x}_{\text{act}}\odot
+\Delta\mathbf{W}_i\right).
+\]</span></p>
+<ol start="5" type="a">
+<li><strong>Si</strong> <span class="math inline">\(\text{método}=\text{milstein}\)</span>, <strong>entonces</strong> añadir la corrección cuadrática de Itô-Taylor:</li>
+</ol>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbf{r}_i \leftarrow {}&amp;
+\mathbf{r}_i+
+\frac{1}{2}\hat{\sigma}_{\text{WLS}}^2\\
+&amp;\cdot
+\left(
+\mathbf{x}_{\text{act}}\odot
+(\Delta\mathbf{W}_i^{\odot 2}-\Delta t)
+\right).
+\end{aligned}
+\]</span></p>
+<ol start="6" type="a">
+<li>Actualizar el estado del ensamble en el día <span class="math inline">\(t\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+\mathbf{X}_{\text{sim}}[:,t]
+\leftarrow
+\mathbf{x}_{\text{act}}
++\boldsymbol{\mu}_i\Delta t
++\mathbf{r}_i.
+\]</span></p></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Algoritmo 4.4 (continuación): Estadísticos y diagnóstico
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Postprocesamiento</strong></p>
+<ol start="6" type="1">
+<li><p>Calcular para cada columna <span class="math inline">\(t \in \{0,\dots,N_p-1\}\)</span> los estadísticos funcionales del ensamble:</p>
+<p><span class="math display">\[
+\hat{\mu}_t \leftarrow
+\frac{1}{M}\sum_{m=1}^{M}
+\mathbf{X}_{\text{sim}}[m,t].
+\]</span></p>
+<p><span class="math display">\[
+q_{0.025,t} \leftarrow
+\mathrm{Percentil}_{2.5}
+(\mathbf{X}_{\text{sim}}[:,t]),
+\]</span></p>
+<p><span class="math display">\[
+q_{0.975,t} \leftarrow
+\mathrm{Percentil}_{97.5}
+(\mathbf{X}_{\text{sim}}[:,t]).
+\]</span></p></li>
+<li><p>Auditar la positividad global del ensamble: <span class="math display">\[
+x_{\min} \leftarrow
+\min(\mathbf{X}_{\text{sim}}),
+\]</span> <span class="math display">\[
+n_{\leq 0} \leftarrow
+\sum_{m,t}
+\mathbb{I}(\mathbf{X}_{\text{sim}}[m,t]\leq 0).
+\]</span></p></li>
+<li><p><strong>Retornar</strong> <span class="math display">\[
+\mathbf{X}_{\text{sim}},
+\hat{\boldsymbol{\mu}},
+\mathbf{q}_{0.025},
+\mathbf{q}_{0.975},
+x_{\min},
+n_{\leq 0}.
+\]</span></p></li>
 </ol>
 </div>
 </div>
