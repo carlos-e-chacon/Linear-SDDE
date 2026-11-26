@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; Conclusiones – Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático</title>
+<title>6&nbsp; Conclusiones y Perspectivas – Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -82,12 +82,41 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="6&nbsp; Conclusiones – Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático">
+<meta property="og:title" content="6&nbsp; Conclusiones y Perspectivas – Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático">
 <meta property="og:description" content="">
 <meta property="og:site_name" content="Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático">
-<meta name="twitter:title" content="6&nbsp; Conclusiones – Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático">
+<meta name="twitter:title" content="6&nbsp; Conclusiones y Perspectivas – Modelación, Estimación y Validación de la Dinámica Fenológica mediante una Ecuación Diferencial Estocástica con Retraso y Forzamiento Climático">
 <meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
@@ -263,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cap5_resultados.html">Resultados y Conclusiones</a></li><li class="breadcrumb-item"><a href="./cap6_conclusiones.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cap5_resultados.html">Resultados y Conclusiones</a></li><li class="breadcrumb-item"><a href="./cap6_conclusiones.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones y Perspectivas</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
@@ -377,7 +406,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cap6_conclusiones.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones y Perspectivas</span></span></a>
   </div>
 </li>
       </ul>
@@ -393,16 +422,25 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#sec-conclusiones-principales" id="toc-sec-conclusiones-principales" class="nav-link active" data-scroll-target="#sec-conclusiones-principales"><span class="header-section-number">6.1</span> Conclusiones principales</a></li>
+  <li><a href="#sec-contribuciones" id="toc-sec-contribuciones" class="nav-link" data-scroll-target="#sec-contribuciones"><span class="header-section-number">6.2</span> Contribuciones del estudio</a></li>
+  <li><a href="#sec-recomendaciones-futuras" id="toc-sec-recomendaciones-futuras" class="nav-link" data-scroll-target="#sec-recomendaciones-futuras"><span class="header-section-number">6.3</span> Recomendaciones para futuras investigaciones</a></li>
+  <li><a href="#sec-aplicaciones" id="toc-sec-aplicaciones" class="nav-link" data-scroll-target="#sec-aplicaciones"><span class="header-section-number">6.4</span> Aplicaciones potenciales</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/cap6_conclusiones.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/cap6_conclusiones.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cap5_resultados.html">Resultados y Conclusiones</a></li><li class="breadcrumb-item"><a href="./cap6_conclusiones.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cap5_resultados.html">Resultados y Conclusiones</a></li><li class="breadcrumb-item"><a href="./cap6_conclusiones.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones y Perspectivas</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones</span></h1>
+<h1 class="title"><span id="sec-conclusiones" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusiones y Perspectivas</span></span></h1>
 </div>
 
 
@@ -419,10 +457,65 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>CAPÍTULO 6: CONCLUSIONES Y PERSPECTIVAS 6.1. Conclusiones principales 6.2. Contribuciones del estudio 6.3. Recomendaciones para futuras investigaciones 6.4. Aplicaciones potenciales</p>
-<p>REFERENCIAS BIBLIOGRÁFICAS</p>
+<p>En esta tesis se formuló, analizó matemáticamente, estimó y validó probabilísticamente un modelo basado en una Ecuación Diferencial Estocástica con Retraso (SDDE) lineal no autónoma con ruido multiplicativo y forzamiento climático para describir la dinámica fenológica diaria de la vegetación en latitudes boreales. Integrando la teoría de ecuaciones diferenciales estocásticas funcionales de Itô, la inferencia por Mínimos Cuadrados Ponderados / Máxima Verosimilitud Condicional (WLS/CMLE) y simulaciones vectorizadas de Monte Carlo sobre observaciones de PhenoCam y el reanálisis ERA5 (<code>SE33</code>, 2022–2025), se alcanzaron íntegramente el objetivo general y los seis objetivos específicos planteados.</p>
+<section id="sec-conclusiones-principales" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="sec-conclusiones-principales"><span class="header-section-number">6.1</span> Conclusiones principales</h2>
+<ol type="1">
+<li><strong>Buen planteamiento matemático y preservación del dominio biológico:</strong> La SDDE multiplicativa no autónoma <span class="math inline">\(dX(t) = [\alpha + \beta X(t) + \gamma X(t-\tau) + \boldsymbol{\delta}^\top C(t)]dt + \sigma X(t)\,dW(t)\)</span> —que extiende la ley estocástica autónoma de Rupšys (2006) mediante forzamiento climático diario— satisface globalmente las condiciones de Lipschitz uniforme y crecimiento lineal sobre cualquier horizonte finito <span class="math inline">\([0, T]\)</span>, garantizando la existencia y unicidad de una solución fuerte en <span class="math inline">\(\mathcal{M}^2([-\tau, T]; \mathbb{R})\)</span>. Asimismo, la difusión multiplicativa respeta de manera natural la positividad del estado fenológico (<span class="math inline">\(X(t) &gt; 0\)</span>) y la esperanza matemática <span class="math inline">\(\mathbb{E}[X(t)]\)</span> obedece exactamente una ecuación diferencial con retraso (DDE) determinista.</li>
+<li><strong>Equivalencia exacta WLS = CMLE y diagnóstico riguroso sobre innovaciones estandarizadas:</strong> Al discretizar el modelo mediante el esquema de Euler-Maruyama a paso unitario (<span class="math inline">\(\Delta t = 1\)</span> día), la difusión multiplicativa induce una heterocedasticidad condicional conocida <span class="math inline">\(\operatorname{Var}(\epsilon_t \mid \mathcal{F}_t) = \sigma^2 X_t^2\)</span>. Se demostró que el estimador de Mínimos Cuadrados Ponderados con pesos <span class="math inline">\(w_t = X_t^{-2}\)</span> coincide exactamente con el estimador de Máxima Verosimilitud Condicional (<span class="math inline">\(\hat{\boldsymbol{\theta}}_{\text{WLS}} = \hat{\boldsymbol{\theta}}_{\text{CMLE}}\)</span>) y que la log-verosimilitud exacta requiere incluir el término jacobiano <span class="math inline">\(-\sum \ln(X_t)\)</span> (verificado numéricamente con error <span class="math inline">\(&lt; 10^{-9}\)</span>). Al auditar las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span>, se observó una notable estabilidad interanual de la volatilidad relativa (<span class="math inline">\(\hat{\sigma}_{\text{WLS}} \in [0.006354, 0.007377]\,\text{días}^{-1/2}\)</span>, media <span class="math inline">\(0.006914\,\text{días}^{-1/2}\)</span>), cumplimiento pleno de la homocedasticidad residual en los periodos estivales (<span class="math inline">\(P_1\)</span> y <span class="math inline">\(P_2\)</span>, <span class="math inline">\(p_{\text{BP}} &gt; 0.25\)</span>), normalidad exacta en primavera temprana (<span class="math inline">\(P_4\)</span>, <span class="math inline">\(p_{\text{SW}} = 0.9932\)</span>) y presencia de heterocedasticidad residual y colas pesadas en los segmentos que atraviesan transiciones invernales (<span class="math inline">\(P_3\)</span> y <span class="math inline">\(P_4\)</span>).</li>
+<li><strong>Evidencia empírica de autorregulación del dosel, memoria fisiológica biescalar y control climático:</strong> En los cuatro periodos continuos, el coeficiente de retroalimentación instantánea resultó estrictamente negativo (<span class="math inline">\(\hat{\beta} \in [-0.2531, -0.0394]\,\text{días}^{-1}\)</span>, significativo en <span class="math inline">\(P_2, P_3, P_4\)</span>), confirmando un proceso estacionario con reversión a la media que acota asintóticamente la incertidumbre de largo plazo. En los ciclos extensos (<span class="math inline">\(P_2\)</span> y <span class="math inline">\(P_3\)</span>), la memoria retardada a <span class="math inline">\(\tau = 15\)</span> días resultó positiva (<span class="math inline">\(\hat{\gamma}^{(2)} = +0.0355\)</span> y <span class="math inline">\(\hat{\gamma}^{(3)} = +0.0508\,\text{días}^{-1}\)</span>). La búsqueda en malla bajo muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\)</span> días) evidenció dos escalas temporales complementarias: retardos óptimos individuales de corto a mediano plazo (<span class="math inline">\(\tau_p^* \in \{3, 3, 6, 7\}\)</span> días, con máximo global de <span class="math inline">\(R^2_{\text{adj, WLS}}\)</span> en <span class="math inline">\(\tau^*_{\text{global}, R^2} = 7\)</span> días) y una escala estructural quincenal de translocación foliar en la verosimilitud conjunta interanual (<span class="math inline">\(\tau^*_{\text{global, AIC}} = 17\)</span> días). En cuanto a los forzantes climáticos (<code>SE33</code>), la temperatura domina el ciclo completo boreal (<span class="math inline">\(\hat{\delta}_2^{(3)} &gt; 0\)</span>, <span class="math inline">\(p = 0.0272\)</span>) y la precipitación ejerce un estímulo positivo invariante en las cuatro campañas (<span class="math inline">\(\hat{\delta}_3 &gt; 0\)</span>, significativa en <span class="math inline">\(P_4\)</span>).</li>
+<li><strong>Compromiso entre ajuste y parsimonia frente a modelos <span class="math inline">\(\text{AR}(\tau)\)</span>:</strong> La comparación simétrica en muestra común estricta (<span class="math inline">\(n_{\text{común}} = 81\)</span>) con conteo homogéneo de parámetros (<span class="math inline">\(k_{\text{SDDE}} = 7\)</span> frente a <span class="math inline">\(k_{\text{AR}} = \tau + 2\)</span>) mostró que, si bien los modelos <span class="math inline">\(\text{AR}(\tau)\)</span> no restringidos alcanzan mejor AIC en muestra al explotar todos los rezagos intermedios (<span class="math inline">\(\Delta\mathrm{AIC} \in [+7.02, +17.24]\)</span>), el modelo <span class="math inline">\(\text{SDDE}(\tau)\)</span> supera contundentemente a <span class="math inline">\(\text{AR}(\tau)\)</span> bajo el criterio asintóticamente consistente BIC en toda la ventana biológica de memoria (<span class="math inline">\(\tau \ge 12\)</span> días), alcanzando ventajas de hasta <span class="math inline">\(\Delta\mathrm{BIC} = -32.01\)</span> en <span class="math inline">\(\tau = 22\)</span> días y aportando interpretabilidad biofísica y acoplamiento climático exógeno.</li>
+<li><strong>Desempeño predictivo fuera de muestra, estabilidad numérica y sensibilidad térmica:</strong> En validación temporal secuencial (<em>Forward Chaining</em> sobre <span class="math inline">\(189\)</span> días del Periodo 3), el modelo multiplicativo logró un <span class="math inline">\(\mathrm{RMSE} = 0.002531\)</span> (<span class="math inline">\(\mathrm{MAE} = 0.001908\)</span>, error relativo medio de <span class="math inline">\(0.56\)</span> %) y una cobertura empírica de <span class="math inline">\(\mathrm{PICP}_{95\%} = 96.30\)</span> %. En validación cruzada interanual LODO (<em>Pooled WLS</em>), el error medio a un paso fue de <span class="math inline">\(\mathrm{RMSE}_{\text{1-Paso}} = 0.002454\)</span> con coberturas de trayectoria completa de <span class="math inline">\(99.23\)</span> % (<span class="math inline">\(P_2\)</span>), <span class="math inline">\(98.25\)</span> % (<span class="math inline">\(P_3\)</span>) y <span class="math inline">\(93.33\)</span> % (<span class="math inline">\(P_4\)</span>) (media interanual de <span class="math inline">\(85.34\)</span> % debido al cambio de régimen senescente en <span class="math inline">\(P_1\)</span>). La verificación bajo Números Aleatorios Comunes confirmó que la discrepancia entre Euler-Maruyama multiplicativo y Milstein es prácticamente despreciable en este régimen de volatilidad (<span class="math inline">\(\max |\mathbb{E}[X_{\text{EM}}] - \mathbb{E}[X_{\text{Mil}}]| = 7.76 \times 10^{-7}\)</span>), preservándose <span class="math inline">\(X_t^{(m)} &gt; 0\)</span> en el <span class="math inline">\(100\)</span> % de las realizaciones. Por último, el análisis de sensibilidad (<span class="math inline">\(\pm 10\)</span> %) demostró que la trayectoria fenológica del ciclo completo es aproximadamente <span class="math inline">\(445\)</span> veces más sensible a perturbaciones en la sensibilidad térmica (<span class="math inline">\(\hat{\delta}_2\)</span>, <span class="math inline">\(\pm 9.778\)</span> %) que en la radiativa (<span class="math inline">\(\hat{\delta}_1\)</span>, <span class="math inline">\(\mp 0.022\)</span> %).</li>
+</ol>
+</section>
+<section id="sec-contribuciones" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-contribuciones"><span class="header-section-number">6.2</span> Contribuciones del estudio</h2>
+<p>Esta investigación aporta contribuciones integradas en los ámbitos teórico-matemático, estadístico-computacional y ecofisiológico:</p>
+<ul>
+<li><strong>Puente analítico exacto entre SDDEs multiplicativas e inferencia econométrica ponderada:</strong> Se demostró de forma completa cómo la discretización de Euler-Maruyama de una SDDE lineal no autónoma con difusión <span class="math inline">\(\sigma X(t)\,dW(t)\)</span> conduce a una estructura <span class="math inline">\(\text{ARX}(\tau + 1)\)</span> dispersa con heterocedasticidad condicional conocida, unificando la estimación WLS, la Máxima Verosimilitud Condicional con término jacobiano <span class="math inline">\(-\sum \ln X_t\)</span>, el análisis de identificabilidad estructural condicional y el diagnóstico formal sobre las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span>.</li>
+<li><strong>Protocolo metodológico libre de artefactos para series fenológicas discontinuas:</strong> Se diseñó un algoritmo reproducible de segmentación automática (Algoritmo 4.1) que aísla las brechas invernales boreales sin interpolación sintética, combinado con un protocolo de <em>Pooled WLS</em> en dos etapas que impide mezclar fronteras interanuales y un esquema estricto de truncamiento por muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\)</span> días) que garantiza la comparabilidad legítima de AIC y BIC entre retardos y frente a modelos <span class="math inline">\(\text{AR}(\tau)\)</span>.</li>
+<li><strong>Auditoría numérica rigurosa de integración estocástica multiplicativa:</strong> Se desarrolló un motor vectorizado de Monte Carlo en Python capaz de ejecutar simultáneamente los esquemas de Euler-Maruyama multiplicativo y Milstein acoplados por Números Aleatorios Comunes, verificando cuantitativamente el orden de magnitud del término corrector de Itô-Taylor y la preservación estricta de positividad en todos los escenarios de validación y sensibilidad.</li>
+</ul>
+</section>
+<section id="sec-recomendaciones-futuras" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="sec-recomendaciones-futuras"><span class="header-section-number">6.3</span> Recomendaciones para futuras investigaciones</h2>
+<p>Con el propósito de superar de manera rigurosa las siete limitaciones estructurales analizadas en la Sección <a href="cap5_resultados.html#sec-limitaciones" class="quarto-xref"><span>Sección 5.8</span></a>, se proponen las siguientes líneas concretas de extensión matemática y estadística:</p>
+<ol type="1">
+<li><strong>Deriva climática no lineal mediante Modelos Aditivos Generalizados Estocásticos con Retraso (GAM-SDDE):</strong> Para capturar umbrales térmicos cardinales (<span class="math inline">\(T_{\text{mín}}, T_{\text{opt}}, T_{\text{máx}}\)</span>) y saturación lumínica de Michaelis-Menten, se propone sustituir el término lineal <span class="math inline">\(\boldsymbol{\delta}^\top C(t)\)</span> por funciones suaves no paramétricas <span class="math inline">\(s_j(\cdot)\)</span> expandidas en bases de <em>B-splines</em> penalizados (Hastie et al., 2009): <span id="eq-rec-gam-sdde"><span class="math display">\[
+dX(t) = \left[\alpha + \beta X(t) + \gamma X(t-\tau) + s_1(\mathrm{Rad}_t) + s_2(\mathrm{Temp}_t) + s_3(\mathrm{Prec}_t)\right]dt + \sigma X(t)\,dW(t).
+\tag{6.1}\]</span></span></li>
+<li><strong>Dinámica multirrégimen mediante SDDE con Cambio de Régimen Markoviano (<em>Markov-Switching SDDE</em>):</strong> Para modelar endógenamente la transición fisiológica entre reverdecimiento primaveral, meseta estival y senescencia otoñal (superando la divergencia observada en el Periodo 1 en LODO), se propone indexar los parámetros por una cadena de Markov latente <span class="math inline">\(S(t) \in \{1, 2, 3\}\)</span> cuyas tasas de transición dependan del fotoperiodo o del día del año (Hamilton, 1994; Mao, 2007): <span id="eq-rec-markov-sdde"><span class="math display">\[
+dX(t) = \left[\alpha_{S(t)} + \beta_{S(t)} X(t) + \gamma_{S(t)} X(t-\tau) + \boldsymbol{\delta}_{S(t)}^\top C(t)\right]dt + \sigma_{S(t)} X(t)\,dW(t).
+\tag{6.2}\]</span></span></li>
+<li><strong>Perturbaciones con colas pesadas mediante difusión multiplicativa y saltos (<em>Jump-Diffusion SDDE</em>) e inferencia robusta:</strong> Para explicar la leptocurtosis detectada en <span class="math inline">\(P_1, P_2\)</span> y <span class="math inline">\(P_3\)</span>, se sugiere incorporar una medida aleatoria de Poisson compensada <span class="math inline">\(\tilde{N}(dt, du) = N(dt, du) - \lambda_{\text{jump}} F_U(du)\,dt\)</span> que modele choques meteorológicos u ópticos discontinuos: <span id="eq-rec-jump-sdde"><span class="math display">\[
+dX(t) = \mu\!\left(t, X(t), X(t-\tau)\right)dt + \sigma X(t^-)\,dW(t) + \int_{\mathbb{R}} \eta\!\left(X(t^-), u\right)\tilde{N}(dt, du),
+\tag{6.3}\]</span></span> complementando la estimación WLS con estimadores robustos ponderados (<span class="math inline">\(M\)</span>-estimadores de Huber o el criterio de distancia <span class="math inline">\(L^1\)</span> de Rupšys, 2006) e intervalos de confianza mediante <em>bootstrap</em> por bloques.</li>
+<li><strong>Memoria fisiológica multiescala mediante SDDE Funcional con Retraso Distribuido:</strong> Para unificar la memoria rápida semanal (<span class="math inline">\(\tau \approx 3\)</span>–<span class="math inline">\(7\)</span> días) y la memoria estructural quincenal (<span class="math inline">\(\tau \approx 15\)</span>–<span class="math inline">\(17\)</span> días), se propone reemplazar el retardo puntual <span class="math inline">\(\gamma X(t-\tau)\)</span> por una integral de convolución con un núcleo de memoria normalizado <span class="math inline">\(K_\tau(s) \ge 0\)</span> (<span class="math inline">\(\int_0^{\tau_{\text{máx}}} K_\tau(s)\,ds = 1\)</span>) (Mao, 2007; Ogle et al., 2015): <span id="eq-rec-distribuido"><span class="math display">\[
+dX(t) = \left[\alpha + \beta X(t) + \gamma \int_{0}^{\tau_{\text{máx}}} K_\tau(s) X(t-s)\,ds + \boldsymbol{\delta}^\top C(t)\right]dt + \sigma X(t)\,dW(t),
+\tag{6.4}\]</span></span> extendiendo dicha convolución a las variables climáticas para incorporar explícitamente la acumulación térmica (grados-día) e hídrica antecedente.</li>
+<li><strong>Modelación de heterocedasticidad residual y volatilidad climática o autorregresiva:</strong> Ante el rechazo de Breusch-Pagan sobre <span class="math inline">\(\hat{z}_t^2\)</span> en las transiciones invernales de <span class="math inline">\(P_3\)</span> y <span class="math inline">\(P_4\)</span>, se recomienda investigar: (i) errores estándar robustos HAC/Newey-West sobre WLS; (ii) difusiones de Elasticidad Constante de Varianza (CEV) <span class="math inline">\(g(X(t)) = \sigma X(t)^\eta\)</span>; (iii) volatilidad dependiente de covariables climáticas <span class="math inline">\(\sigma(C(t)) = \sigma_0 \exp(\boldsymbol{\kappa}^\top C(t))\)</span>; o (iv) una estructura <strong>SDDE-GARCH</strong> sobre las innovaciones estandarizadas: <span id="eq-rec-garch"><span class="math display">\[
+z_t = \sqrt{h_t}\,\xi_t, \qquad h_t = \omega_0 + \alpha_1 z_{t-1}^2 + \beta_1 h_{t-1}, \qquad \xi_t \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, 1).
+\tag{6.5}\]</span></span></li>
+<li><strong>Separación de ruido de proceso y error observacional mediante Modelos de Espacio de Estados con Retraso:</strong> Para eliminar el sesgo de atenuación y la autocorrelación negativa leve reflejada en el estadístico de Durbin-Watson (<span class="math inline">\(DW &gt; 2.2\)</span>), se sugiere acoplar la SDDE multiplicativa latente con una ecuación de medición estimable mediante Filtro de Kalman Extendido o Filtros de Partículas (Dietze, 2017; Särkkä &amp; Solin, 2019): <span id="eq-rec-espacio-estados"><span class="math display">\[
+\begin{cases}
+Z_{t+1} = Z_t + \left[\alpha + \beta Z_t + \gamma Z_{t-\tau} + \boldsymbol{\delta}^\top C_t\right]\Delta t + \sigma_{\text{proc}} Z_t \Delta W_t, \\
+X_t^{\text{obs}} = Z_t + \nu_t, \qquad \nu_t \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, \sigma_{\text{obs}}^2).
+\end{cases}
+\tag{6.6}\]</span></span></li>
+<li><strong>Escalamiento subdiurno y generalización jerárquica multibioma:</strong> En aplicaciones futuras sobre datos horarios de torres <em>Eddy Covariance</em> (FLUXNET) o procesos de mayor volatilidad (<span class="math inline">\(\sigma \gtrsim 0.1\)</span>), se recomienda emplear directamente esquemas numéricos de orden fuerte superior (Milstein o Runge-Kutta estocástico; Kloeden &amp; Platen, 1992; Milstein, 1995) y extender el enfoque hacia modelos <strong>SDDE jerárquicos bayesianos</strong> que integren simultáneamente múltiples sitios de la red global PhenoCam compartiendo hiperparámetros por tipo funcional de vegetación.</li>
+</ol>
+</section>
+<section id="sec-aplicaciones" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-aplicaciones"><span class="header-section-number">6.4</span> Aplicaciones potenciales</h2>
+<p>La arquitectura matemática y computacional desarrollada en esta tesis es transferible directamente a diversos problemas aplicados de alto impacto:</p>
+<ul>
+<li><strong>Pronóstico ecológico probabilístico y agricultura de precisión:</strong> La capacidad de generar bandas de predicción diarias calibradas (<span class="math inline">\(\mathrm{PICP}_{95\%} = 96.30\)</span> %, error relativo <span class="math inline">\(&lt; 0.6\)</span> %) permite implementar sistemas de alerta temprana para detectar anomalías fenológicas (heladas tardías, estrés térmico, plagas o déficit hídrico) cuando el GCC observado abandona el intervalo de confianza del modelo.</li>
+<li><strong>Evaluación de escenarios de cambio climático:</strong> La acoplabilidad explícita con proyecciones meteorológicas (como escenarios CMIP6 / ERA5) y el análisis de sensibilidad con Números Aleatorios Comunes permiten cuantificar el desplazamiento esperado del calendario vegetativo y el riesgo de desacople fenológico ante incrementos sostenidos de temperatura en regiones boreales y templadas.</li>
+<li><strong>Fusión con sensores satelitales y monitoreo forestal:</strong> El marco SDDE multiplicativo estimado por WLS/CMLE puede adaptarse directamente a series temporales de índices satelitales (NDVI, EVI o NIRv provenientes de Sentinel-2 y MODIS) para monitorear productividad primaria, resiliencia post-perturbación y dinámica de biomasa forestal, así como a otras variables biológicas estrictamente positivas con memoria fisiológica en biomatemática y biometría ambiental.</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -862,7 +955,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/cap6_conclusiones.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/cap6_conclusiones.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/edit/main/cap6_conclusiones.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/issues/new" class="toc-action"><i class="bi empty"></i>Informar de un problema</a></li><li><a href="https://github.com/carlos-e-chacon/Linear-SDDE/blob/main/cap6_conclusiones.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Dirigida por Dr.&nbsp;Yofre Hernán García Gómez</p>
 </div>
