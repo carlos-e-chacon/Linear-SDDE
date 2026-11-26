@@ -1102,28 +1102,23 @@ Figura&nbsp;5.4: Gráfico de barras agrupadas comparando la magnitud y el signo 
 </section>
 <section id="sec-diagnostico-z" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="sec-diagnostico-z"><span class="header-section-number">5.2.2</span> Diagnóstico estadístico de innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span> y difusión <span class="math inline">\(\sigma\)</span></h3>
-<p>La <a href="#tbl-diagnostico-z" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a> concentra las métricas de bondad de ajuste ponderado (<span class="math inline">\(R^2_{\text{WLS}}\)</span>, <span class="math inline">\(R^2_{\text{adj, WLS}}\)</span>), la log-verosimilitud condicional exacta (<span class="math inline">\(\ell_{\text{CMLE}}\)</span>), el AIC WLS, los estimadores directos de la difusión multiplicativa (<span class="math inline">\(\hat{\sigma}_{\text{WLS}}\)</span> y <span class="math inline">\(\hat{\sigma}_{\text{MLE}}\)</span>) y los resultados de las cinco pruebas formales de especificación aplicadas sobre las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span>.</p>
-<div id="tbl-diagnostico-z" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>Para facilitar la lectura, los resultados diagnósticos del ajuste WLS/CMLE para <span class="math inline">\(\tau = 15\)</span> días se presentan en dos tablas complementarias: la <a href="#tbl-diagnostico-z-1" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a> concentra las métricas de bondad de ajuste ponderado (<span class="math inline">\(R^2_{\text{WLS}}\)</span>, <span class="math inline">\(R^2_{\text{adj, WLS}}\)</span>), la log-verosimilitud condicional exacta (<span class="math inline">\(\ell_{\text{CMLE}}\)</span>), el <span class="math inline">\(\mathrm{AIC}_{\text{WLS}}\)</span> y los estimadores directos de la difusión multiplicativa (<span class="math inline">\(\hat{\sigma}_{\text{WLS}}\)</span> y <span class="math inline">\(\hat{\sigma}_{\text{MLE}}\)</span>); por su parte, la <a href="#tbl-diagnostico-z-2" class="quarto-xref">Tabla&nbsp;<span>5.6</span></a> reporta los resultados de las cinco pruebas formales de especificación aplicadas sobre las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span>.</p>
+<div id="tbl-diagnostico-z-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-diagnostico-z-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;5.5: Diagnóstico estadístico de las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span> y estimación directa del coeficiente de difusión multiplicativo <span class="math inline">\(\sigma\)</span> (<span class="math inline">\(\text{días}^{-1/2}\)</span>) por periodo para <span class="math inline">\(\tau = 15\)</span> días.
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-diagnostico-z-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;5.5: Bondad de ajuste ponderado, log-verosimilitud condicional exacta y estimación directa del coeficiente de difusión multiplicativo <span class="math inline">\(\sigma\)</span> (<span class="math inline">\(\text{días}^{-1/2}\)</span>) por periodo para <span class="math inline">\(\tau = 15\)</span> días. Primera mitad: métricas de ajuste y difusión.
 </figcaption>
-<div aria-describedby="tbl-diagnostico-z-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="tbl-diagnostico-z-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1135,11 +1130,6 @@ Tabla&nbsp;5.5: Diagnóstico estadístico de las innovaciones estandarizadas <sp
 <th style="text-align: right;"><span class="math inline">\(\mathrm{AIC}_{\text{WLS}}\)</span></th>
 <th style="text-align: right;"><span class="math inline">\(\hat{\sigma}_{\text{WLS}}\)</span></th>
 <th style="text-align: right;"><span class="math inline">\(\hat{\sigma}_{\text{MLE}}\)</span></th>
-<th style="text-align: right;">Shapiro-Wilk (<span class="math inline">\(p\)</span>)</th>
-<th style="text-align: right;">Jarque-Bera (<span class="math inline">\(p\)</span>)</th>
-<th style="text-align: right;">Breusch-Pagan (<span class="math inline">\(p\)</span>)</th>
-<th style="text-align: right;">Durbin-Watson</th>
-<th style="text-align: right;">Ljung-Box <span class="math inline">\(L_{10}\)</span> (<span class="math inline">\(p\)</span>)</th>
 </tr>
 </thead>
 <tbody>
@@ -1152,11 +1142,6 @@ Tabla&nbsp;5.5: Diagnóstico estadístico de las innovaciones estandarizadas <sp
 <td style="text-align: right;">-827.033656</td>
 <td style="text-align: right;">0.006614</td>
 <td style="text-align: right;">0.006387</td>
-<td style="text-align: right;">0.000388</td>
-<td style="text-align: right;">0.000000</td>
-<td style="text-align: right;">0.253822</td>
-<td style="text-align: right;">2.726084</td>
-<td style="text-align: right;">0.000224</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Periodo 2</td>
@@ -1167,11 +1152,6 @@ Tabla&nbsp;5.5: Diagnóstico estadístico de las innovaciones estandarizadas <sp
 <td style="text-align: right;">-1175.524268</td>
 <td style="text-align: right;">0.007377</td>
 <td style="text-align: right;">0.007205</td>
-<td style="text-align: right;">0.000059</td>
-<td style="text-align: right;">0.000000</td>
-<td style="text-align: right;">0.944758</td>
-<td style="text-align: right;">2.215188</td>
-<td style="text-align: right;">0.541157</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Periodo 3</td>
@@ -1182,11 +1162,6 @@ Tabla&nbsp;5.5: Diagnóstico estadístico de las innovaciones estandarizadas <sp
 <td style="text-align: right;">-2094.981807</td>
 <td style="text-align: right;">0.007312</td>
 <td style="text-align: right;">0.007216</td>
-<td style="text-align: right;">0.000060</td>
-<td style="text-align: right;">0.000000</td>
-<td style="text-align: right;">0.015615</td>
-<td style="text-align: right;">2.251081</td>
-<td style="text-align: right;">0.033461</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Periodo 4</td>
@@ -1197,6 +1172,70 @@ Tabla&nbsp;5.5: Diagnóstico estadístico de las innovaciones estandarizadas <sp
 <td style="text-align: right;">-565.000004</td>
 <td style="text-align: right;">0.006354</td>
 <td style="text-align: right;">0.006028</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-diagnostico-z-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-diagnostico-z-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;5.6: Pruebas formales de especificación aplicadas sobre las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span> por periodo para <span class="math inline">\(\tau = 15\)</span> días. Segunda mitad: normalidad, homocedasticidad residual e independencia serial.
+</figcaption>
+<div aria-describedby="tbl-diagnostico-z-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Periodo</th>
+<th style="text-align: right;"><span class="math inline">\(n_p\)</span></th>
+<th style="text-align: right;">Shapiro-Wilk (<span class="math inline">\(p\)</span>)</th>
+<th style="text-align: right;">Jarque-Bera (<span class="math inline">\(p\)</span>)</th>
+<th style="text-align: right;">Breusch-Pagan (<span class="math inline">\(p\)</span>)</th>
+<th style="text-align: right;">Durbin-Watson</th>
+<th style="text-align: right;">Ljung-Box <span class="math inline">\(L_{10}\)</span> (<span class="math inline">\(p\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Periodo 1</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">0.000388</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">0.253822</td>
+<td style="text-align: right;">2.726084</td>
+<td style="text-align: right;">0.000224</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Periodo 2</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: right;">0.000059</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">0.944758</td>
+<td style="text-align: right;">2.215188</td>
+<td style="text-align: right;">0.541157</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Periodo 3</td>
+<td style="text-align: right;">229</td>
+<td style="text-align: right;">0.000060</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">0.015615</td>
+<td style="text-align: right;">2.251081</td>
+<td style="text-align: right;">0.033461</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Periodo 4</td>
+<td style="text-align: right;">60</td>
 <td style="text-align: right;">0.993189</td>
 <td style="text-align: right;">0.990009</td>
 <td style="text-align: right;">0.003735</td>
@@ -1208,7 +1247,7 @@ Tabla&nbsp;5.5: Diagnóstico estadístico de las innovaciones estandarizadas <sp
 </div>
 </figure>
 </div>
-<p>El examen riguroso de la <a href="#tbl-diagnostico-z" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a> arroja cuatro hallazgos esenciales:</p>
+<p>El examen riguroso de la <a href="#tbl-diagnostico-z-1" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a> y la <a href="#tbl-diagnostico-z-2" class="quarto-xref">Tabla&nbsp;<span>5.6</span></a> arroja cuatro hallazgos esenciales:</p>
 <ol type="1">
 <li><strong>Estabilidad interanual de la volatilidad relativa multiplicativa</strong> (<span class="math inline">\(\hat{\sigma}\)</span>): A pesar de las distintas estaciones cubiertas por cada segmento, el coeficiente de difusión multiplicativo estimado por WLS exhibe una marcada constancia interanual, con un promedio de <span class="math inline">\(\hat{\sigma}_{\text{WLS}} = 0.006914\,\text{días}^{-1/2}\)</span> (rango estrecho <span class="math inline">\([0.006354, 0.007377]\,\text{días}^{-1/2}\)</span>) y un promedio máximo-verosímil de <span class="math inline">\(\hat{\sigma}_{\text{MLE}} = 0.006709\,\text{días}^{-1/2}\)</span>. En términos biofísicos, esto significa que las fluctuaciones estocásticas diarias del índice GCC representan sistemáticamente entre el <span class="math inline">\(0.64\)</span> % y el <span class="math inline">\(0.74\)</span> % del nivel de verdor vigente. Asimismo, la fracción de varianza explicada en diferencias diarias (<span class="math inline">\(R^2_{\text{WLS}}\)</span>) alcanza entre el <span class="math inline">\(8.16\)</span> % (<span class="math inline">\(P_1\)</span>) y el <span class="math inline">\(21.67\)</span> % (<span class="math inline">\(P_4\)</span>).</li>
 <li><strong>Comportamiento diferenciado de la homocedasticidad residual tras la ponderación (<span class="math inline">\(LM_{\text{BP}}\)</span> sobre <span class="math inline">\(\hat{z}_t^2\)</span>):</strong> En los periodos de verano-otoño (<span class="math inline">\(P_1\)</span> y <span class="math inline">\(P_2\)</span>), la prueba de Breusch-Pagan sobre las innovaciones estandarizadas confirma plenamente la estabilización de varianza lograda por la difusión multiplicativa <span class="math inline">\(\sigma X(t)\,dW(t)\)</span>, sin rechazar la homocedasticidad (<span class="math inline">\(p = 0.2538\)</span> en <span class="math inline">\(P_1\)</span> y <span class="math inline">\(p = 0.9448\)</span> en <span class="math inline">\(P_2\)</span>). En contraste, en los periodos que inician en pleno invierno boreal (<span class="math inline">\(P_3\)</span> con <span class="math inline">\(p = 0.0156\)</span> y <span class="math inline">\(P_4\)</span> con <span class="math inline">\(p = 0.0037\)</span>), se detecta <strong>heterocedasticidad residual estadísticamente significativa</strong> (<span class="math inline">\(p &lt; 0.05\)</span>). Este resultado indica que, durante las transiciones de deshielo y nieve intermitente de febrero-abril, la variabilidad diaria del sensor depende no solo del nivel <span class="math inline">\(X_t\)</span>, sino también de regímenes climáticos específicos (como eventos de escarcha o cambios abruptos de irradiancia), hallazgo que motiva las extensiones de volatilidad discutidas en la Sección 5.8.5.</li>
@@ -1221,11 +1260,11 @@ Tabla&nbsp;5.5: Diagnóstico estadístico de las innovaciones estandarizadas <sp
 <h2 data-number="5.3" class="anchored" data-anchor-id="sec-identificacion-tau"><span class="header-section-number">5.3</span> Identificación del retraso óptimo <span class="math inline">\(\tau^*\)</span></h2>
 <section id="sec-seleccion-muestra-comun" class="level3" data-number="5.3.1">
 <h3 data-number="5.3.1" class="anchored" data-anchor-id="sec-seleccion-muestra-comun"><span class="header-section-number">5.3.1</span> Selección mediante criterios de información bajo muestra común</h3>
-<p>Aplicando el Algoritmo 4.3 bajo el modelo WLS/CMLE sobre la malla <span class="math inline">\(\mathcal{T} = \{3, 4, \dots, 23\}\)</span> días con el protocolo estricto de truncamiento de muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\)</span> días, manteniendo constantes tanto <span class="math inline">\(n_{\text{común}}^{(p)}\)</span> como el término jacobiano <span class="math inline">\(-\sum \ln X_t\)</span> en los 21 modelos candidatos de cada periodo), se obtuvieron los retrasos óptimos reportados en la <a href="#tbl-seleccion-tau" class="quarto-xref">Tabla&nbsp;<span>5.6</span></a> y los perfiles graficados en la <a href="#fig-perfiles-tau" class="quarto-xref">Figura&nbsp;<span>5.5</span></a>.</p>
+<p>Aplicando el Algoritmo 4.3 bajo el modelo WLS/CMLE sobre la malla <span class="math inline">\(\mathcal{T} = \{3, 4, \dots, 23\}\)</span> días con el protocolo estricto de truncamiento de muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\)</span> días, manteniendo constantes tanto <span class="math inline">\(n_{\text{común}}^{(p)}\)</span> como el término jacobiano <span class="math inline">\(-\sum \ln X_t\)</span> en los 21 modelos candidatos de cada periodo), se obtuvieron los retrasos óptimos reportados en la <a href="#tbl-seleccion-tau" class="quarto-xref">Tabla&nbsp;<span>5.7</span></a> y los perfiles graficados en la <a href="#fig-perfiles-tau" class="quarto-xref">Figura&nbsp;<span>5.5</span></a>.</p>
 <div id="tbl-seleccion-tau" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-seleccion-tau-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;5.6: Selección automatizada del retraso fisiológico óptimo (<span class="math inline">\(\tau^*\)</span>) por periodo mediante WLS/CMLE evaluado sobre muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\)</span> días). Óptimos globales agregados: <span class="math inline">\(\tau^*_{\text{global, AIC}} = 17\)</span> días (mínimo de <span class="math inline">\(\sum_p \mathrm{AIC}_{\text{común}}^{(p)}\)</span>) y <span class="math inline">\(\tau^*_{\text{global}, R^2} = 7\)</span> días (máximo de <span class="math inline">\(\overline{R^2_{\text{adj, WLS}}}\)</span>).
+Tabla&nbsp;5.7: Selección automatizada del retraso fisiológico óptimo (<span class="math inline">\(\tau^*\)</span>) por periodo mediante WLS/CMLE evaluado sobre muestra común (<span class="math inline">\(\tau_{\text{corte}} = 23\)</span> días). Óptimos globales agregados: <span class="math inline">\(\tau^*_{\text{global, AIC}} = 17\)</span> días (mínimo de <span class="math inline">\(\sum_p \mathrm{AIC}_{\text{común}}^{(p)}\)</span>) y <span class="math inline">\(\tau^*_{\text{global}, R^2} = 7\)</span> días (máximo de <span class="math inline">\(\overline{R^2_{\text{adj, WLS}}}\)</span>).
 </figcaption>
 <div aria-describedby="tbl-seleccion-tau-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1310,7 +1349,7 @@ Figura&nbsp;5.5: Perfiles de evolución en función del retraso temporal <span c
 </section>
 <section id="sec-perfiles-memoria" class="level3" data-number="5.3.2">
 <h3 data-number="5.3.2" class="anchored" data-anchor-id="sec-perfiles-memoria"><span class="header-section-number">5.3.2</span> Análisis de los perfiles de memoria y dualidad de escalas temporales</h3>
-<p>La inspección conjunta de la <a href="#tbl-seleccion-tau" class="quarto-xref">Tabla&nbsp;<span>5.6</span></a> y la <a href="#fig-perfiles-tau" class="quarto-xref">Figura&nbsp;<span>5.5</span></a> confirma en primer lugar la consistencia interna del protocolo de muestra común: en los cuatro periodos sin excepción, el retraso que minimiza el <span class="math inline">\(\mathrm{AIC}_{\text{común}}\)</span> coincide exactamente con el que maximiza <span class="math inline">\(R^2_{\text{adj, WLS, común}}\)</span>. En el plano ecofisiológico, la modelación multiplicativa con los forzamientos boreales reales (<code>SE33</code>) revela una <strong>estructura biescalar de memoria temporal</strong>:</p>
+<p>La inspección conjunta de la <a href="#tbl-seleccion-tau" class="quarto-xref">Tabla&nbsp;<span>5.7</span></a> y la <a href="#fig-perfiles-tau" class="quarto-xref">Figura&nbsp;<span>5.5</span></a> confirma en primer lugar la consistencia interna del protocolo de muestra común: en los cuatro periodos sin excepción, el retraso que minimiza el <span class="math inline">\(\mathrm{AIC}_{\text{común}}\)</span> coincide exactamente con el que maximiza <span class="math inline">\(R^2_{\text{adj, WLS, común}}\)</span>. En el plano ecofisiológico, la modelación multiplicativa con los forzamientos boreales reales (<code>SE33</code>) revela una <strong>estructura biescalar de memoria temporal</strong>:</p>
 <ol type="1">
 <li><strong>Escala de memoria fisiológica rápida a semanal (<span class="math inline">\(\tau_p^* \in [3, 7]\)</span> días y <span class="math inline">\(\tau^*_{\text{global}, R^2} = 7\)</span> días):</strong> Al optimizar individualmente cada campaña sobre la muestra común, el óptimo puntual se sitúa en <span class="math inline">\(\tau_1^* = 3\)</span> días en <span class="math inline">\(P_1\)</span> (<span class="math inline">\(\hat{\gamma}_{\text{común}} = +0.2116\)</span>, <span class="math inline">\(R^2_{\text{adj}} = 0.0716\)</span>), <span class="math inline">\(\tau_2^* = 3\)</span> días en <span class="math inline">\(P_2\)</span> (<span class="math inline">\(R^2_{\text{adj}} = 0.1033\)</span>), <span class="math inline">\(\tau_3^* = 6\)</span> días en <span class="math inline">\(P_3\)</span> (<span class="math inline">\(\hat{\gamma}_{\text{común}} = +0.0639\)</span>, <span class="math inline">\(\hat{\gamma}_{\text{libre}} = +0.0926\)</span>, <span class="math inline">\(R^2_{\text{adj}} = 0.0607\)</span>) y <span class="math inline">\(\tau_4^* = 7\)</span> días en <span class="math inline">\(P_4\)</span> (<span class="math inline">\(R^2_{\text{adj}} = 0.1813\)</span>, el mayor poder explicativo individual del estudio). Al promediar <span class="math inline">\(R^2_{\text{adj, WLS}}\)</span> con igual peso entre las cuatro campañas, el máximo global se ubica precisamente en <span class="math inline">\(\tau^*_{\text{global}, R^2} = 7\)</span> días. Esta escala de media semana a una semana concuerda con los tiempos característicos de respuesta estomática, ajuste hidráulico, movilización rápida de almidón transitorio y persistencia sinóptica meteorológica. Asimismo, el cambio de signo observado en <span class="math inline">\(\hat{\gamma}^{(4)}(7)\)</span> entre la muestra común (<span class="math inline">\(n = 52\)</span>, <span class="math inline">\(-0.1808\)</span>) y la muestra libre (<span class="math inline">\(n = 68\)</span>, <span class="math inline">\(+0.1079\)</span>) ilustra la sensibilidad de segmentos cortos al truncamiento inicial de 23 días.</li>
 <li><strong>Escala de memoria estructural quincenal (<span class="math inline">\(\tau^*_{\text{global, AIC}} = 17\)</span> días):</strong> Cuando se agrega la log-verosimilitud condicional conjunta de las cuatro campañas mediante la suma total del AIC en muestra común (Ecuación 4.21, que pondera naturalmente cada periodo por su tamaño muestral efectivo <span class="math inline">\(n_{\text{común}}^{(p)}\)</span>), el óptimo global interanual se desplaza hacia <span class="math inline">\(\tau^*_{\text{global, AIC}} = 17\)</span> días. Esta ventana de dos a dos semanas y media captura la escala más lenta de translocación floemática de carbohidratos no estructurales y diferenciación foliar estructural (Ogle et al., 2015; Thomas &amp; Ougham, 2014), y respalda la adopción del horizonte operativo estándar de <span class="math inline">\(\tau = 15\)</span> días empleado en los protocolos de estimación comparativa, validación cruzada y sensibilidad del presente estudio.</li>
@@ -1321,27 +1360,21 @@ Figura&nbsp;5.5: Perfiles de evolución en función del retraso temporal <span c
 <h2 data-number="5.4" class="anchored" data-anchor-id="sec-comparacion-sdde-ar"><span class="header-section-number">5.4</span> Comparación del rendimiento: <span class="math inline">\(\text{SDDE}(\tau)\)</span> vs.&nbsp;<span class="math inline">\(\text{AR}(\tau)\)</span></h2>
 <section id="sec-evaluacion-sdde-ar" class="level3" data-number="5.4.1">
 <h3 data-number="5.4.1" class="anchored" data-anchor-id="sec-evaluacion-sdde-ar"><span class="header-section-number">5.4.1</span> Evaluación cuantitativa en muestra común estricta</h3>
-<p>Para contrastar de forma metodológicamente simétrica la formulación mecanicista <span class="math inline">\(\text{SDDE}(\tau)\)</span> multiplicativa (estimada por WLS/CMLE con <span class="math inline">\(k_{\text{SDDE}} = 7\)</span> parámetros totales: <span class="math inline">\(6\)</span> de deriva más la difusión <span class="math inline">\(\sigma\)</span>) frente a modelos autorregresivos puros no restringidos <span class="math inline">\(\text{AR}(\tau)\)</span> (con <span class="math inline">\(k_{\text{AR}} = \tau + 2\)</span> parámetros totales: intercepto, <span class="math inline">\(\tau\)</span> rezagos y varianza residual), ambas familias se evaluaron sobre el Periodo 1 imponiendo <strong>muestra común estricta</strong> (<span class="math inline">\(\tau_{\text{corte}} = 23\)</span> días, fijando exactamente las mismas <span class="math inline">\(n_{\text{común}} = 81\)</span> observaciones objetivo <span class="math inline">\(X_{t+1}\)</span> para todos los horizontes <span class="math inline">\(\tau \in \{4, 12, 15, 16, 19, 22\}\)</span> días) y conservando el término jacobiano <span class="math inline">\(-\sum \ln(X_t)\)</span> en <span class="math inline">\(\ell_{\text{CMLE}}\)</span> de la SDDE. Los resultados completos se presentan en la <a href="#tbl-comparacion-ar" class="quarto-xref">Tabla&nbsp;<span>5.7</span></a>.</p>
-<div id="tbl-comparacion-ar" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>Para contrastar de forma metodológicamente simétrica la formulación mecanicista <span class="math inline">\(\text{SDDE}(\tau)\)</span> multiplicativa (estimada por WLS/CMLE con <span class="math inline">\(k_{\text{SDDE}} = 7\)</span> parámetros totales: <span class="math inline">\(6\)</span> de deriva más la difusión <span class="math inline">\(\sigma\)</span>) frente a modelos autorregresivos puros no restringidos <span class="math inline">\(\text{AR}(\tau)\)</span> (con <span class="math inline">\(k_{\text{AR}} = \tau + 2\)</span> parámetros totales: intercepto, <span class="math inline">\(\tau\)</span> rezagos y varianza residual), ambas familias se evaluaron sobre el Periodo 1 imponiendo <strong>muestra común estricta</strong> (<span class="math inline">\(\tau_{\text{corte}} = 23\)</span> días, fijando exactamente las mismas <span class="math inline">\(n_{\text{común}} = 81\)</span> observaciones objetivo <span class="math inline">\(X_{t+1}\)</span> para todos los horizontes <span class="math inline">\(\tau \in \{4, 12, 15, 16, 19, 22\}\)</span> días) y conservando el término jacobiano <span class="math inline">\(-\sum \ln(X_t)\)</span> en <span class="math inline">\(\ell_{\text{CMLE}}\)</span> de la SDDE. Para facilitar la lectura, los resultados se desglosan en dos tablas complementarias: la <a href="#tbl-comparacion-ar-1" class="quarto-xref">Tabla&nbsp;<span>5.8</span></a> compara el tamaño muestral, la complejidad paramétrica y la log-verosimilitud condicional exacta, mientras que la <a href="#tbl-comparacion-ar-2" class="quarto-xref">Tabla&nbsp;<span>5.9</span></a> presenta los criterios de información <span class="math inline">\(\mathrm{AIC}\)</span> y <span class="math inline">\(\mathrm{BIC}\)</span> junto con sus diferencias relativas.</p>
+<div id="tbl-comparacion-ar-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comparacion-ar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de información (<span class="math inline">\(\mathrm{AIC}\)</span> y <span class="math inline">\(\mathrm{BIC}\)</span>) entre el modelo propuesto <span class="math inline">\(\text{SDDE}(\tau)\)</span> [WLS/CMLE] y modelos autorregresivos <span class="math inline">\(\text{AR}(\tau)\)</span> en muestra común estricta (<span class="math inline">\(n_{\text{común}} = 81\)</span>, Periodo 1). Valores negativos en <span class="math inline">\(\Delta\mathrm{BIC}\)</span> indican superioridad del modelo SDDE.
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comparacion-ar-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;5.8: Comparación de complejidad paramétrica y log-verosimilitud condicional exacta entre el modelo propuesto <span class="math inline">\(\text{SDDE}(\tau)\)</span> [WLS/CMLE] y modelos autorregresivos <span class="math inline">\(\text{AR}(\tau)\)</span> en muestra común estricta (<span class="math inline">\(n_{\text{común}} = 81\)</span>, Periodo 1). Primera mitad: dimensión paramétrica y verosimilitud.
 </figcaption>
-<div aria-describedby="tbl-comparacion-ar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="tbl-comparacion-ar-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1351,12 +1384,6 @@ Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de 
 <th style="text-align: right;"><span class="math inline">\(k_{\text{AR}}\)</span></th>
 <th style="text-align: right;"><span class="math inline">\(\ell_{\text{SDDE}}\)</span> (CMLE)</th>
 <th style="text-align: right;"><span class="math inline">\(\ell_{\text{AR}(\tau)}\)</span></th>
-<th style="text-align: right;"><span class="math inline">\(\mathrm{AIC}_{\text{SDDE}}\)</span></th>
-<th style="text-align: right;"><span class="math inline">\(\mathrm{AIC}_{\text{AR}(\tau)}\)</span></th>
-<th style="text-align: right;"><span class="math inline">\(\Delta\mathrm{AIC}\)</span> (SDDE <span class="math inline">\(-\)</span> AR)</th>
-<th style="text-align: right;"><span class="math inline">\(\mathrm{BIC}_{\text{SDDE}}\)</span></th>
-<th style="text-align: right;"><span class="math inline">\(\mathrm{BIC}_{\text{AR}(\tau)}\)</span></th>
-<th style="text-align: right;"><span class="math inline">\(\Delta\mathrm{BIC}\)</span> (SDDE <span class="math inline">\(-\)</span> AR)</th>
 </tr>
 </thead>
 <tbody>
@@ -1367,6 +1394,82 @@ Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de 
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">380.571912</td>
 <td style="text-align: right;">383.079526</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12 días</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">378.784476</td>
+<td style="text-align: right;">391.194911</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">15 días</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">379.653799</td>
+<td style="text-align: right;">396.740641</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">16 días</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">378.902388</td>
+<td style="text-align: right;">398.522179</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">19 días</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">379.238041</td>
+<td style="text-align: right;">400.699365</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">22 días</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">379.917873</td>
+<td style="text-align: right;">401.264937</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-comparacion-ar-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comparacion-ar-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;5.9: Comparación de criterios de información (<span class="math inline">\(\mathrm{AIC}\)</span> y <span class="math inline">\(\mathrm{BIC}\)</span>) entre <span class="math inline">\(\text{SDDE}(\tau)\)</span> [WLS/CMLE] y <span class="math inline">\(\text{AR}(\tau)\)</span> en muestra común estricta (<span class="math inline">\(n_{\text{común}} = 81\)</span>, Periodo 1), donde <span class="math inline">\(\Delta\mathrm{AIC} = \mathrm{AIC}_{\text{SDDE}} - \mathrm{AIC}_{\text{AR}}\)</span> y <span class="math inline">\(\Delta\mathrm{BIC} = \mathrm{BIC}_{\text{SDDE}} - \mathrm{BIC}_{\text{AR}}\)</span>. Valores negativos en <span class="math inline">\(\Delta\mathrm{BIC}\)</span> indican superioridad del modelo SDDE. Segunda mitad: criterios de selección.
+</figcaption>
+<div aria-describedby="tbl-comparacion-ar-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Retraso (<span class="math inline">\(\tau\)</span>)</th>
+<th style="text-align: right;"><span class="math inline">\(\mathrm{AIC}_{\text{SDDE}}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\mathrm{AIC}_{\text{AR}}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\Delta\mathrm{AIC}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\mathrm{BIC}_{\text{SDDE}}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\mathrm{BIC}_{\text{AR}}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\Delta\mathrm{BIC}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4 días</td>
 <td style="text-align: right;">-747.143824</td>
 <td style="text-align: right;">-754.159053</td>
 <td style="text-align: right;">+7.015229</td>
@@ -1376,11 +1479,6 @@ Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de 
 </tr>
 <tr class="even">
 <td style="text-align: right;">12 días</td>
-<td style="text-align: right;">81</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">378.784476</td>
-<td style="text-align: right;">391.194911</td>
 <td style="text-align: right;">-743.568953</td>
 <td style="text-align: right;">-754.389823</td>
 <td style="text-align: right;">+10.820870</td>
@@ -1390,11 +1488,6 @@ Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de 
 </tr>
 <tr class="odd">
 <td style="text-align: right;">15 días</td>
-<td style="text-align: right;">81</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">379.653799</td>
-<td style="text-align: right;">396.740641</td>
 <td style="text-align: right;">-745.307598</td>
 <td style="text-align: right;">-759.481282</td>
 <td style="text-align: right;">+14.173683</td>
@@ -1404,11 +1497,6 @@ Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de 
 </tr>
 <tr class="even">
 <td style="text-align: right;">16 días</td>
-<td style="text-align: right;">81</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">378.902388</td>
-<td style="text-align: right;">398.522179</td>
 <td style="text-align: right;">-743.804775</td>
 <td style="text-align: right;">-761.044358</td>
 <td style="text-align: right;">+17.239583</td>
@@ -1418,11 +1506,6 @@ Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de 
 </tr>
 <tr class="odd">
 <td style="text-align: right;">19 días</td>
-<td style="text-align: right;">81</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">379.238041</td>
-<td style="text-align: right;">400.699365</td>
 <td style="text-align: right;">-744.476083</td>
 <td style="text-align: right;">-759.398729</td>
 <td style="text-align: right;">+14.922646</td>
@@ -1432,11 +1515,6 @@ Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de 
 </tr>
 <tr class="even">
 <td style="text-align: right;">22 días</td>
-<td style="text-align: right;">81</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">379.917873</td>
-<td style="text-align: right;">401.264937</td>
 <td style="text-align: right;">-745.835746</td>
 <td style="text-align: right;">-754.529875</td>
 <td style="text-align: right;">+8.694129</td>
@@ -1452,7 +1530,7 @@ Tabla&nbsp;5.7: Comparación de verosimilitud condicional exacta y criterios de 
 </section>
 <section id="sec-interpretacion-sdde-ar" class="level3" data-number="5.4.2">
 <h3 data-number="5.4.2" class="anchored" data-anchor-id="sec-interpretacion-sdde-ar"><span class="header-section-number">5.4.2</span> Interpretación del compromiso entre ajuste en muestra (AIC) y parsimonia estructural (BIC)</h3>
-<p>La comparación en igualdad estricta de muestra de la <a href="#tbl-comparacion-ar" class="quarto-xref">Tabla&nbsp;<span>5.7</span></a> revela con gran transparencia el compromiso clásico entre flexibilidad empírica en muestra y parsimonia estructural:</p>
+<p>La comparación en igualdad estricta de muestra de la <a href="#tbl-comparacion-ar-1" class="quarto-xref">Tabla&nbsp;<span>5.8</span></a> y de la <a href="#tbl-comparacion-ar-2" class="quarto-xref">Tabla&nbsp;<span>5.9</span></a> revelan con gran transparencia el compromiso clásico entre flexibilidad empírica en muestra y parsimonia estructural:</p>
 <ol type="1">
 <li><strong>Ajuste en muestra bajo AIC (<span class="math inline">\(\Delta\mathrm{AIC} &gt; 0\)</span>):</strong> Al disponer de todos los rezagos intermedios consecutivos (<span class="math inline">\(X_{t-1}, X_{t-2}, \dots, X_{t-\tau}\)</span>), el modelo <span class="math inline">\(\text{AR}(\tau)\)</span> no restringido absorbe correlaciones seriales de muy corto plazo y logra una log-verosimilitud en muestra superior (<span class="math inline">\(\ell_{\text{AR}} \in [383.08, 401.26]\)</span> frente a <span class="math inline">\(\ell_{\text{SDDE}} \in [378.78, 380.57]\)</span>). Dado que el criterio AIC penaliza cada parámetro adicional con únicamente <span class="math inline">\(2\)</span> unidades, esta ganancia de ajuste compensa el incremento de complejidad en muestra, otorgando a <span class="math inline">\(\text{AR}(\tau)\)</span> valores menores de AIC en los seis retardos (<span class="math inline">\(\Delta\mathrm{AIC} \in [+7.02, +17.24]\)</span>).</li>
 <li><strong>Superioridad concluyente de la SDDE en parsimonia asintótica bajo BIC para <span class="math inline">\(\tau \ge 12\)</span> días (<span class="math inline">\(\Delta\mathrm{BIC} \ll -2\)</span>):</strong> Cuando se evalúa el Criterio Bayesiano de Schwarz —el cual penaliza cada parámetro adicional con <span class="math inline">\(\ln(n_{\text{común}}) = \ln(81) \approx 4.394\)</span> y es asintóticamente consistente para identificar la dimensión estructural óptima (Schwarz, 1978)—, el resultado se invierte de forma decisiva en toda la escala biológica de translocación (<span class="math inline">\(\tau \ge 12\)</span> días). Mientras que en <span class="math inline">\(\tau = 4\)</span> días el modelo <span class="math inline">\(\text{AR}(4)\)</span> resulta ligeramente más compacto (<span class="math inline">\(k_{\text{AR}} = 6\)</span> vs.&nbsp;<span class="math inline">\(k_{\text{SDDE}} = 7\)</span>) y obtiene ventaja (<span class="math inline">\(\Delta\mathrm{BIC} = +9.41\)</span>), a partir de <span class="math inline">\(\tau = 12\)</span> días la sobreparametrización de <span class="math inline">\(\text{AR}(\tau)\)</span> (<span class="math inline">\(14\)</span> a <span class="math inline">\(24\)</span> parámetros para solo <span class="math inline">\(81\)</span> observaciones, consumiendo hasta el <span class="math inline">\(30\)</span> % de los grados de libertad muestrales) deteriora severamente su BIC. En contrapartida, la estructura dispersa de la SDDE mantiene fija su dimensión (<span class="math inline">\(k_{\text{SDDE}} = 7\)</span>) y supera contundentemente a <span class="math inline">\(\text{AR}(\tau)\)</span> en todo el rango <span class="math inline">\(\tau \in [12, 22]\)</span> días, con ventajas crecientes desde <span class="math inline">\(\Delta\mathrm{BIC} = -5.94\)</span> (<span class="math inline">\(\tau = 12\)</span>) y <span class="math inline">\(\Delta\mathrm{BIC} = -9.77\)</span> (<span class="math inline">\(\tau = 15\)</span>) hasta <span class="math inline">\(\Delta\mathrm{BIC} = -32.01\)</span> (<span class="math inline">\(\tau = 22\)</span>), muy por encima del umbral de evidencia fuerte (<span class="math inline">\(|\Delta\mathrm{BIC}| &gt; 10\)</span>; Burnham &amp; Anderson, 2002).</li>
@@ -1474,11 +1552,11 @@ Figura&nbsp;5.6: Comparación de trayectorias simuladas mediante el esquema de E
 <h2 data-number="5.5" class="anchored" data-anchor-id="sec-validacion-modelo"><span class="header-section-number">5.5</span> Validación del modelo</h2>
 <section id="sec-validacion-temporal" class="level3" data-number="5.5.1">
 <h3 data-number="5.5.1" class="anchored" data-anchor-id="sec-validacion-temporal"><span class="header-section-number">5.5.1</span> Validación temporal de ventana expansiva (<em>Forward Chaining</em>)</h3>
-<p>Siguiendo el protocolo de validación cruzada temporal a un paso adelante descrito en la Sección 4.7.3, se evaluó la capacidad predictiva fuera de muestra sobre el Periodo 3 (<span class="math inline">\(\tau = 15\)</span> días, ventana inicial de entrenamiento <span class="math inline">\(t_{\text{ini}} = 55\)</span> días), reestimando secuencialmente el modelo por <strong>WLS/CMLE</strong> y proyectando <span class="math inline">\(M = 10\,000\)</span> realizaciones multiplicativas por día a lo largo de las <span class="math inline">\(N_{\text{test}} = 189\)</span> transiciones diarias comprendidas entre el 16 de abril y el 21 de octubre de 2024. Las métricas obtenidas se presentan en la <a href="#tbl-forward-chaining" class="quarto-xref">Tabla&nbsp;<span>5.8</span></a> y su trayectoria secuencial en la <a href="#fig-forward-chaining" class="quarto-xref">Figura&nbsp;<span>5.7</span></a>.</p>
+<p>Siguiendo el protocolo de validación cruzada temporal a un paso adelante descrito en la Sección 4.7.3, se evaluó la capacidad predictiva fuera de muestra sobre el Periodo 3 (<span class="math inline">\(\tau = 15\)</span> días, ventana inicial de entrenamiento <span class="math inline">\(t_{\text{ini}} = 55\)</span> días), reestimando secuencialmente el modelo por <strong>WLS/CMLE</strong> y proyectando <span class="math inline">\(M = 10\,000\)</span> realizaciones multiplicativas por día a lo largo de las <span class="math inline">\(N_{\text{test}} = 189\)</span> transiciones diarias comprendidas entre el 16 de abril y el 21 de octubre de 2024. Las métricas obtenidas se presentan en la <a href="#tbl-forward-chaining" class="quarto-xref">Tabla&nbsp;<span>5.10</span></a> y su trayectoria secuencial en la <a href="#fig-forward-chaining" class="quarto-xref">Figura&nbsp;<span>5.7</span></a>.</p>
 <div id="tbl-forward-chaining" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-forward-chaining-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;5.8: Métricas de precisión puntual, calibración probabilística y preservación de positividad en la validación cruzada temporal de ventana expansiva (<em>Forward Chaining</em>, WLS multiplicativo).
+Tabla&nbsp;5.10: Métricas de precisión puntual, calibración probabilística y preservación de positividad en la validación cruzada temporal de ventana expansiva (<em>Forward Chaining</em>, WLS multiplicativo).
 </figcaption>
 <div aria-describedby="tbl-forward-chaining-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1536,7 +1614,7 @@ Figura&nbsp;5.7: Validación temporal fuera de muestra a un paso adelante (<em>F
 </figcaption>
 </figure>
 </div>
-<p>Los resultados de la <a href="#tbl-forward-chaining" class="quarto-xref">Tabla&nbsp;<span>5.8</span></a> y la <a href="#fig-forward-chaining" class="quarto-xref">Figura&nbsp;<span>5.7</span></a> confirman un desempeño predictivo fuera de muestra de alta fidelidad:</p>
+<p>Los resultados de la <a href="#tbl-forward-chaining" class="quarto-xref">Tabla&nbsp;<span>5.10</span></a> y la <a href="#fig-forward-chaining" class="quarto-xref">Figura&nbsp;<span>5.7</span></a> confirman un desempeño predictivo fuera de muestra de alta fidelidad:</p>
 <ul>
 <li><strong>Precisión puntual y ausencia de sobreajuste:</strong> El error cuadrático medio fuera de muestra es de apenas <span class="math inline">\(\mathrm{RMSE} = 0.002531\)</span> unidades de GCC (<span class="math inline">\(\mathrm{MAE} = 0.001908\)</span>), equivalente a un error relativo porcentual medio de <span class="math inline">\(0.56\)</span> % respecto al nivel del índice GCC. Más aún, el error fuera de muestra coincide con la desviación estándar local esperada de la difusión multiplicativa en el Periodo 3 (<span class="math inline">\(\hat{\sigma}_{\text{WLS}}^{(3)}\bar{X}_3 = 0.007312 \times 0.3357 = 0.002455\)</span>), demostrando ausencia total de sobreajuste.</li>
 <li><strong>Calibración probabilística y positividad estricta:</strong> La banda intercuantílica del <span class="math inline">\(95\)</span> % (con un ancho promedio muy acotado de <span class="math inline">\(0.010795\)</span> unidades de GCC) alcanzó una cobertura empírica de <span class="math inline">\(\mathrm{PICP}_{95\%} = 96.30\)</span> % (<span class="math inline">\(182\)</span> de los <span class="math inline">\(189\)</span> días de prueba contenidos dentro de la banda), ligeramente conservadora y altamente consistente con el nivel nominal del <span class="math inline">\(95\)</span> %. Adicionalmente, el <span class="math inline">\(100\)</span> % de las <span class="math inline">\(1.89 \times 10^6\)</span> proyecciones individuales permanecieron estrictamente positivas (mínimo global <span class="math inline">\(0.306482\)</span>).</li>
@@ -1544,11 +1622,11 @@ Figura&nbsp;5.7: Validación temporal fuera de muestra a un paso adelante (<em>F
 </section>
 <section id="sec-validacion-lodo" class="level3" data-number="5.5.2">
 <h3 data-number="5.5.2" class="anchored" data-anchor-id="sec-validacion-lodo"><span class="header-section-number">5.5.2</span> Validación cruzada interanual <em>Leave-One-Dataset-Out</em> (LODO)</h3>
-<p>Para auditar la generalización interanual del modelo SDDE multiplicativo sobre campañas completamente excluidas de la calibración, se aplicó el protocolo LODO mediante <strong>Pooled WLS</strong> (Ecuación 4.7) para <span class="math inline">\(\tau = 15\)</span> días y <span class="math inline">\(M = 10\,000\)</span> trayectorias de Monte Carlo por periodo retenido. La <a href="#tbl-lodo" class="quarto-xref">Tabla&nbsp;<span>5.9</span></a> resume las métricas a un paso y en simulación libre de trayectoria completa, mientras que la <a href="#fig-lodo" class="quarto-xref">Figura&nbsp;<span>5.8</span></a> muestra los cuatro paneles fuera de muestra.</p>
+<p>Para auditar la generalización interanual del modelo SDDE multiplicativo sobre campañas completamente excluidas de la calibración, se aplicó el protocolo LODO mediante <strong>Pooled WLS</strong> (Ecuación 4.7) para <span class="math inline">\(\tau = 15\)</span> días y <span class="math inline">\(M = 10\,000\)</span> trayectorias de Monte Carlo por periodo retenido. La <a href="#tbl-lodo" class="quarto-xref">Tabla&nbsp;<span>5.11</span></a> resume las métricas a un paso y en simulación libre de trayectoria completa, mientras que la <a href="#fig-lodo" class="quarto-xref">Figura&nbsp;<span>5.8</span></a> muestra los cuatro paneles fuera de muestra.</p>
 <div id="tbl-lodo" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lodo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;5.9: Resultados cuantitativos de la validación cruzada interanual <em>Leave-One-Dataset-Out</em> (LODO) mediante <em>Pooled WLS</em> a un paso y en simulación libre de trayectoria completa de Monte Carlo multiplicativo (<span class="math inline">\(\tau = 15\)</span> días, <span class="math inline">\(M = 10\,000\)</span>).
+Tabla&nbsp;5.11: Resultados cuantitativos de la validación cruzada interanual <em>Leave-One-Dataset-Out</em> (LODO) mediante <em>Pooled WLS</em> a un paso y en simulación libre de trayectoria completa de Monte Carlo multiplicativo (<span class="math inline">\(\tau = 15\)</span> días, <span class="math inline">\(M = 10\,000\)</span>).
 </figcaption>
 <div aria-describedby="tbl-lodo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1668,7 +1746,7 @@ Figura&nbsp;5.8: Panel <span class="math inline">\(2 \times 2\)</span> de evalua
 </figcaption>
 </figure>
 </div>
-<p>Del análisis de la <a href="#tbl-lodo" class="quarto-xref">Tabla&nbsp;<span>5.9</span></a> y la <a href="#fig-lodo" class="quarto-xref">Figura&nbsp;<span>5.8</span></a> se desprenden tres conclusiones sustantivas:</p>
+<p>Del análisis de la <a href="#tbl-lodo" class="quarto-xref">Tabla&nbsp;<span>5.11</span></a> y la <a href="#fig-lodo" class="quarto-xref">Figura&nbsp;<span>5.8</span></a> se desprenden tres conclusiones sustantivas:</p>
 <ol type="1">
 <li><strong>Estabilidad interanual en difusión y predicción a un paso:</strong> La difusión agrupada <span class="math inline">\(\hat{\sigma}_{\text{WLS}}\)</span> permanece prácticamente invariante en los cuatro pliegues (<span class="math inline">\(0.007117\)</span> a <span class="math inline">\(0.007285\,\text{días}^{-1/2}\)</span>, media <span class="math inline">\(0.007185\)</span>), y el error de pronóstico fuera de muestra a un paso se mantiene homogéneo y muy reducido en todas las campañas (<span class="math inline">\(\mathrm{RMSE}_{\text{1-Paso}} \in [0.002151, 0.002617]\)</span>, media <span class="math inline">\(0.002454\)</span>).</li>
 <li><strong>Transferencia robusta en lazo cerrado en los Periodos 2, 3 y 4:</strong> En las campañas 2023, 2024 y 2025, la simulación libre plurimensual fuera de muestra reproduce de forma consistente la trayectoria fenológica del dosel sin recalibración (<span class="math inline">\(\mathrm{RMSE}_{\text{MC}}\)</span> de <span class="math inline">\(0.007980\)</span>, <span class="math inline">\(0.006746\)</span> y <span class="math inline">\(0.005795\)</span>, respectivamente), logrando coberturas empíricas al <span class="math inline">\(95\)</span> % de <span class="math inline">\(99.23\)</span> % (<span class="math inline">\(P_2\)</span>), <span class="math inline">\(98.25\)</span> % (<span class="math inline">\(P_3\)</span>) y <span class="math inline">\(93.33\)</span> % (<span class="math inline">\(P_4\)</span>), con positividad garantizada al <span class="math inline">\(100\)</span> % (mínimo global <span class="math inline">\(0.294810\)</span>).</li>
@@ -1677,11 +1755,11 @@ Figura&nbsp;5.8: Panel <span class="math inline">\(2 \times 2\)</span> de evalua
 </section>
 <section id="sec-montecarlo-insample" class="level3" data-number="5.5.3">
 <h3 data-number="5.5.3" class="anchored" data-anchor-id="sec-montecarlo-insample"><span class="header-section-number">5.5.3</span> Simulación de Monte Carlo <em>In-Sample</em>, verificación Euler-Maruyama vs.&nbsp;Milstein y positividad</h3>
-<p>Se ejecutaron ensambles de Monte Carlo multiplicativos <em>in-sample</em> (<span class="math inline">\(M = 10\,000\)</span> realizaciones por periodo, <span class="math inline">\(\tau = 15\)</span> días) con los parámetros WLS/CMLE calibrados en cada campaña. La <a href="#tbl-mc-insample" class="quarto-xref">Tabla&nbsp;<span>5.10</span></a> sintetiza las métricas de ajuste de la trayectoria esperada <span class="math inline">\(\mathbb{E}[X_t]\)</span>, de una realización individual <span class="math inline">\(\omega_1\)</span>, la cobertura empírica al <span class="math inline">\(95\)</span> %, la amplitud final de la banda <span class="math inline">\(W_{0.95}(T)\)</span> y la auditoría de positividad, ilustradas en las Figuras <a href="#fig-ensambles-mc" class="quarto-xref">Figura&nbsp;<span>5.9</span></a> y <a href="#fig-evolucion-incertidumbre" class="quarto-xref">Figura&nbsp;<span>5.10</span></a>.</p>
+<p>Se ejecutaron ensambles de Monte Carlo multiplicativos <em>in-sample</em> (<span class="math inline">\(M = 10\,000\)</span> realizaciones por periodo, <span class="math inline">\(\tau = 15\)</span> días) con los parámetros WLS/CMLE calibrados en cada campaña. La <a href="#tbl-mc-insample" class="quarto-xref">Tabla&nbsp;<span>5.12</span></a> sintetiza las métricas de ajuste de la trayectoria esperada <span class="math inline">\(\mathbb{E}[X_t]\)</span>, de una realización individual <span class="math inline">\(\omega_1\)</span>, la cobertura empírica al <span class="math inline">\(95\)</span> %, la amplitud final de la banda <span class="math inline">\(W_{0.95}(T)\)</span> y la auditoría de positividad, ilustradas en las Figuras <a href="#fig-ensambles-mc" class="quarto-xref">Figura&nbsp;<span>5.9</span></a> y <a href="#fig-evolucion-incertidumbre" class="quarto-xref">Figura&nbsp;<span>5.10</span></a>.</p>
 <div id="tbl-mc-insample" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mc-insample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;5.10: Resumen cuantitativo de las simulaciones de Monte Carlo multiplicativas <em>in-sample</em> (<span class="math inline">\(M = 10\,000\)</span> trayectorias, <span class="math inline">\(\tau = 15\)</span> días) por periodo continuo.
+Tabla&nbsp;5.12: Resumen cuantitativo de las simulaciones de Monte Carlo multiplicativas <em>in-sample</em> (<span class="math inline">\(M = 10\,000\)</span> trayectorias, <span class="math inline">\(\tau = 15\)</span> días) por periodo continuo.
 </figcaption>
 <div aria-describedby="tbl-mc-insample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1773,16 +1851,16 @@ Figura&nbsp;5.10: Evolución temporal de la amplitud de la banda de predicción 
 </figcaption>
 </figure>
 </div>
-<p>Los resultados de la <a href="#tbl-mc-insample" class="quarto-xref">Tabla&nbsp;<span>5.10</span></a> y las Figuras <a href="#fig-ensambles-mc" class="quarto-xref">Figura&nbsp;<span>5.9</span></a>–<a href="#fig-evolucion-incertidumbre" class="quarto-xref">Figura&nbsp;<span>5.10</span></a> demuestran tres propiedades estructurales:</p>
+<p>Los resultados de la <a href="#tbl-mc-insample" class="quarto-xref">Tabla&nbsp;<span>5.12</span></a> y las Figuras <a href="#fig-ensambles-mc" class="quarto-xref">Figura&nbsp;<span>5.9</span></a>–<a href="#fig-evolucion-incertidumbre" class="quarto-xref">Figura&nbsp;<span>5.10</span></a> demuestran tres propiedades estructurales:</p>
 <ol type="1">
 <li><strong>Fidelidad de la esperanza <span class="math inline">\(\mathbb{E}[X_t]\)</span> y realismo de trayectorias individuales:</strong> De acuerdo con la Ecuación 3.9, la media del ensamble reproduce con elevada precisión la evolución estacional en lazo cerrado (<span class="math inline">\(\mathrm{RMSE} \in [0.002868, 0.005941]\)</span>), mientras que las trayectorias individuales <span class="math inline">\(\omega_1\)</span> (<span class="math inline">\(\mathrm{RMSE} \in [0.004991, 0.007858]\)</span>) replican la textura de alta frecuencia de la serie real de PhenoCam.</li>
 <li><strong>Estabilización asintótica de la incertidumbre y cobertura bien calibrada:</strong> En todos los segmentos la cobertura empírica se alinea estrechamente con el nivel nominal (<span class="math inline">\(95.00\)</span> % en <span class="math inline">\(P_4\)</span>, <span class="math inline">\(95.38\)</span> % en <span class="math inline">\(P_2\)</span>, <span class="math inline">\(97.38\)</span> % en <span class="math inline">\(P_3\)</span> y <span class="math inline">\(100.00\)</span> % en <span class="math inline">\(P_1\)</span>). Como exhibe la <a href="#fig-evolucion-incertidumbre" class="quarto-xref">Figura&nbsp;<span>5.10</span></a>, la retroalimentación disipativa (<span class="math inline">\(\hat{\beta} &lt; 0\)</span>) impide que la dispersión del ensamble diverja con el horizonte temporal, estabilizando la amplitud final <span class="math inline">\(W_{0.95}(T)\)</span> entre <span class="math inline">\(0.012409\)</span> (<span class="math inline">\(P_4\)</span>, donde <span class="math inline">\(|\hat{\beta}|\)</span> es máximo) y <span class="math inline">\(0.027609\)</span> (<span class="math inline">\(P_1\)</span>, donde <span class="math inline">\(|\hat{\beta}|\)</span> es menor).</li>
-<li><strong>Verificación numérica Euler-Maruyama frente a Milstein y positividad global:</strong> Para auditar rigurosamente el efecto del término corrector cuadrático <span class="math inline">\(\frac{1}{2}\hat{\sigma}^2 X_i[(\Delta W_i)^2 - \Delta t]\)</span> propio del ruido multiplicativo (Sección 1.5.2 y 3.2.1), la <a href="#tbl-em-vs-milstein" class="quarto-xref">Tabla&nbsp;<span>5.11</span></a> compara ambos integradores acoplados bajo Números Aleatorios Comunes (<span class="math inline">\(M = 10\,000\)</span>, <code>semilla = 42</code>).</li>
+<li><strong>Verificación numérica Euler-Maruyama frente a Milstein y positividad global:</strong> Para auditar rigurosamente el efecto del término corrector cuadrático <span class="math inline">\(\frac{1}{2}\hat{\sigma}^2 X_i[(\Delta W_i)^2 - \Delta t]\)</span> propio del ruido multiplicativo (Sección 1.5.2 y 3.2.1), la <a href="#tbl-em-vs-milstein" class="quarto-xref">Tabla&nbsp;<span>5.13</span></a> compara ambos integradores acoplados bajo Números Aleatorios Comunes (<span class="math inline">\(M = 10\,000\)</span>, <code>semilla = 42</code>).</li>
 </ol>
 <div id="tbl-em-vs-milstein" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-em-vs-milstein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;5.11: Verificación numérica comparativa entre los esquemas de Euler-Maruyama multiplicativo y Milstein acoplados bajo Números Aleatorios Comunes (CRN, <span class="math inline">\(M = 10\,000\)</span>, <span class="math inline">\(\tau = 15\)</span> días).
+Tabla&nbsp;5.13: Verificación numérica comparativa entre los esquemas de Euler-Maruyama multiplicativo y Milstein acoplados bajo Números Aleatorios Comunes (CRN, <span class="math inline">\(M = 10\,000\)</span>, <span class="math inline">\(\tau = 15\)</span> días).
 </figcaption>
 <div aria-describedby="tbl-em-vs-milstein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1860,16 +1938,16 @@ Tabla&nbsp;5.11: Verificación numérica comparativa entre los esquemas de Euler
 </div>
 </figure>
 </div>
-<p>La <a href="#tbl-em-vs-milstein" class="quarto-xref">Tabla&nbsp;<span>5.11</span></a> confirma numéricamente el análisis asintótico del Capítulo 1: debido a que la volatilidad relativa estimada es pequeña (<span class="math inline">\(\hat{\sigma}_{\text{WLS}} \approx 0.0069\,\text{días}^{-1/2}\)</span>), la escala del término corrector de Milstein <span class="math inline">\(\frac{1}{2}\hat{\sigma}^2\bar{X}\)</span> es inferior a <span class="math inline">\(9 \times 10^{-6}\)</span> unidades de GCC. En consecuencia, la diferencia media trayectoria a trayectoria se mantiene en el orden de <span class="math inline">\(1.1 \times 10^{-5}\)</span> a <span class="math inline">\(2.6 \times 10^{-5}\)</span>, la discrepancia máxima sobre la trayectoria esperada <span class="math inline">\(\mathbb{E}[X_t]\)</span> a través de los cuatro periodos es de apenas <span class="math inline">\(7.76 \times 10^{-7}\)</span> unidades de GCC, y los cuantiles extremos <span class="math inline">\(q_{0.025}\)</span> y <span class="math inline">\(q_{0.975}\)</span> difieren en menos de <span class="math inline">\(7.6 \times 10^{-5}\)</span> (menos del 0.3% del ancho de banda). Por último, el 100% de las trayectorias simuladas en todos los experimentos (in-sample, Forward Chaining, LODO, sensibilidad y Milstein) verificaron <span class="math inline">\(X_t^{(m)} &gt; 0\)</span> sin excepción.</p>
+<p>La <a href="#tbl-em-vs-milstein" class="quarto-xref">Tabla&nbsp;<span>5.13</span></a> confirma numéricamente el análisis asintótico del Capítulo 1: debido a que la volatilidad relativa estimada es pequeña (<span class="math inline">\(\hat{\sigma}_{\text{WLS}} \approx 0.0069\,\text{días}^{-1/2}\)</span>), la escala del término corrector de Milstein <span class="math inline">\(\frac{1}{2}\hat{\sigma}^2\bar{X}\)</span> es inferior a <span class="math inline">\(9 \times 10^{-6}\)</span> unidades de GCC. En consecuencia, la diferencia media trayectoria a trayectoria se mantiene en el orden de <span class="math inline">\(1.1 \times 10^{-5}\)</span> a <span class="math inline">\(2.6 \times 10^{-5}\)</span>, la discrepancia máxima sobre la trayectoria esperada <span class="math inline">\(\mathbb{E}[X_t]\)</span> a través de los cuatro periodos es de apenas <span class="math inline">\(7.76 \times 10^{-7}\)</span> unidades de GCC, y los cuantiles extremos <span class="math inline">\(q_{0.025}\)</span> y <span class="math inline">\(q_{0.975}\)</span> difieren en menos de <span class="math inline">\(7.6 \times 10^{-5}\)</span> (menos del 0.3% del ancho de banda). Por último, el 100% de las trayectorias simuladas en todos los experimentos (in-sample, Forward Chaining, LODO, sensibilidad y Milstein) verificaron <span class="math inline">\(X_t^{(m)} &gt; 0\)</span> sin excepción.</p>
 </section>
 </section>
 <section id="sec-sensibilidad-parametros" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="sec-sensibilidad-parametros"><span class="header-section-number">5.6</span> Análisis de sensibilidad de parámetros</h2>
-<p>Para cuantificar la respuesta dinámica del modelo SDDE multiplicativo ante variaciones en las sensibilidades climáticas, se aplicó el protocolo de perturbación porcentual controlada (<span class="math inline">\(\pm 10\)</span> %) sobre los coeficientes estimados por WLS de temperatura del aire (<span class="math inline">\(\hat{\delta}_2^{(3)} = +9.8 \times 10^{-5}\)</span>) y radiación solar (<span class="math inline">\(\hat{\delta}_1^{(3)} \approx -3.0 \times 10^{-7}\)</span>) en el Periodo 3 (<span class="math inline">\(\tau = 15\)</span> días, <span class="math inline">\(M = 10\,000\)</span>), empleando Números Aleatorios Comunes (<code>semilla = 42</code>). Los resultados cuantitativos se resumen en la <a href="#tbl-sensibilidad" class="quarto-xref">Tabla&nbsp;<span>5.12</span></a> y las trayectorias de respuesta en la <a href="#fig-sensibilidad" class="quarto-xref">Figura&nbsp;<span>5.11</span></a>.</p>
+<p>Para cuantificar la respuesta dinámica del modelo SDDE multiplicativo ante variaciones en las sensibilidades climáticas, se aplicó el protocolo de perturbación porcentual controlada (<span class="math inline">\(\pm 10\)</span> %) sobre los coeficientes estimados por WLS de temperatura del aire (<span class="math inline">\(\hat{\delta}_2^{(3)} = +9.8 \times 10^{-5}\)</span>) y radiación solar (<span class="math inline">\(\hat{\delta}_1^{(3)} \approx -3.0 \times 10^{-7}\)</span>) en el Periodo 3 (<span class="math inline">\(\tau = 15\)</span> días, <span class="math inline">\(M = 10\,000\)</span>), empleando Números Aleatorios Comunes (<code>semilla = 42</code>). Los resultados cuantitativos se resumen en la <a href="#tbl-sensibilidad" class="quarto-xref">Tabla&nbsp;<span>5.14</span></a> y las trayectorias de respuesta en la <a href="#fig-sensibilidad" class="quarto-xref">Figura&nbsp;<span>5.11</span></a>.</p>
 <div id="tbl-sensibilidad" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sensibilidad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;5.12: Resumen cuantitativo del análisis de sensibilidad paramétrica (<span class="math inline">\(\pm 10\)</span> %) en los coeficientes climáticos de temperatura (<span class="math inline">\(\hat{\delta}_2\)</span>) y radiación solar (<span class="math inline">\(\hat{\delta}_1\)</span>) sobre la trayectoria esperada <span class="math inline">\(\mathbb{E}[X_t]\)</span> en el Periodo 3 (CRN, <span class="math inline">\(\tau = 15\)</span> días, <span class="math inline">\(M = 10\,000\)</span>).
+Tabla&nbsp;5.14: Resumen cuantitativo del análisis de sensibilidad paramétrica (<span class="math inline">\(\pm 10\)</span> %) en los coeficientes climáticos de temperatura (<span class="math inline">\(\hat{\delta}_2\)</span>) y radiación solar (<span class="math inline">\(\hat{\delta}_1\)</span>) sobre la trayectoria esperada <span class="math inline">\(\mathbb{E}[X_t]\)</span> en el Periodo 3 (CRN, <span class="math inline">\(\tau = 15\)</span> días, <span class="math inline">\(M = 10\,000\)</span>).
 </figcaption>
 <div aria-describedby="tbl-sensibilidad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1981,7 +2059,7 @@ Figura&nbsp;5.11: Análisis de sensibilidad dinámica en el Periodo 3 bajo el mo
 </figcaption>
 </figure>
 </div>
-<p>El análisis de la <a href="#tbl-sensibilidad" class="quarto-xref">Tabla&nbsp;<span>5.12</span></a> y la <a href="#fig-sensibilidad" class="quarto-xref">Figura&nbsp;<span>5.11</span></a> revela tres propiedades dinámicas notables del sistema:</p>
+<p>El análisis de la <a href="#tbl-sensibilidad" class="quarto-xref">Tabla&nbsp;<span>5.14</span></a> y la <a href="#fig-sensibilidad" class="quarto-xref">Figura&nbsp;<span>5.11</span></a> revela tres propiedades dinámicas notables del sistema:</p>
 <ol type="1">
 <li><strong>Superposición lineal y simetría exacta en la trayectoria esperada:</strong> Como consecuencia directa de la linealidad de la DDE determinista que gobierna <span class="math inline">\(\mathbb{E}[X_t]\)</span> (Ecuación 3.9), las perturbaciones de <span class="math inline">\(+10\)</span> % y <span class="math inline">\(-10\)</span> % generan desplazamientos exactamente simétricos respecto al escenario base (<span class="math inline">\(\pm 0.033011\)</span> para temperatura y <span class="math inline">\(\mp 0.000074\)</span> para radiación), y el efecto de la perturbación conjunta (<span class="math inline">\(+9.755587\)</span> %) equivale con exactitud a la suma algebraica de los efectos individuales (<span class="math inline">\(+9.777560\)</span> % <span class="math inline">\(- 0.021972\)</span> % <span class="math inline">\(= +9.755588\)</span> %).</li>
 <li><strong>Predominio abrumador del forzamiento térmico sobre el radiativo (razón <span class="math inline">\(445:1\)</span>):</strong> Una variación del <span class="math inline">\(\pm 10\)</span> % en la sensibilidad térmica (<span class="math inline">\(\hat{\delta}_2\)</span>) desplaza el nivel medio del índice GCC en <span class="math inline">\(\pm 0.033011\)</span> unidades (<span class="math inline">\(\pm 9.778\)</span> %, alcanzando una divergencia máxima de <span class="math inline">\(0.037484\)</span> unidades, equivalente al <span class="math inline">\(84.6\)</span> % de la amplitud estacional observada en <span class="math inline">\(P_3\)</span>). En contraste, la misma perturbación relativa en <span class="math inline">\(\hat{\delta}_1\)</span> —cuyo valor puntual en <span class="math inline">\(P_3\)</span> es cercano a cero y estadísticamente no significativo (<span class="math inline">\(p = 0.9009\)</span>)— produce un cambio casi imperceptible de <span class="math inline">\(\mp 0.000074\)</span> unidades (<span class="math inline">\(\mp 0.022\)</span> %). En términos relativos absolutos, la trayectoria fenológica del ciclo completo boreal resulta <strong><span class="math inline">\(444.99\)</span> veces más sensible</strong> a perturbaciones relativas en <span class="math inline">\(\hat{\delta}_2\)</span> que en <span class="math inline">\(\hat{\delta}_1\)</span>, preservando en todos los escenarios el <span class="math inline">\(100\)</span> % de positividad (mínimo global <span class="math inline">\(0.273287\)</span>).</li>
@@ -2019,7 +2097,7 @@ Figura&nbsp;5.11: Análisis de sensibilidad dinámica en el Periodo 3 bajo el mo
 </section>
 <section id="sec-limitaciones" class="level2" data-number="5.8">
 <h2 data-number="5.8" class="anchored" data-anchor-id="sec-limitaciones"><span class="header-section-number">5.8</span> Discusión de limitaciones del modelo</h2>
-<p>Si bien el modelo SDDE lineal con ruido multiplicativo y forzamiento climático estimado por WLS/CMLE demostró una marcada parsimonia frente a los modelos <span class="math inline">\(\text{AR}(\tau)\)</span> en la escala biológica de retraso (<span class="math inline">\(\Delta\mathrm{BIC}\)</span> de hasta <span class="math inline">\(-32.01\)</span>), una calibración probabilística precisa en validación secuencial (<span class="math inline">\(\mathrm{PICP}_{95\%} = 96.30\)</span> %, <span class="math inline">\(\mathrm{RMSE} = 0.002531\)</span>), positividad estricta en el <span class="math inline">\(100\)</span> % de las trayectorias y una sólida interpretabilidad biofísica, todo modelo matemático constituye una abstracción simplificada de la realidad ecológica (Cuddington et al., 2013; Dietze, 2017). A partir de la evidencia empírica arrojada por el diagnóstico de innovaciones estandarizadas (Tabla <a href="#tbl-diagnostico-z" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a>) y la validación cruzada LODO (Tabla <a href="#tbl-lodo" class="quarto-xref">Tabla&nbsp;<span>5.9</span></a>), se identifican siete limitaciones estructurales y metodológicas que delimitan el alcance del modelo actual y motivan las líneas de extensión formalizadas en el Capítulo 6.</p>
+<p>Si bien el modelo SDDE lineal con ruido multiplicativo y forzamiento climático estimado por WLS/CMLE demostró una marcada parsimonia frente a los modelos <span class="math inline">\(\text{AR}(\tau)\)</span> en la escala biológica de retraso (<span class="math inline">\(\Delta\mathrm{BIC}\)</span> de hasta <span class="math inline">\(-32.01\)</span>), una calibración probabilística precisa en validación secuencial (<span class="math inline">\(\mathrm{PICP}_{95\%} = 96.30\)</span> %, <span class="math inline">\(\mathrm{RMSE} = 0.002531\)</span>), positividad estricta en el <span class="math inline">\(100\)</span> % de las trayectorias y una sólida interpretabilidad biofísica, todo modelo matemático constituye una abstracción simplificada de la realidad ecológica (Cuddington et al., 2013; Dietze, 2017). A partir de la evidencia empírica arrojada por el diagnóstico de innovaciones estandarizadas (<a href="#tbl-diagnostico-z-1" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a>) y la validación cruzada LODO (<a href="#tbl-lodo" class="quarto-xref">Tabla&nbsp;<span>5.11</span></a>), se identifican siete limitaciones estructurales y metodológicas que delimitan el alcance del modelo actual y motivan las líneas de extensión formalizadas en el Capítulo 6.</p>
 <section id="sec-lim-linealidad" class="level3" data-number="5.8.1">
 <h3 data-number="5.8.1" class="anchored" data-anchor-id="sec-lim-linealidad"><span class="header-section-number">5.8.1</span> Supuesto de linealidad en la deriva frente a respuestas ecofisiológicas no lineales</h3>
 <p>La Ecuación 3.2 especifica una función de deriva afín tanto en las variables de estado (<span class="math inline">\(X_t, X_{t-\tau}\)</span>) como en las covariables climáticas <span class="math inline">\(C_t = [\mathrm{Rad}_t, \mathrm{Temp}_t, \mathrm{Prec}_t]^\top\)</span>. Ello supone que el efecto marginal de un incremento de <span class="math inline">\(1\,\text{K}\)</span> en temperatura (<span class="math inline">\(\delta_2\)</span>) o de <span class="math inline">\(1\,\text{W/m}^2\)</span> en radiación (<span class="math inline">\(\delta_1\)</span>) es idéntico a <span class="math inline">\(265\,\text{K}\)</span> (<span class="math inline">\(-8\,^\circ\text{C}\)</span>) que a <span class="math inline">\(293\,\text{K}\)</span> (<span class="math inline">\(20\,^\circ\text{C}\)</span>). Sin embargo, la fisiología vegetal presenta respuestas intrínsecamente no lineales con umbrales cardinales (Hastie et al., 2009; Hatfield &amp; Prueger, 2015; Porter &amp; Gawith, 1999):</p>
@@ -2028,15 +2106,15 @@ Figura&nbsp;5.11: Análisis de sensibilidad dinámica en el Periodo 3 bajo el mo
 <li><strong>Saturación lumínica de Michaelis-Menten:</strong> A irradiancias elevadas, los centros de reacción del fotosistema II se saturan e inician mecanismos de fotoprotección por disipación no fotoquímica (NPQ) (Taiz et al., 2022).</li>
 <li><strong>Autorregulación no lineal:</strong> El cierre del dosel suele obedecer leyes logísticas o de Gompertz cuya tasa de desaceleración varía de forma no lineal cerca de la capacidad de carga (Rupšys, 2006).</li>
 </ul>
-<p>Esta restricción lineal explica en parte por qué el coeficiente <span class="math inline">\(R^2_{\text{WLS}}\)</span> en diferencias diarias resulta moderado (<span class="math inline">\(8.2\)</span> % a <span class="math inline">\(21.7\)</span> %, Tabla <a href="#tbl-diagnostico-z" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a>), ya que el estimador promedia pendientes muy activas en primavera con pendientes amortiguadas en la meseta estival.</p>
+<p>Esta restricción lineal explica en parte por qué el coeficiente <span class="math inline">\(R^2_{\text{WLS}}\)</span> en diferencias diarias resulta moderado (<span class="math inline">\(8.2\)</span> % a <span class="math inline">\(21.7\)</span> %, <a href="#tbl-diagnostico-z-1" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a>), ya que el estimador promedia pendientes muy activas en primavera con pendientes amortiguadas en la meseta estival.</p>
 </section>
 <section id="sec-lim-regimenes" class="level3" data-number="5.8.2">
 <h3 data-number="5.8.2" class="anchored" data-anchor-id="sec-lim-regimenes"><span class="header-section-number">5.8.2</span> No estacionariedad paramétrica entre fases fenológicas (Reverdecimiento vs.&nbsp;Senescencia)</h3>
-<p>El modelo actual asume parámetros constantes a lo largo de todo un periodo continuo (<span class="math inline">\(\boldsymbol{\theta}(t) \equiv \boldsymbol{\theta}\)</span>). No obstante, como evidenciaron la divergencia de la validación LODO en el Periodo 1 (Figura <a href="#fig-lodo" class="quarto-xref">Figura&nbsp;<span>5.8</span></a>) y la inversión de signo de <span class="math inline">\(\hat{\delta}_2\)</span> y <span class="math inline">\(\hat{\gamma}\)</span> entre <span class="math inline">\(P_1\)</span> y <span class="math inline">\(P_3\)</span> (Tabla <a href="#tbl-coeficientes-wls" class="quarto-xref">Tabla&nbsp;<span>5.4</span></a>), una campaña boreal abarca al menos dos regímenes fisiológicos gobernados por rutas genéticas y hormonales opuestas: el <strong>régimen anabólico de reverdecimiento y madurez</strong> (<span class="math inline">\(\delta_2 &gt; 0, \gamma &gt; 0\)</span>) y el <strong>régimen catabólico de senescencia otoñal</strong>, disparado por el acortamiento crítico del fotoperiodo a partir de agosto y regulado por etileno y ácido abscísico (Searle &amp; Coupland, 2004; Thomas &amp; Ougham, 2014). Al ajustar un único vector <span class="math inline">\(\boldsymbol{\theta}\)</span> sobre ambas fases (o al transferir un modelo calibrado en fases de crecimiento hacia un segmento dominado por senescencia como <span class="math inline">\(P_1\)</span>), el sistema carece de un mecanismo endógeno de cambio de equilibrio.</p>
+<p>El modelo actual asume parámetros constantes a lo largo de todo un periodo continuo (<span class="math inline">\(\boldsymbol{\theta}(t) \equiv \boldsymbol{\theta}\)</span>). No obstante, como evidenciaron la divergencia de la validación LODO en el Periodo 1 (<a href="#fig-lodo" class="quarto-xref">Figura&nbsp;<span>5.8</span></a>) y la inversión de signo de <span class="math inline">\(\hat{\delta}_2\)</span> y <span class="math inline">\(\hat{\gamma}\)</span> entre <span class="math inline">\(P_1\)</span> y <span class="math inline">\(P_3\)</span> (<a href="#tbl-coeficientes-wls" class="quarto-xref">Tabla&nbsp;<span>5.4</span></a>), una campaña boreal abarca al menos dos regímenes fisiológicos gobernados por rutas genéticas y hormonales opuestas: el <strong>régimen anabólico de reverdecimiento y madurez</strong> (<span class="math inline">\(\delta_2 &gt; 0, \gamma &gt; 0\)</span>) y el <strong>régimen catabólico de senescencia otoñal</strong>, disparado por el acortamiento crítico del fotoperiodo a partir de agosto y regulado por etileno y ácido abscísico (Searle &amp; Coupland, 2004; Thomas &amp; Ougham, 2014). Al ajustar un único vector <span class="math inline">\(\boldsymbol{\theta}\)</span> sobre ambas fases (o al transferir un modelo calibrado en fases de crecimiento hacia un segmento dominado por senescencia como <span class="math inline">\(P_1\)</span>), el sistema carece de un mecanismo endógeno de cambio de equilibrio.</p>
 </section>
 <section id="sec-lim-saltos" class="level3" data-number="5.8.3">
 <h3 data-number="5.8.3" class="anchored" data-anchor-id="sec-lim-saltos"><span class="header-section-number">5.8.3</span> No normalidad residual, colas pesadas (leptocurtosis) y perturbaciones con saltos</h3>
-<p>Mientras que las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span> del Periodo 4 satisfacen de forma sobresaliente la normalidad gaussiana (<span class="math inline">\(p_{\text{SW}} = 0.9932\)</span>, <span class="math inline">\(p_{\text{JB}} = 0.9900\)</span>), las pruebas de Shapiro-Wilk y Jarque-Bera rechazan la normalidad exacta en los Periodos 1, 2 y 3 (<span class="math inline">\(p &lt; 0.001\)</span>, Tabla <a href="#tbl-diagnostico-z" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a>). Como ilustra la Figura 4.3, esta desviación no obedece a sesgo sistemático, sino a <strong>leptocurtosis (colas pesadas)</strong>: aunque la mayoría de los días se agrupan simétricamente en torno a cero, ocurren eventos aislados con innovaciones extremas (<span class="math inline">\(|\hat{z}_t| &gt; 3\hat{\sigma}\)</span>). En los registros ópticos de Röbäcksdalen, tales valores atípicos provienen de artefactos ópticos subdiarios (tormentas intensas, niebla densa, escarcha matutina o sombras sobre la ROI) o perturbaciones meteorológicas y agronómicas discontinuas (Richardson et al., 2018; Seyednasrollah et al., 2019). Dado que las trayectorias del movimiento browniano estándar <span class="math inline">\(W(t)\)</span> son continuas casi seguramente, una difusión gaussiana pura subestima la probabilidad de saltos extremos en las colas.</p>
+<p>Mientras que las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span> del Periodo 4 satisfacen de forma sobresaliente la normalidad gaussiana (<span class="math inline">\(p_{\text{SW}} = 0.9932\)</span>, <span class="math inline">\(p_{\text{JB}} = 0.9900\)</span>), las pruebas de Shapiro-Wilk y Jarque-Bera rechazan la normalidad exacta en los Periodos 1, 2 y 3 (<span class="math inline">\(p &lt; 0.001\)</span>, <a href="#tbl-diagnostico-z-2" class="quarto-xref">Tabla&nbsp;<span>5.6</span></a>). Como ilustra la Figura 4.3, esta desviación no obedece a sesgo sistemático, sino a <strong>leptocurtosis (colas pesadas)</strong>: aunque la mayoría de los días se agrupan simétricamente en torno a cero, ocurren eventos aislados con innovaciones extremas (<span class="math inline">\(|\hat{z}_t| &gt; 3\hat{\sigma}\)</span>). En los registros ópticos de Röbäcksdalen, tales valores atípicos provienen de artefactos ópticos subdiarios (tormentas intensas, niebla densa, escarcha matutina o sombras sobre la ROI) o perturbaciones meteorológicas y agronómicas discontinuas (Richardson et al., 2018; Seyednasrollah et al., 2019). Dado que las trayectorias del movimiento browniano estándar <span class="math inline">\(W(t)\)</span> son continuas casi seguramente, una difusión gaussiana pura subestima la probabilidad de saltos extremos en las colas.</p>
 </section>
 <section id="sec-lim-retardo-distribuido" class="level3" data-number="5.8.4">
 <h3 data-number="5.8.4" class="anchored" data-anchor-id="sec-lim-retardo-distribuido"><span class="header-section-number">5.8.4</span> Estructura de retraso puntual único (<span class="math inline">\(\tau\)</span>) frente a memoria fisiológica distribuida</h3>
@@ -2044,7 +2122,7 @@ Figura&nbsp;5.11: Análisis de sensibilidad dinámica en el Periodo 3 bajo el mo
 </section>
 <section id="sec-lim-heterocedasticidad-residual" class="level3" data-number="5.8.5">
 <h3 data-number="5.8.5" class="anchored" data-anchor-id="sec-lim-heterocedasticidad-residual"><span class="header-section-number">5.8.5</span> Heterocedasticidad residual más allá de la difusión lineal multiplicativa <span class="math inline">\(\sigma X(t)\,dW(t)\)</span></h3>
-<p>La estimación exacta por WLS/CMLE implementada en esta tesis incorpora rigurosamente la heterocedasticidad proporcional al estado <span class="math inline">\(\operatorname{Var}(\epsilon_t \mid \mathcal{F}_t) = \sigma^2 X_t^2\)</span> derivada de la difusión multiplicativa <span class="math inline">\(\sigma X(t)\,dW(t)\)</span> de Rupšys (2006). Los resultados de la Tabla <a href="#tbl-diagnostico-z" class="quarto-xref">Tabla&nbsp;<span>5.5</span></a> demuestran que esta especificación estabiliza plenamente la varianza condicional de las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span> en los periodos estivales-otoñales (<span class="math inline">\(P_1\)</span> con <span class="math inline">\(p_{\text{BP}} = 0.2538\)</span> y <span class="math inline">\(P_2\)</span> con <span class="math inline">\(p_{\text{BP}} = 0.9448\)</span>).</p>
+<p>La estimación exacta por WLS/CMLE implementada en esta tesis incorpora rigurosamente la heterocedasticidad proporcional al estado <span class="math inline">\(\operatorname{Var}(\epsilon_t \mid \mathcal{F}_t) = \sigma^2 X_t^2\)</span> derivada de la difusión multiplicativa <span class="math inline">\(\sigma X(t)\,dW(t)\)</span> de Rupšys (2006). Los resultados de la <a href="#tbl-diagnostico-z-2" class="quarto-xref">Tabla&nbsp;<span>5.6</span></a> demuestran que esta especificación estabiliza plenamente la varianza condicional de las innovaciones estandarizadas <span class="math inline">\(\hat{z}_t = \hat{\epsilon}_t / X_t\)</span> en los periodos estivales-otoñales (<span class="math inline">\(P_1\)</span> con <span class="math inline">\(p_{\text{BP}} = 0.2538\)</span> y <span class="math inline">\(P_2\)</span> con <span class="math inline">\(p_{\text{BP}} = 0.9448\)</span>).</p>
 <p>No obstante, la prueba de Breusch-Pagan sobre <span class="math inline">\(\hat{z}_t^2\)</span> detecta <strong>heterocedasticidad residual estadísticamente significativa</strong> en los dos periodos que inician en febrero durante la transición invierno-primavera (<span class="math inline">\(P_3\)</span> con <span class="math inline">\(p_{\text{BP}} = 0.0156\)</span> y <span class="math inline">\(P_4\)</span> con <span class="math inline">\(p_{\text{BP}} = 0.0037\)</span>). Esto indica que, aunque el escalamiento lineal por <span class="math inline">\(X_t\)</span> absorbe la dependencia extensiva de la biomasa, la volatilidad relativa <span class="math inline">\(\sigma\)</span> no permanece estrictamente constante cuando el dosel atraviesa episodios intermitentes de nieve, deshielo y variaciones abruptas de iluminación boreal. Estadísticamente, esta heterocedasticidad residual preserva la consistencia del estimador <span class="math inline">\(\hat{\boldsymbol{\theta}}_{\text{WLS}}\)</span>, pero puede restar eficiencia a sus errores estándar clásicos frente a estimadores de covarianza robustos a heterocedasticidad y autocorrelación (HAC / Newey-West; Greene, 2018).</p>
 </section>
 <section id="sec-lim-espacio-estados" class="level3" data-number="5.8.6">
@@ -2055,7 +2133,7 @@ Figura&nbsp;5.11: Análisis de sensibilidad dinámica en el Periodo 3 bajo el mo
 <h3 data-number="5.8.7" class="anchored" data-anchor-id="sec-lim-resolucion"><span class="header-section-number">5.8.7</span> Resolución temporal y especificidad geográfica del agroecosistema</h3>
 <p>Finalmente, existen dos delimitaciones de escala y generalización:</p>
 <ol type="1">
-<li><strong>Paso diario <span class="math inline">\(\Delta t = 1\)</span> día frente a dinámicas subdiurnas:</strong> Aunque la verificación numérica de la Tabla <a href="#tbl-em-vs-milstein" class="quarto-xref">Tabla&nbsp;<span>5.11</span></a> demostró que en el régimen de baja volatilidad relativa de Röbäcksdalen (<span class="math inline">\(\hat{\sigma}_{\text{WLS}} \approx 0.0069\,\text{días}^{-1/2}\)</span>) la discrepancia entre Euler-Maruyama multiplicativo y Milstein es prácticamente nula (<span class="math inline">\(\max |\mathbb{E}[X_{\text{EM}}] - \mathbb{E}[X_{\text{Mil}}]| = 7.76 \times 10^{-7}\)</span>), el paso diario no resuelve dinámicas subdiurnas como el balance entre fotosíntesis diurna, cierre estomático de mediodía y respiración nocturna.</li>
+<li><strong>Paso diario <span class="math inline">\(\Delta t = 1\)</span> día frente a dinámicas subdiurnas:</strong> Aunque la verificación numérica de la <a href="#tbl-em-vs-milstein" class="quarto-xref">Tabla&nbsp;<span>5.13</span></a> demostró que en el régimen de baja volatilidad relativa de Röbäcksdalen (<span class="math inline">\(\hat{\sigma}_{\text{WLS}} \approx 0.0069\,\text{días}^{-1/2}\)</span>) la discrepancia entre Euler-Maruyama multiplicativo y Milstein es prácticamente nula (<span class="math inline">\(\max |\mathbb{E}[X_{\text{EM}}] - \mathbb{E}[X_{\text{Mil}}]| = 7.76 \times 10^{-7}\)</span>), el paso diario no resuelve dinámicas subdiurnas como el balance entre fotosíntesis diurna, cierre estomático de mediodía y respiración nocturna.</li>
 <li><strong>Especificidad climática y taxonómica:</strong> Los parámetros calibrados caracterizan la ecofisiología particular del agroecosistema boreal de Röbäcksdalen (<span class="math inline">\(63.81^\circ\,\text{N}\)</span>), dominado por limitación térmica primaveral y fotoperiodos estivales prolongados. Su aplicación directa a biomas templados, semiáridos o tropicales —donde la disponibilidad hídrica o la estacionalidad de lluvias reemplazan a la temperatura como factor limitante— exige recalibrar tanto el vector <span class="math inline">\(\boldsymbol{\theta}\)</span> como la escala de memoria <span class="math inline">\(\tau^*\)</span>.</li>
 </ol>
 
